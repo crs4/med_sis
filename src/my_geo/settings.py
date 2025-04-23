@@ -164,7 +164,7 @@ if LDAP_ENABLED and "geonode_ldap" not in INSTALLED_APPS:
 
 # Add your specific LDAP configuration after this comment:
 # https://docs.geonode.org/en/master/advanced/contrib/#configuration
-INSTALLED_APPS += ("backoffice", "backoffice_api",)
+INSTALLED_APPS += ("backoffice", )
 
 ## REST FRAMEWORK PERMISSIONS ###
 """
@@ -176,10 +176,14 @@ INSTALLED_APPS += ("backoffice", "backoffice_api",)
     ]
 """
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
-    'EXCEPTION_HANDLER': 'backoffice_api.exceptions.custom_exception_handler',
+    'EXCEPTION_HANDLER': 'backoffice.api.exceptions.custom_exception_handler',
 }
 
 """

@@ -18,36 +18,37 @@
 #
 #########################################################################
 
-#from django.contrib import admin
-from geonode.urls import urlpatterns as geonode_urlpatterns
+from django.contrib import admin
 from django.urls import path, include
-#from django.conf.urls import url
-#from django.views.generic import TemplateView
-#from django.conf import settings
-#from django.conf.urls.static import static
+from django.conf import settings
+from django.conf.urls.static import static
+from django.conf.urls.i18n import i18n_patterns
+from geonode.urls import urlpatterns as geonode_urlpatterns
 
-urlpatterns = [
-    # Web Application endpoint
-    path("backoffice/", include('backoffice.urls')),
+# URL per le API (non soggetti a i18n)
+api_urlpatterns = [
+    path('api/backoffice/', include('backoffice.api.urls')),
+]
 
-    # API endpoints
-    path('api/backoffice/', include('backoffice_api.urls')),
-] + geonode_urlpatterns
-
+# URL base per autenticazione e admin
 """
+base_urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/', include('allauth.urls')),
+]
+"""
+
+# Combina gli URL di GeoNode con i nostri URL base
+urlpatterns =  geonode_urlpatterns
+
+# Aggiungi gli URL delle API
+urlpatterns += api_urlpatterns
+
+# Aggiungi gli URL per i file statici e media in modalità DEBUG
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-* Aggiunge agli URL le regole per gestire e servire automaticamente 
-i file media (immagini caricate, file, ecc.) usando il server di sviluppo Django.
-
-* Questo permette di accedere ai file in MEDIA_ROOT attraverso l'URL MEDIA_URL in modalità sviluppo, 
-evitando di configurare server esterni come Nginx o Apache.
-
-"""
-    
-
-
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 """
 # You can register your own urlpatterns here
