@@ -1,0 +1,195 @@
+{% load static %}
+
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'my_geo/static/css/custom.css' %}">
+</head>
+
+{% if request.path == '/' %}
+{% block home_content %}
+<div class="gn-main-header-placeholder" style="height: 500px;"></div>
+<div class="gn-container">
+    <div class="gn-content">
+        <!-- Contenuto specifico per la home -->
+        {#{% include 'geonode-mapstore-client/snippets/brand_navbar.html' %}#}
+        <div class="section-text">
+            <h2>Welcome to the Soils4Med Soil Information System</h2>
+            <p>The Soils Information System platform represents a significant collaborative achievement, developed under the framework of the <a href="https://mel.cgiar.org/projects/1866">PRIMA-funded Soils4Med project</a>. This initiative brings together the expertise and resources of more than 15 leading academic institutions and research centers across the Mediterranean region. Through their combined efforts and diverse contributions, these organizations have created a comprehensive soil monitoring and information system that exemplifies the power of international scientific cooperation.<p>
+            <h3>Sign-in or Register to access data</h3>    
+        </div>
+        
+    </div>
+    
+</div>
+{#{% include 'geonode-mapstore-client/snippets/footer.html'%}#}
+
+        <!--<div class="gn-wave-divider light"><img src="{% static 'img/wave.svg' %}"></div>
+        <div class="home-dataset-themes">
+            <h1>DATASET THEMES</h1>
+            <ul>
+                <li>
+                    <a href="/resources/#/?filter{tkeywords}=77">
+                        <div>
+                            <img src="../../../static/img/pollution.svg">
+                            <div>Pollution</div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/#/?filter{tkeywords}=78">
+                        <div>
+                            <img src="../../../static/img/biodiversity.svg">
+                            <div>Marine Biodiversity</div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/#/?filter{tkeywords}=79">
+                        <div>
+                            <img src="../../../static/img/sustainability.svg">
+                            <div>Sustainability and Blue Economy</div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/#/?filter{tkeywords}=80">
+                        <div>
+                            <img src="../../../static/img/climate_change.svg">
+                            <div>Climate Change</div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/#/?filter{tkeywords}=81">
+                        <div>
+                            <img src="../../../static/img/MSP.svg">
+                            <div>Marine Spatial Planning</div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/#/?filter{tkeywords}=76">
+                        <div>
+                            <img src="../../../static/img/fishery.svg">
+                            <div>Fishery and Aquaculture</div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/#/?filter{tkeywords}=82">
+                        <div>
+                            <img src="../../../static/img/governance.svg">
+                            <div>Governance</div>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="gn-wave-divider"><img src="../../../static/img/wave.svg"></div> -->
+
+{% endblock %}
+{% endif %}
+{% if request.path != '/' %}
+{% block general_content %}
+<!--<div class="gn-main-header-placeholder" style="height: 500px;"></div>
+<div class="gn-container">
+    <div class="gn-content">-->
+        <!-- Contenuto per le altre pagine -->
+        {#{% include 'geonode-mapstore-client/snippets/brand_navbar.html' %}#}
+      <!--  <div class="section-text">
+            <h4>Soils4Med SIS is a harmonized soil monitoring and information platform designed to protect, restore, and enhance soil and environmental health across the Mediterranean Region. It functions as a decentralized, federated spatial data infrastructure that enables national soil institutes to seamlessly share their data while allowing researchers to conduct transboundary environmental studies.The system aims to safeguard existing soil profile data from the Mediterranean Region, with particular emphasis on preserving legacy data in its original form. Through quality assessment and standardization processes, it ensures the consistency and reliability of all shared soil information. Additionally, the system provides standardized data suitable for Digital Soil Mapping (DSM) and various environmental applications, while strictly adhering to specified licenses and access permissions.</h4>
+        </div>
+        <div class="gn-wave-divider light"><img src="{% static 'img/wave.svg' %}"></div>
+        <div class="home-dataset-themes">
+            <h1>DATASET THEMES</h1>
+            <ul>
+                <li>
+                    <a href="/resources/#/?filter{tkeywords}=77">
+                        <div>
+                            <img src="../../../static/img/pollution.svg">
+                            <div>Pollution</div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/#/?filter{tkeywords}=78">
+                        <div>
+                            <img src="../../../static/img/biodiversity.svg">
+                            <div>Marine Biodiversity</div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/#/?filter{tkeywords}=79">
+                        <div>
+                            <img src="../../../static/img/sustainability.svg">
+                            <div>Sustainability and Blue Economy</div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/#/?filter{tkeywords}=80">
+                        <div>
+                            <img src="../../../static/img/climate_change.svg">
+                            <div>Climate Change</div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/#/?filter{tkeywords}=81">
+                        <div>
+                            <img src="../../../static/img/MSP.svg">
+                            <div>Marine Spatial Planning</div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/#/?filter{tkeywords}=76">
+                        <div>
+                            <img src="../../../static/img/fishery.svg">
+                            <div>Fishery and Aquaculture</div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/resources/#/?filter{tkeywords}=82">
+                        <div>
+                            <img src="../../../static/img/governance.svg">
+                            <div>Governance</div>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="gn-wave-divider"><img src="../../../static/img/wave.svg"></div>
+        <div class="footer" style="background-color: rgb(228, 245, 251);">
+            <div class="logos">
+                <a href="https://prima-med.org//" target="_blank" rel="noopener noreferrer"><img src="../../../static/img/prima_logo1.png" style="width: 10%;"></a>
+                <a href="https://prima-med.org//" target="_blank" rel="noopener noreferrer"><img src="../../../static/img/soils-logo1.png" style="width: 10%; margin-bottom: 10px; margin-left: 10px;"></a>
+            
+            </div>
+            <div class="sub-text">
+                The Soils4Med platform represents a significant collaborative achievement, developed under the framework of the PRIMA-funded (<a href="https://prima-med.org/" target="_blank" rel="noopener noreferrer">(https://prima-med.org/)</a>) Soils4Med project. This innovative initiative brings together the expertise and resources of more than 15 leading academic institutions and research centers across the Mediterranean region. Through their combined efforts and diverse contributions, these organizations have created a comprehensive soil monitoring and information system that exemplifies the power of international scientific cooperation.
+            </div>    
+
+<div class="policy">
+<div class="row">
+    <div class="col-xs-12 divider">
+        <hr>
+    </div>
+</div>
+<div class="plink">
+    <a href="https://wedocs.unep.org/bitstream/handle/20.500.11822/37132/21ig25_27_2510_eng.pdf" target="_blank" rel="noopener noreferrer">Data Policy</a> | <a href="http://www.info-rac.org/en/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+</div>
+</div>
+            </div>
+        </div>
+</div> -->
+
+{% endblock %}
+{% endif %}
+
+<div class="logos">
+    <a href="https://prima-med.org//" target="_blank" rel="noopener noreferrer"><img src="{% static 'my_geo/static/img/LogoCRS4.2000x600.png' %}" style="width: 10%;"></a>
+    <a href="https://prima-med.org//" target="_blank" rel="noopener noreferrer"><img src="{% static 'my_geo/static/img/prima-logo-hor.jpg' %}" style="width: 10%;"></a>
+    <a href="https://prima-med.org//" target="_blank" rel="noopener noreferrer"><img src="{% static 'my_geo/static/img/soils-logo1.jpg' %}" style="width: 10%; margin-bottom: 10px; margin-left: 10px;"></a>
+</div>  

@@ -1,0 +1,219 @@
+{% load static %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var topbar = document.getElementById('gn-topbar');
+        if (topbar) {
+            topbar.remove();
+        }
+    });
+</script>
+{% block extra_style %}
+<head>
+    <!-- STATIC_ROOT = /mnt/volumes/statics/static/-->
+    <!-- .src/my_geo/static = /mnt/volumes/statics/static/my_geo/static -->
+    <link rel="stylesheet" type="text/css" href="{% static 'my_geo/static/css/custom.css' %}">
+</head>
+{% endblock %}
+
+{% if request.path == '/'%}
+    <div class="kmap-background home">
+        <!--<img src="../../../static/img/soils-background6.jpg">-->
+        <img src="{% static 'my_geo/static/img/soils-background6.jpg' %}"
+    </div>
+    <nav id="gn-brand-navbar" class="gn-menu gn-menu-symmetric home">
+        <div class="gn-menu-container">
+            <div class="gn-menu-content">
+                <div class="gn-menu-content-left">
+                    <ul class="gn-menu-list">
+                        <li>
+                            <a href="http://www.crs4.it">
+                                <img src="{% static 'my_geo/static/img/soils-logo1.png' %}">
+                            </a>
+                            {% if request.user.is_authenticated %}
+                                {% include 'geonode-mapstore-client/snippets/partials/logout.html'%}
+                            {% endif %}    
+                        </li>
+
+                    </ul>
+ 
+                </div>
+                <div class="gn-menu-content-center">
+                    <div class="jumbotron">
+                        <h1 class="home">Soils<span>4</span>Med</h1>
+                        <p class="home"><span>S</span>oils <span>I</span>nformation <span>S</span>ystem</p>
+                    </div>
+                    <div id="gn-search-bar" class="gn-search-bar">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <button id="gn-search-bar-clear" type="button" class="btn btn-default" style="display: none;">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                                <button id="gn-search-bar-apply" type="button" class="btn btn-default">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                            <input placeholder="Search" class="form-control" value="" style="outline: none; box-shadow: none;">
+                            <div class="input-group-append">
+                                <div id="gn-search-bar-loading" class="gn-spinner" style="visibility: hidden;"><div></div></div>
+                            </div>
+                        </div>
+                        <div class="gn-suggestions" style="display: none;">
+                            <div class="gn-suggestions-header">
+                                <button id="gn-search-bar-clear-suggestions" type="button" class="btn btn-default">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="list-group">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="gn-menu-content-right">
+   
+                    <ul class="gn-menu-list">
+                        <ul class="kmap-menu">
+                            <li class="kmap-menu-item">
+                                <a href="/maps/">
+                                    <div class="kmap-menu-icon">
+                                        <img src="{% static 'my_geo/static/img/network.svg' %}">
+                                    </div>
+                                    <div class="kmap-menu-label">SOIL PROFILES</div>
+                                </a>
+                            </li>
+                            <li class="kmap-menu-item" style="--kmap-menu-icon-bg: #05d35d;">
+                                <a href="/catalogue/#/search/?f=map">
+                                    <div class="kmap-menu-icon">
+                                        <img src="{% static 'my_geo/static/img/maps.svg' %}">
+                                    </div>
+                                    <div class="kmap-menu-label">SOIL SAMPLES</div>
+                                </a>
+                            </li>
+                            <li class="kmap-menu-item" style="--kmap-menu-icon-bg: #0bbedb;">
+                                <a href="/network/">
+                                    <div class="kmap-menu-icon">
+                                        <img src="{% static 'my_geo/static/img/library.svg' %}">
+                                    </div>
+                                    <div class="kmap-menu-label">DOCUMENTS</div>
+                                </a>
+                            </li>
+                        </ul>
+                        
+                            <li>
+                                {% if not request.user.is_authenticated%}
+                                    <a id="sign-in" href="/account/login/?next=%2F" class="nav-link btn btn-info">
+                                        <img src="{% static 'my_geo/static/img/login.svg' %}">
+                                    </a>
+                                {% endif %}    
+
+
+                            </li>
+    
+
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+{% else %}
+    <div class="kmap-background general">
+        <img src="{% static 'my_geo/static/img/soils-background6.jpg' %}">
+    </div>
+    <nav id="gn-brand-navbar" class="gn-menu gn-menu-symmetric">
+        <div class="gn-menu-container">
+            <div class="gn-menu-content">
+                <div class="gn-menu-content-left">
+                    <ul class="gn-menu-list">
+                        <li>
+                            <a href="http://www.crs4.it">
+                                <img src="{% static 'my_geo/static/img/soils-logo1.png' %}">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="gn-menu-content-center">
+                    <div class="jumbotron">
+                        <h1 class="home">Soils<span>4</span>Med</h1>
+                        <p class="home"><span>S</span>oils <span>I</span>nformation <span>S</span>ystem</p>
+                    </div>
+                </div>
+                <div class="gn-menu-content-right">
+                    <ul class="gn-menu-list">
+                        <ul class="kmap-menu">
+                            <li class="kmap-menu-item">
+                                <a href="/maps/">
+                                    <div class="kmap-menu-icon">
+                                        <img src="{% static 'my_geo/static/img/network.svg' %}">
+                                    </div>
+                                    <div class="kmap-menu-label">DATASETS</div>
+                                </a>
+                            </li>
+                            <li class="kmap-menu-item" style="--kmap-menu-icon-bg: #05d35d;">
+                                <a href="/catalogue/#/search/?f=map">
+                                    <div class="kmap-menu-icon">
+                                        <img src="{% static 'my_geo/static/img/maps.svg' %}">
+                                    </div>
+                                    <div class="kmap-menu-label">MAPS</div>
+                                </a>
+                            </li>
+                            <li class="kmap-menu-item" style="--kmap-menu-icon-bg: #0bbedb;">
+                                <a href="/network/">
+                                    <div class="kmap-menu-icon">
+                                        <img src=".{% static 'my_geo/static/img/library.svg' %}">
+                                    </div>
+                                    <div class="kmap-menu-label">DOCUMENTS</div>
+                                </a>
+                            </li>
+                        </ul>
+                        <li>
+                            {% if not user.is_authenticated %}  
+                                <a id="sign-in" href="/account/login/?next=%2F" class="nav-link btn btn-info">
+                                    <img src="{% static 'my_geo/static/img/login.svg' %}">
+                                </a>
+                            {% else %}
+                            <div class="dropdown gn-user-menu-dropdown">
+                                <button id="" role="button" aria-haspopup="true" aria-expanded="false" type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown">
+                                        <img src="https://www.gravatar.com/avatar/974fb040aa559ff7eafd9dd8c05bf0c4/?s=80">
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="">
+                                    <li>
+                                       <a href="/people/profile/admin/" target="">Profile</a>
+                                    </li>
+                                    <li>
+                                        <a href="/social/recent-activity" target="">Recent activity</a>
+                                    </li>
+                                    <li>
+                                        <a href="/catalogue/#/search/?f=favorite" target="">Favorites</a>
+                                    </li>
+                                    <li>
+                                        <a href="/messages/inbox/" target="">Inbox</a>
+                                    </li>
+                                    <li role="separator" class="divider"></li>
+                                    <li>
+                                        <a href="/admin/" target="">Admin</a>
+                                    </li>
+                                    <li>
+                                        <a href="/geoserver/" target="">GeoServer</a>
+                                    </li>
+                                    <li role="separator" class="divider"></li>
+                                    <li>
+                                        <a href="/help/" target="">Help</a>
+                                    </li>
+                                    <li role="separator" class="divider"></li>
+                                    <li>
+                                        <a href="/account/logout/?next=/" target="">Log out</a>
+                                    </li>
+                                </ul>
+                            </div>    
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+{% endif %}
+
+
+
+
