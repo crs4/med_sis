@@ -1,5 +1,5 @@
-CREATE USER soildata_user WITH PASSWORD 'soildata_pwd';
-CREATE DATABASE soildata_db WITH OWNER soildata_user;
+CREATE USER backoffice_user WITH PASSWORD 'backoffice_pwd';
+CREATE DATABASE backoffice_db WITH OWNER backoffice_user;
 \c soildata_db
 CREATE EXTENSION postgis;
-GRANT ALL PRIVILEGES ON DATABASE soildata_db TO soildata_user;
+GRANT ALL PRIVILEGES ON DATABASE backoffice_db TO backoffice_user; 
