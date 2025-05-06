@@ -29,11 +29,11 @@ def read(*rnames):
 
 
 setup(
-    name="my_geo",
+    name="s4m_catalogue",
     version="4.0.0",
-    author="",
-    author_email="",
-    description="my_geo, based on GeoNode",
+    author="CRS4 team",
+    author_email="demontis@crs4.it",
+    description="Soils4Med SIS Catalogue, based on GeoNode",
     long_description=(read("README.md")),
     # Full list of classifiers can be found at:
     # http://pypi.python.org/pypi?%3Aaction=list_classifiers
@@ -41,8 +41,8 @@ setup(
         "Development Status :: 1 - Planning",
     ],
     license="GPL",
-    keywords="my_geo geonode django",
-    url="https://github.com/my_geo/my_geo",
+    keywords="soils4med catalogue geonode django soil information system web gis",
+    url="https://github.com/s4m_catalogue/s4m_catalogue",
     packages=find_packages(),
     dependency_links=["git+https://github.com/GeoNode/geonode.git#egg=geonode"],
     include_package_data=True,

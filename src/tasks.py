@@ -27,6 +27,7 @@ import socket
 import ipaddress
 import logging
 import datetime
+from pathlib import Path
 
 from urllib.parse import urlparse, urlunparse
 from invoke import task
@@ -469,7 +470,9 @@ def collectmetrics(ctx):
 @task
 def initialized(ctx):
     print("**************************init file********************************")
-    ctx.run("date > /mnt/volumes/statics/geonode_init.lock")
+    static_root = os.environ.get("STATIC_ROOT", "/mnt/volumes/statics/static/")
+    lockfile_dir = Path(static_root).parent  # quite ugly, we're assuming such dir exists and is writable
+    ctx.run(f"date > {lockfile_dir}/geonode_init.lock")
 
 
 def _docker_host_ip():
@@ -498,14 +501,12 @@ address {ip_list[0]}"
         )
     return ip_list[0]
 
-
 def _is_valid_ip(ip):
     try:
         ipaddress.IPv4Address(ip)
         return True
     except Exception as e:
         return False
-
 
 def _container_exposed_port(component, instname):
     port = "80"
@@ -557,7 +558,7 @@ def _update_geodb_connstring():
 
 
 def _localsettings():
-    settings = os.getenv("DJANGO_SETTINGS_MODULE", "my_geo.settings")
+    settings = os.getenv("DJANGO_SETTINGS_MODULE", "s4m_catalogue.settings")
     return settings
 
 

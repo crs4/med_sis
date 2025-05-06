@@ -1,7 +1,7 @@
 FROM geonode/geonode-base:latest-ubuntu-22.04
 LABEL GeoNode development team
 
-RUN mkdir -p /usr/src/my_geo
+RUN mkdir -p /usr/src/s4m_catalogue
 
 RUN apt-get update -y && apt-get install curl wget unzip gnupg2 locales -y
 
@@ -11,8 +11,8 @@ ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
 
 # add bower and grunt command
-COPY src /usr/src/my_geo/
-WORKDIR /usr/src/my_geo
+COPY src /usr/src/s4m_catalogue/
+WORKDIR /usr/src/s4m_catalogue
 
 #COPY src/monitoring-cron /etc/cron.d/monitoring-cron
 #RUN chmod 0644 /etc/cron.d/monitoring-cron
@@ -22,8 +22,8 @@ WORKDIR /usr/src/my_geo
 
 COPY src/wait-for-databases.sh /usr/bin/wait-for-databases
 RUN chmod +x /usr/bin/wait-for-databases
-RUN chmod +x /usr/src/my_geo/tasks.py \
-    && chmod +x /usr/src/my_geo/entrypoint.sh
+RUN chmod +x /usr/src/s4m_catalogue/tasks.py &&\
+    chmod +x /usr/src/s4m_catalogue/entrypoint.sh
 
 COPY src/celery.sh /usr/bin/celery-commands
 RUN chmod +x /usr/bin/celery-commands
@@ -49,4 +49,4 @@ RUN apt-get autoremove --purge &&\
 EXPOSE 8000
 
 # We provide no command or entrypoint as this image can be used to serve the django project or run celery tasks
-# ENTRYPOINT /usr/src/my_geo/entrypoint.sh
+# ENTRYPOINT /usr/src/s4m_catalogue/entrypoint.sh
