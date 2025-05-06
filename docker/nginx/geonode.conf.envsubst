@@ -90,7 +90,7 @@ location /uploaded/ {
 location /soildata {
   # Using a variable is a trick to let Nginx start even if upstream host is not up yet
   # (see https://sandro-keil.de/blog/2017/07/24/let-nginx-start-if-upstream-host-is-unavailable-or-down/)
-  set $upstream react:3000;
+  set $upstream soildata:3000;
 
   proxy_set_header X-Forwarded-Host $host;
   proxy_set_header X-Forwarded-Server $host;

@@ -46,7 +46,7 @@ RUN apt-get autoremove --purge &&\
     rm -rf /var/lib/apt/lists/*
 
 # Export ports
-EXPOSE 8000
+EXPOSE 8088
 
 # We provide no command or entrypoint as this image can be used to serve the django project or run celery tasks
 # ENTRYPOINT /usr/src/s4m_catalogue/entrypoint.sh
