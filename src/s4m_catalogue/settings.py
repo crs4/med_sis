@@ -178,7 +178,7 @@ REST_FRAMEWORK = {
 DATABASES = DATABASES.copy()
 DATABASES['backoffice'] = {
     'ENGINE': 'django.contrib.gis.db.backends.postgis',
-    'NAME': os.getenv('BACKOFFICE_DATABASE', 'backoffice_db'),
+    'NAME': os.getenv('BACKOFFICE_DATABASE', 'backoffice'),
     'USER': os.getenv('BACKOFFICE_DATABASE_USER', 'backoffice_user'),
     'PASSWORD': os.getenv('BACKOFFICE_DATABASE_PASSWORD', 'backoffice_pwd'),
     'HOST': os.getenv('DATABASE_HOST', 'db'),

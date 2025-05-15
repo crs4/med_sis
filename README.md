@@ -1,3 +1,4 @@
+
 # My_Geo
 
 GeoNode template project. Generates a django project with GeoNode support.

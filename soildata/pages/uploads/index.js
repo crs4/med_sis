@@ -7,29 +7,68 @@ import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
-import { MultiSelect } from 'primereact/multiselect';
+import { ConfirmDialog } from 'primereact/confirmdialog'; 
+import { Tag } from 'primereact/tag';
 import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import {useTranslations} from 'next-intl';
 import { Toast } from 'primereact/toast';
+import { useUser } from '../../context/user';
 
-function List (){
+
+export default function Page()  {
   const t = useTranslations('default');
   const [filters, setFilters] = useState(null);
   const [globalFilterValue, setGlobalFilterValue] = useState('');   
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [isWorking, setIsWorking] = useState(false);
+  const [current, setCurrent] = useState(null);
+  const [visibleDlg1, setVisibleDlg1] = useState(false);
+  const [visibleDlg2, setVisibleDlg2] = useState(false);
   const [loading, setLoading] = useState(true);
   const [uploads, setUploads] = useState(null);
   const router = useRouter();
-  const statuses = ['error', 'succes', 'warning'];
   const toast = useRef(null);
+  const user = useUser();
+  const statuses = [ "All saved", "Some Errors", "Elaborating", "Critical error" ];
+  const types = [ 
+    UploadService.TYPES['XLS_P']?.name,
+    UploadService.TYPES['XLS_PG']?.name,
+    UploadService.TYPES['XLS_PH']?.name,
+    UploadService.TYPES['XLS_S']?.name 
+  ];
+
+  useEffect(() => {
+      if ( user.forbidden )
+        router.push(`/soildata/401`);
+    },[user,router]);
 
   const goToUpload = (id) => {
-    router.push(`/soildata/uploads/${id}`);
+    router.push(`/uploads/${id}`);
   };
-  
+
+  const replayUpload = async (id) => {
+    if ( !id || current )
+      return;
+    setIsWorking(true);
+    setCurrent(id);
+    setVisibleDlg2(true);
+  };
+
   const removeUpload = async (id) => {
-    /*setIsDeleting(id);
+    if ( !id || current )
+      return;
+    setIsWorking(true);
+    setCurrent(id);
+    setVisibleDlg1(true);
+  };
+
+  const performRemove = async () => {
+    if ( !current )
+      return;
+    setUploads( uploads.filter((el) => el.id !== current) );
+    console.log ( uploads );
+    initFilters();
+    /*
     try {
       const res = await UploadService.remove(id);
       const json = await res.json();
@@ -47,73 +86,45 @@ function List (){
     finally {
       setIsDeleting(null);
     }*/
+    setCurrent(null);
+    setIsWorking(false);
+  };
+
+  const performReplay = async () => {
+    if ( !current )
+      return;
+    uploads.forEach(upload => {
+      if ( upload.id === current )
+        upload.status =  "Elaborating";     
+    });
+    setUploads(uploads);
+    initFilters();
+    /*
+    try {
+      const res = await UploadService.remove(id);
+      const json = await res.json();
+      if (json.errors) {
+        toast.current.show({severity:'error', summary: 'Error', detail:'Errors deleting upload', life: 3000});
+      }
+      else  {
+        setUploads((omp) => (omp.filter((p) => p.id !== id)));
+        toast.current.show({severity:'success', summary: 'Done!', detail:'Upload has been deleted', life: 3000});
+      } 
+    } 
+    catch (e) { 
+      toast.current.show({severity:'error', summary: 'Error', detail:'Something went wrong', life: 3000});
+    }
+    finally {
+      setIsDeleting(null);
+    }*/
+    setCurrent(null);
+    setIsWorking(false);
   };
 
   const clearFilters = () => {
     initFilters();
   };
 
-  const formatDate = (value) => {
-    return value.toLocaleDateString('en-US', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-    });
-  };
-
-  const initFilters = () => {
-    setFilters({
-      global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-      name: {
-          operator: FilterOperator.AND,
-          constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]
-      },
-      user: { value: null, matchMode: FilterMatchMode.IN },
-      date: {
-          operator: FilterOperator.AND,
-          constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }]
-      },
-      type: {
-          operator: FilterOperator.OR,
-          constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }]
-      },
-      status: {
-        operator: FilterOperator.OR,
-        constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }]
-      },
-    });
-    setGlobalFilterValue('');
-  };
-
-  const userFilterTemplate = (options) => {
-      return (
-          <>
-              <div className="mb-3 text-bold">User Picker</div>
-              <MultiSelect value={options.value} options={users} itemTemplate={usersItemTemplate} onChange={(e) => options.filterCallback(e.value)} optionLabel="name" placeholder="Any" className="p-column-filter" />
-          </>
-      );
-  };
-
-  const dateBodyTemplate = (rowData) => {
-      return formatDate(rowData.date);
-  };
-
-  const dateFilterTemplate = (options) => {
-      return <Calendar value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" mask="99/99/9999" />;
-  };
-
-  const statusBodyTemplate = (rowData) => {
-    return <span className={`customer-badge status-${rowData.status}`}>{rowData.status}</span>;
-  };
-
-  const statusFilterTemplate = (options) => {
-    return <Dropdown value={options.value} options={statuses} onChange={(e) => options.filterCallback(e.value, options.index)} itemTemplate={statusItemTemplate} placeholder="Select a Status" className="p-column-filter" showClear />;
-  };
-
-  const statusItemTemplate = (option) => {
-    return <span className={`customer-badge status-${option}`}>{option}</span>;
-  };
-  
   const onGlobalFilterChange = (e) => {
     const value = e.target.value;
     let _filters = { ...filters };
@@ -134,46 +145,202 @@ function List (){
     );
   };
 
-  const header = renderHeader();
+  const rejectDlg1 = () => {
+    setCurrent(null);
+    setIsWorking(false);
+  };
+
+  const rejectDlg2 = () => {
+    setCurrent(null);
+    setIsWorking(false);
+  };
+  
 
   useEffect(() => {
-    initFilters(); 
-    data = [ 
-
-    ]
-    setUploads(mapUploadsDate(data));
+    const fetchData = ( () => {
+      const _data = [ 
+        { 
+          id: 1,
+          name: 'uploadtest1',
+          user: 'admin', 
+          date: new Date('2025/03/12'),
+          type: 'XLS_P',
+          status: UploadService.STATUS.SUCCESFULLY_IMPORTED
+        },
+        { id: 2,
+          name: 'uploadtest2',
+          user: 'datamanager', 
+          date: new Date('2025/06/12'),
+          type: 'XLS_P',
+          status: UploadService.STATUS.IMPORTED_WITH_ERROR
+        },
+        { id: 3,
+          name: 'uploadtest3',
+          user: 'datamanager', 
+          date: new Date('2025/05/12'),
+          type: 'XLS_P',
+          status: UploadService.STATUS.CRITICAL_ERROR
+        },
+        { id: 4,
+          name: 'uploadtest4',
+          user: 'datamanager', 
+          date: new Date('2025/04/12'),
+          type: 'XLS_P',
+          status: UploadService.STATUS.UPLOADED
+        }, 
+      ]
+      /*const _users = _data.map ((upload) => {
+        return upload.user;
+      });*/
+      setUploads(mapUploads(_data));
+      initFilters(); 
+    })
+    fetchData();
     //UploadService.getUploads().then((data) => setUploads(mapUploadsDate(data)));
     setLoading(false);
   }, []);
 
-  const mapUploadsDate = (data) => {
+  const formatDate = (value) => {
+    return value.toLocaleDateString('en-US', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    });
+  };
+
+  const initFilters = () => {
+    setFilters({
+      global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+      id: {
+        operator: FilterOperator.AND,
+        constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }]
+      },
+      name: {
+          operator: FilterOperator.AND,
+          constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]
+      },
+      user: {
+        operator: FilterOperator.AND,
+        constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]
+      },
+      date: {
+          operator: FilterOperator.AND,
+          constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }]
+      },
+      type: {
+          operator: FilterOperator.OR,
+          constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }]
+      },
+      status: {
+        operator: FilterOperator.OR,
+        constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }]
+      },
+    });
+    setGlobalFilterValue('');
+  };
+  
+  const dateBodyTemplate = (rowData) => {
+      return formatDate(rowData.date);
+  };
+
+  const dateFilterTemplate = (options) => {
+      return <Calendar value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" mask="99/99/9999" />;
+  };
+
+  const statusBodyTemplate = (rowData) => {
+    if ( rowData.status ==="All saved" )
+      return ( <Tag icon="pi pi-check" severity="success" value="All saved"></Tag>)
+    else if ( rowData.status === "Some Errors" )
+      return ( <Tag icon="pi pi-exclamation-triangle" severity="warning" value="Some Errors"></Tag>)
+    else if ( rowData.status === "Elaborating" )
+      return ( <Tag icon="pi pi-spin pi-cog" severity="info" value="Elaborating"></Tag>)
+    else 
+      return ( <Tag icon="pi pi-exclamation-triangle" severity="danger" value="Critical error"></Tag>)
+  };
+
+  const statusFilterTemplate = (options) => {
+    return <Dropdown value={options.value} options={statuses} onChange={(e) => options.filterCallback(e.value, options.index)} itemTemplate={statusItemTemplate} placeholder="Select a Status" className="p-column-filter" showClear />;
+  };
+
+  const statusItemTemplate = (option) => {
+    if ( option === UploadService.STATUS.SUCCESFULLY_IMPORTED )
+      return ( <Tag severity="success" value="All saved"></Tag>)
+    else if ( option === UploadService.STATUS.IMPORTED_WITH_ERROR )
+      return ( <Tag severity="warning" value="Some Errors"></Tag>)
+    else if ( option === UploadService.STATUS.UPLOADED )
+      return ( <Tag severity="info" value="Elaborating"></Tag>)
+    else if ( option === UploadService.STATUS.CRITICAL_ERROR )
+      return ( <Tag severity="danger" value="Critical error"></Tag>)
+  };
+
+  const typeBodyTemplate = (rowData) => {
+    if (rowData.type)
+      return <span >{UploadService.TYPES[rowData.type]?.name}</span>;
+    else return '';
+  };
+
+  const typeFilterTemplate = (options) => {
+    return <Dropdown value={options.value} options={types} onChange={(e) => options.filterCallback(e.value, options.index)} itemTemplate={typesItemTemplate} placeholder="Select a Type" className="p-column-filter" showClear />;
+  };
+
+  const typesItemTemplate = (option) => {
+    return <span >{UploadService.TYPES[option]?.name}</span>;
+  };
+
+  const header = renderHeader();
+
+  const mapUploads = (data) => {
     return [...(data || [])].map((d) => {
         d.date = new Date(d.date);
+        if ( d.status === UploadService.STATUS.SUCCESFULLY_IMPORTED )
+          d.status = "All saved"
+        else if ( d.status === UploadService.STATUS.IMPORTED_WITH_ERROR )
+          d.status ="Some Errors";
+        else if ( d.status === UploadService.STATUS.UPLOADED )
+          d.status ="Elaborating";
+        else  
+          d.status ="Critical error";
+        d.type = UploadService.TYPES[d.type]?.name;
         return d;
     });
   };
 
   const actionsTemplate = (rowData) => (
+    
     <>
     <Button
       icon="pi pi-times"
-      className="p-button-danger p-mb-2 p-mr-2"
+      className="p-button-danger p-mb-2 p-mr-2 m-1"
       label=""
-      loading={isDeleting === rowData.id}
-      disabled={isDeleting === rowData.id}
+      loading={loading}
+      disabled={isWorking}
       tooltip={t('DELETE_UPLOAD')}
       tooltipOptions={{ position: 'top' }}
-      onClick={() => removeUpload(rowData.id)}
+      onClick={() => removeUpload(rowData.id) }
+      aria-controls={visibleDlg1 ? 'dlg_remove' : null} 
+      aria-expanded={visibleDlg1 ? true : false}
     />
     <Button
       icon="pi pi-folder-open"
-      className="p-mr-2 p-mb-2"
-      disabled={isDeleting === rowData.id}
+      className="p-mr-2 p-mb-2 m-1"
+      loading={loading}
+      disabled={isWorking}
       tooltip={t('LOAD_UPLOAD')}
       tooltipOptions={{ position: 'top' }}
-      onClick={() => goToUpload(rowData)}
-      style={{ width: '160px' }}
-      label={t('LOAD_UPLOAD')}
+      onClick={() => goToUpload(rowData.id)}
+      label=""
+    />
+    <Button
+      icon="pi pi-replay"
+      className="p-button-help p-mr-2 p-mb-2 m-1"
+      loading={loading}
+      disabled={isWorking}
+      tooltip={t('REPLAY_UPLOAD')}
+      tooltipOptions={{ position: 'top' }}
+      onClick={() => replayUpload(rowData.id)}
+      label=""
+      aria-controls={visibleDlg2 ? 'dlg_replay' : null} 
+      aria-expanded={visibleDlg2 ? true : false}
     />
     </> 
   );
@@ -183,34 +350,33 @@ function List (){
       <div className="grid">
         <div className="col-12">
           <div className="card">
+            <ConfirmDialog id="dlg_remove" group="declarative"  visible={visibleDlg1} onHide={() => setVisibleDlg1(false)} message="Are you sure you want to delete xlsx upload?" 
+              header="Confirmation" icon="pi pi-exclamation-triangle" accept={performRemove} reject={rejectDlg1} />
+            <ConfirmDialog id="dlg_replay" group="declarative"  visible={visibleDlg2} onHide={() => setVisibleDlg2(false)} message="Are you sure you want to replay old XLSx Upload? The active soil data will be replaced!" 
+              header="Confirmation" icon="pi pi-exclamation-triangle" accept={performReplay} reject={rejectDlg2} />
             <Toast ref={toast} />
-            <h5>Filter Menu</h5>
+            <h5>XLSx Uploads Table</h5>
             <DataTable
                 value={uploads}
                 paginator
+                dataKey="id"
                 className="p-datatable-gridlines"
+                globalFilterFields={['id', 'name', 'user', 'type', 'status']}
                 showGridlines
                 rows={10}
                 filters={filters}
                 filterDisplay="menu"
                 loading={loading}
                 responsiveLayout="scroll"
-                emptyMessage="No customers found."
+                emptyMessage="No uploads found."
                 header={header}
             >
-              <Column field="name" header="Name" filter filterPlaceholder="Search by name" style={{ minWidth: '14rem' }} />
-              <Column
-                  field="user"
-                  header="User"
-                  filterField="user"
-                  showFilterMatchModes={false}
-                  filterMenuStyle={{ width: '14rem' }}
-                  style={{ minWidth: '14rem' }}
-                  filter
-                  filterElement={userFilterTemplate}
-              />
-              <Column header="Date" filterField="date" dataType="date" style={{ minWidth: '10rem' }} body={dateBodyTemplate} filter filterElement={dateFilterTemplate} />
-              <Column field="status" header="Status" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '12rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
+              <Column header="Identifier" field="id"  filter filterPlaceholder="Search by id" style={{ minWidth: '10rem' }} />
+              <Column header="Name" field="name"  filter filterPlaceholder="Search by name" style={{ minWidth: '14rem' }} />
+              <Column header="User" field="user"  filter filterPlaceholder="Search by user" style={{ minWidth: '14rem' }} />
+              <Column header="Date"  filterField="date" dataType="date" style={{ minWidth: '10rem' }} body={dateBodyTemplate} filter filterElement={dateFilterTemplate} />
+              <Column header="Type"  field="type" filterMenuStyle={{ width: '10rem' }} style={{ minWidth: '10rem' }} body={typeBodyTemplate} filter filterElement={typeFilterTemplate} />
+              <Column header="Status"  field="status" filterMenuStyle={{ width: '12rem' }} style={{ minWidth: '14rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
               <Column header="Actions" body={actionsTemplate} />
             </DataTable>
           </div>
@@ -228,4 +394,3 @@ export async function getStaticProps(context) {
   }
 }
 
-export default List;

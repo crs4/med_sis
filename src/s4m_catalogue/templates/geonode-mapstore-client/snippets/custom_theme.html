@@ -1,7 +1,10 @@
-
+<style>
+    {% block extra_css %}
+        {{ custom_theme.extra_css }}
+    {% endblock %}
+</style>
 {% block content %}
     {% comment %}
-    <!-- example of custom theme -->
     <style>
         /* structure of the selector for a custom theme .gn-theme-{variant} */
         .msgapi .gn-theme-custom {

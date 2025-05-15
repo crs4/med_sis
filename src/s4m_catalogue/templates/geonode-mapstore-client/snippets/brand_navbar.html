@@ -1,135 +1,112 @@
 {% load static %}
-{% load get_menu_json %}
-{% get_user_menu as USER_MENU %}
 
-{% if request.path == '/' %}
+
+{% block extra_style %}
 <head>
+    <!-- STATIC_ROOT = /mnt/volumes/statics/static/-->
     <link rel="stylesheet" type="text/css" href="/static/css/site_base.css">
 </head>
-<div class="s4m-background home">
-    <img src="/static/img/soils-background6.jpg">
-</div>
-<nav id="{{ id|default:'' }}" class="gn-menu gn-menu-symmetric home">
-{% else %}
-<nav id="{{ id|default:'' }}" class="gn-menu gn-menu-symmetric">
+{% endblock %}
+
+{% if request.path == '/' %}
+    <div class="s4m-background home">
+        <img src="/static/img/soils-background6.jpg">
+    </div>     
+    <nav id="gn-brand-navbar" class="gn-menu gn-menu-symmetric home">
+{% else %}  
+    <div class="s4m-background">
+        <img src="/static/img/soils-background6.jpg" style="height:100px;">
+    </div>
+    <nav id="gn-brand-navbar" class="gn-menu gn-menu-symmetric">
 {% endif %}
-    <div class="gn-menu-container ">
-        <div class="gn-menu-content">
-            <div class="gn-menu-content-left">
+        <div class="gn-menu-container ">
+            <div class="gn-menu-content">
                 {% block left_menu %}
-                <ul class="gn-menu-list">
-                    <li>
-                        <a href="/">
-                        {% if custom_theme.logo and custom_theme.logo.url %}
-                            <img src="{{ custom_theme.logo.url }}">
-                        {% else %}
-                            {% if request.path == '/' %}
-                            <img src="/static/img/logo-white.png">
-                            {% else %}
-                            <img src="/static/img/logo.png">
-                            {% endif %}
-                        {% endif %}    
-                        </a>
-                    </li>
-                </ul>
-                {% endblock %}
-            </div>
-            <div class="gn-menu-content-center">
-                {% if request.path == '/' %}    
-                <div class="jumbotron">
-                    <h1 class="home">Soils<span>4</span>Med</h1>
-                    <p class="home"><span>S</span>oils <span>I</span>nformation <span>S</span>ystem</p>
+                <div class="gn-menu-content-left">
+                    <ul class="gn-menu-list s4m-menu">
+                        <li>
+                            <a href="http://www.crs4.it">
+                                <img src="/static/img/logo.png">
+                            </a>
+                            
+                        </li>
+                    </ul>                 
                 </div>
-                {% endif %}
-		        <div>
-                {% block center_menu %}
-                    {% include './search_bar.html' with search_bar_id='gn-search-bar' %}
                 {% endblock %}
-		        </div>
-                {% if request.path == '/' %}
-                <div>
-                    <ul class="gn-menu-list">
-                        <ul class="s4m-menu">
-                            <li class="s4m-menu-item" style="--s4m-menu-icon-bg: #db880b;">
-                                <a href="/catalogue/#/?f=dataset&f=map&filter%7Bcategory.identifier.in%7D=soilprofiles">
-                                    <div class="s4m-menu-icon">
-                                        <img src="/static/img/MSP.svg">
-                                    </div>
-                                    <div class="s4m-menu-label">Soil Profiles</div>
-                                </a>
-                            </li>
-                            <li class="s4m-menu-item" style="--s4m-menu-icon-bg: #0bdb19;">
-                                <a href="/catalogue/#/?f=dataset&f=map&filter%7Bcategory.identifier.in%7D=soilsamples">
-                                    <div class="s4m-menu-icon">
-                                        <img src="/static/img/MSP.svg">
-                                    </div>
-                                    <div class="s4m-menu-label">Soil Samples</div>
-                                </a>
-                            </li>
-                            <li class="s4m-menu-item" style="--s4m-menu-icon-bg: #0bbedb;">
-                                <a href="/catalogue/#/?f=dataset&f=map&filter%7Bcategory.identifier.in%7D=soilmaps">
-                                    <div class="s4m-menu-icon">
-                                        <img src="/static/img/sustainability.svg">
-                                    </div>
-                                    <div class="s4m-menu-label">Soil Maps</div>
-                                </a>
-                            </li>
-                            <li class="s4m-menu-item" style="--s4m-menu-icon-bg: #87e061;">
-                                <a href="/catalogue/#/?f=dataset&f=map&filter%7Bcategory.identifier.in%7D=soilindices">
-                                    <div class="s4m-menu-icon">
-                                        <img src="/static/img/climate_change.svg">
-                                    </div>
-                                    <div class="s4m-menu-label">Soil Indices</div>
-                                </a>
-                            </li>
-                        </ul>
+                {% block right_menu %}
+                <div class="gn-menu-content-right">
+                    <ul class="gn-menu-list s4m-menu">
+                        {% if request.path == '/' %}
+                        <li style="float: right;">
+                        {% else  %} 
+                        <li>
+                        {% endif %}    
+                            {% if not request.user.is_authenticated %}
+                            <a id="sign-in" href="/account/login/?next=%2F" class="nav-link btn btn-info">
+                                <img src="/static/img/login.svg">
+                            </a> 
+                            {% else  %} 
+                                {% include 'geonode-mapstore-client/snippets/partials/logout.html'%}
+                            {% endif %}    
+                        </li>
                     </ul>
                 </div>
-                {% endif %}
-            </div>  
-            {% block right_menu %}
-            {% if request.path == '/' %}   
-            <div class="gn-menu-content-right" style="position: absolute; inset-inline-end: 10px; inset-block-start: 10px;">
-            {% else %}
-            <div class="gn-menu-content-right">
-            {% endif %}     
-                {% if not request.user.is_authenticated %}
-                <ul class="gn-menu-list">
-                    <li>
-                        <a id="sign-in" href="/account/login/?next=%2F" class="nav-link btn btn-info">
-                            <img src="/static/img/login.svg">
-                        </a>   
-                    </li>
-                </ul>
-                {% else %}
-                    {% include 'geonode-mapstore-client/snippets/partials/logout.html'%}
-                {% endif %} 
+                {% endblock %}
+                {% block center_menu %}
+                <div class="gn-menu-content-center">
+                    {% if request.path == '/' %}  
+                    <div class="jumbotron">
+                        <h1 class="home">Soils<span>4</span>Med</h1>
+                        <p class="home" style="font-weight: 500;"><span>S</span>oils <span>I</span>nformation <span>S</span>ystem</p>
+                    </div>
+                    {% endif %}
+                    <div>
+                        {% include './search_bar.html' with search_bar_id='gn-search-bar' %}
+                    </div>
+                    {% if request.path == '/' %}
+                    <div style="margin:1.5rem;">
+                        <ul class="gn-menu-list">
+                            <ul class="s4m-menu" style="list-style: none;">
+                                <li class="s4m-menu-item" style="--s4m-menu-icon-bg: #ce8312;">
+                                    <a href="/catalogue/#/?f=dataset&f=map&filter%7Bcategory.identifier.in%7D=soilprofiles">
+                                        <div class="s4m-menu-icon">
+                                            <img src="/static/img/MSP.svg">
+                                        </div>
+                                        <div class="s4m-menu-label" style="font-weight: 600;">Soil Profiles</div>
+                                    </a>
+                                </li>
+                                <li class="s4m-menu-item" style="--s4m-menu-icon-bg: #09b014;">
+                                    <a href="/catalogue/#/?f=dataset&f=map&filter%7Bcategory.identifier.in%7D=soilsamples">
+                                        <div class="s4m-menu-icon">
+                                            <img src="/static/img/MSP.svg">
+                                        </div>
+                                        <div class="s4m-menu-label" style="font-weight: 600;">Soil Samples</div>
+                                    </a>
+                                </li>
+                                <li class="s4m-menu-item" style="--s4m-menu-icon-bg: #a47b08;">
+                                    <a href="/catalogue/#/?f=dataset&f=map&filter%7Bcategory.identifier.in%7D=soilmaps">
+                                        <div class="s4m-menu-icon">
+                                            <img src="/static/img/maps.svg">
+                                        </div>
+                                        <div class="s4m-menu-label" style="font-weight: 600;">Soil Maps</div>
+                                    </a>
+                                </li>
+                                <li class="s4m-menu-item" style="--s4m-menu-icon-bg: #06a05b;">
+                                    <a href="/catalogue/#/?f=dataset&f=map&filter%7Bcategory.identifier.in%7D=soilindices">
+                                        <div class="s4m-menu-icon">
+                                            <img src="/static/img/climate_change.svg">
+                                        </div>
+                                        <div class="s4m-menu-label" style="font-weight: 600;">Soil Indices</div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div> 
+                {% endblock %} 
+                
             </div>
-            {% endblock %}
         </div>
-    </div>
-</nav>                        
-
-{% block extra_script %}
-    <script type="text/javascript">
-        (function() {
-            function manageUrlChange() {
-                var signInElement = document.getElementById("sign-in");
-                if (signInElement){
-                    if (window.location.pathname === '/account/login/'){
-                        signInElement.setAttribute("href", window.location.href)
-                    }
-                    else {
-                        var href = signInElement.getAttribute("href").split("next=")[0];
-                        var url_parts = window.location.href.split(window.location.pathname);
-                        var path_name = encodeURIComponent(window.location.pathname + url_parts[url_parts.length-1]);
-                        signInElement.setAttribute("href", href.concat("next=".concat(path_name)));
-                    }
-                }
-            }
-            window.addEventListener('DOMContentLoaded', manageUrlChange);
-            window.addEventListener('hashchange', manageUrlChange, false);
-        })();
-    </script>
-{% endblock extra_script %}
+    </nav>                      
 

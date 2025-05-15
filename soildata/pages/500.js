@@ -1,5 +1,5 @@
 import React from 'react';
-import SystemError from '../pages/error/index';
+import SystemError from './error/index';
 
 const Custom500 = () => {
     return <SystemError />;

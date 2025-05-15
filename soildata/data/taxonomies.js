@@ -808,6 +808,8 @@ const Taxonomies = {
         'PL': 'type: Platy; formation: Soil aggregate structure, natural or resulting from artificial pressure',
         'SR': 'type: Single grain; formation: No structural units, rock structure, inherited from the parent material',
         'MS': 'type: Massive; formation: No structural units, soil structure, present when moist and changing into soil aggregate structure when dry',
+        'M': 'type: Massive; No structural units',
+        'S': 'type: Single grain;  No structural units',
         'SS': 'type: Single grain; formation: No structural units, soil structure, resulting from soil-forming processes, like loss of organic matter and/or oxides and/or clay minerals or loss of stratification',
         'MR': 'type: Massive; formation: No structural units, rock structure, inherited from the parent material, structure not changing with soil moisture, not or only slightly chemically weathered',
         'MW': 'type: Massive; formation: No structural units, rock structure, inherited from the parent material, structure not changing with soil moisture, strongly chemically weathered (e.g. saprolite)',

@@ -6,7 +6,6 @@ from backoffice.models import *
 from .serializers import *
 #ProfileGeneralSerializer, TaxonomySerializer, ProjectSerializer, GenealogySerializer, LandformTopographySerializer, ClimateAndWeatherSerializer, SurfaceSerializer, LandUseSerializer, CultivatedSerializer
 from rest_framework import serializers
-from rest_framework_gis.filters import InBBoxFilter
 
 ###########################
 ## Uilities 
@@ -36,62 +35,10 @@ class TaxonomyViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(name=name)
             
         # Filtro per super categoria
-        super_cat = self.request.query_params.get('super_cat', None)
-        if super_cat is not None:
-            queryset = queryset.filter(super_cat=super_cat)
+        super = self.request.query_params.get('super', None)
+        if super is not None:
+            queryset = queryset.filter(super=super)
             
-        return queryset
-
-class LabMethodViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint che permette di visualizzare e modificare le tassonomie.
-    """
-    queryset = LabMethod.objects.all()
-    serializer_class = LabMethodSerializer
-    permission_classes = [permissions.IsAdminUser ]
-
-    def get_queryset(self):
-        """
-        Filtra le tassonomie in base ai parametri di query.
-        """
-        queryset = Taxonomy.objects.all()
-        
-        # Filtro per nome della tassonomia
-        type = self.request.query_params.get('type', None)
-        if type is not None:
-            queryset = queryset.filter(type=type)
-            
-        # Filtro per nome
-        name = self.request.query_params.get('name', None)
-        if name is not None:
-            queryset = queryset.filter(name=name)
-            
-        return queryset
-
-class LabMeasurementViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint che permette di visualizzare e modificare le tassonomie.
-    """
-    queryset = LabMeasurement.objects.all()
-    serializer_class = LabMeasurementSerializer
-    permission_classes = [permissions.IsAdminUser ]
-
-    def get_queryset(self):
-        """
-        Filtra le tassonomie in base ai parametri di query.
-        """
-        queryset = LabMeasurement.objects.all()
-        
-        # Filtro per nome della tassonomia
-        method = self.request.query_params.get('method', None)
-        if method is not None:
-            queryset = queryset.filter(method=method)
-            
-        # Filtro per nome
-        name = self.request.query_params.get('name', None)
-        if name is not None:
-            queryset = queryset.filter(name=name)
-               
         return queryset
 
 ###########################
@@ -131,7 +78,12 @@ class XLSxUploadViewSet(viewsets.ModelViewSet):
         editor = self.request.query_params.get('editor', None)
         if editor is not None:
             queryset = queryset.filter(editor=editor)
-            
+
+        # Filtro per status
+        status = self.request.query_params.get('status', None)
+        if status is not None:
+            queryset = queryset.filter(status=status)
+
         return queryset
 
 class XSLxSheetConfViewSet(viewsets.ModelViewSet):
@@ -179,9 +131,6 @@ class XSLxMappingViewSet(viewsets.ModelViewSet):
         type = self.request.query_params.get('type', None)
         if type is not None:
             queryset = queryset.filter(type=type)
-        code = self.request.query_params.get('code', None)
-        if code is not None:
-            queryset = queryset.filter(code=code)
         model = self.request.query_params.get('model', None)
         if model is not None:
             queryset = queryset.filter(model=model)
@@ -209,9 +158,9 @@ class ProjectViewSet(viewsets.ModelViewSet):
         queryset = Project.objects.all()
         
         # Filtro per codice
-        code = self.request.query_params.get('code', None)
-        if code is not None:
-            queryset = queryset.filter(code=code)
+        id = self.request.query_params.get('id', None)
+        if id is not None:
+            queryset = queryset.filter(id=id)
             
         # Filtro per titolo
         title = self.request.query_params.get('title', None)
@@ -240,22 +189,17 @@ class GenealogyViewSet(viewsets.ModelViewSet):
         queryset = Genealogy.objects.all()
         
         # Filtro per codice
-        code = self.request.query_params.get('code', None)
-        if code is not None:
+        id = self.request.query_params.get('id', None)
+        if id is not None:
             queryset = queryset.filter(code=code)
-            
-        # Filtro per progetto
-        project = self.request.query_params.get('project', None)
-        if project is not None:
-            queryset = queryset.filter(project=project)
             
         # Filtro per date
         _from = self.request.query_params.get('from', None)
         _to = self.request.query_params.get('to', None)
         if _from is not None:
-            queryset = queryset.filter(date__gte=_from)
+            queryset = queryset.filter(pub_year__gte=_from)
         if _to is not None:
-            queryset = queryset.filter(date__lte=_to)    
+            queryset = queryset.filter(pub_year__lte=_to)    
         return queryset
 
 ###########################
@@ -268,10 +212,6 @@ class ProfileGeneralViewSet(viewsets.ModelViewSet):
     """
     queryset = ProfileGeneral.objects.all()
     serializer_class = ProfileGeneralSerializer
-    list_serializer_class = ProfileGeneralListSerializer
-    bbox_filter_field = 'point'
-    filter_backends = (InBBoxFilter,)
-    bbox_filter_include_overlapping = True # Optional
     permission_classes = [permissions.IsAdminUser ]
     
     
@@ -284,15 +224,15 @@ class ProfileGeneralViewSet(viewsets.ModelViewSet):
         _to = self.request.query_params.get('to', None)
 
         # Filtri per location_name
-        location_name = self.request.query_params.get('location_name', None)
+        location = self.request.query_params.get('location', None)
         
         # Filtri per elevazione
-        elevation_min = self.request.query_params.get('elevation_min', None)
-        elevation_max = self.request.query_params.get('elevation_max', None)
+        elev_min = self.request.query_params.get('elev_min', None)
+        elev_max = self.request.query_params.get('elev_max', None)
         
         # Filtri per progetto e classificazione
         project = self.request.query_params.get('project', None)
-        classification_sys = self.request.query_params.get('classification_sys', None)
+        cls_sys = self.request.query_params.get('cls_sys', None)
         
         # Filtri per note
         text = self.request.query_params.get('note', None)
@@ -308,16 +248,16 @@ class ProfileGeneralViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(date__gte=_from)
         if _to:
             queryset = queryset.filter(date__lte=_to)
-        if location_name:
-            queryset = queryset.filter(location_name__icontains=location_name)
-        if elevation_min:
-            queryset = queryset.filter(elevation_m_asl__gte=elevation_min)
-        if elevation_max:
-            queryset = queryset.filter(elevation_m_asl__lte=elevation_max)
+        if location:
+            queryset = queryset.filter(location__icontains=location)
+        if elev_min:
+            queryset = queryset.filter(elev_m_asl__gte=elev_min)
+        if elev_max:
+            queryset = queryset.filter(elev_m_asl__lte=elev_max)
         if project:
             queryset = queryset.filter(project=project)
-        if classification_sys:
-            queryset = queryset.filter(classification_sys=classification_sys)
+        if cls_sys:
+            queryset = queryset.filter(cls_sys=cls_sys)
             
         return queryset
     
@@ -363,6 +303,9 @@ class LandformTopographyViewSet(viewsets.ModelViewSet):
             """
             queryset = LandformTopography.objects.all()
             
+            id = self.request.query_params.get('id', None)
+            if id is not None:
+                queryset = queryset.filter(id=id)
             # Filtro per gradiente in salita
             grad_slope = self.request.query_params.get('grad_slope', None)
             if grad_slope is not None:
@@ -406,9 +349,7 @@ class LandformTopographyViewSet(viewsets.ModelViewSet):
             text = self.request.query_params.get('geo_descr', None)
             if text is not None:
                 queryset = queryset.filter(geo_descr__icontains=text)
-            text = self.request.query_params.get('note', None)
-            if text is not None:
-                queryset = queryset.filter(notes__icontains=text)
+            
             
             return queryset
  
@@ -426,6 +367,9 @@ class ClimateAndWeatherViewSet(viewsets.ModelViewSet):
         """
         queryset = ClimateAndWeather.objects.all()
         
+        id = self.request.query_params.get('id', None)
+        if id is not None:
+            queryset = queryset.filter(id=id)
         # Filtro per classificazione climatica di Köppen
         clim_koppen = self.request.query_params.get('clim_koppen', None)
         if clim_koppen is not None:
@@ -504,6 +448,9 @@ class CultivatedViewSet(viewsets.ModelViewSet):
         rotation = self.request.query_params.get('rotation', None)
         _from = self.request.query_params.get('cessation_from', None)
         _to = self.request.query_params.get('cessation_to', None)
+        id = self.request.query_params.get('id', None)
+        if id is not None:
+            queryset = queryset.filter(id=id)
         if area_min:
             queryset = queryset.filter(area__gte=area_min)
         if area_max:
@@ -546,7 +493,10 @@ class LandUseViewSet(viewsets.ModelViewSet):
         """
         queryset = LandUse.objects.all()
         
-        # Filtro per uso del suolo
+        id = self.request.query_params.get('id', None)
+        if id is not None:
+            queryset = queryset.filter(id=id)
+
         land_use = self.request.query_params.get('land_use', None)
         if land_use is not None:
             queryset = queryset.filter(land_use=land_use)
@@ -571,7 +521,8 @@ class NotCultivatedViewSet(viewsets.ModelViewSet):
         Filtra le X in base ai parametri di query.
         """
         queryset = NotCultivated.objects.all()
-        code = self.request.query_params.get('code', None)
+        landuse = self.request.query_params.get('landuse', None)
+        stratum = self.request.query_params.get('stratum', None)
         veget1 = self.request.query_params.get('veget1', None)
         veget2 = self.request.query_params.get('veget2', None)
         veget3 = self.request.query_params.get('veget3', None)
@@ -583,9 +534,13 @@ class NotCultivatedViewSet(viewsets.ModelViewSet):
         area_max = self.request.query_params.get('area_min', None)
         specie = self.request.query_params.get('specie', None)
         
-        # Filtro per codice
-        if code is not None:
-            queryset = queryset.filter(code=code)   
+        id = self.request.query_params.get('id', None)
+        if id is not None:
+            queryset = queryset.filter(id=id)
+        if landuse is not None:
+            queryset = queryset.filter(landuse=landuse)   
+        if stratum is not None:
+            queryset = queryset.filter(stratum=stratum)   
         if area_min:
             queryset = queryset.filter(vegetation_area__gte=area_min)
         if area_max:
@@ -624,7 +579,7 @@ class SurfaceViewSet(viewsets.ModelViewSet):
         """
         queryset = Surface.objects.all()
         
-        code = self.request.query_params.get('code', None)
+        id = self.request.query_params.get('id', None)
         crust_area_min = self.request.query_params.get('crust_area_min', None)
         crust_area_max = self.request.query_params.get('crust_area_max', None)
         outc_area_min = self.request.query_params.get('outc_area_min', None)
@@ -647,8 +602,8 @@ class SurfaceViewSet(viewsets.ModelViewSet):
         wat_repell = self.request.query_params.get('wat_repell', None)
         wat_drain = self.request.query_params.get('wat_drain', None)
         
-        if code is not None:
-            queryset = queryset.filter(code=code)   
+        if id is not None:
+            queryset = queryset.filter(id=id)
         if crust_area_min:
             queryset = queryset.filter(crust_area__gte=crust_area_min)
         if crust_area_max:
@@ -709,9 +664,9 @@ class SurfaceCracksViewSet(viewsets.ModelViewSet):
         queryset = SurfaceCracks.objects.all()
         
         # Filtro per codice
-        code = self.request.query_params.get('code', None)
-        if code is not None:
-            queryset = queryset.filter(code=code)
+        id = self.request.query_params.get('id', None)
+        if id is not None:
+            queryset = queryset.filter(id=id)
         width1 = self.request.query_params.get('width1', None)
         if width1 is not None:
             queryset = queryset.filter(width1=width1)
@@ -755,9 +710,9 @@ class LitterLayerViewSet(viewsets.ModelViewSet):
         queryset = LitterLayer.objects.all()
         
         # Filtro per codice
-        code = self.request.query_params.get('code', None)
-        if code is not None:
-            queryset = queryset.filter(code=code)
+        id = self.request.query_params.get('id', None)
+        if id is not None:
+            queryset = queryset.filter(id=id)
         avg_thick_min = self.request.query_params.get('avg_thick_min', None)
         avg_thick_max = self.request.query_params.get('avg_thick_max', None)
         if avg_thick_min:
@@ -778,6 +733,38 @@ class LitterLayerViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(max_thick_min__lte=max_thick_max)
         return queryset
 
+class CoarseFragmentsViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint che permette di visualizzare e modificare le genealogie.
+    """
+    queryset = CoarseFragments.objects.all()
+    serializer_class = CoarseFragmentsSerializer
+    permission_classes = [permissions.IsAdminUser ]
+
+    def get_queryset(self):
+        """
+        Filtra le X in base ai parametri di query.
+        """
+        queryset = SurfaceUnevenness.objects.all()
+        
+        # Filtro per codice
+        id = self.request.query_params.get('id', None)
+        if id is not None:
+            queryset = queryset.filter(id=id)
+        total_area_min = self.request.query_params.get('total_area_min', None)
+        total_area_max = self.request.query_params.get('total_area_max', None)
+        if total_area_min:
+            queryset = queryset.filter(total_area__gte=total_area_min)
+        if total_area_max:
+            queryset = queryset.filter(total_area__lte=total_area_max)
+        classsize = self.request.query_params.get('classsize', None)
+        if classsize:
+            queryset = queryset.filter(class1size=classsize) | \
+                      queryset.filter(class2size=classsize) | \
+                      queryset.filter(class3size=classsize)
+        
+        return queryset
+    
 class SurfaceUnevennessViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
@@ -793,9 +780,9 @@ class SurfaceUnevennessViewSet(viewsets.ModelViewSet):
         queryset = SurfaceUnevenness.objects.all()
         
         # Filtro per codice
-        code = self.request.query_params.get('code', None)
-        if code is not None:
-            queryset = queryset.filter(code=code)
+        id = self.request.query_params.get('id', None)
+        if id is not None:
+            queryset = queryset.filter(id=id)
         position = self.request.query_params.get('position', None)
         if position is not None:
             queryset = queryset.filter(position=position)
@@ -871,38 +858,6 @@ class SurfaceUnevennessViewSet(viewsets.ModelViewSet):
 
         return queryset
 
-class CoarseFragmentsViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint che permette di visualizzare e modificare CoarseFragments.
-    """
-    queryset = CoarseFragments.objects.all()
-    serializer_class = CoarseFragmentsSerializer
-    permission_classes = [permissions.IsAdminUser ]
-
-    def get_queryset(self):
-        queryset = CoarseFragments.objects.all()
-        
-        # Filtro per codice
-        code = self.request.query_params.get('code', None)
-        if code is not None:
-            queryset = queryset.filter(code=code)
-        total_area_min = self.request.query_params.get('total_area_min', None)
-        total_area_max = self.request.query_params.get('total_area_max', None)
-        if total_area_min:
-            queryset = queryset.filter(total_area__gte=total_area_min)
-        if total_area_max:
-            queryset = queryset.filter(total_area__lte=total_area_max)
-        class1_size = self.request.query_params.get('class1_size', None)
-        if class1_size:
-            queryset = queryset.filter(class1_size=class1_size)
-        class2_size = self.request.query_params.get('class2_size', None)
-        if class2_size:
-            queryset = queryset.filter(class2_size=class2_size)
-        class3_size = self.request.query_params.get('class3_size', None)
-        if class3_size:
-            queryset = queryset.filter(class3_size=class3_size)
-        
-        return queryset
 ###########################
 # Profile Layer
 ###########################
@@ -922,9 +877,9 @@ class ProfileLayerViewSet(viewsets.ModelViewSet):
         queryset = ProfileLayer.objects.all()
         
         # Filtro per codice
-        code = self.request.query_params.get('code', None)
-        if code is not None:
-            queryset = queryset.filter(code=code)
+        id = self.request.query_params.get('id', None)
+        if id is not None:
+            queryset = queryset.filter(id=id)
 
         # Filtro per codice
         profile = self.request.query_params.get('profile', None)
@@ -952,27 +907,6 @@ class ProfileLayerViewSet(viewsets.ModelViewSet):
 #########################################
 ## Lab Data 
 #########################################
-
-class LabDataMeasurementViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint che permette di visualizzare e modificare le genealogie.
-    """
-    queryset = Genealogy.objects.all()
-    serializer_class = LabDataMeasurementSerializer
-    permission_classes = [permissions.IsAdminUser ]
-
-    def get_queryset(self):
-        """
-        Filtra le X in base ai parametri di query.
-        """
-        queryset = LabDataMeasurement.objects.all()
-        
-        # Filtro per codice
-        code = self.request.query_params.get('code', None)
-        if code is not None:
-            queryset = queryset.filter(code=code)
-            
-        return queryset
 
 class LabDataViewSet(viewsets.ModelViewSet):
     """

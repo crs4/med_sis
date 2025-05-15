@@ -54,9 +54,9 @@ from paver.easy import (
 from setuptools.command import easy_install
 
 try:
-    from s4m_catalogue.local_settings import *
+    from {{ project_name }}.local_settings import *
 except ImportError:
-    from s4m_catalogue.settings import *
+    from {{ project_name }}.settings import *
 
 try:
     from paver.path import pushd
@@ -975,8 +975,8 @@ def _reset():
 
     path = os.path.join(settings.PROJECT_ROOT, "development.db")
     sh(f"rm -rf {path}")
-    sh("rm -rf s4m_catalogue/development.db")
-    sh("rm -rf s4m_catalogue/uploaded/*")
+    sh("rm -rf {{ project_name }}/development.db")
+    sh("rm -rf {{ project_name }}/uploaded/*")
     _configure_data_dir()
 
 

@@ -5,17 +5,6 @@ from django.contrib.gis.geos import Point
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-class LabMethodSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = LabMethod
-        fields = '__all__'
-        read_only_fields = ('code',)
-
-class LabMeasurementSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = LabMeasurement
-        fields = '__all__'
-        read_only_fields = ('code',)
 
 class XSLxSheetConfSerializer(serializers.ModelSerializer):
     class Meta:
@@ -43,17 +32,12 @@ class XLSxUploadListSerializer(serializers.ModelSerializer):
 
 
 class ProfileGeneralSerializer(GeoFeatureModelSerializer):
-    point = GeometrySerializerMethodField()
-
-    def get_point(self, obj):
-        return Point(obj.lon_wgs84, obj.lat_wgs84)
         
     class Meta:
         model = ProfileGeneral
-        geo_field = "point"
-        auto_bbox = True
         fields = '__all__'
 
+"""
 class ProfileGeneralListSerializer(GeoFeatureModelSerializer):
     point = GeometrySerializerMethodField()
 
@@ -68,14 +52,12 @@ class ProfileGeneralListSerializer(GeoFeatureModelSerializer):
                     'date', 'gps', 'surveyors','elev_m_asl','elev_dem',
                     'survey_m','notes','project','cls_sys' )
 
-
-# it returns FeatureCollection or a Feature   
+"""
       
 class TaxonomySerializer(serializers.ModelSerializer):
     class Meta:
         model = Taxonomy
         fields = '__all__'
-        read_only_fields = ('code',)  # Il codice è generato automaticamente
 
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
@@ -87,13 +69,13 @@ class GenealogySerializer(serializers.ModelSerializer):
     class Meta:
         model = Genealogy
         fields = '__all__'
-        read_only_fields = ('code',)  # Il codice è generato automaticamente
+        read_only_fields = ('id',)  # Il codice è generato automaticamente
 
 class LandformTopographySerializer(serializers.ModelSerializer):
     class Meta:
         model = LandformTopography
         fields = '__all__'
-        read_only_fields = ('code',)
+        read_only_fields = ('id',)
     
     def create(self, validated_data):
         """
@@ -127,13 +109,13 @@ class ClimateAndWeatherSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClimateAndWeather
         fields = '__all__'
-        read_only_fields = ('code',)
+        read_only_fields = ('id',)
 
 class SurfaceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Surface
         fields = '__all__'
-        read_only_fields = ('code',)
+        read_only_fields = ('id',)
 
     def create(self, validated_data):
         """
@@ -219,7 +201,7 @@ class LandUseSerializer(serializers.ModelSerializer):
     class Meta:
         model = LandUse
         fields = '__all__'
-        read_only_fields = ('code',)
+        read_only_fields = ('id',)
     """
     def validate(self, data):
         errors = {}
@@ -266,7 +248,7 @@ class CultivatedSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cultivated
         fields = '__all__'
-        read_only_fields = ('code',)
+        read_only_fields = ('id',)
     """
     def validate(self, data):
         errors = {}
@@ -340,31 +322,25 @@ class NotCultivatedSerializer(serializers.ModelSerializer):
     class Meta:
         model = NotCultivated
         fields = '__all__'
-        read_only_fields = ('code',)
-
-class LabDataMeasurementSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = LabDataMeasurement
-        fields = '__all__'
-        read_only_fields = ('code',)
+        read_only_fields = ('id',)
 
 class LabDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = LabData
         fields = '__all__'
-        read_only_fields = ('code',)
+        read_only_fields = ('id',)
 
 class LitterLayerSerializer(serializers.ModelSerializer):
     class Meta:
         model = LitterLayer
         fields = '__all__'
-        read_only_fields = ('code',)
+        read_only_fields = ('id',)
 
 class SurfaceCracksSerializer(serializers.ModelSerializer):
     class Meta:
         model = SurfaceCracks
         fields = '__all__'
-        read_only_fields = ('code',)
+        read_only_fields = ('id',)
 
 class CoarseFragmentsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -376,15 +352,10 @@ class SurfaceUnevennessSerializer(serializers.ModelSerializer):
     class Meta:
         model = SurfaceUnevenness
         fields = '__all__'
-        read_only_fields = ('code',)
+        read_only_fields = ('id',)
 
 class ProfileLayerSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProfileLayer
         fields = '__all__'
-
-class ProfileLayerListSerializer(ProfileLayerSerializer):
-    class Meta:
-        model = ProfileLayer
-        fields = ( 'profile','design','number',
-                   'upper','lower','note')   
+        read_only_fields = ('id',)

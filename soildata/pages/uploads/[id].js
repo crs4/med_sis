@@ -1,5 +1,5 @@
 import { point, featureCollection } from '@turf/turf';
-import React, { useState, useContext, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'next/navigation'
 import { Button } from 'primereact/button';
 import { Panel } from 'primereact/panel';
@@ -124,7 +124,11 @@ function Page () {
     toast.current.show({severity:'success', summary: 'Data geo points created!', detail:'Data geo points created!', life: 3000});  
   } 
 
-  
+  useEffect(() => {
+    if ( user.forbidden  )
+      router.push(`/soildata/401`);
+  },[user,router]);       
+
 
   useEffect(() => {
     if (!upload) {
@@ -161,7 +165,9 @@ function Page () {
           report: null,
           status: UploadService.SUCCESFULLY_IMPORTED,
         */
-   
+  
+  
+  
   if ( !upload  ) {
     return <></>;
   }

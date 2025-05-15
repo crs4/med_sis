@@ -1,8 +1,8 @@
 [
   {
     "fields": {
-        "domain": "soils4med.crs4.it",
-        "name": "S4M SIS"
+        "domain": "example.com",
+        "name": "example.com"
     },
     "model": "sites.site",
     "pk": 1

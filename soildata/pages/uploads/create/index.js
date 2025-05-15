@@ -1,25 +1,23 @@
 import { point, featureCollection } from '@turf/turf';
-import React, { useState, useContext, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from 'primereact/button';
 import { FileUpload } from 'primereact/fileupload';
 import { Panel } from 'primereact/panel';
 import { Message } from 'primereact/message';
 import { Toast } from 'primereact/toast';
-import { useUser } from '../../../context/user';
 import Taxonomies from '../../../data/taxonomies';
 import Mapping from '../../../data/mapping';
-import {useTranslations} from 'next-intl';
-
+import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/router';
+import { useUser } from '../../../context/user';
 import { UploadService } from '../../../service/uploads';
 import { validateXLSFile } from '../../../utilities/XLSxUtils';
-
 import ReportTable from '../../../components/XLSxTable';
-import {useRouter} from 'next/router';
 import dynamic from "next/dynamic"
  
 const MyMap = dynamic(() => import("../../../components/XLSxMap"), { ssr:false })
- 
-function Upload () {
+
+export default function Page()  {
   const [upload, setUpload] = useState(null);
   const [map, setMap] = useState(null);
   const [data, setData] = useState(null);
@@ -28,8 +26,6 @@ function Upload () {
   const [validating, setValidating] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [pointsGeoJSON, setPointsGeoJSON] = useState(null);
-  const [currentModel, setCurrentModel] = useState(null);
-  const [modelsGeoJSON, setModelsGeoJSON] = useState(null);
   const [fileId, setFileId] = useState(null);
   const user = useUser();
   const xlsxFile = useRef(null);
@@ -37,6 +33,7 @@ function Upload () {
   const t = useTranslations('default');
   const router = useRouter();
 
+  
   function createPopupContent (code, result) {
       let panel = '<div><span>No data</span></div>';
       if ( !result || !code )
@@ -71,8 +68,51 @@ function Upload () {
       return panel;  
   }
   
-  const createGeoJSON = ( general_sheet, data_report ) => {
-    if (!general_sheet || !data_report ) 
+  const createJSON = () => {
+    if ( !data )
+      return;
+    const sheets = UploadService.TYPES[upload.type].sheets;
+    const uploadType = 'XLS_P';
+    const result = {};
+    for ( let s=0; s<sheets.length; s+=1 ) { 
+      try {    
+        const sheet_mapping = Mapping[uploadType+':'+sheets[s]];
+        const sheet = data[sheets[s]];
+        let model = null;
+        let field = null;
+        let result = { };
+        console.log(sheets[s]);
+        for ( let i = 0; i < sheet.length; i+=1 ) {
+          if ( sheet[i] ) {
+            let row = [];
+            for ( let j = 1; j < sheet_mapping.size; j+=1 ) {
+              let col = ''+j;
+              if ( sheet[i][j] && sheet[i][j].toString().trim() != '' ){  
+                model = sheet_mapping[col].m;
+                field = sheet_mapping[col].f;
+                if ( !(row[model]) ) 
+                  row[model] = { };
+                row[model][field] = sheet[i][j];
+              }
+            }          
+            let models = Object.keys(row);
+            console.log(row);
+            for (let m = 0; m < models.length; m+=1 ){
+              if ( !result[ models[m] ] )
+                result[ models[m] ] = [];
+              result[ models[m] ].push(row[models[m]]);
+            }
+          } 
+        }     
+        console.log( JSON.stringify(result) );
+      } catch (e) {
+        console.log(e);
+      }
+    }  
+  }
+
+  const createGeoJSON = ( data_sheet, data_report ) => {
+    if (!data_sheet || !data_report ) 
       return; 
     let j;
     let points = [];
@@ -82,14 +122,16 @@ function Upload () {
     for ( j=1; j<data_sheet.length; j+=1 ){
 /// skip row with null or errors in lat,lon or key
       try {
-        const key = data_sheet[j][1];
-        let status = 'warn'
-        if ( !results[key] || results[key]['wrong'] === 0) 
-              status = 'ok';
-        else status = 'ko';
-        points.push( point( [data_sheet[j][7] , data_sheet[j][6]], 
-                    { key: key, status: status, popupContent : createPopupContent( key, results[key])  },
-                    { id: key }));
+        if ( data_sheet[j] && data_sheet[j][1] && data_sheet[j][6] && data_sheet[j][7] ){
+          const key = data_sheet[j][1];
+          let status = 'warn'
+          if ( !results[key] || results[key]['wrong'] === 0) 
+                status = 'ok';
+          else  status = 'ko';
+          points.push( point( [data_sheet[j][7] , data_sheet[j][6]], 
+                      { key: key, status: status, popupContent : createPopupContent( key, results[key])  },
+                      { id: key } ) );
+        }
       } catch (e) {
         console.log(e);
       }
@@ -115,7 +157,7 @@ function Upload () {
     let result = await validateXLSFile (files,isProfile,sheets,Taxonomies,Mapping);
     console.log(result);
     if ( result  ){ 
-      
+      setValidated(result['validated'])
       setData(result['data']);
       setReport(result['report']);
       if  ( sheets[0] && result['data'] && result['report'] && ( isProfile || isSample ) ) {
@@ -141,7 +183,6 @@ function Upload () {
         
         if (response.ok) { 
         */
-        toast.current.show({severity:'error', summary: 'Errors!', detail: 'Errors sending data' , life: 3000});
         //toast.current.show({severity:'success', summary: 'Success!', detail: 'Data has been sent' , life: 3000});
         //router.push('/soildata/uploads')   
         /*
@@ -149,7 +190,11 @@ function Upload () {
           toast.current.show({severity:'error', summary: 'Errors!', detail: 'Errors saving data' , life: 3000});
         } 
         */
+        createJSON();
+        //getFixtures();
+
       } catch (error) {
+        console.log(error);
         toast.current.show({severity:'error', summary: 'Errors!', detail: 'Errors sending data' , life: 3000}); 
       } finally {
         setUploading(false);
@@ -167,6 +212,75 @@ function Upload () {
     setFileId(null);
     xlsxFile.current?.clear();
   };
+   
+  const getFixtures = () => {
+    let result1 = [];
+    let result2 = [];
+    let result3 = [];
+    let sheets =  Object.keys (Mapping);
+    for ( let i = 0 ; i < sheets.length; i+=1 ) {
+      if ( Mapping[sheets[i]] ) {
+        let sheet = Mapping[sheets[i]];
+        result1.push ({
+          'model': 'backoffice.xlsx_sheet', 
+          'fields': {
+            'name':  sheets[i], 
+            'size':  sheet.size,
+            'first': sheet.first, 
+            'note':  sheets[i] + ' Sheet'
+          }
+        });
+        for ( let j = 1 ; j < sheet.size; j+=1 ) {
+          if ( sheet[j] ) {
+            result2.push ({
+              'model': 'backoffice.xlsx_mapping', 
+              'fields': {
+                'type'  : 'XLS_P',
+                'sheet' :  sheets[i], 
+                'col'   :  j,
+                'model' : sheet[j].m,
+                'field' :  sheet[j].f,
+                'taxonomy' : sheet[j].t,
+                'note' :  sheet[j].n,
+                'field_level' :  sheet[j].lf,
+                'value_level' : sheet[j].lv,
+                'paragraph' : sheet[j].p,
+                'fcheck' : sheet[j].check, 
+              }
+            })
+          }  
+        }
+      }
+    } 
+    let keys = Object.keys (Taxonomies);
+    for ( let k = 0 ; k < keys.length; k+=1 ) {
+      if ( Taxonomies[keys[k]] ) {
+        let codes = Object.keys (Taxonomies[keys[k]]);
+        for ( let c = 0 ; c < codes.length; c+=1 ) {
+          if ( Taxonomies[keys[k]][codes[c]] ) {
+            result3.push ({
+              'model': 'backoffice.taxonomies', 
+              'fields': {
+                'id' : keys[k]+'.'+codes[c],
+                'criterion' : Taxonomies[keys[k]][codes[c]], 
+                'super'   : null, 
+              }
+            })
+          }
+        }  
+      }
+    }
+    console.log( JSON.stringify(result1) );
+    console.log( JSON.stringify(result2) );
+    console.log( JSON.stringify(result3) );
+    return; 
+  }  
+
+
+  useEffect(() => {
+    if ( user.forbidden )
+      router.push(`/soildata/401`);
+  },[user,router]);
 
   useEffect(() => {
     if (!upload) {
@@ -202,12 +316,12 @@ function Upload () {
     fetchMap();
   }, [pointsGeoJSON]);   
 
-   
+  
+  
+
   if ( !upload  ) {
     return <></>;
   }
-
-  
 
   return (
     <div className="layout-dashboard">
@@ -320,5 +434,3 @@ export async function getStaticProps(context) {
      },
   }
 }
-
-export default Upload;

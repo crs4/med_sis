@@ -5,10 +5,14 @@ import profileIMG from '../public/img/soil_profile.png'
 import sampleIMG from '../public/img/soil_sample.jpg';
 import indicatorIMG from '../public/img/soil_indicator.jpg';
 import { useTranslations } from 'next-intl';
-import Link from 'next/link'
+import Link from 'next/link';
+import { useUser } from '../context/user';
+import { useRouter } from 'next/router';
 
 const Home = () => {
   const t  = useTranslations('default');
+  const user = useUser();
+  const router = useRouter();
   const headerP = (
     <Image alt="Profiles" src={profileIMG} />
   );
@@ -49,6 +53,10 @@ const Home = () => {
     </div>
   );
 
+  useEffect(() => {
+      if ( user.forbidden )
+        router.push(`/soildata/401`);
+  },[user, router]);
 
   return (
       <div className="layout-dashboard">

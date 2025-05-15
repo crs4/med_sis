@@ -16,8 +16,8 @@ class ProfileGeneralAdmin(admin.ModelAdmin):
     list_display = ('code', 'location', 'lat_wgs84', 'lon_wgs84',
                     'date', 'gps', 'surveyors','elev_m_asl','elev_dem',
                     'survey_m','notes','project','cls_sys')
+    list_filter = ('code',)
     search_fields = ('code',)
-    list_filter = ('date',)
     readonly_fields = ('code',)
 
 @admin.register(ProfileLayer)
@@ -28,34 +28,33 @@ class ProfileLayerAdmin(admin.ModelAdmin):
 
 @admin.register(LandUse)
 class LandUseAdmin(admin.ModelAdmin):
-    search_fields = ('code',)
+    search_fields = ('id',)
     list_display = ('land_use', 'corine')
     
 @admin.register(LandformTopography)
 class LandformTopographyAdmin(admin.ModelAdmin):
-    search_fields = ('code',)
+    search_fields = ('id',)
     
 @admin.register(ClimateAndWeather)
 class ClimateAndWeatherAdmin(admin.ModelAdmin):
-    search_fields = ('code',)
+    search_fields = ('id',)
     
 
 @admin.register(Surface)
 class SurfaceAdmin(admin.ModelAdmin):
-    search_fields = ('code',)
+    search_fields = ('id',)
     
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    search_fields = ('code', 'title')
+    search_fields = ('id', 'title')
 
 @admin.register(Genealogy)
 class GenealogyAdmin(admin.ModelAdmin):
-    list_display = ('old_code', 'code', 'pub_year','avail')
-    search_fields = ('old_code', 'code','avail')
+    list_display = ('old_code', 'id', 'pub_year','avail')
+    search_fields = ('old_code', 'id','avail')
 
 @admin.register(Taxonomy)
 class TaxonomyAdmin(admin.ModelAdmin):
-    list_display = ('name', 'taxonomy', 'super_cat')
-    search_fields = ('name', 'taxonomy')
-    list_filter = ('taxonomy',)
+    list_display = ('id', 'taxonomy', 'super')
+    search_fields = ('id', 'taxonomy')

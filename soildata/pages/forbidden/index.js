@@ -10,7 +10,7 @@ function Forbidden() {
 
     return (
         <>
-            <div className="px-5 min-h-screen flex justify-content-center align-items-center bg-cover bg-center" style={{ backgroundImage: 'url(/img/bg-error.jpg)' }}>
+            <div className="px-5 min-h-screen flex justify-content-center align-items-center bg-cover bg-center" style={{ backgroundImage: 'url(/soildata/img/bg-error.jpg)' }}>
                 <div className="z-1 text-center">
                     <div className="text-900 font-bold text-white text-8xl mb-4">FORBIDDEN</div>
                     <p className="line-height-3 text-white mt-0 mb-5 text-700 text-xl font-medium">User not allowed.</p>

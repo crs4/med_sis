@@ -13,10 +13,12 @@ const AppTopbar = forwardRef((props, ref) => {
     const t = useTranslations();
     const btnRef1 = useRef(null);
     const menubuttonRef = useRef(null);
-    const {locale, locales, route} = useRouter();
+    const { locale, locales, route } = useRouter();
     const { onMenuToggle, layoutConfig } = useContext(LayoutContext);
+    const user = useUser();
     const otherLocale = locales?.find((cur) => cur !== locale);
     const otherlang = (otherLocale === 'fr'? 'French' : 'Anglais');
+
     useImperativeHandle(ref, () => ({
         menubutton: menubuttonRef.current
     }));
@@ -55,7 +57,7 @@ const AppTopbar = forwardRef((props, ref) => {
                         <StyleClass nodeRef={btnRef1} selector="@next" enterClassName="hidden" enterActiveClassName="scalein" leaveToClassName="hidden" leaveActiveClassName="fadeout" hideOnOutsideClick="true">
                             <a tabIndex={0} ref={btnRef1}>
                                 <img src='/soildata/img/user-default.png' alt="user" className="profile-image" />
-                                <span className="profile-name">{displayName}</span>
+                                <span className="profile-name">{user.preferred_username}</span>
                             </a>
                         </StyleClass>
                     </li>

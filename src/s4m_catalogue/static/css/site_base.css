@@ -1,16 +1,19 @@
-
 header.gn-main-header {
     display: flex;
     flex-direction: column-reverse;
 }
-
-header .s4m-background img{
+header .s4m-background img {
     width: 100%;
     object-fit: cover;
 }
 header .s4m-background.home img {
     height: 500px;
     clip-path: ellipse(95% 100% at 50% -4%);
+}
+
+
+header .s4m-background.general img {
+    height: 2rem;
 }
 header .s4m-background.home {
     filter: drop-shadow(#000 0px 0px 0.75rem);
@@ -20,7 +23,8 @@ header .s4m-background.home {
     top: 0;
     font-size: 1.2rem;
     background-color: transparent;
-    min-height: 170px;
+    min-height: 100px;
+    width: 100%;
     --gn-button-primary-color: #ffffff;
     --gn-button-primary-bg: #1c67b6;
     --gn-button-primary-border-color: #1c67b6;
@@ -43,35 +47,37 @@ header .s4m-background.home {
     --gn-button-primary-badge-bg: #ffffff;
 }
 #gn-brand-navbar.gn-menu .gn-menu-content-left .gn-menu-list img {
-    height: 3.1em;
+    /*height: 3.1em;*/
 }
 #gn-brand-navbar.home .gn-menu-content {
     flex-direction: column;
     align-items: stretch;
     gap: 10px;
+    width: 100%;
 }
-#gn-brand-navbar .gn-menu-content-left {
-    padding: 20px;
+#gn-brand-navbar .gn-menu-content-left .gn-menu-content-right{
+    padding: 0px;
+    top: 1rem;
 }
-#gn-brand-navbar.home .gn-menu-content-right {
-    align-self: right;
-}
-#gn-brand-navbar.home .gn-menu-content-center {
-    margin-top: -4.75rem;
-}
+
 #gn-brand-navbar .gn-menu-content-center {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 100%;
 }
 .gn-search-bar {
     max-width: 600px;
-    margin: 2.5rem;
+    margin: 0rem;
+    border-radius: 20px;
+}
+#gn-search-bar-apply{
+    border-radius: 20px;
 }
 #gn-brand-navbar.home .s4m-menu-icon img {
     transition: transform .2s;
-    height: 4rem;
+    max-height: 3rem;
 }
 #gn-brand-navbar .s4m-menu-icon img {
     transition: transform .2s;
@@ -94,11 +100,14 @@ header .s4m-background.home {
     width: 100%;
 }
 .gn-menu-content-center h1.home{
-    color: white;
+    color: rgb(213, 149, 89);
     text-align: center;
+    font-weight: 600;
+    text-shadow: 2px 2px 4px darkblue;
 }
 .gn-menu-content-center p.home{
     color: white;
+    text-shadow: 2px 2px 4px darkgreen;
 }
 .msgapi .gn-legacy .home .jumbotron{
     background-color: transparent;
@@ -109,8 +118,13 @@ header .s4m-background.home {
     padding-top: 0px;
     padding-bottom: 0px;
 }
-
-/* home hero icons */
+.msgapi .gn-menu-content-center div.jumbotron{
+    background-color: transparent;
+}
+ul.s4m-menu-ul{
+    margin: 20px;
+    list-style: none;
+}
 ul.s4m-menu {
     display: flex;
     align-items: center;
@@ -233,15 +247,35 @@ ul.s4m-menu {
         width: 85px;
         height: auto;
     }
+
 .gn-content .section-text {
         text-align: justify;
         padding: 10px 4px;
         color: var(--gn-primary)
     }
-.gn-content .section-text h4 {
+.gn-content .section-text h2{
+    color: darkblue;
+    font-weight: 500;
+    font-size: x-large;
+    text-align: center;
+    padding: 10px;
+    padding-bottom: 20px;
+}
+.gn-content .section-text h3{
+    font-size: 1.2rem;
+    text-align: center;
+    font-weight: 400;
+    color: darkblue;
+}    
+.gn-content .section-text p {
         line-height: 1.4rem;
     }
-gn-content .footer .logos {
+
+div.logos{
+    text-align: center;
+    padding: 50px;;
+}    
+.gn-content .footer .logos {
         display: flex;
         padding: 0 50px;
         background-color: rgb(228, 245, 251);
@@ -269,21 +303,20 @@ gn-content .footer .logos {
 .home #sign-in{
     position: absolute;
     top: 2rem;
-    right: 0rem;
-    color: rgb(255, 255, 255);
 }
 
-.gn-menu-list #sign-in{
+/*.gn-menu-list #sign-in{
     background-color: rgb(27 99 229);
-}
+}*/
 
 #sign-in {
     border-top-left-radius: 1.5rem;
     border-bottom-left-radius: 1.5rem;
     position:relative;
-    width: 6rem;
-    right: 0rem;
+    width: 4rem;
+    right: -2rem;
     text-align: left;
+    background-color: darkblue
 }
 #sign-in img {
     width: 1.5rem;
@@ -307,8 +340,7 @@ gn-content .footer .logos {
 }
 
 h1.home span, p.home span{
-    color: greenyellow;
-    
+        color: rgb(46 155 81);
 }
 .gn-hero-search {
     position: relative;
@@ -323,9 +355,15 @@ h1.home span, p.home span{
     border: none;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
-.gn-menu-content-right {
-    flex-direction: row-reverse;
-    align-self: center;
+.gn-menu-content-left {
+    position: absolute;
+    left: 2rem;
+    
+}
+.gn-menu-content-right  {
+    position: absolute;
+    right: 2rem;
+
 }
 .image-container {
     display: flex;
@@ -382,5 +420,10 @@ h1.home span, p.home span{
 .data-bg { background-color: rgb(255, 200, 47); }
 .maps-bg { background-color: #00a911; }
 .docs-bg { background-color: #e24529; }
+
+div#logout img#exit{
+    size: 80px;
+    clip-path: none;
+}
 
 

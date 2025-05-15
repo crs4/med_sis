@@ -7,12 +7,16 @@ import './leaflet-extensions/htmllegend/L.Control.HtmlLegend';
 import { GeoJSON } from 'react-leaflet/GeoJSON';
 
 
+
+
 const MapLegend = ({ legendRef }) => {
   const map = useMap();
 
   useEffect(() => {
-    if (!map || legendRef.current) return;
-    layer = map.layers[0];
+    if (!map || !map.layerJSON || !map.layerJSON.current || legendRef.current ) 
+      return;
+    console.log (map.layerJSON.current);
+    let layer = map.layerJSON.current;
     if (layer) {
       legendRef.current = L.control.htmllegend({
         position: 'bottomleft',
@@ -70,9 +74,9 @@ const MapLegend = ({ legendRef }) => {
 };
 
 export default function S4Mmap ({data}) {
-  console.log("pippo:" + data);
   if ( !data || !data.layer || !data.layer.points )
     return;
+  const layerJSON = useRef(null); // eslint-disable-line
   const points = data.layer.points;
   const controlLegend = useRef(null); // eslint-disable-line
   const bboxArray = bbox(points);
@@ -121,13 +125,17 @@ export default function S4Mmap ({data}) {
           attribution='Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri'
         />
         {points && (
+          <>
           <GeoJSON
+            jsonRef={layerJSON} 
             key={Math.random()}
             pointToLayer={pointToLayer}
             onEachFeature={onEachFeature}
-            data={points} 
-          /> )}
-        <MapLegend legendRef={controlLegend} />
+            data={points}
+          /> 
+          <MapLegend legendRef={controlLegend} />
+          </>
+        )}
       </MapContainer>
     </>  
   );

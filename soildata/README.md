@@ -110,3 +110,10 @@ type profile/samples, general(+classification),layer,label data,
 s4m_dataset:
 geonode_id
 filetr_id
+
+
+/////inverse distance, inverse distance nearest-neighbor, moving average, nearest neighbor, and linear interpolation
+
+
+
+---users 2 data manager, 1 admin, 2 user + landsupport
