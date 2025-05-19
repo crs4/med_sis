@@ -4,6 +4,7 @@ import ToDo from '../../../components/ToDo';
 import { useTranslations } from 'next-intl';
 import { useUser } from '../../../context/user';
 import { useRouter } from 'next/router';
+import { IndicatorService } from '../../../service/indicators';
 
 export default function Page()  {
   const router = useRouter();
@@ -11,9 +12,9 @@ export default function Page()  {
   const user = useUser();
 
   useEffect(() => {
-      if ( user.forbidden )
-        router.push(`/soildata/401`);
-    },[user,router]);
+    if ( user.userData.forbidden !== null && user.userData.forbidden )
+        router.push(`/401`);
+  },[user]);  // eslint-disable-line
 
   return (
     <>

@@ -1,84 +1,106 @@
-export const UploadService = {
-  /*
-     UPLOAD
-     UPLOAD_RESULTS = [
-        ("0" , "Created"),
-        ("1" , "Importing"),
-        ("2" , "Imported"),
-        ("3" , "Errors importing data"),
-    ]
-    type : TYPES
-    title : text
-    report = JSON
-    data = JSON    
-    editor: text 
-    date: date
-    status : STATUS
 
+export const SampleService = {
+  
+  
+  GENERAL_SECTIONS : [
+    {  label : 'General', parts: ['8.2.1','8.2.2','Notes'],},
+    {  label : 'Landform&Topography', parts: ['8.2.3'],},
+    {  label : 'Climate&Weather', parts: ['8.2.4'], others:[]},
+    {  label : "Land Use", parts: ['8.2.5',], others:[]},
+    {  label : "Surface", parts: ['8.3.2','8.3.3','8.3.4','8.3.5','8.3.6','8.3.7','8.3.8','8.3.9','8.3.10','8.3.12'],},
+    {  label : "Surface Unevenness", parts: ['8.3.11'],}
+  ],
 
+  LAYER_SECTIONS : [
+    {  label : 'Identification', parts: ['8.4.1','8.4.2','8.4.3','8.4.4','8.4.5','8.4.6','8.4.9','8.4.21','8.4.22','8.4.28','8.4.29','8.4.32','8.4.33','8.4.40','Notes'],},
+    {  label : 'Coarse Fragments', parts: ['8.4.7'],},
+    {  label : 'Artefacts', parts: ['8.4.8'],},
+    {  label : "Land Structure", parts: ['8.4.10','8.4.12','8.4.13','8.4.14',],},
+    {  label : "Colours", parts: ['8.4.17','8.4.18','8.4.19','8.4.20',],},
+    {  label : "Coatings and Bridges", parts: ['8.4.23'],},
+    {  label : "Ribbonlike Accumulations", parts: ['8.4.24'],},
+    {  label : "Carbonates", parts: ['8.4.25'],},
+    {  label : "Gypsum", parts: ['8.4.26'],},
+    {  label : "Secondary Silica", parts: ['8.4.27'],},
+    {  label : "Consistence", parts: ['8.4.30'],},
+    {  label : "Surface Crust", parts: ['8.4.31'],},
+    {  label : "Permafrost", parts: ['8.4.34'],},
+    {  label : "Soil Organic Carbon", parts: ['8.4.36'],},
+    {  label : "Roots", parts: ['8.4.37'],},
+    {  label : "Animal Activity", parts: ['8.4.38'],},
+    {  label : "Human Alterations", parts: ['8.4.39'],},
+    {  label : "Degree of decomposition", parts: ['8.4.41'],},
+  ],
 
-  */
-  STATUS : {
-    UPLOADED : "UPLOADED",
-    IMPORT_SUCCESS : "IMPORT_SUCCESS",
-    IMPORT_WITH_ERROR : "IMPORT_WITH_ERROR",
-    CRITICAL_ERROR: "CRITICAL_ERROR",
-  },
-
-  TYPES : {
-    XLS_P :  {  name : "PROFILES", label : 'Excel Soil Profiles Spreadsheets', sheets: ['General and Surface','Layer descriptions','Soil classification','Lab data'],},
-    XLS_S :   {  name : "SAMPLES", label : 'Excel Soil Samples Spreadsheets', sheets: ['General and Surface','Layer descriptions','Lab data'],},
-    XLS_PG : { name : "PROFILES_GENEALOGY", label : 'Excel Soil Profiles Genealogy Spreadsheets', sheets: ['Genealogy','Project'],},
-    XLS_PG : {  name : "PROFILES_GENEALOGY", label : 'Excel Soil Samples Genealogy Spreadsheets', sheets: ['Genealogy','Project'],},
-    XLS_PH : {  name : "PHOTOS", label : 'Photos Metadata', sheets: ['photos'],},
-  },
-
-  UPLOAD_STATUS : {
-    "EMPTY" : "XSLx data sent to server",
-    "PROCESSING"   : "XSLx processing",
-    "ERROR"   : "System error",
-    "WARNING" : "Data partially saved (errors)",
-    "SUCCESS" : "Data sucessfully saved",
-  },
-
-  async getUpload(id) { 
-    fetch( `/backoffice/api/v2/uploads/${id}`);
-  },
-
-  async getUploads() {  
-    let res = [];
-    try {  
-      fetch('/backoffice/api/v2/uploads')
-        .then((res) => res.json())
-        .then((data) => {
-          res = data
-      });
+ async get(id) { 
+    data = null;
+    try { 
+      let res = fetch( `/api/backoffice/samples/${id}`)
+      if ( res && res.status == 200 ) 
+        data = await res.json();
     } catch (e) { 
-      res = [];
     } 
-    return res;
+    return data;
+  },
+
+  async list() {  
+    let data = [];
+    try {  
+      let res = fetch('/api/backoffice/samples')
+      if ( res && res.status == 200 ) 
+        data = await res.json();
+    } catch (e) { 
+    } 
+    return data;
   },  
 
-// formData: ( title, date, file, type }
-  async save(upload) {
-    fetch(`/backoffice/api/v2/uploads`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(upload),
-    });
+// formData: 
+  async save(sample) {
+    let data = null;
+    try {  
+      let res = fetch(`/api/backoffice/samples`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(sample),
+      });
+      if ( res && res.status == 200 ) 
+        data = await res.json();
+    } catch (e) { 
+    } 
+    return data;
   },
 
-
   async remove(id) {
-    fetch(`/backoffice/api/v2/uploads/${id}`, {
-      method: "DELETE",
-    });
+    let data = null;
+    try {  
+      let res = fetch(`/api/backoffice/samples/${id}`, {
+        method: "DELETE",
+      });
+      if ( res && res.status == 200 ) 
+        data = await res.json();
+    } catch (e) { 
+    } 
+    return data;
+  },
+
+  async update(sample) {
+    let data = null;
+    try {  
+      let res = fetch(`/api/backoffice/samples/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(sample),
+      });
+      if ( res && res.status == 200 ) 
+        data = await res.json();
+    } catch (e) { 
+    } 
+    return data;
   }
 }
 
-
-export default UploadService;
-
-
+export default SampleService

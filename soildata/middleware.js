@@ -1,15 +1,15 @@
-
 import { NextResponse } from 'next/server'
 
 const PUBLIC_FILE = /\.(.*)$/;
 
 export async function middleware ( req ) {
   let forbidden = true; 
-  try {
-    // in dev (localhost) this doesn't works
-    if ( req.nextUrl.hostname !== 'localhost' ) {
-      await fetch(addr).then( (res) => {  
-        const addr = req.nextUrl.protocol + '//' + req.nextUrl.hostname + '/api/o/v4/userinfo';  
+  /*try {
+     in dev (localhost) this doesn't works
+    //if ( req.nextUrl.hostname !== 'localhost' ) {
+      const addr = req.nextUrl.protocol + '//' + req.nextUrl.hostname + '/api/o/v4/userinfo';  
+      let res = await fetch(addr);  
+      if ( res && res.status == 200 ) {
         let userdata = res.json();
         if ( userdata ) {
           const groups = userdata.groups;
@@ -18,11 +18,15 @@ export async function middleware ( req ) {
           else forbidden = false;
         }
       });
-    } else forbidden = false; // only user context can block access
+      console.log("middleware");
+      console.log(forbidden);
+    //} else forbidden = false; // only user context can block access
   }
   catch (e) {
-   console.log(e.errors);
+    console.log("middleware");
+    console.log(e);
   }
+  */
 
   if (
     req.nextUrl.pathname.endsWith('/401') ||
@@ -34,11 +38,12 @@ export async function middleware ( req ) {
     return
   }
 
+  /*
   if (forbidden){
     return NextResponse.redirect(
       new URL(`/soildata/401`, req.url)
     )
-  }
+  } */
 
   if (req.nextUrl.locale === 'default') {
     const locale = req.cookies.get('NEXT_LOCALE')?.value || 'en'

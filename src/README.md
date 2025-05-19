@@ -1,1 +1,1 @@
-# {{ project_name|title }}
+# {{ s4m_catalogue|title }}

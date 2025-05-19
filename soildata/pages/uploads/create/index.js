@@ -81,7 +81,6 @@ export default function Page()  {
         let model = null;
         let field = null;
         let result = { };
-        console.log(sheets[s]);
         for ( let i = 0; i < sheet.length; i+=1 ) {
           if ( sheet[i] ) {
             let row = [];
@@ -96,7 +95,6 @@ export default function Page()  {
               }
             }          
             let models = Object.keys(row);
-            console.log(row);
             for (let m = 0; m < models.length; m+=1 ){
               if ( !result[ models[m] ] )
                 result[ models[m] ] = [];
@@ -104,7 +102,6 @@ export default function Page()  {
             }
           } 
         }     
-        console.log( JSON.stringify(result) );
       } catch (e) {
         console.log(e);
       }
@@ -143,7 +140,6 @@ export default function Page()  {
   } 
 
   const validateFile = async (files) => {
-    // eslint-disable-next-line
     const isProfile = ( UploadService.TYPES[upload.type].name === "PROFILES" );
     const isSample = ( UploadService.TYPES[upload.type].name === "SAMPLES" );
     let sheets = UploadService.TYPES[upload.type].sheets;
@@ -278,9 +274,9 @@ export default function Page()  {
 
 
   useEffect(() => {
-    if ( user.forbidden )
-      router.push(`/soildata/401`);
-  },[user,router]);
+    if ( user.userData.forbidden !== null && user.userData.forbidden )
+        router.push(`/401`);
+  },[user]);  // eslint-disable-line
 
   useEffect(() => {
     if (!upload) {

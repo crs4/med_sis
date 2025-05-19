@@ -5395,9 +5395,9 @@ class Migration(migrations.Migration):
                 ),
                 ("sheet", models.TextField(db_comment="sheet name")),
                 ("col", models.IntegerField(db_comment="Sheet column order")),
-                ("model", models.TextField(db_comment="target class model")),
+                ("mod", models.TextField(db_comment="target class model")),
                 (
-                    "field",
+                    "fld",
                     models.TextField(
                         db_comment="target field in the target class model"
                     ),

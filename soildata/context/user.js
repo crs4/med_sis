@@ -11,7 +11,7 @@ const initialState = {
   email: null,
   preferred_username: null,
   groups: [],
-  forbidden: true,
+  forbidden: null,
 };
 
 
@@ -22,24 +22,34 @@ export const UserProvider = (props) => {
     const getUserProfile = async () => {
       try {
         let res = await fetch('/api/o/v4/userinfo');
-        console.log (res);
-        if ( res && res.status == 200 ) {
-          let userdata = await res.json();
-          if ( !userdata.groups || ( userdata.groups.indexOf('admin') === -1 &&  userdata.groups.indexOf('datamanager') === -1 ) )
-            userdata.forbidden = true;
-          else userdata.forbidden = false;
-          setUserData({
-            ...userdata,
-          });
+        if ( res && res.status === 200 ) {
+          let data = await res.json();
+          if ( !data.groups || ( data.groups.indexOf('admin') !== -1 &&  data.groups.indexOf('datamanager') !== -1 ) )
+            data.forbidden = true;
+          else data.forbidden = false;
+          setUserData(data);
         }
-        else
-          setUserData(initialState); 
+        else {
+          let state = {
+            access_token : null,
+            sub: null,
+            name: null,
+            given_name: null,
+            family_name: null,
+            email: null,
+            preferred_username: null,
+            groups: [],
+            forbidden: true,
+          };
+          setUserData(state);
+        }  
       } catch (error) {
         setUserData(initialState);
       }
     }
     getUserProfile();
   }, []);
+
 
   const exposed = {
     userData,

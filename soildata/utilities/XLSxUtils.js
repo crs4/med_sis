@@ -1,6 +1,7 @@
 import ExcelJS from 'exceljs';
 import Taxonomies from '../data/taxonomies';
 import Mapping from '../data/mapping';
+import { point, featureCollection } from '@turf/turf';
 
 export const validateXLSFile = async (files, isProfile, sheets) => {
     let perc;
@@ -97,14 +98,21 @@ export const validateSheet = (sheet_index,sheet_name, is_profile, sheet_mapping,
                     switch ( sheet_mapping[i].check ){
                       case 'boolean':
                         let vb = row[i].toString().trim().toLowerCase();
-                        if ( vb !== 't' && vb !== 'f' && vb !== 'si' && vb !== 'no' && vb !== 'true' && vb !== 'false' )   
-                          code = '-b'; //'Wrong boolean, allowed values T for True, F for False'                         
+                        if ( vb !== 't' && vb !== 'f' && vb !== 'si' && vb !== 'no' && vb !== 'true' && vb !== 'false' && vb !== 'un')   
+                            code = '-b'; //'Wrong boolean, allowed values T for True, F for False'                       
+                        else {
+                          if ( vb === 't' || vb === 'si' || vb === 'true' )
+                            row[i] = true;
+                          else if ( vb === 'f' || vb === 'no' || vb === 'false' )
+                             row[i] = false;
+                          else row[i] = null; 
+                        }
                         break;
                       case 'date':
                         if ( ( typeof row[i] === 'string' ||  row[i] instanceof String ) )  
                         {
                           if ( row[i].trim() === 'nd' )
-                            row[i] = '';
+                            row[i] = null;
                           else {
                             n = row[i].split('/');
                             if ( n[0] === '0' || n[0] === '00')
@@ -113,34 +121,43 @@ export const validateSheet = (sheet_index,sheet_name, is_profile, sheet_mapping,
                               n[1] = '01';
                             if ( ( n.length === 3 && isNaN(new Date (n[2]+'-'+n[1]+'-'+n[0])) )  ||
                                  ( n.length === 2 && isNaN(new Date (n[1]+'-'+n[0]+'-01')) ) )
-                              code = '-d'; // 'not valid date, allowed format is ISO YYYY-MM-DD '                         
+                              code = '-d'; // 'not valid date, allowed format is ISO YYYY-MM-DD ' 
+                            else if ( n.length === 3 )  
+                               row[i] = new Date (n[2]+'-'+n[1]+'-'+n[0]);   
+                            else if ( n.length === 2 )
+                               row[i] = new Date (n[1]+'-'+n[0]+'-01');
                           }    
                         }
                         break;
                       case 'numeric':
                         n = Number(row[i]);
                         if (isNaN(n))
-                          code = '-n'; // 'not valid number'                         
+                          code = '-n'; // 'not valid number' 
+                        else row[i] = n;                       
                         break;
                       case 'numeric(%)':
                         n = Number(row[i]);
                         if (isNaN(n) || n < 0 || n > 100 )
-                          code = '-%'; //'not valid percentage [0..100] '                         
+                          code = '-%'; //'not valid percentage [0..100] ' 
+                        else row[i] = n;                         
                         break;
                       case 'numeric(0)':
                         n = Number(row[i]);
                         if (isNaN(n) || n < 0 )
-                          code = '-0'; //'not valid positive number'                         
+                          code = '-0'; //'not valid positive number'  
+                        else row[i] = n;                        
                         break;
                       case 'latitude':
                         n = Number(row[i]);
                         if (isNaN(n) || n <= -90 || n >= 90 )
                           code = '-lat'; //'not valid latitude in decimal degree'                         
+                        else row[i] = n; 
                         break;
                       case 'longitude':
                         n = Number(row[i]);
                         if (isNaN(n) || n <= -180 || n >= 180 )
                           code = '-lon'; //'not valid longitude in decimal degree'                         
+                        else row[i] = n; 
                         break;
                       case 'taxonomy':
                         let no_t = true;
@@ -154,7 +171,8 @@ export const validateSheet = (sheet_index,sheet_name, is_profile, sheet_mapping,
                         }
                         if ( no_t ) {     
                           code = '-t';  
-                        }  
+                        }
+                        else row[i] = row[i].trim();   
                         break;
                       default:  //// case Richtext!!!!!!!!!!!!
                         if ( typeof row[i] !== 'string' && !( row[i] instanceof String ) ) {
@@ -248,16 +266,14 @@ export const validateSheet = (sheet_index,sheet_name, is_profile, sheet_mapping,
     redoximorphicfeatures = LayerRedoximorphicFeatures
     structures = LayerStructure[] 
 */
-
-export const createProfiles = (data) => {
+/*
+export const createFixtures = (data) => {
 //// XLS profile sheets
   const sheets = UploadService.TYPES[upload.type].sheets;
   const uploadType = 'XLS_P';
-  const profiles = {} ;
-  const layers = {} ;
-  const labdata = {} ;
-  const structures = {} ;
-  
+  const fixtures = {        
+           
+  }
   // General  
   let sheet_mapping = Mapping[uploadType+':'+sheets[0]];
   let sheet = data[sheets[0]];
@@ -267,97 +283,75 @@ export const createProfiles = (data) => {
     try {
       let row = sheet[i];
       let id =  row[0];
-      profiles[id] = {  
-        landuse : null, 
-        surface : null,
-        surfacecracks : null,
-        landformtopography : null,
-        climateandweather : null, 
-        genealogy : null,
-        layers : []
-      }
-      if ( row ) {
-        for ( let j = 1; j < sheet_mapping.size; j+=1 ) {
-          if ( row[j] && row[j].toString().trim() != '' ){  
-            model = sheet_mapping[j].m;
-            field = sheet_mapping[j].f;
-            if ( model === 'ProfileGeneral' ) 
-              profiles[id][field] = row[j];
-            else {
-              if ( !profiles[id][model.toLowerCase()] )
-                profiles[id][model.toLowerCase()] = {};
-              profiles[id][model.toLowerCase()][field] = row[j];
-            }
-          }
-        }
-        profiles[ profile["code"] ] = profile;
-      }
-    } catch (e) {
-        console.log(e);
-    }
-  } 
-  // Layer  
-  sheet_mapping = Mapping[uploadType+':'+sheets[1]];
-  sheet = data[sheets[1]];
-  for ( let i = 0; i < sheet.length; i+=1 ) {
-    try {
-      let row = sheet[i];
-      let layer_id =  row[0] + '@' + row[2];
-      layers[layer_id] = {
-        remnants : null,
-        coarsefragments : null,
-        artefacts : null,
-        cracks : null,
-        stressfeatures : null,
-        coatingsbridges : null,
-        ribbonlikeaccumulations : null,
-        carbonates : null,
-        gypsum : null,
-        secondarysilica : null,
-        consistence : null,
-        surfacecrusts : null,  
-        permafrost : null,  
-        organiccarbon : null,  
-        roots : null,   
-        animalactivity :  null,
-        humanalterations : null,
-        degreedecomposition : null,   
-        nonmatrixpore : null,   
-        labdata :  null,
-        matrixcolours : null,   
-        texturecolour : null, 
-        lithogenicvariegates : null,
-        redoximorphicfeatures : null,
-        structures : []
-      }  
-      structures[layer_id] = {
-      }
-      if ( row ) {
+      if ( row ) 
         for ( let j = 1; j < sheet_mapping.size; j+=1 ) {
           if ( row[j] && row[j].toString().trim() != '' ){  
             model = sheet_mapping[j].m;
             field = sheet_mapping[j].f;
             level = sheet_mapping[j].lf;
             value = sheet_mapping[j].lv;
-            if ( model === 'ProfileLayer' ) 
-              layers[layer_id][field] = row[j];
-            else if ( model === 'LayerStructure' )  {
-              if ( level && value ) {
-                let s_id = layer_id + '@' + value;
-                if ( !structures [s_id] )
-                   structures [s_id] = { level : value };  
-                structures[s_id][field] = row[j];
-              }
+            
+            if ( !fixtures[model] )
+              fixtures[model] = [];
+            if ( model === 'NotCultivated' )
+              _id = id + '@' + value;
+            else _id = id;
+            if ( !fixtures[model][_id] ){  
+              fixtures[model][_id] = {};
+              fixtures[model][_id]['id'] = _id;
             }
-            else  {
-              let onetoone = model.toLowerCase().substring(5)
-              if ( !layers[layer_id][onetoone] )
-                layers[layer_id][onetoone] = {};
-              layers[layer_id][onetoone][field] = row[j];
+            fixtures[model][_id][field] = row[j];
+            if ( model !== 'ProfileGeneral' && model !== 'NotCultivated' ) { 
+              let m = model.toLowerCase().trim()
+              fixtures['ProfileGeneral'][id][m] = id; 
+            }
+            if ( model === 'NotCultivated' ) {
+              fixtures['NotCultivated'][_id]['land_use'] = id; 
+            }
+          }  
+        }
+    } catch (e) {
+      console.log(e);
+    }
+  } 
+  // Layer  LayerRedoximorphicColour  LayerStructure
+  sheet_mapping = Mapping[uploadType+':'+sheets[1]];
+  sheet = data[sheets[1]];
+  for ( let i = 0; i < sheet.length; i+=1 ) {
+    try {
+      let row = sheet[i];
+      let id =  row[0] + '@' + row[2];
+      if ( row ) 
+        for ( let j = 1; j < sheet_mapping.size; j+=1 ) {
+          if ( row[j] && row[j].toString().trim() != '' ){  
+            model = sheet_mapping[j].m;
+            field = sheet_mapping[j].f;
+            level = sheet_mapping[j].lf;
+            value = sheet_mapping[j].lv;
+
+            if ( !fixtures[model] )
+              fixtures[model] = [];
+            if ( model === 'LayerRedoximorphicColour' || model === 'LayerStructure' )
+              _id = id + '@' + value;
+            else _id = id;
+            if ( !fixtures[model][_id] ){  
+              fixtures[model][_id] = {};
+              fixtures[model][_id]['id'] = _id;
+            }
+            fixtures[model][_id][field] = row[j];
+            if ( model !== 'ProfileLayer' && model !== 'LayerRedoximorphicColour' && model !== 'LayerStructure' ) { 
+              let m = model.toLowerCase().trim()
+              fixtures['ProfileLayer'][id][m] = id; 
+            }
+            if ( model === 'LayerRedoximorphicColour' ) {
+              fixtures['LayerRedoximorphicColour'][_id]['features'] = id; 
+            }
+            if ( model === 'LayerStructure' ) {
+              fixtures['LayerStructure'][_id]['layer'] = id; 
             }
           }
         }
-      }
+      
     } catch (e) {
         console.log(e);
     } 
@@ -368,14 +362,14 @@ export const createProfiles = (data) => {
   for ( let i = 0; i < sheet.length; i+=1 ) {
     try {
       let row = sheet[i];
-      let layer_id =  row[0] + '@' + row[2];
-      labdata[layer_id] = {
-      }  
+      let id =  row[0] + '@' + row[2];
+      if ( fixtures['ProileLayer'][id] )
+        fixtures['ProileLayer'][id]['labdata'] = id;
       if ( row ) {
-        for ( let j = 1; j < sheet_mapping.size; j+=1 ) {
+        for ( let j = 4; j < sheet_mapping.size; j+=1 ) {
           if ( row[j] && row[j].toString().trim() != '' ){  
             field = sheet_mapping[j].f;
-            labdata[layer_id][field] = row[j];
+            fixtures['LabData'][id][field] = row[j];
           }
         }
       }
@@ -390,40 +384,57 @@ export const createProfiles = (data) => {
     try {
       let row = sheet[i];
       let id =  row[0];
-      labdata[layer_id] = {
-      }  
       if ( row ) {
         for ( let j = 1; j < sheet_mapping.size; j+=1 ) {
           if ( row[j] && row[j].toString().trim() != '' ){  
             field = sheet_mapping[j].f;
-            profiles[id][field] = row[j];
+            fixtures['ProfileGeneral'][id][field] = row[j];
           }
         }
       }
     } catch (e) {
         console.log(e);
     } 
-  }  
-  let pkeys = Object.keys(profiles);
-  let lkeys = Object.keys(layers);
-  let labkeys = Object.keys(labdata);
-  let stkeys = Object.keys(structures);
-  for ( let s = 0; s < stkeys.length; s+=1 ) {
-    let split = stkeys[s].split('@')
-    layers[split[0]+'@'+split[1]]['structures'].push(structures[stkeys[s]])
   }
-  for ( let lb = 0; lb < labkeys.length; lb+=1 ) {
-    layers[lb]['labdata'] = labdata[lb];
-  }
-  for ( let l = 0; l < lkeys.length; l+=1 ) {
-    let split = lkeys[s].split('@')
-    profiles[split[0]]['layers'].push(layers[lkeys[l]])
-  }
-  result = [];
-  for ( let p = 0; p < pkeys.length; p+=1 ) {
-    result.push(profiles[p]);
-  }
-  console.log ( JSON.stringify(result) );
-  ////GeoJSON......30 layer
   
-} 
+  let keys = Object.keys(fixtures);
+  let layer = fixtures['ProfileGeneral'];
+  let pointsdata = [];
+  for ( let k = 0; k < layer.length; k+=1 ){
+    if ( layer[k] ){
+      pointsdata[layer[k]['code']] = [pointsdata[layer[k]['lon_wgs84']],pointsdata[layer[k]['lat_wgs84']]]
+    }
+  }
+  layer = fixtures['ProfileLayer'];
+  for ( let k = 0; k < layer.length; k+=1 ){
+    if ( layer[k] && layer[k]['profile'] ){
+      pointsdata[layer[k]['id']] = pointsdata[layer[k]['profile']]
+    }
+  }
+
+  for ( let k; k < keys.length; k+=1 ){
+    console.log ( keys[k] );
+    let points = [];
+    if (  fixtures[keys[k]] ) {
+      for ( let c; c < fixtures[keys[k]].length; c+=1 ){
+        let point = null;
+        let key = null;
+        if ( keys[k][c] )
+          if ( k != 'ProfileGeneral' ){
+            point = pointsdata[layer[k][c]['id']];
+            key = layer[k][c]['id']; 
+          }
+          else {
+            point = pointsdata[layer[k][c]['code']];
+            key = layer[k][c]['code']; 
+          }
+        points.push( point, 
+                      keys[k][c],
+                      { id: key } );
+        console.log ( JSON.stringify(fixtures[keys[k]]) );
+  }  
+  */
+  
+  //console.log ( JSON.stringify(fixtures) );
+  ////GeoJSON......30 layer
+ 

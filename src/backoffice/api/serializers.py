@@ -24,14 +24,8 @@ class XLSxUploadSerializer(serializers.ModelSerializer):
         fields = '__all__'
         #read_only_fields = ('code',)  # Commentato per rendere code scrivibile
 
-class XLSxUploadListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = XLSxUpload
-        fields = ('code','type','title','editor','date','status')
-        #read_only_fields = ('code',)  # Commentato per rendere code scrivibile
 
-
-class ProfileGeneralSerializer(GeoFeatureModelSerializer):
+class ProfileGeneralSerializer(serializers.ModelSerializer):
         
     class Meta:
         model = ProfileGeneral
@@ -359,3 +353,165 @@ class ProfileLayerSerializer(serializers.ModelSerializer):
         model = ProfileLayer
         fields = '__all__'
         read_only_fields = ('id',)
+
+class LayerRemnantsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LayerRemnants 
+        fields = '__all__'
+        read_only_fields = ('id',)  # Il codice è generato automaticamente
+
+class  LayerCoarseFragmentsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LayerCoarseFragments 
+        fields = '__all__'
+        read_only_fields = ('id',)  # Il codice è generato automaticamente
+
+class LayerArtefactsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LayerArtefacts 
+        fields = '__all__'
+        read_only_fields = ('id',)  # Il codice è generato automaticamente
+
+class  LayerCracksSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LayerCracks
+        fields = '__all__'
+        read_only_fields = ('id',)  # Il codice è generato automaticamente
+
+class LayerStressFeaturesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LayerStressFeatures 
+        fields = '__all__'
+        read_only_fields = ('id',)  # Il codice è generato automaticamente
+
+class LayerMatrixColoursSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LayerMatrixColours 
+        fields = '__all__'
+        read_only_fields = ('id',)  # Il codice è generato automaticamente
+
+class LayerTextureColourSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LayerTextureColour 
+        fields = '__all__'
+        read_only_fields = ('id',)  # Il codice è generato automaticamente
+
+class  LayerRedoximorphicFeaturesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LayerRedoximorphicFeatures 
+        fields = '__all__'
+        read_only_fields = ('id',)  # Il codice è generato automaticamente
+
+class  LayerLithogenicVariegatesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LayerLithogenicVariegates
+        fields = '__all__'
+        read_only_fields = ('id',)  # Il codice è generato automaticamente
+
+class LayerRedoximorphicColourSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LayerRedoximorphicColour 
+        fields = '__all__'
+        read_only_fields = ('id',)  # Il codice è generato automaticamente
+
+class LayerCoatingsBridgesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LayerCoatingsBridges 
+        fields = '__all__'
+        read_only_fields = ('id',)  # Il codice è generato automaticamente
+
+class  LayerRibbonlikeAccumulationsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LayerRibbonlikeAccumulations 
+        fields = '__all__'
+        read_only_fields = ('id',)  # Il codice è generato automaticamente
+
+class  LayerCarbonatesSerializer(serializers.ModelSerializer):
+    class Meta: 
+        model = LayerCarbonates 
+        fields = '__all__'
+        read_only_fields = ('id',)  # Il codice è generato automaticamente
+
+class  LayerGypsumSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LayerGypsum
+        fields = '__all__'
+        read_only_fields = ('id',)  # Il codice è generato automaticamente
+
+class LayerSecondarySilicaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LayerSecondarySilica 
+        fields = '__all__'
+        read_only_fields = ('id',)  # Il codice è generato automaticamente
+
+class LayerConsistenceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LayerConsistence 
+        fields = '__all__'
+        read_only_fields = ('id',)  # Il codice è generato automaticamente
+
+class  LayerSurfaceCrustsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LayerSurfaceCrusts 
+        fields = '__all__'
+        read_only_fields = ('id',)  # Il codice è generato automaticamente
+
+class  LayerPermafrostFeaturesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LayerPermafrostFeatures 
+        fields = '__all__'
+        read_only_fields = ('id',)  # Il codice è generato automaticamente
+
+class  LayerOrganicCarbonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LayerOrganicCarbon
+        fields = '__all__'
+        read_only_fields = ('id',)  # Il codice è generato automaticamente
+
+class LayerRootsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LayerRoots 
+        fields = '__all__'
+        read_only_fields = ('id',)  # Il codice è generato automaticamente
+
+class LayerAnimalActivitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LayerAnimalActivity 
+        fields = '__all__'
+        read_only_fields = ('id',)  # Il codice è generato automaticamente
+
+class  LayerHumanAlterationsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LayerHumanAlterations 
+        fields = '__all__'
+        read_only_fields = ('id',)  # Il codice è generato automaticamente
+
+class  LayerDegreeDecompositionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LayerDegreeDecomposition 
+        fields = '__all__'
+        read_only_fields = ('id',)  # Il codice è generato automaticamente
+
+class  LayerNonMatrixPoreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LayerNonMatrixPore
+        fields = '__all__'
+        read_only_fields = ('id',)  # Il codice è generato automaticamente
+
+class LayerStructureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LayerStructure 
+        fields = '__all__'
+        read_only_fields = ('id',)  # Il codice è generato automaticamente
+
+class IndicatorsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Indicators 
+        fields = '__all__'
+        read_only_fields = ('id',)  # Il codice è generato automaticamente
+
+class GeoDatasetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GeoDataset 
+        fields = '__all__'
+        read_only_fields = ('id',)  # Il codice è generato automaticamente

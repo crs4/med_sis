@@ -106,7 +106,7 @@ class XSLxSheetConf(models.Model):
     type = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='xlsxsheetconf_type_set', blank=True, null=True)
     name = models.TextField(db_comment='sheet name')
     size = models.IntegerField(db_comment='Sheet columns number')
-    first = models.IntegerField( db_comment='Sheet columns first data row')
+    first = models.IntegerField( db_comment='Sheet  first data row')
     note = models.TextField(db_comment='Sheet description')
 
     objects = models.Manager().using('backoffice')
@@ -127,8 +127,8 @@ class XSLxMapping(models.Model):
     type = models.ForeignKey(Taxonomy, on_delete=models.CASCADE, related_name='xlsx_mapping_type')
     sheet = models.TextField(db_comment='sheet name')
     col = models.IntegerField(db_comment='Sheet column order')
-    model = models.TextField(db_comment='target class model')
-    field = models.TextField(db_comment='target field in the target class model')
+    mod = models.TextField(db_comment='target class model')
+    fld = models.TextField(db_comment='target field in the target class model')
     taxonomy = models.TextField(blank=True, null=True, db_comment='taxonomy name')
     note = models.TextField(blank=True, null=True, db_comment='field description')
     field_level = models.TextField(blank=True, null=True, db_comment='upper level field name in the target model')
@@ -172,6 +172,7 @@ class Project(models.Model):
         )
 
 class Genealogy(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     old_code = models.TextField(blank=True, null=True)
     note = models.TextField(blank=True, null=True, db_comment='note about owner ')
     refer = models.TextField(blank=True, null=True, db_comment='reference')
@@ -195,6 +196,7 @@ class Genealogy(models.Model):
 # Profile General
 ###########################
 class LandformTopography(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     grad_ups = models.DecimalField(max_digits=6, decimal_places=2, validators=[validate_percentage], blank=True, null=True, db_comment='Ground surface upslope inclination with respect to the horizontal plane. If the profile lies on a flat surface, the gradient is 0%. ')
     grad_downs = models.DecimalField(max_digits=6, decimal_places=2, validators=[validate_percentage], blank=True, null=True, db_comment='Ground surface downslope inclination with respect to the horizontal plane. If the profile lies on a flat surface, the gradient is 0%. ')
     slope_asp = models.DecimalField(max_digits=6, decimal_places=2, validators=[validate_positive], blank=True, null=True, db_comment='If the profile lies on a slope, report the compass direction that the slope faces, viewed downslope; e.g., 225°')
@@ -218,6 +220,7 @@ class LandformTopography(models.Model):
         )
 
 class CoarseFragments(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     total_area = models.DecimalField(max_digits=6, decimal_places=2, validators=[validate_percentage], blank=True, null=True)
     class1size = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='coarsefragments_class1size_set', blank=True, null=True)
     class2size = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='coarsefragments_class2size_set',  blank=True, null=True)
@@ -248,6 +251,7 @@ class CoarseFragments(models.Model):
     """
 
 class ClimateAndWeather(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     clim_koppen = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='climateandweather_clim_koppen_set', blank=True, null=True)
     eco_shultz = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='climateandweather_eco_shultz_set', blank=True, null=True)
     season = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='climateandweather_season_set', blank=True, null=True)
@@ -268,6 +272,7 @@ class ClimateAndWeather(models.Model):
         )
 
 class Cultivated(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     type = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='cultivated_type_set', blank=True, null=True, db_comment='value from p_cultivation_type ')
     actual1 = models.TextField(blank=True, null=True, db_comment='actual dominant specie')
     actual2 = models.TextField(blank=True, null=True, db_comment='actual second specie')
@@ -317,6 +322,7 @@ class Cultivated(models.Model):
     """ 
 
 class LandUse(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     land_use = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='landuse_land_use_set', blank=True, null=True)
     corine = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='landuse_corine_set', blank=True, null=True)
     cultivated =  models.OneToOneField(Cultivated, on_delete=models.SET_DEFAULT, default=None, db_comment='Cultivated Land')
@@ -340,18 +346,12 @@ class LandUse(models.Model):
     """        
 
 class NotCultivated(models.Model):
-    LEVEL_TYPES = [
-        ("Upper-stratum" , "Upper-stratum"),
-        ("Mid-stratum" , "Mid-stratum"),
-        ("Ground-stratum" , "Ground-stratum"),
-    ]
-    
-    
+    id = models.TextField(primary_key=True, db_comment='identifier')
     landuse = models.ForeignKey(LandUse, on_delete=models.CASCADE, related_name='notcultivated_landuse_set')
     veget1 = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='notcultivated_veget1_set', blank=True, null=True)
     veget2 = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='notcultivated_veget2_set', blank=True, null=True)
     veget3 = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='notcultivated_veget3_set', blank=True, null=True)
-    stratum = models.TextField(blank=True, null=True)
+    stratum = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='notcultivated_stratum_set', blank=True, null=True)
     avg_height = models.DecimalField(max_digits=12, decimal_places=5, blank=True, null=True)
     max_height = models.DecimalField(max_digits=12, decimal_places=5, blank=True, null=True)
     area = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
@@ -388,6 +388,7 @@ class NotCultivated(models.Model):
     """
 
 class Surface(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     crust_area = models.DecimalField(max_digits=6, decimal_places=2, validators=[validate_percentage], blank=True, null=True)
     ground_form = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='surface_ground_form_set', blank=True, null=True, db_comment='Patterned ground form field')
     tech_alter = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='surface_tech_alteration_set', blank=True, null=True)
@@ -415,6 +416,7 @@ class Surface(models.Model):
         )
 
 class SurfaceCracks(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     width1 = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='surfacecracks_width1_set', blank=True, null=True)
     dist1 = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='surfacecracks_dist1_set', blank=True, null=True)
     spat_arr1 = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL,  related_name='surfacecracks_spat_arr1_set', blank=True, null=True)
@@ -458,6 +460,7 @@ class SurfaceCracks(models.Model):
     """
 
 class LitterLayer(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     avg_thick = models.DecimalField(max_digits=10, decimal_places=2, validators=[validate_percentage], blank=True, null=True)
     area = models.DecimalField(max_digits=12, decimal_places=6, validators=[validate_positive], blank=True, null=True)
     max_thick = models.DecimalField(max_digits=12, decimal_places=6, validators=[validate_positive], blank=True, null=True)
@@ -475,6 +478,7 @@ class LitterLayer(models.Model):
         )  
 
 class SurfaceUnevenness(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     position = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='surfaceunevenness_position_set', blank=True, null=True)
     nat_type = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='surfaceunevenness_nat_type_set', blank=True, null=True)
     nat_avg_h = models.DecimalField( max_digits=20, decimal_places=8, validators=[validate_positive], blank=True, null=True)
@@ -560,7 +564,7 @@ class SurfaceUnevenness(models.Model):
 
 class ProfileGeneral(models.Model):
     code = models.TextField(primary_key=True, db_comment='profile identifier')
-    date = models.DateField(db_comment='date of the description')
+    date = models.DateField(blank=True, null=True, db_comment='date of the description')
     surveyors = models.TextField(blank=True, null=True, db_comment='surveyors names comma separated')
     location = models.TextField(blank=True, null=True, db_comment='Name of the profile location')
     lat_wgs84 = models.DecimalField(max_digits=14, decimal_places=8, db_comment='WGS84 Latitude in decimal degree')
@@ -605,6 +609,7 @@ class ProfileGeneral(models.Model):
 ## Lab Data 
 #########################################
 class LabData(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     gravel = models.DecimalField(max_digits=40, decimal_places=6, validators=[validate_percentage],  db_comment='Gravel content (%)' , blank=True, null=True)
     cls_sys =  models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='labdata_cls_sys_set', db_comment='Classification system used for texture of fine earth', blank=True, null=True)
     texture = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='labdata_texture_set', db_comment='texture class', blank=True, null=True)      
@@ -698,6 +703,7 @@ class LabData(models.Model):
 # Profile Layer
 ###########################
 class LayerRemnants(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     abundance = models.DecimalField(max_digits=6, decimal_places=2, validators=[validate_percentage], blank=True, null=True)
     cementing1 = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layerremnants_cementing1_set', blank=True, null=True)
     cementing2 = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layerremnants_cementing2_set', blank=True, null=True)
@@ -729,6 +735,7 @@ class LayerRemnants(models.Model):
     """
 
 class LayerCoarseFragments(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     litho_type1 = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='layercoarsefragmentslithology_litho_type1_set', blank=True, null=True)
     litho_type2 = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='layercoarsefragmentslithology_litho_type2_set', blank=True, null=True)
     litho_type3 = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='layercoarsefragmentslithology_litho_type3_set', blank=True, null=True)
@@ -759,6 +766,7 @@ class LayerCoarseFragments(models.Model):
         )
          
 class LayerArtefacts(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     abundance = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True, validators=[validate_percentage])
     black_carb = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True, validators=[validate_percentage])
     type1 = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='layerartefacts_type1_set',  blank=True, null=True)
@@ -814,6 +822,7 @@ class LayerArtefacts(models.Model):
     """    
 
 class LayerCracks(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     persistenc = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layercracks_persistence_set', blank=True, null=True)
     continuity = models.ForeignKey(Taxonomy, models.SET_NULL,  related_name='layercracks_continuity_set', blank=True, null=True)
     avg_width = models.DecimalField(max_digits=16, decimal_places=2, validators=[validate_positive], blank=True, null=True)
@@ -840,6 +849,7 @@ class LayerCracks(models.Model):
     """
     
 class LayerStressFeatures(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     pressfaces = models.DecimalField(max_digits=6, decimal_places=2, validators=[validate_percentage], blank=True, null=True, db_comment='Pressure faces in % of the surfaces of soil aggregates')
     slicksides = models.DecimalField(max_digits=6, decimal_places=2, validators=[validate_percentage], blank=True, null=True, db_comment='Slickensides in % of the surfaces of soil aggregates.')
     
@@ -856,6 +866,7 @@ class LayerStressFeatures(models.Model):
         db_table_comment = 'Stress features result from soil aggregates that are pressed against each other due to swelling clays. The aggregate surfaces may be shiny. There are two types: Pressure faces do not slide past each other and have no striations, slickensides slide past each other and have striations.'
 
 class LayerMatrixColours(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     munsell_m1 = models.TextField(blank=True, null=True)
     munsell_d1 = models.TextField(blank=True, null=True)
     area1 = models.DecimalField(max_digits=6, decimal_places=2, validators=[validate_percentage], blank=True, null=True)
@@ -879,6 +890,7 @@ class LayerMatrixColours(models.Model):
         )
 
 class LayerTextureColour(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     coars_text = models.DecimalField(max_digits=6, decimal_places=2, validators=[validate_percentage], blank=True, null=True, db_comment='the percentage (by exposed area) occupied by coarser-textured parts of any orientation (vertical, horizontal, inclined) having a width of ≥ 0.5 cm')
     v_tongues = models.DecimalField(max_digits=6, decimal_places=2, validators=[validate_percentage], blank=True, null=True, db_comment='the percentage (by exposed area) occupied by continuous vertical tongues of coarser-textured parts with a horizontal extension of ≥ 1 cm (if these tongues are absent, report 0%)')
     depth = models.DecimalField(max_digits=6, decimal_places=2, validators=[validate_percentage], blank=True, null=True, db_comment='the depth range in cm, where these tongues cover ≥ 10% of the exposed area (if they extend across several layers, the length is only reported in the description of that layer, where they start at the layer’s upper limit).')
@@ -896,7 +908,8 @@ class LayerTextureColour(models.Model):
             ('write_backoffice', 'Can write backoffice data'),
         )
 
-class LayerLithogenicVariegates(models.Model): 
+class LayerLithogenicVariegates(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier') 
     munsell_m1 = models.TextField(blank=True, null=True)
     size1 = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layerlithogenicvariegates_size_class1_set', blank=True, null=True)
     area1 = models.DecimalField(max_digits=6 , decimal_places=2 , validators=[validate_percentage],  blank=True, null=True)
@@ -927,6 +940,7 @@ class LayerLithogenicVariegates(models.Model):
     """
            
 class LayerRedoximorphicFeatures(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     oxi_inner = models.DecimalField(max_digits=6, decimal_places=2, validators=[validate_percentage], blank=True, null=True)
     oxi_outer = models.DecimalField(max_digits=6, decimal_places=2, validators=[validate_percentage], blank=True, null=True)
     oxi_random = models.DecimalField(max_digits=6, decimal_places=2, validators=[validate_percentage], blank=True, null=True)
@@ -950,6 +964,7 @@ class LayerRedoximorphicFeatures(models.Model):
         )
 
 class LayerRedoximorphicColour(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     features = models.ForeignKey(LayerRedoximorphicFeatures, on_delete=models.CASCADE, related_name='layerredoximorphiccolour_features_set', db_comment='LayerRedoximorphicFeatures')  
     colour_nr = models.SmallIntegerField(validators=[validate_positive], db_comment='layer redoximorphic colour number')
     munsell_m = models.TextField(blank=True, null=True)
@@ -1002,6 +1017,7 @@ class LayerRedoximorphicColour(models.Model):
     """
 
 class LayerCoatingsBridges(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     clay_coat = models.DecimalField(max_digits=6, decimal_places=2, validators=[validate_percentage], blank=True, null=True, db_comment='Abundance of clay coatings in percentage')
     form_coat = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layercoatingsbridges_form_coat_set', blank=True, null=True, db_comment='refer to clay coatings')
     org_coat = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layercoatingsbridges_org_coat_set', blank=True, null=True, db_comment='Organic matter coatings and oxide coatings on sand and/or coarse silt grains')
@@ -1036,6 +1052,7 @@ class LayerCoatingsBridges(models.Model):
     """
                    
 class LayerRibbonlikeAccumulations(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     substances = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layerribbonlikeaccumulations_substances_set', blank=True, null=True)
     number = models.IntegerField(blank=True, null=True)
     comb_thick = models.DecimalField(max_digits=30, decimal_places=10, validators=[validate_positive], blank=True, null=True, db_comment='If there are 2 or more ribbon-like accumulations in one layer, report the number of the accumulations and their combined thickness in cm')
@@ -1059,6 +1076,7 @@ class LayerRibbonlikeAccumulations(models.Model):
     """
             
 class LayerCarbonates(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     matr_c = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layercarbonates_matr_c_set', blank=True, null=True)
     matr_c_ret = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layercarbonates_matr_c_ret_set', blank=True, null=True)
     sec_type1 = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layercarbonates_sec_type1_set', blank=True, null=True)
@@ -1123,6 +1141,7 @@ class LayerCarbonates(models.Model):
     """
 
 class LayerGypsum(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     content = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layergypsum_content_set', blank=True, null=True)
     sec_gypsum = models.DecimalField(max_digits=6, decimal_places=2, validators=[validate_percentage], blank=True, null=True)
     sgypsum1 = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layergypsum_sgypsum1_set', blank=True, null=True)
@@ -1155,6 +1174,7 @@ class LayerGypsum(models.Model):
     """
 
 class LayerSecondarySilica(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     type1 = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layersecondarysilica_type1_set', blank=True, null=True, db_comment='Report the type of secondary silica, type1 is dominant')
     type2 = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layersecondarysilica_type2_set', blank=True, null=True, db_comment='Report the type of secondary silica')
     dnfcsize1 = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layersecondarysilica_dnfcsize1_set', blank=True, null=True, db_comment='If a layer shows durinodes and/or remnants of a layer that has been cemented by secondary silica, report their size class for type1')
@@ -1187,6 +1207,7 @@ class LayerSecondarySilica(models.Model):
     """
 
 class LayerConsistence(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     cement = models.DecimalField(max_digits=6, decimal_places=2, validators=[validate_percentage], blank=True, null=True, db_comment='Report the percentage (by volume, related to the whole soil) of the layer that is cemented.')
     cement_ag1 = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layerconsistence_cement_ag1_set', blank=True, null=True, db_comment='Report the cementing agents')
     cement_ag2 = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layerconsistence_cement_ag2_set', blank=True, null=True)
@@ -1239,6 +1260,7 @@ class LayerConsistence(models.Model):
     """
 
 class LayerSurfaceCrusts(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     sealing1 = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layersurfacecrusts_sealing1_set', blank=True, null=True)
     sealing2 = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layersurfacecrusts_sealing2_set', blank=True, null=True)
     sealing3 = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layersurfacecrusts_sealing3_set', blank=True, null=True)
@@ -1267,6 +1289,7 @@ class LayerSurfaceCrusts(models.Model):
     """
 
 class LayerPermafrostFeatures(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     cry_alter1 = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layerpermafrostfeatures_cry_alter1_set', blank=True, null=True)
     cry_alter2 = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layerpermafrostfeatures_cry_alter2_set', blank=True, null=True)
     cry_alter3 = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layerpermafrostfeatures_cry_alter3_set', blank=True, null=True)
@@ -1300,6 +1323,7 @@ class LayerPermafrostFeatures(models.Model):
     """
 
 class LayerOrganicCarbon(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     contentmin = models.DecimalField(max_digits=40, decimal_places=10, blank=True, null=True)
     contentmax = models.DecimalField(max_digits=40, decimal_places=10, blank=True, null=True)
     nat_accum1 = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layerorganiccarbon_nat_accum1_set', blank=True, null=True)
@@ -1333,6 +1357,7 @@ class LayerOrganicCarbon(models.Model):
     """
 
 class LayerRoots(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     a_lt2mm = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layerroots_a_lt2mm_set', blank=True, null=True, db_comment='diameter <= 2mm')
     a_lt05mm = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layerroots_a_lt05mm_set', blank=True, null=True, db_comment='diameter < 0,5mm')
     a_05to2mm = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layerroots_a_05to2mm_set', blank=True, null=True, db_comment='diameter from 0.5 to 2 mm')
@@ -1369,6 +1394,7 @@ class LayerRoots(models.Model):
     """
 
 class LayerAnimalActivity(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     type1 = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='Layeranimalactivity_type1_set', blank=True, null=True)
     type2 = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='Layeranimalactivity_type2_set', blank=True, null=True)
     type3 = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='Layeranimalactivity_type3_set', blank=True, null=True)
@@ -1407,6 +1433,7 @@ class LayerAnimalActivity(models.Model):
     """
 
 class LayerHumanAlterations(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     nat_mat1 = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layerhumanalterations_nat_mat1_set', blank=True, null=True)
     nat_mat2 = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layerhumanalterations_nat_mat2_set', blank=True, null=True)
     nat_mat3 = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layerhumanalterations_nat_mat3_set', blank=True, null=True)
@@ -1452,6 +1479,7 @@ class LayerHumanAlterations(models.Model):
     """
 
 class LayerDegreeDecomposition(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     vis_plant = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True, validators=[validate_percentage])
     sbdiv_horz = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layerdegreedecomposition_sbdiv_horz_set', blank=True, null=True)
     plant_res1 = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layerdegreedecomposition_plant_res1_set', blank=True, null=True)
@@ -1482,6 +1510,7 @@ class LayerDegreeDecomposition(models.Model):
     """
 
 class LayerNonMatrixPore(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     type1 = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layernonmatrixpore_type1_set', blank=True, null=True)
     size1 = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layernonmatrixpore_type1size_set', blank=True, null=True)
     abund1 = models.ForeignKey(Taxonomy, models.SET_NULL, related_name='layernonmatrixpore_type1abund_set', blank=True, null=True)
@@ -1542,6 +1571,7 @@ class LayerNonMatrixPore(models.Model):
     """
  
 class ProfileLayer(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')
     profile = models.ForeignKey(ProfileGeneral, on_delete=models.CASCADE, related_name='profilelayer_profile_set', db_comment='Foreign Key field: profile') 
     design = models.TextField(db_comment='layer horizon designation')
     number = models.SmallIntegerField(validators=[validate_positive], db_comment='layer order in profile')
@@ -1619,26 +1649,9 @@ class ProfileLayer(models.Model):
         )
 
 class LayerStructure(models.Model):
-    LEVEL_TYPES = [
-        ("Type 1" , "First level structure Type 1"),
-        ("Type 2" , "First level structure Type 2"),
-        ("Type 3" , "First level structure Type 3"),
-        ("Type 1.1" , "Second level structure Type 1.1"),
-        ("Type 1.2" , "Second level structure Type 1.2"),
-        ("Type 2.1" , "Second level structure Type 2.1"),
-        ("Type 2.2" , "Second level structure Type 2.2"),
-        ("Type 3.1" , "Second level structure Type 3.1"),
-        ("Type 3.2" , "Second level structure Type 3.2"),
-        ("Type 1.1.1" , "Third-level structure Type 1.1.1"),
-        ("Type 1.2.1" , "Third-level structure Type 1.2.1"),
-        ("Type 2.1.1" , "Third-level structure Type 2.1.1"),
-        ("Type 2.2.1" , "Third-level structure Type 2.2.1"),
-        ("Type 3.1.1" , "Third-level structure Type 3.1.1"),
-        ("Type 3.2.1" , "Third-level structure Type 3.2.1"),
-    ]
-    
+    id = models.TextField(primary_key=True, db_comment='identifier')  
     layer = models.ForeignKey(ProfileLayer, on_delete=models.CASCADE, related_name='layerstructure_layer_set', db_comment='Profile Layer' )
-    level = models.TextField(choices=LEVEL_TYPES)
+    level = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='layerstructure_level_set', blank=True, null=True)
     type = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='layerstructure_type_set', blank=True, null=True)
     grade = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='layerstructure_grade_set', blank=True, null=True)
     penetrab = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='layerstructure_penetrab_set', blank=True, null=True)
@@ -1674,3 +1687,43 @@ class LayerStructure(models.Model):
         if self.size_class2 is not None and self.size_class2.startswith("l_aggregate_size."):
             raise ValidationError({'size_class2': ('Wrong classification.')})      
     """
+
+class Indicators(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')    
+    name = models.TextField( primary_key=True, db_comment='Name') 
+    creation = models.DateField( blank=True, null=True, db_comment='Date of the creation')
+    conf = models.JSONField( db_comment='Configuration') 
+    type = models.ForeignKey( Taxonomy, on_delete=models.SET_NULL, db_comment='Type of the indicator', related_name='indicators_type_set', blank=True, null=True)
+    note = models.TextField( db_comment='Notes')  
+
+    objects = models.Manager().using('backoffice')
+
+    class Meta:
+        managed = True
+        db_table = 'indicators'
+        permissions = (
+            ('access_backoffice', 'Can access backoffice data'),
+            ('view_backoffice', 'Can view backoffice data'),
+            ('write_backoffice', 'Can write backoffice data'),
+        )
+
+class GeoDataset(models.Model):
+    id = models.TextField(primary_key=True, db_comment='identifier')   
+    name = models.TextField( primary_key=True, db_comment='Name')
+    creation = models.DateField( db_comment='Date of the creation')
+    update = models.DateField( blank=True, null=True, db_comment='Date of the last update') 
+    conf = models.JSONField( db_comment='Configuration') 
+    type = models.ForeignKey( Taxonomy, on_delete=models.SET_NULL, db_comment='Type of the geodaset', related_name='geodataset_type_set', blank=True, null=True)
+    geonode_id = models.TextField( db_comment='Geonode Dataset Id', blank=True, null=True)   
+    note = models.TextField( db_comment='Notes', blank=True, null=True)
+    
+    objects = models.Manager().using('backoffice')
+
+    class Meta:
+        managed = True
+        db_table = 'geo_dataset'
+        permissions = (
+            ('access_backoffice', 'Can access backoffice data'),
+            ('view_backoffice', 'Can view backoffice data'),
+            ('write_backoffice', 'Can write backoffice data'),
+        )

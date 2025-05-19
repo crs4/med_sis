@@ -97,6 +97,15 @@ def update(ctx):
         "geonode_geodb_passwd": os.environ.get(
             "GEONODE_GEODATABASE_PASSWORD", "geonode_data"
         ),
+        "backoffice_db": os.environ.get(
+            "BACKOFFICE_DATABASE", "backoffice"
+        ),
+        "backoffice_db_passwd": os.environ.get(
+            "BACKOFFICE_DATABASE_PASSWORD", "backoffice_pwd"
+        ),
+        "backoffice_db_user": os.environ.get(
+            "BACKOFFICE_DATABASE_USER", "backoffice_user"
+        ),
         "default_backend_datastore": os.environ.get(
             "DEFAULT_BACKEND_DATASTORE", "datastore"
         ),
@@ -167,6 +176,27 @@ def update(ctx):
     ctx.run(
         "echo export GEOIP_PATH=\
 {geoip_path} >> {override_fn}".format(
+            **envs
+        ),
+        pty=True,
+    )
+    ctx.run(
+        "echo export BACKOFFICE_DATABASE=\
+{backoffice_db} >> {override_fn}".format(
+            **envs
+        ),
+        pty=True,
+    )
+    ctx.run(
+        "echo export BACKOFFICE_DATABASE_USER=\
+{backoffice_db_user} >> {override_fn}".format(
+            **envs
+        ),
+        pty=True,
+    )
+    ctx.run(
+        "echo export BACKOFFICE_DATABASE_PASSWORD=\
+{backoffice_db_passwd} >> {override_fn}".format(
             **envs
         ),
         pty=True,
@@ -340,6 +370,10 @@ def migrations(ctx):
         f"python manage.py migrate --noinput --settings={_localsettings()} --database=datastore",
         pty=True,
     )
+    ctx.run(
+        f"python manage.py migrate backoffice --noinput --settings={_localsettings()} --database=backoffice",
+        pty=True,
+    )
     try:
         ctx.run(
             f"python manage.py rebuild_index --noinput --settings={_localsettings()}",
@@ -396,6 +430,17 @@ def fixtures(ctx):
 --settings={_localsettings()}",
         pty=True,
     )
+    ctx.run(
+        f"python manage.py loaddata fixtures/backoffice_taxonomy.json \
+--settings={_localsettings()}",
+        pty=True,
+    )
+    ctx.run(
+        f"python manage.py loaddata fixtures/backoffice_mapping.json \
+--settings={_localsettings()}",
+        pty=True,
+    )
+    
 
 
 @task
@@ -555,7 +600,7 @@ def _update_geodb_connstring():
 
 
 def _localsettings():
-    settings = os.getenv("DJANGO_SETTINGS_MODULE", "{{ project_name }}.settings")
+    settings = os.getenv("DJANGO_SETTINGS_MODULE", "s4m_catalogue.settings")
     return settings
 
 

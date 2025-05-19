@@ -11,9 +11,9 @@ export default function Page()  {
   const user = useUser();
 
   useEffect(() => {
-      if ( !(user.isDataManager()) )
-        router.push(`/soildata/401`);
-    },[user,router]);
+   if ( user.userData.forbidden !== null && user.userData.forbidden )
+        router.push(`/401`);
+  },[user]);  // eslint-disable-line
 
 
   return (

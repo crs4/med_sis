@@ -1,84 +1,88 @@
-export const UploadService = {
-  /*
-     UPLOAD
-     UPLOAD_RESULTS = [
-        ("0" , "Created"),
-        ("1" , "Importing"),
-        ("2" , "Imported"),
-        ("3" , "Errors importing data"),
-    ]
-    type : TYPES
-    title : text
-    report = JSON
-    data = JSON    
-    editor: text 
-    date: date
-    status : STATUS
-
-
-
-  */
+export const IndicatorService = {
+  
   STATUS : {
-    UPLOADED : "UPLOADED",
-    IMPORT_SUCCESS : "IMPORT_SUCCESS",
-    IMPORT_WITH_ERROR : "IMPORT_WITH_ERROR",
+    CREATED : "CREATED",
+    INITIALIZED : "INITIALIZED",
     CRITICAL_ERROR: "CRITICAL_ERROR",
   },
 
   TYPES : {
-    XLS_P :  {  name : "PROFILES", label : 'Excel Soil Profiles Spreadsheets', sheets: ['General and Surface','Layer descriptions','Soil classification','Lab data'],},
-    XLS_S :   {  name : "SAMPLES", label : 'Excel Soil Samples Spreadsheets', sheets: ['General and Surface','Layer descriptions','Lab data'],},
-    XLS_PG : { name : "PROFILES_GENEALOGY", label : 'Excel Soil Profiles Genealogy Spreadsheets', sheets: ['Genealogy','Project'],},
-    XLS_PG : {  name : "PROFILES_GENEALOGY", label : 'Excel Soil Samples Genealogy Spreadsheets', sheets: ['Genealogy','Project'],},
-    XLS_PH : {  name : "PHOTOS", label : 'Photos Metadata', sheets: ['photos'],},
+    SIMPLE :  {  name : "SIMPLE", label : 'Simple index  ', note: 'Index calculated using a known formula'},
+    COMPLEX :  {  name : "COMPLEX", label : 'Complex index  ', note: 'Index via model application'},
+    CUSTOM :   {  name : "CUSTOM", label : 'Custom index', note: 'Index calculated using a known formula'},
   },
 
-  UPLOAD_STATUS : {
-    "EMPTY" : "XSLx data sent to server",
-    "PROCESSING"   : "XSLx processing",
-    "ERROR"   : "System error",
-    "WARNING" : "Data partially saved (errors)",
-    "SUCCESS" : "Data sucessfully saved",
-  },
-
-  async getUpload(id) { 
-    fetch( `/backoffice/api/v2/uploads/${id}`);
-  },
-
-  async getUploads() {  
-    let res = [];
-    try {  
-      fetch('/backoffice/api/v2/uploads')
-        .then((res) => res.json())
-        .then((data) => {
-          res = data
-      });
+  async get(id) { 
+    data = null;
+    try { 
+      let res = fetch( `/api/backoffice/indicators/${id}`)
+      if ( res && res.status == 200 ) 
+        data = await res.json();
     } catch (e) { 
-      res = [];
     } 
-    return res;
+    return data;
+  },
+
+  async list() {  
+    let data = [];
+    try {  
+      let res = fetch('/api/backoffice/indicators')
+      if ( res && res.status == 200 ) 
+        data = await res.json();
+    } catch (e) { 
+    } 
+    return data;
   },  
 
-// formData: ( title, date, file, type }
-  async save(upload) {
-    fetch(`/backoffice/api/v2/uploads`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(upload),
-    });
+// formData: 
+  async save(indicator) {
+    let data = null;
+    try {  
+      let res = fetch(`/api/backoffice/indicators`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(indicator),
+      });
+      if ( res && res.status == 200 ) 
+        data = await res.json();
+    } catch (e) { 
+    } 
+    return data;
   },
 
-
   async remove(id) {
-    fetch(`/backoffice/api/v2/uploads/${id}`, {
-      method: "DELETE",
-    });
+    let data = null;
+    try {  
+      let res = fetch(`/api/backoffice/indicators/${id}`, {
+        method: "DELETE",
+      });
+      if ( res && res.status == 200 ) 
+        data = await res.json();
+    } catch (e) { 
+    } 
+    return data;
+  },
+
+  async update(indicator) {
+    let data = null;
+    try {  
+      let res = fetch(`/api/backoffice/indicators/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(indicator),
+      });
+      if ( res && res.status == 200 ) 
+        data = await res.json();
+    } catch (e) { 
+    } 
+    return data;
   }
 }
 
-
-export default UploadService;
+export default IndicatorService
 
 

@@ -35,50 +35,92 @@ export const UploadService = {
 
   UPLOAD_STATUS : {
     "EMPTY" : "XSLx data sent to server",
-    "PROCESSING"   : "XSLx processing",
+    "PROCESSING" : "XSLx processing",
     "ERROR"   : "System error",
     "WARNING" : "Data partially saved (errors)",
     "SUCCESS" : "Data sucessfully saved",
   },
 
-  async getUpload(id) { 
-    fetch( `/backoffice/api/v2/uploads/${id}`);
+
+  async get(id) {
+        return fetch('/demo/data/customers-small.json', {
+            headers: { 'Cache-Control': 'no-cache' }
+        })
+            .then((res) => res.json())
+            .then((d) => d.data);
+    },
+
+  async get(id) { 
+    data = null;
+    try { 
+      let res = fetch( `/api/backoffice/uploads/${id}`)
+      if ( res && res.status == 200 ) 
+        data = await res.json();
+    } catch (e) { 
+    } 
+    return data;
   },
 
-  async getUploads() {  
-    let res = [];
+  async list() {  
+    let data = [];
     try {  
-      fetch('/backoffice/api/v2/uploads')
-        .then((res) => res.json())
-        .then((data) => {
-          res = data
-      });
+      let res = fetch('/api/backoffice/uploads')
+      if ( res && res.status == 200 ) 
+        data = await res.json();
     } catch (e) { 
-      res = [];
     } 
-    return res;
+    return data;
   },  
 
-// formData: ( title, date, file, type }
+// formData: 
   async save(upload) {
-    fetch(`/backoffice/api/v2/uploads`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(upload),
-    });
+    let data = null;
+    try {  
+      let res = fetch(`/api/backoffice/uploads`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(upload),
+      });
+      if ( res && res.status == 200 ) 
+        data = await res.json();
+    } catch (e) { 
+    } 
+    return data;
   },
 
-
   async remove(id) {
-    fetch(`/backoffice/api/v2/uploads/${id}`, {
-      method: "DELETE",
-    });
+    let data = null;
+    try {  
+      let res = fetch(`/api/backoffice/uploads/${id}`, {
+        method: "DELETE",
+      });
+      if ( res && res.status == 200 ) 
+        data = await res.json();
+    } catch (e) { 
+    } 
+    return data;
+  },
+
+  async update(upload) {
+    let data = null;
+    try {  
+      let res = fetch(`/api/backoffice/uploads/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(upload),
+      });
+      if ( res && res.status == 200 ) 
+        data = await res.json();
+    } catch (e) { 
+    } 
+    return data;
   }
 }
 
-
-export default UploadService;
+export default UploadService
 
 

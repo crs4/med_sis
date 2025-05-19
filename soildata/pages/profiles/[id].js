@@ -12,6 +12,7 @@ import Mapping from '../../data/mapping';
 import { useTranslations } from 'next-intl';
 import { useUser } from '../../context/user';
 import { useRouter } from 'next/router';
+import { ProfileService } from '../../service/profiles';
 
 export default function Page()  {
   const router = useRouter();
@@ -19,10 +20,11 @@ export default function Page()  {
   const user = useUser();
   const params = useParams();
   
+
   useEffect(() => {
-      if ( !(user.isDataManager()) )
-        router.push(`/soildata/401`);
-    },[user,router]);
+    if ( user.userData.forbidden !== null && user.userData.forbidden )
+        router.push(`/401`);
+  },[user]);  // eslint-disable-line
 
   return (
     <>
@@ -32,55 +34,7 @@ export default function Page()  {
   );
 };
 
-const createModelsGeoJSON = ( data ) => {
-    /* First sheet: XLS_P:General and Surface*/
-    const sheets = ['General and Surface','Layer descriptions','Soil classification','Lab data'];
-    const id = params.id;
-    const models_map = {};
-    const models_names = [];
-    const models_data = {};
-    const models_points  = {};
-    let i;
-    for ( let s=0; s<4; s+=1 ) {
-      const mapping = Mapping['XLS_P:'+sheets[s]];
-      for ( let j=1; j<mapping.size+1; j+=1 ) {
-        const el = mapping[j.toString()];
-        if ( !models_map[el.m] ) {
-          models_map[el.m] = {};
-          models_names.push(el.m);
-        }
-        models_map[el.m][el.f] = j;
-      }
-      for ( let i=3; i<data_sheet.length; i+=1 ) {
-        const row = data_sheet[i.toString()];
-        if ( row && row[1] && row[1] === id ) {
-          models_names.forEach((name) => {
-            let okeys = Object.keys(models_map[name]);
-            let properties =  {  };
-            okeys.forEach ( (key) => {
-              col = models_map[name][key];
-              if ( row[col] )
-                properties[key] = row[col]
-            })
-            if ( !models_data[name] )
-              models_data[name] = {} ;
-            models_data[name][row[1]] = properties;
-          })
-        }
-      }
-      models_names.forEach((name) => {
-        if (basePoints){
-          const points = basePoints.clone();
-          for ( let p=0; p < points.length; p+=1) {
-            if ( models_data[name][point.id] )
-              points[p].properties = models_data[name][point.id];
-          } 
-          models_points[name] = points;
 
-        }
-      }) 
-    }  
-  } 
 
   
 export async function getStaticPaths() {
