@@ -34,8 +34,8 @@ services:
     environment:
       - IS_CELERY=False
     entrypoint: ["/usr/src/s4m_catalogue/entrypoint.sh"]
-    #command: "uwsgi --ini /usr/src/s4m_catalogue/uwsgi.ini"
-    command: "python manage.py runserver 0.0.0.0:8088"
+    command: "uwsgi --ini /usr/src/s4m_catalogue/uwsgi.ini"
+    #command: "python manage.py runserver 0.0.0.0:8088"
   # Celery worker that executes celery tasks created by Django.
   celery:
     << : *default-common-django

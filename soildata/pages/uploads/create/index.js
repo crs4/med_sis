@@ -70,42 +70,10 @@ export default function Page()  {
   
   const createJSON = () => {
     if ( !data )
-      return;
-    const sheets = UploadService.TYPES[upload.type].sheets;
-    const uploadType = 'XLS_P';
-    const result = {};
-    for ( let s=0; s<sheets.length; s+=1 ) { 
-      try {    
-        const sheet_mapping = Mapping[uploadType+':'+sheets[s]];
-        const sheet = data[sheets[s]];
-        let model = null;
-        let field = null;
-        let result = { };
-        for ( let i = 0; i < sheet.length; i+=1 ) {
-          if ( sheet[i] ) {
-            let row = [];
-            for ( let j = 1; j < sheet_mapping.size; j+=1 ) {
-              let col = ''+j;
-              if ( sheet[i][j] && sheet[i][j].toString().trim() != '' ){  
-                model = sheet_mapping[col].m;
-                field = sheet_mapping[col].f;
-                if ( !(row[model]) ) 
-                  row[model] = { };
-                row[model][field] = sheet[i][j];
-              }
-            }          
-            let models = Object.keys(row);
-            for (let m = 0; m < models.length; m+=1 ){
-              if ( !result[ models[m] ] )
-                result[ models[m] ] = [];
-              result[ models[m] ].push(row[models[m]]);
-            }
-          } 
-        }     
-      } catch (e) {
-        console.log(e);
-      }
-    }  
+      return null;
+    console.log ( JSON.stringify(data) );
+    return JSON.stringify(data);
+    
   }
 
   const createGeoJSON = ( data_sheet, data_report ) => {

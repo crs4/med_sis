@@ -266,14 +266,12 @@ export const validateSheet = (sheet_index,sheet_name, is_profile, sheet_mapping,
     redoximorphicfeatures = LayerRedoximorphicFeatures
     structures = LayerStructure[] 
 */
-/*
-export const createFixtures = (data) => {
+
+export const createObjects = (data) => {
 //// XLS profile sheets
   const sheets = UploadService.TYPES[upload.type].sheets;
   const uploadType = 'XLS_P';
-  const fixtures = {        
-           
-  }
+  let fixtures = {}
   // General  
   let sheet_mapping = Mapping[uploadType+':'+sheets[0]];
   let sheet = data[sheets[0]];
@@ -396,7 +394,7 @@ export const createFixtures = (data) => {
         console.log(e);
     } 
   }
-  
+  /*
   let keys = Object.keys(fixtures);
   let layer = fixtures['ProfileGeneral'];
   let pointsdata = [];
@@ -435,6 +433,7 @@ export const createFixtures = (data) => {
   }  
   */
   
-  //console.log ( JSON.stringify(fixtures) );
+  console.log ( JSON.stringify(fixtures) );
+} 
   ////GeoJSON......30 layer
  
