@@ -1,0 +1,31 @@
+video "A SIS USER JOURNEY" 10 min
+parte 1 : l'utente accede al sito, 
+	- la home page non contiene dati ....effettua il login
+parte 2 : ora li vede e ne consulta alcuni  
+	- mappa del suolo, vede i metadati 
+	- indicatore A ( vettoriale posizione e valore su area X ) vede i metadati
+	- indicatore A ( raster interpolazione su area X) e vede i metadati
+parte 3): accede ad una mappa
+        - accede ad una mappa che contiene i dataset di cui sopra e vede i metadati
+parte 4): non trova il dato che cerca: indicatore B per un'area Y 
+	- accede ad un dataset speciale: profili che contiene la sola posizione dei profili/sample, serve a mostrare la disponibilità del dato  (layer puntuale solo la posizione) 
+parte 5): accede ai documenti : 
+	come richiedere i dati (un how to pdf di cui mostrerò solo il titolo e la prima pagina) 
+parte 6): accede alla pagina del back office per le richiesete dei dati da una icona della pagina iniziale o dalla barra inferiore (devo aggiungerli): 
+	accede alla pagina con un form e le 5-W:
+parte 7) sezione Who: (implicita) mostra chi è l'utente e i gruppi a cui appartine. contiene un check box + un select che indica che è una richiesta del gruppo 'a'
+parte 8) sezione Why: campo testo che indica la motivazione della richiesta  
+parte 9) sezione What: lista per selezionare indicatore Y + check box per richiesta interpolazione (opzionale)
+parte 10) sezione Where: mostra una Mappa per la selezione di una AOI o l'upload di un poligono utente ) + la selezione profondità (opzinale.. alcuni indicatori non lo mostreranno) 
+parte 11) sezione "When": permette la selezione delle date per from e to (filtro temporale)
+parte 12) dopo la compilazione invia il form al server . 
+parte 13) Appare la lista con le sue vecchie richieste:
+	- vede che la richiesta è in elaborazione
+	- ne cancella una
+	- accede ad un'altra che è stata respinta e legge le motivazioni del datamanager
+	- vede che la richiesta è stata accettata e processata quindi vi accede
+parte 14) apre la richiesta vede il messaggio del datamanager e clicca sul link che lo porta al dataset
+parte 15) accede al dato e legge i metadati
+parte 16) accede ad una mappa che contiene il vettoriale, il raster interpolazione e la AOI
+
+FINE 

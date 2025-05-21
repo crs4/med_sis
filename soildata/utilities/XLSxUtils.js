@@ -394,7 +394,7 @@ export const createObjects = (data) => {
         console.log(e);
     } 
   }
-  /*
+  
   let keys = Object.keys(fixtures);
   let layer = fixtures['ProfileGeneral'];
   let pointsdata = [];
@@ -406,7 +406,7 @@ export const createObjects = (data) => {
   layer = fixtures['ProfileLayer'];
   for ( let k = 0; k < layer.length; k+=1 ){
     if ( layer[k] && layer[k]['profile'] ){
-      pointsdata[layer[k]['id']] = pointsdata[layer[k]['profile']]
+      pointsdata[layer[k]['id']] = [ pointsdata[layer[k]['profile']][0], pointsdata[layer[k]['profile']][1]]
     }
   }
 
@@ -429,11 +429,11 @@ export const createObjects = (data) => {
         points.push( point, 
                       keys[k][c],
                       { id: key } );
-        console.log ( JSON.stringify(fixtures[keys[k]]) );
-  }  
-  */
-  
-  console.log ( JSON.stringify(fixtures) );
-} 
+      }
+    }
+    let ftcl = featureCollection(points)
+    console.log ( keys[k] + ':' + JSON.stringify(ftcl) );
+  } 
   ////GeoJSON......30 layer
+} 
  

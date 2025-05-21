@@ -1690,7 +1690,7 @@ class LayerStructure(models.Model):
 
 class Indicators(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')    
-    name = models.TextField( primary_key=True, db_comment='Name') 
+    name = models.TextField( db_comment='Name') 
     creation = models.DateField( blank=True, null=True, db_comment='Date of the creation')
     conf = models.JSONField( db_comment='Configuration') 
     type = models.ForeignKey( Taxonomy, on_delete=models.SET_NULL, db_comment='Type of the indicator', related_name='indicators_type_set', blank=True, null=True)
@@ -1709,7 +1709,7 @@ class Indicators(models.Model):
 
 class GeoDataset(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')   
-    name = models.TextField( primary_key=True, db_comment='Name')
+    name = models.TextField( db_comment='Name')
     creation = models.DateField( db_comment='Date of the creation')
     update = models.DateField( blank=True, null=True, db_comment='Date of the last update') 
     conf = models.JSONField( db_comment='Configuration') 

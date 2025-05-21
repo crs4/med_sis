@@ -11,7 +11,7 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { useUser } from '../../../context/user';
 import { UploadService } from '../../../service/uploads';
-import { validateXLSFile } from '../../../utilities/XLSxUtils';
+import { createObjects, validateXLSFile } from '../../../utilities/XLSxUtils';
 import ReportTable from '../../../components/XLSxTable';
 import dynamic from "next/dynamic"
  
@@ -71,9 +71,7 @@ export default function Page()  {
   const createJSON = () => {
     if ( !data )
       return null;
-    console.log ( JSON.stringify(data) );
-    return JSON.stringify(data);
-    
+    else createObjects(data);
   }
 
   const createGeoJSON = ( data_sheet, data_report ) => {
