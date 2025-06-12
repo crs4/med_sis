@@ -163,6 +163,7 @@ if LDAP_ENABLED and "geonode_ldap" not in INSTALLED_APPS:
 # Add your specific LDAP configuration after this comment:
 # https://docs.geonode.org/en/master/advanced/contrib/#configuration
 INSTALLED_APPS += ("backoffice",)
+INSTALLED_APPS += ("django_extensions",)
 
 # REST_FRAMEWORK = {
 #    'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -182,6 +183,14 @@ DATABASES['backoffice'] = {
     'USER': os.getenv('BACKOFFICE_DATABASE_USER', 'backoffice_user'),
     'PASSWORD': os.getenv('BACKOFFICE_DATABASE_PASSWORD', 'backoffice_pwd'),
     'HOST': os.getenv('DATABASE_HOST', 'db'),
+    #'HOST': os.getenv('DATABASE_HOST', 'localhost'),
     'PORT': os.getenv('DATABASE_PORT', '5432'),
 }
 DATABASE_ROUTERS = ['s4m_catalogue.database_router.BackofficeRouter']
+
+#API_BASE_URL = 'http://localhost'
+
+# In settings.py o nel tuo file di configurazione
+API_BASE_URL = "http://django:8088"
+API_USERNAME = 'admin'
+API_PASSWORD = 'admin'

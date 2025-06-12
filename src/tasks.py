@@ -432,7 +432,7 @@ def fixtures(ctx):
     )
     ctx.run(
         f"python manage.py loaddata fixtures/backoffice_taxonomy.json \
---settings={_localsettings()}",
+--settings={_localsettings()}--database=backoffice" ,
         pty=True,
     )
     ctx.run(

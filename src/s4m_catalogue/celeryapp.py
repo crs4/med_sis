@@ -22,6 +22,8 @@ from __future__ import absolute_import
 
 import os
 from celery import Celery
+from django.conf import settings
+#from backoffice.tasks import process_xlsx_upload
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "s4m_catalogue.settings")
 
@@ -30,8 +32,12 @@ app = Celery("s4m_catalogue")
 # Using a string here means the worker will not have to
 # pickle the object when using Windows.
 app.config_from_object("django.conf:settings", namespace="CELERY")
-app.autodiscover_tasks()
+app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
+#app.autodiscover_tasks()
+
+# Registro esplicitamente il task
+#app.tasks.register(process_xlsx_upload)
 
 @app.task(bind=True, name="s4m_catalogue.debug_task", queue="default")
 def debug_task(self):
