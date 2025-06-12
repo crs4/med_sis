@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.gis.db import models as gis_models
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+from backoffice.decimal_truncation_mixin import DecimalTruncationMixin
 
 
 """ class ValidationErrorCollector:
@@ -78,19 +79,30 @@ class XLSxUpload(models.Model):
 
     UPLOAD_RESULTS = [
         ("UPLOADED" , "UPLOADED"),
+        ("IN_PROCESS" , "IN_PROCESS"),
         ("IMPORT_SUCCESS" , "IMPORT_SUCCESS"),
         ("IMPORT_WITH_ERROR" , "IMPORT_WITH_ERROR"),
         ("CRITICAL_ERROR" , "CRITICAL_ERROR"),
     ]
     type = models.ForeignKey(Taxonomy, on_delete=models.CASCADE, related_name='xlsx_upload_type', db_comment='Type of the upload')
     title = models.TextField(db_comment='sheet name')
-    report = models.JSONField( db_comment='Report of the upload')
+    report = models.JSONField( db_comment='Report of the upload', null=True, blank=True)
     data = models.JSONField( db_comment='Data uploaded')
     editor = models.TextField( db_comment='Owner of the upload', null=True, blank=True)
     date = models.DateTimeField( db_comment='Date of the upload')
     status = models.TextField( choices=UPLOAD_RESULTS, db_comment='Status of the upload' )
     
     objects = models.Manager().using('backoffice')
+
+    def start_processing(self):
+        """Avvia il processo di importazione dei dati"""
+        from .tasks import process_xlsx_upload
+        if self.status == "UPLOADED":
+            self.status = "IN_PROCESS"
+            self.save()
+            process_xlsx_upload.delay(self.id)
+            return True
+        return False
 
     class Meta:
         managed = True
@@ -325,7 +337,7 @@ class LandUse(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')
     land_use = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='landuse_land_use_set', blank=True, null=True)
     corine = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='landuse_corine_set', blank=True, null=True)
-    cultivated =  models.OneToOneField(Cultivated, on_delete=models.SET_DEFAULT, default=None, db_comment='Cultivated Land')
+    cultivated = models.OneToOneField(Cultivated, on_delete=models.SET_NULL, null=True, blank=True, db_comment='Cultivated Land')
     
     objects = models.Manager().using('backoffice')
 
@@ -347,7 +359,7 @@ class LandUse(models.Model):
 
 class NotCultivated(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')
-    landuse = models.ForeignKey(LandUse, on_delete=models.CASCADE, related_name='notcultivated_landuse_set')
+    landuse = models.ForeignKey(LandUse, on_delete=models.CASCADE, blank=True, null=True, related_name='notcultivated_landuse_set')
     veget1 = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='notcultivated_veget1_set', blank=True, null=True)
     veget2 = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='notcultivated_veget2_set', blank=True, null=True)
     veget3 = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='notcultivated_veget3_set', blank=True, null=True)
@@ -581,15 +593,15 @@ class ProfileGeneral(models.Model):
     cls_sys = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='profilegeenral_cls_sys_set', blank=True, null=True, db_comment='value from p_classification_system ')
     project = models.ForeignKey(Project, models.SET_NULL, blank=True, null=True, related_name='profilegeneral_project_set', db_comment='Survey/Project identifier')
     
-    coarsefragments =  models.OneToOneField(CoarseFragments, on_delete=models.SET_DEFAULT, default=None, db_comment='Coarse Fragments')
-    litterlayer =  models.OneToOneField(LitterLayer, on_delete=models.SET_DEFAULT, default=None, db_comment='Litter Layer')
-    landuse =  models.OneToOneField(LandUse, on_delete=models.SET_DEFAULT, default=None, db_comment='Land Use ')
-    surface =  models.OneToOneField(Surface, on_delete=models.SET_DEFAULT, default=None, db_comment='Surface ')
-    surfacecracks =  models.OneToOneField(SurfaceCracks, on_delete=models.SET_DEFAULT, default=None, db_comment='Surface cracks')
-    landformtopography = models.OneToOneField(LandformTopography, on_delete=models.SET_DEFAULT, default=None, db_comment='landform_topography')
-    climateandweather = models.OneToOneField(ClimateAndWeather, on_delete=models.SET_DEFAULT, default=None, db_comment='Climate weather')
-    genealogy =  models.OneToOneField(Genealogy, on_delete=models.SET_DEFAULT, default=None, db_comment='Profile Genealogy')
-    surfaceUnevenness =  models.OneToOneField(SurfaceUnevenness, on_delete=models.SET_DEFAULT, default=None, db_comment='Surface Unevenness')
+    coarsefragments =  models.OneToOneField(CoarseFragments, on_delete=models.SET_NULL, default=None, blank=True, null=True, db_comment='Coarse Fragments')
+    litterlayer =  models.OneToOneField(LitterLayer, on_delete=models.SET_NULL , default=None, blank=True, null=True, db_comment='Litter Layer')
+    landuse =  models.OneToOneField(LandUse, on_delete=models.SET_NULL, default=None, blank=True, null=True, db_comment='Land Use ')
+    surface =  models.OneToOneField(Surface, on_delete=models.SET_NULL, default=None, blank=True, null=True, db_comment='Surface ')
+    surfacecracks =  models.OneToOneField(SurfaceCracks, on_delete=models.SET_NULL, default=None, blank=True, null=True, db_comment='Surface cracks')
+    landformtopography = models.OneToOneField(LandformTopography, on_delete=models.SET_NULL, default=None, blank=True, null=True, db_comment='landform_topography')
+    climateandweather = models.OneToOneField(ClimateAndWeather, on_delete=models.SET_NULL, default=None, blank=True, null=True, db_comment='Climate weather')
+    genealogy =  models.OneToOneField(Genealogy, on_delete=models.SET_NULL, default=None, blank=True, null=True, db_comment='Profile Genealogy')
+    surfaceunevenness =  models.OneToOneField(SurfaceUnevenness, on_delete=models.SET_NULL, blank=True, null=True, default=None, db_comment='Surface Unevenness')
     
     ## profilelayer_profile_set ProfileLayer
 
@@ -608,7 +620,7 @@ class ProfileGeneral(models.Model):
 #########################################
 ## Lab Data 
 #########################################
-class LabData(models.Model):
+class LabData(DecimalTruncationMixin, models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')
     gravel = models.DecimalField(max_digits=40, decimal_places=6, validators=[validate_percentage],  db_comment='Gravel content (%)' , blank=True, null=True)
     cls_sys =  models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='labdata_cls_sys_set', db_comment='Classification system used for texture of fine earth', blank=True, null=True)
@@ -893,7 +905,7 @@ class LayerTextureColour(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')
     coars_text = models.DecimalField(max_digits=6, decimal_places=2, validators=[validate_percentage], blank=True, null=True, db_comment='the percentage (by exposed area) occupied by coarser-textured parts of any orientation (vertical, horizontal, inclined) having a width of ≥ 0.5 cm')
     v_tongues = models.DecimalField(max_digits=6, decimal_places=2, validators=[validate_percentage], blank=True, null=True, db_comment='the percentage (by exposed area) occupied by continuous vertical tongues of coarser-textured parts with a horizontal extension of ≥ 1 cm (if these tongues are absent, report 0%)')
-    depth = models.DecimalField(max_digits=6, decimal_places=2, validators=[validate_percentage], blank=True, null=True, db_comment='the depth range in cm, where these tongues cover ≥ 10% of the exposed area (if they extend across several layers, the length is only reported in the description of that layer, where they start at the layer’s upper limit).')
+    depth = models.DecimalField(max_digits=6, decimal_places=2, validators=[validate_percentage], blank=True, null=True, db_comment="the depth range in cm, where these tongues cover ≥ 10% of the exposed area (if they extend across several layers, the length is only reported in the description of that layer, where they start at the layer's upper limit).")
     h_area = models.DecimalField(max_digits=6, decimal_places=2, validators=[validate_percentage], blank=True, null=True, db_comment='In the middle of the layer, prepare a horizontal surface, 50 cm x 50 cm, and report the percentage (by horizontal area covered) of the coarser-textured parts.')
     
     objects = models.Manager().using('backoffice')
@@ -1572,12 +1584,12 @@ class LayerNonMatrixPore(models.Model):
  
 class ProfileLayer(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')
-    profile = models.ForeignKey(ProfileGeneral, on_delete=models.CASCADE, related_name='profilelayer_profile_set', db_comment='Foreign Key field: profile') 
-    design = models.TextField(db_comment='layer horizon designation')
-    number = models.SmallIntegerField(validators=[validate_positive], db_comment='layer order in profile')
+    profile = models.ForeignKey(ProfileGeneral, on_delete=models.CASCADE, related_name='profilelayer_profile_set', blank=True, null=True, db_comment='Foreign Key field: profile') 
+    design = models.TextField(blank=True, null=True, db_comment='layer horizon designation')
+    number = models.SmallIntegerField(validators=[validate_positive], blank=True, null=True, db_comment='layer order in profile')
     upper = models.DecimalField(max_digits=12, decimal_places=2, validators=[validate_positive], db_comment='upper depth in cm',blank=True, null=True)
     lower = models.DecimalField(max_digits=12, decimal_places=2, validators=[validate_positive], db_comment='lower depth in cm',blank=True, null=True)
-    lower_bound = models.TextField(db_comment='layer lower boundary ')
+    lower_bound = models.TextField(blank=True, null=True, db_comment='layer lower boundary ')
     hom_part = models.DecimalField(max_digits=6, decimal_places=2, validators=[validate_percentage], blank=True, null=True, db_comment='Described parts, by exposed area [%]')
     hom_alluvt = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='profilelayer_hom_alluvt_set', blank=True, null=True, db_comment='Layer composed of several strata of alluvial sediments or of tephra')
     wat_satur = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='profilelayer_wat_satur_set', blank=True, null=True, db_comment='Types of water saturation')
@@ -1590,7 +1602,7 @@ class ProfileLayer(models.Model):
     tex_subcls = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='profilelayer_tex_subcls_set', blank=True, null=True, db_comment='Texture subclass')
     struct_w_s = models.DecimalField(max_digits=6, decimal_places=2, validators=[validate_percentage], blank=True, null=True, db_comment='Structure Wedge-shaped aggregates tilted between ≥ 10° and ≤ 60° from the horizontal: abundance, by volume [%]')
     rh_value = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='profilelayer_rh_value_set', blank=True, null=True, db_comment='Rh Value')
-    weathering = models.DecimalField(max_digits=6, decimal_places=2, validators=[validate_percentage], db_comment='Initial weathering abundance')
+    weathering = models.DecimalField(max_digits=6, decimal_places=2, validators=[validate_percentage], blank=True, null=True, db_comment='Initial weathering abundance')
     sol_salts = models.DecimalField(max_digits=6, decimal_places=2, validators=[validate_percentage], blank=True, null=True, db_comment='ECSE [dS m-1m-1]')
     ph_value = models.DecimalField(max_digits=30, decimal_places=10, blank=True, null=True, db_comment='Potentiometric pH measurement - Measured value')
     ph_solution = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='profilelayer_phsolution_layers', blank=True, null=True, db_comment='Potentiometric pH measurement - Solution and mixing ratio')
@@ -1603,30 +1615,30 @@ class ProfileLayer(models.Model):
     parent_mat = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='profilelayer_parent_mat_layers', blank=True, null=True, db_comment='Report the parent material. Use the help of a geological map.')
     note = models.TextField(blank=True, null=True)
 
-    remnants = models.OneToOneField(LayerRemnants, on_delete=models.SET_DEFAULT, default=None, db_comment='Remnants of broken-up cemented layers')
-    coarsefragments = models.OneToOneField(LayerCoarseFragments, on_delete=models.SET_DEFAULT, default=None, db_comment='Coarse fragments')
-    artefacts = models.OneToOneField(LayerArtefacts, on_delete=models.SET_DEFAULT, default=None, db_comment='Artefacts')
-    cracks = models.OneToOneField(LayerCracks, on_delete=models.SET_DEFAULT, default=None, db_comment='Cracks')
-    stressfeatures = models.OneToOneField(LayerStressFeatures, on_delete=models.SET_DEFAULT, default=None, db_comment='Stress Features')
-    coatingsbridges = models.OneToOneField(LayerCoatingsBridges, on_delete=models.SET_DEFAULT, default=None, db_comment='LayerCoatingsBridges')
-    ribbonlikeaccumulations = models.OneToOneField(LayerRibbonlikeAccumulations, on_delete=models.SET_DEFAULT, default=None, db_comment='LayerRibbonlikeAccumulations')
-    carbonates = models.OneToOneField(LayerCarbonates, on_delete=models.SET_DEFAULT, default=None, db_comment='Section Layer Carbonates')
-    gypsum = models.OneToOneField(LayerGypsum, on_delete=models.SET_DEFAULT, default=None, db_comment='LayerGypsum')
-    secondarysilica = models.OneToOneField(LayerSecondarySilica, on_delete=models.SET_DEFAULT, default=None, db_comment='LayerSecondarySilica')
-    consistence = models.OneToOneField(LayerConsistence, on_delete=models.SET_DEFAULT, default=None, db_comment='LayerConsistence')
-    surfacecrusts = models.OneToOneField(LayerSurfaceCrusts, on_delete=models.SET_DEFAULT, default=None, db_comment='LayerSurfaceCrusts')   
-    permafrost =  models.OneToOneField(LayerPermafrostFeatures, on_delete=models.SET_DEFAULT, default=None, db_comment='LayerPermafrostFeatures')   
-    organiccarbon =  models.OneToOneField(LayerOrganicCarbon, on_delete=models.SET_DEFAULT, default=None, db_comment='LayerOrganicCarbon')   
-    roots =  models.OneToOneField(LayerRoots, on_delete=models.SET_DEFAULT, default=None, db_comment='LayerRoots')   
-    animalactivity  =  models.OneToOneField(LayerAnimalActivity, on_delete=models.SET_DEFAULT, default=None, db_comment='LayerAnimalActivity')   
-    humanalterations =  models.OneToOneField(LayerHumanAlterations, on_delete=models.SET_DEFAULT, default=None, db_comment='LayerHumanAlterations')   
-    degreedecomposition =  models.OneToOneField(LayerDegreeDecomposition, on_delete=models.SET_DEFAULT, default=None, db_comment='LayerDegreeDecomposition')   
-    nonmatrixpore = models.OneToOneField(LayerNonMatrixPore, on_delete=models.SET_DEFAULT, default=None, db_comment='LayerNonMatrixPore')   
-    labdata =  models.OneToOneField(LabData, on_delete=models.SET_DEFAULT, default=None, db_comment='Layer Laboratory data')
-    matrixcolours = models.OneToOneField(LayerMatrixColours, on_delete=models.SET_DEFAULT, default=None, db_comment='Matrix colour')   
-    texturecolour = models.OneToOneField(LayerTextureColour, on_delete=models.SET_DEFAULT, default=None, db_comment='Combinations of darker-coloured finer-textured and lighter-coloured coarser-textured parts')
-    lithogenicvariegates = models.OneToOneField(LayerLithogenicVariegates, on_delete=models.SET_DEFAULT, default=None, db_comment='LayerLithogenicVariegates')
-    redoximorphicfeatures = models.OneToOneField(LayerRedoximorphicFeatures, on_delete=models.SET_DEFAULT, default=None, db_comment='LayerRedoximorphicFeatures')
+    remnants = models.OneToOneField(LayerRemnants, on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_comment='Remnants of broken-up cemented layers')
+    coarsefragments = models.OneToOneField(LayerCoarseFragments, on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_comment='Coarse fragments')
+    artefacts = models.OneToOneField(LayerArtefacts, on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_comment='Artefacts')
+    cracks = models.OneToOneField(LayerCracks, on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_comment='Cracks')
+    stressfeatures = models.OneToOneField(LayerStressFeatures, on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_comment='Stress Features')
+    coatingsbridges = models.OneToOneField(LayerCoatingsBridges, on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_comment='LayerCoatingsBridges')
+    ribbonlikeaccumulations = models.OneToOneField(LayerRibbonlikeAccumulations, on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_comment='LayerRibbonlikeAccumulations')
+    carbonates = models.OneToOneField(LayerCarbonates, on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_comment='Section Layer Carbonates')
+    gypsum = models.OneToOneField(LayerGypsum, on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_comment='LayerGypsum')
+    secondarysilica = models.OneToOneField(LayerSecondarySilica, on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_comment='LayerSecondarySilica')
+    consistence = models.OneToOneField(LayerConsistence, on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_comment='LayerConsistence')
+    surfacecrusts = models.OneToOneField(LayerSurfaceCrusts, on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_comment='LayerSurfaceCrusts')   
+    permafrost =  models.OneToOneField(LayerPermafrostFeatures, on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_comment='LayerPermafrostFeatures')   
+    organiccarbon =  models.OneToOneField(LayerOrganicCarbon, on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_comment='LayerOrganicCarbon')   
+    roots =  models.OneToOneField(LayerRoots, on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_comment='LayerRoots')   
+    animalactivity  =  models.OneToOneField(LayerAnimalActivity, on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_comment='LayerAnimalActivity')   
+    humanalterations =  models.OneToOneField(LayerHumanAlterations, on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_comment='LayerHumanAlterations')   
+    degreedecomposition =  models.OneToOneField(LayerDegreeDecomposition, on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_comment='LayerDegreeDecomposition')   
+    nonmatrixpore = models.OneToOneField(LayerNonMatrixPore, on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_comment='LayerNonMatrixPore')   
+    labdata =  models.OneToOneField(LabData, on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_comment='Layer Laboratory data')
+    matrixcolours = models.OneToOneField(LayerMatrixColours, on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_comment='Matrix colour')   
+    texturecolour = models.OneToOneField(LayerTextureColour, on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_comment='Combinations of darker-coloured finer-textured and lighter-coloured coarser-textured parts')
+    lithogenicvariegates = models.OneToOneField(LayerLithogenicVariegates, on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_comment='LayerLithogenicVariegates')
+    redoximorphicfeatures = models.OneToOneField(LayerRedoximorphicFeatures, on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_comment='LayerRedoximorphicFeatures')
     
     ## layerstructure_layer_set LayerStructure
 
@@ -1650,7 +1662,7 @@ class ProfileLayer(models.Model):
 
 class LayerStructure(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')  
-    layer = models.ForeignKey(ProfileLayer, on_delete=models.CASCADE, related_name='layerstructure_layer_set', db_comment='Profile Layer' )
+    layer = models.ForeignKey(ProfileLayer, on_delete=models.CASCADE, related_name='layerstructure_layer_set', db_comment='Profile Layer', blank=True, null=True)
     level = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='layerstructure_level_set', blank=True, null=True)
     type = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='layerstructure_type_set', blank=True, null=True)
     grade = models.ForeignKey(Taxonomy, on_delete=models.SET_NULL, related_name='layerstructure_grade_set', blank=True, null=True)
@@ -1666,7 +1678,14 @@ class LayerStructure(models.Model):
     class Meta:
         managed = True
         db_table = 'layer_structure_types'
-        unique_together = (('layer', 'level'),)
+        constraints = [
+            models.UniqueConstraint(
+                fields=['layer', 'level'],
+                condition=models.Q(level__isnull=False),
+                name='unique_layer_level_not_null'
+            )
+        ]
+        #unique_together = (('layer', 'level'),)
         permissions = (
             ('access_backoffice', 'Can access backoffice data'),
             ('view_backoffice', 'Can view backoffice data'),
