@@ -79,3 +79,4 @@ src/report.json
 src/backoffice/report.json
 src/backoffice/api/__pycache__
 src/fixtures/backoffice_taxonomy_new.json
+src/celerybeat-schedule
