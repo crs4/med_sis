@@ -190,7 +190,7 @@ class GenealogyViewSet(viewsets.ModelViewSet):
         # Filtro per codice
         id = self.request.query_params.get('id', None)
         if id is not None:
-            queryset = queryset.filter(code=code)
+            queryset = queryset.filter(id=id)
             
         # Filtro per date
         _from = self.request.query_params.get('from', None)
@@ -513,7 +513,7 @@ class NotCultivatedViewSet(viewsets.ModelViewSet):
     """
     queryset = NotCultivated.objects.all()
     serializer_class = NotCultivatedSerializer
-    permission_classes = [permissions.IsAdminUser ]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         """

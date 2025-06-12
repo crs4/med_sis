@@ -1,5 +1,6 @@
-from django.urls import path, include
+from django.urls import path, re_path, include
 from rest_framework.routers import DefaultRouter
+from . import views
 from .views import *
 
 
@@ -10,7 +11,7 @@ router.register(r'projects', ProjectViewSet)
 router.register(r'genealogies', GenealogyViewSet)
 router.register(r'landform-topographies', LandformTopographyViewSet)
 router.register(r'coarse-fragments', CoarseFragmentsViewSet)
-router.register(r'climate-weather', ClimateAndWeatherViewSet)
+router.register(r'climate-and-weathers', ClimateAndWeatherViewSet)
 router.register(r'cultivated', CultivatedViewSet)
 router.register(r'land-uses', LandUseViewSet)
 router.register(r'not-cultivated', NotCultivatedViewSet)
@@ -22,7 +23,7 @@ router.register(r'xlsx-sheet-conf', XSLxSheetConfViewSet)
 router.register(r'xlsx-uploads', XLSxUploadViewSet)
 router.register(r'xlsx-mapping', XSLxMappingViewSet)
 router.register(r'profile-layers', ProfileLayerViewSet)
-router.register(r'labdata', LabDataViewSet)
+router.register(r'lab-data', LabDataViewSet)
 router.register(r'layer-remnants', LayerRemnantsViewSet )
 router.register(r'layer-coarse-fragments', LayerCoarseFragmentsViewSet)
 router.register(r'layer-artefacts', LayerArtefactsViewSet)
@@ -46,7 +47,7 @@ router.register(r'layer-roots', LayerRootsViewSet)
 router.register(r'layer-animal-activities', LayerAnimalActivityViewSet)
 router.register(r'layer-human-alterations', LayerHumanAlterationsViewSet)
 router.register(r'layer-degree-decomposition', LayerDegreeDecompositionViewSet)
-router.register(r'layer-non-matrix-pore', LayerNonMatrixPoreViewSet)
+router.register(r'layer-non-matrix-pores', LayerNonMatrixPoreViewSet)
 router.register(r'layer-structures', LayerStructureViewSet)
 router.register(r'indicators', IndicatorsViewSet)
 router.register(r'geo-datasets', GeoDatasetViewSet)
@@ -54,4 +55,12 @@ router.register(r'geo-datasets', GeoDatasetViewSet)
  
 urlpatterns = [
     path('', include(router.urls)),
+    re_path(r'^taxonomies/(?P<pk>[^/]+)/$', 
+            views.TaxonomyViewSet.as_view({
+                'get': 'retrieve',
+                'put': 'update',
+                'patch': 'partial_update',
+                'delete': 'destroy'
+            }), 
+            name='taxonomy-detail-with-dots'),
 ]
