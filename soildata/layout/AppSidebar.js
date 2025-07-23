@@ -62,9 +62,9 @@ const AppSidebar = (props) => {
         <>
             <div ref={props.sidebarRef} className="layout-sidebar" onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
                 <div className="sidebar-header">
-                    <Link href="/soildata" className="logo">             
+                    <Link href="/" className="logo">             
                         <img id="logo-horizontal" className="horizontal-logo" src={`/soildata/img/logo-${layoutConfig.menuTheme === 'white' || layoutConfig.menuTheme === 'orange' ? 'dark' : 'white'}.png`} alt="s4m" />
-                        <span className="app-name">S4M BackOffice</span>
+                        <h5 className="app-name">S4M BackOffice</h5>
                     </Link>
                     <button className="layout-sidebar-anchor p-link" type="button" onClick={anchor}></button>
                 </div>

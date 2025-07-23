@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from rest_framework_gis.serializers import GeoFeatureModelSerializer, GeometrySerializerMethodField
 from backoffice.models import *
 from django.contrib.gis.geos import Point
 from django.core.exceptions import ValidationError
@@ -11,8 +10,9 @@ from datetime import datetime
 from rest_framework import serializers
 from decimal import Decimal, ROUND_DOWN
 
-
-
+###########################
+## Mixin
+########################### 
 class DecimalTruncationSerializerMixin:
     """
     Mixin per serializer che tronca automaticamente i campi decimali
@@ -73,9 +73,6 @@ class DecimalTruncationSerializerMixin:
         
         # Chiama il to_internal_value del parent con i dati troncati
         return super().to_internal_value(truncated_data)
-
-
-
 
 class DateFormatSerializerMixin:
     """
@@ -152,25 +149,18 @@ class DateFormatSerializerMixin:
                 pass
         
         return value
-
-class XSLxSheetConfSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = XSLxSheetConf
-        fields = '__all__'
-        #read_only_fields = ('code',)  # Commentato per rendere code scrivibile
-
-class XSLxMappingSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = XSLxMapping
-        fields = '__all__'
-        #read_only_fields = ('code',)  # Commentato per rendere code scrivibile
-
+    
+###########################
+## XLSx Uploads
+###########################      
+    
 class XLSxUploadSerializer(serializers.ModelSerializer):
     class Meta:
         model = XLSxUpload
         fields = '__all__'
-        #read_only_fields = ('code',)  # Commentato per rendere code scrivibile
-
+        read_only_fields = ('id',)  
+    
+    
     def create(self, validated_data):
         """
         Override del metodo create per avviare automaticamente l'elaborazione
@@ -180,52 +170,28 @@ class XLSxUploadSerializer(serializers.ModelSerializer):
         instance = super().create(validated_data)
         instance.start_processing()
         return instance
-
-class ProfileGeneralSerializer(DecimalTruncationSerializerMixin, DateFormatSerializerMixin, serializers.ModelSerializer):
-        
-    class Meta:
-        model = ProfileGeneral
-        fields = '__all__'
-
-"""
-class ProfileGeneralListSerializer(GeoFeatureModelSerializer):
-    point = GeometrySerializerMethodField()
-
-    def get_point(self, obj):
-        return Point(obj.lon_wgs84, obj.lat_wgs84)
-        
-    class Meta:
-        model = ProfileGeneral
-        geo_field = "point"
-        auto_bbox = True
-        fields = ( 'code', 'location', 'lat_wgs84', 'lon_wgs84',
-                    'date', 'gps', 'surveyors','elev_m_asl','elev_dem',
-                    'survey_m','notes','project','cls_sys' )
-
-"""
-      
-class TaxonomySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Taxonomy
-        fields = '__all__'
+   
+###########################
+# Profile\Samples Genealogy
+###########################
 
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = '__all__'
-        # read_only_fields = ('code',)  # Commentato per rendere code scrivibile
-
-class GenealogySerializer(serializers.ModelSerializer):
+        
+###########################
+# Profile General
+###########################
+class ProfileGeneralSerializer(DecimalTruncationSerializerMixin, DateFormatSerializerMixin, serializers.ModelSerializer):
     class Meta:
-        model = Genealogy
+        model = ProfileGeneral
         fields = '__all__'
-        #read_only_fields = ('id',)  # Il codice è generato automaticamente
 
 class LandformTopographySerializer(serializers.ModelSerializer):
     class Meta:
         model = LandformTopography
         fields = '__all__'
-        #read_only_fields = ('id',)
     
     def create(self, validated_data):
         """
@@ -258,15 +224,13 @@ class LandformTopographySerializer(serializers.ModelSerializer):
 class ClimateAndWeatherSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClimateAndWeather
-        fields = '__all__'
-        #read_only_fields = ('id',)
+        fields = '__all__'     
 
 class SurfaceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Surface
         fields = '__all__'
-        #read_only_fields = ('id',)
-
+        
     def create(self, validated_data):
         """
         Override del metodo create per catturare ValidationError dal modello
@@ -294,87 +258,12 @@ class SurfaceSerializer(serializers.ModelSerializer):
             return instance
         except ValidationError as e:
             raise serializers.ValidationError(e.message_dict)        
-    """ 
-    def validate(self, data):
-        errors = {}
-        
-        # Validazione dei campi numerici
-        for field_name in ['surface_crusts_area', 'outcrops_area_covered', 'desert_ventifacts', 'desert_varnish']:
-            value = data.get(field_name)
-            if value is not None:
-                try:
-                    if value < 0 or value > 100:
-                        errors[field_name] = [_('Il campo %(field)s deve essere compreso tra 0 e 100') % {'field': field_name}]
-                except (TypeError, ValueError):
-                    errors[field_name] = [_('Il campo %(field)s deve essere un numero valido') % {'field': field_name}]
-
-        # Validazione del campo ground_water_depth
-        value = data.get('ground_water_depth')
-        if value is not None:
-            try:
-                if value < 0:
-                    errors['ground_water_depth'] = [_('Il campo ground_water_depth deve essere positivo')]
-            except (TypeError, ValueError):
-                errors['ground_water_depth'] = [_('Il campo ground_water_depth deve essere un numero valido')]
-
-        # Validazione dei campi ForeignKey
-        taxonomy_validations = {
-            'patterned_ground_form': 'p_patterned_ground_form.',
-            'technical_surface_alteration': 'p_technical_surface_alteration.',
-            'bedrock_lithology': 'l_p_parent_material.',
-            'water_above_surface': 'p_water_above_surface.',
-            'water_drainage_condition': 'p_drainage_condition.',
-            'water_repellence_type': 'p_water_repellence.'
-        }
-
-        for field_name, prefix in taxonomy_validations.items():
-            value = data.get(field_name)
-            if value is not None and str(value).startswith(prefix):
-                if field_name not in errors:
-                    errors[field_name] = []
-                errors[field_name].append(_('Classificazione errata per il campo %(field)s') % {'field': field_name})
-
-        if errors:
-            raise serializers.ValidationError(errors)
-        
-        return data
-
-    def to_internal_value(self, data):
-        try:
-            return super().to_internal_value(data)
-        except serializers.ValidationError as e:
-            if hasattr(e, 'detail'):
-                raise serializers.ValidationError(e.detail)
-            raise e """
-
+    
 class LandUseSerializer(serializers.ModelSerializer):
     class Meta:
         model = LandUse
         fields = '__all__'
-        #read_only_fields = ('id',)
-    """
-    def validate(self, data):
-        errors = {}
         
-        # Validazione dei campi ForeignKey
-        taxonomy_validations = {
-            'land_use': 'p_land_use.',
-            'corine': 'p_corine.'
-        }
-
-        for field_name, prefix in taxonomy_validations.items():
-            value = data.get(field_name)
-            if value is not None and str(value).startswith(prefix):
-                if field_name not in errors:
-                    errors[field_name] = []
-                errors[field_name].append(_('Classificazione errata per il campo %(field)s') % {'field': field_name})
-
-        if errors:
-            raise serializers.ValidationError(errors)
-        
-        return data
-    """    
-
     def create(self, validated_data):
         try:
             instance = LandUse(**validated_data)
@@ -398,57 +287,7 @@ class CultivatedSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cultivated
         fields = '__all__'
-        #read_only_fields = ('id',)
-    """
-    def validate(self, data):
-        errors = {}
         
-        # Validazione dei campi ForeignKey
-        taxonomy_validations = {
-            'cultivation_type': 'p_cultivation_type.',
-            'spec_prod_tech1': 'p_productivity_techniques.',
-            'spec_prod_tech2': 'p_productivity_techniques.',
-            'spec_prod_tech3': 'p_productivity_techniques.'
-        }
-
-        for field_name, prefix in taxonomy_validations.items():
-            value = data.get(field_name)
-            if value is not None and str(value).startswith(prefix):
-                if field_name not in errors:
-                    errors[field_name] = []
-                errors[field_name].append(_('Classificazione errata per il campo %(field)s') % {'field': field_name})
-
-        # Validazione dei campi numerici
-        if 'cultivation_cover_by_area' in data:
-            try:
-                value = data['cultivation_cover_by_area']
-                if value is not None and (value < 0 or value > 100):
-                    errors['cultivation_cover_by_area'] = [_('Il campo deve essere compreso tra 0 e 100')]
-            except (TypeError, ValueError):
-                errors['cultivation_cover_by_area'] = [_('Il campo deve essere un numero valido')]
-
-        # Validazione delle regole di business
-        if data.get('cultivation_cessation') is not None:
-            if data.get('last_species1') is None or data.get('actual_species1') is not None:
-                errors['cultivation_cessation'] = [_('cultivation_cessation error no dominant last specie present or actual dominant specie.')]
-
-        if data.get('last_species1') is not None:
-            if data.get('cultivation_cessation') is None or data.get('actual_species1') is not None:
-                errors['last_species1'] = [_('last_species1 error no cultivation_cessation or actual specie present.')]
-
-        if data.get('last_species2') is not None:
-            if data.get('last_species1') is None or data.get('actual_species2') is not None:
-                errors['last_species2'] = [_('last_species2 error no dominant last specie or second actual specie present.')]
-
-        if data.get('last_species3') is not None:
-            if data.get('last_species2') is None or data.get('actual_species3') is not None:
-                errors['last_species3'] = [_('last_species3 error no second last specie or third actual specie present.')]
-
-        if errors:
-            raise serializers.ValidationError(errors)
-        
-        return data
-    """
     def create(self, validated_data):
         try:
             instance = Cultivated(**validated_data)
@@ -472,207 +311,180 @@ class NotCultivatedSerializer(serializers.ModelSerializer):
     class Meta:
         model = NotCultivated
         fields = '__all__'
-        #read_only_fields = ('id',)
-        def create(self, validated_data):
-            try:
-                instance = NotCultivated(**validated_data)
-                instance.full_clean()
-                instance.save()
-                return instance
-            except ValidationError as e:
-                raise serializers.ValidationError(e.message_dict)
+    def create(self, validated_data):
+        try:
+            instance = NotCultivated(**validated_data)
+            instance.full_clean()
+            instance.save()
+            return instance
+        except ValidationError as e:
+            raise serializers.ValidationError(e.message_dict)
 
-        def update(self, instance, validated_data):
-            try:
-                for attr, value in validated_data.items():
-                    setattr(instance, attr, value)
-                instance.full_clean()
-                instance.save()
-                return instance
-            except ValidationError as e:
-                raise serializers.ValidationError(e.message_dict)    
-
-class LabDataSerializer(DecimalTruncationSerializerMixin, DateFormatSerializerMixin, serializers.ModelSerializer):
-    class Meta:
-        model = LabData
-        fields = '__all__'
-        #read_only_fields = ('id',)
+    def update(self, instance, validated_data):
+        try:
+            for attr, value in validated_data.items():
+                setattr(instance, attr, value)
+            instance.full_clean()
+            instance.save()
+            return instance
+        except ValidationError as e:
+            raise serializers.ValidationError(e.message_dict)
 
 class LitterLayerSerializer(serializers.ModelSerializer):
     class Meta:
         model = LitterLayer
         fields = '__all__'
-        #read_only_fields = ('id',)
 
 class SurfaceCracksSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = SurfaceCracks
         fields = '__all__'
-        ##read_only_fields = ('id',)
-
+       
 class CoarseFragmentsSerializer(serializers.ModelSerializer):
     class Meta:
         model = CoarseFragments
         fields = '__all__'
-        #read_only_fields = ('code',)
-
+        
 class SurfaceUnevennessSerializer(serializers.ModelSerializer):
     class Meta:
         model = SurfaceUnevenness
         fields = '__all__'
-        #read_only_fields = ('id',)
+       
+###########################
+## Lab Data 
+###########################
+class LabDataSerializer(DecimalTruncationSerializerMixin, DateFormatSerializerMixin, serializers.ModelSerializer):
+    class Meta:
+        model = LabData
+        fields = '__all__'
+
+###########################
+# Profile Layer
+###########################
 
 class ProfileLayerSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProfileLayer
         fields = '__all__'
-        #read_only_fields = ('id',)
 
 class LayerRemnantsSerializer(serializers.ModelSerializer):
     class Meta:
         model = LayerRemnants 
         fields = '__all__'
-        #read_only_fields = ('id',)  # Il codice è generato automaticamente
-
-class  LayerCoarseFragmentsSerializer(serializers.ModelSerializer):
+    
+class LayerCoarseFragmentsSerializer(serializers.ModelSerializer):
     class Meta:
         model = LayerCoarseFragments 
         fields = '__all__'
-        #read_only_fields = ('id',)  # Il codice è generato automaticamente
-
+        
 class LayerArtefactsSerializer(serializers.ModelSerializer):
     class Meta:
         model = LayerArtefacts 
         fields = '__all__'
-        #read_only_fields = ('id',)  # Il codice è generato automaticamente
-
-class  LayerCracksSerializer(serializers.ModelSerializer):
+    
+class LayerCracksSerializer(serializers.ModelSerializer):
     class Meta:
         model = LayerCracks
         fields = '__all__'
-        #read_only_fields = ('id',)  # Il codice è generato automaticamente
-
+        
 class LayerStressFeaturesSerializer(serializers.ModelSerializer):
     class Meta:
         model = LayerStressFeatures 
         fields = '__all__'
-        #read_only_fields = ('id',)  # Il codice è generato automaticamente
-
+        
 class LayerMatrixColoursSerializer(serializers.ModelSerializer):
     class Meta:
         model = LayerMatrixColours 
         fields = '__all__'
-        #read_only_fields = ('id',)  # Il codice è generato automaticamente
-
-class LayerTextureColourSerializer(serializers.ModelSerializer):
+      
+class LayerCoarserTexturedSerializer(serializers.ModelSerializer):
     class Meta:
-        model = LayerTextureColour 
+        model = LayerCoarserTextured 
         fields = '__all__'
-        #read_only_fields = ('id',)  # Il codice è generato automaticamente
-
-class  LayerRedoximorphicFeaturesSerializer(serializers.ModelSerializer):
+        
+class LayerRedoximorphicFeaturesSerializer(serializers.ModelSerializer):
     class Meta:
         model = LayerRedoximorphicFeatures 
         fields = '__all__'
-        #read_only_fields = ('id',)  # Il codice è generato automaticamente
 
-class  LayerLithogenicVariegatesSerializer(serializers.ModelSerializer):
+class LayerLithogenicVariegatesSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = LayerLithogenicVariegates
         fields = '__all__'
-        #read_only_fields = ('id',)  # Il codice è generato automaticamente
-
+        
 class LayerRedoximorphicColourSerializer(serializers.ModelSerializer):
     class Meta:
         model = LayerRedoximorphicColour 
         fields = '__all__'
-        #read_only_fields = ('id',)  # Il codice è generato automaticamente
 
 class LayerCoatingsBridgesSerializer(serializers.ModelSerializer):
     class Meta:
         model = LayerCoatingsBridges 
         fields = '__all__'
-        #read_only_fields = ('id',)  # Il codice è generato automaticamente
-
-class  LayerRibbonlikeAccumulationsSerializer(serializers.ModelSerializer):
+    
+class LayerRibbonlikeAccumulationsSerializer(serializers.ModelSerializer):
     class Meta:
         model = LayerRibbonlikeAccumulations 
         fields = '__all__'
-        #read_only_fields = ('id',)  # Il codice è generato automaticamente
-
-class  LayerCarbonatesSerializer(serializers.ModelSerializer):
+    
+class LayerCarbonatesSerializer(serializers.ModelSerializer):
     class Meta: 
         model = LayerCarbonates 
         fields = '__all__'
-        #read_only_fields = ('id',)  # Il codice è generato automaticamente
-
-class  LayerGypsumSerializer(serializers.ModelSerializer):
+        
+class LayerGypsumSerializer(serializers.ModelSerializer):
     class Meta:
         model = LayerGypsum
         fields = '__all__'
-        #read_only_fields = ('id',)  # Il codice è generato automaticamente
 
 class LayerSecondarySilicaSerializer(serializers.ModelSerializer):
     class Meta:
         model = LayerSecondarySilica 
         fields = '__all__'
-        #read_only_fields = ('id',)  # Il codice è generato automaticamente
-
+    
 class LayerConsistenceSerializer(serializers.ModelSerializer):
     class Meta:
         model = LayerConsistence 
         fields = '__all__'
-        #read_only_fields = ('id',)  # Il codice è generato automaticamente
-
-class  LayerSurfaceCrustsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = LayerSurfaceCrusts 
-        fields = '__all__'
-        #read_only_fields = ('id',)  # Il codice è generato automaticamente
-
-class  LayerPermafrostFeaturesSerializer(serializers.ModelSerializer):
+  
+class LayerPermafrostFeaturesSerializer(serializers.ModelSerializer):
     class Meta:
         model = LayerPermafrostFeatures 
         fields = '__all__'
-        #read_only_fields = ('id',)  # Il codice è generato automaticamente
-
-class  LayerOrganicCarbonSerializer(serializers.ModelSerializer):
+        
+class LayerOrganicCarbonSerializer(serializers.ModelSerializer):
     class Meta:
         model = LayerOrganicCarbon
         fields = '__all__'
-        #read_only_fields = ('id',)  # Il codice è generato automaticamente
-
+    
 class LayerRootsSerializer(serializers.ModelSerializer):
     class Meta:
         model = LayerRoots 
         fields = '__all__'
-        #read_only_fields = ('id',)  # Il codice è generato automaticamente
-
+    
 class LayerAnimalActivitySerializer(serializers.ModelSerializer):
     class Meta:
         model = LayerAnimalActivity 
         fields = '__all__'
-        #read_only_fields = ('id',)  # Il codice è generato automaticamente
-
+    
 class  LayerHumanAlterationsSerializer(serializers.ModelSerializer):
     class Meta:
         model = LayerHumanAlterations 
         fields = '__all__'
-        #read_only_fields = ('id',)  # Il codice è generato automaticamente
-
+    
 class  LayerDegreeDecompositionSerializer(serializers.ModelSerializer):
     class Meta:
         model = LayerDegreeDecomposition 
         fields = '__all__'
-        #read_only_fields = ('id',)  # Il codice è generato automaticamente
-
+    
 class  LayerNonMatrixPoreSerializer(serializers.ModelSerializer):
     class Meta:
         model = LayerNonMatrixPore
         fields = '__all__'
-        #read_only_fields = ('id',)  # Il codice è generato automaticamente
-
-class LayerStructureSerializer(serializers.ModelSerializer):
+        
+class  LayerStructureSerializer(serializers.ModelSerializer):
     class Meta:
         model = LayerStructure 
         fields = '__all__'
@@ -684,7 +496,7 @@ class LayerStructureSerializer(serializers.ModelSerializer):
         layer = data.get('layer')
         level = data.get('level')
         
-        # Controlla se esiste già una combinazione layer-level (quando level non è None)
+        # Controlla se esiste già una combinazione profile-layer-level (quando level non è None)
         if level is not None:
             # Esclude l'istanza corrente se stiamo aggiornando
             queryset = LayerStructure.objects.filter(layer=layer, level=level)
@@ -693,8 +505,12 @@ class LayerStructureSerializer(serializers.ModelSerializer):
             
             if queryset.exists():
                 raise serializers.ValidationError({
-                    'layer': f"Esiste già una struttura con layer '{layer}' e level '{level}'"
+                    'layer': f"There is already a structure at level '{level}' in layer '{layer}' "
                 })
+        else:
+            raise serializers.ValidationError({
+                'level': f"level is a mandatory field"
+            })        
         
         return data
     
@@ -720,14 +536,412 @@ class LayerStructureSerializer(serializers.ModelSerializer):
             })        
         #read_only_fields = ('id',)  # Il codice è generato automaticamente
 
-class IndicatorsSerializer(serializers.ModelSerializer):
+class LayerSurfaceCrustsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Indicators 
+        model = LayerSurfaceCrusts 
         fields = '__all__'
+
+
+#########################################
+## Indicators 
+#########################################
+
+class IndicatorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Indicator  
+        fields = '__all__'
+        read_only_fields = ('id',)  
+
+#########################################
+## Requests 
+#########################################
+
+class RequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Request 
+        fields = '__all__'
+        read_only_fields = ('id',)  
+
+###########################
+# Sample General
+###########################
+class SampleGeneralSerializer(DecimalTruncationSerializerMixin, DateFormatSerializerMixin, serializers.ModelSerializer):
+    class Meta:
+        model = SampleGeneral
+        fields = '__all__'
+
+class SampleLandformTopographySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleLandformTopography
+        fields = '__all__'
+    
+    def create(self, validated_data):
+        """
+        Override del metodo create per catturare ValidationError dal modello
+        """
+        try:
+            instance = SampleLandformTopography(**validated_data)
+            instance.full_clean()
+            instance.save()
+            return instance
+        except ValidationError as e:
+            raise serializers.ValidationError(e.message_dict)
+
+    def update(self, instance, validated_data):
+        """
+        Override del metodo update per catturare ValidationError dal modello
+        """
+        try:
+            # Aggiorniamo i campi dell'istanza
+            for attr, value in validated_data.items():
+                setattr(instance, attr, value)
+            
+            # Validiamo prima di salvare
+            instance.full_clean()
+            instance.save()
+            return instance
+        except ValidationError as e:
+            raise serializers.ValidationError(e.message_dict)
+ 
+class SampleClimateAndWeatherSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleClimateAndWeather
+        fields = '__all__'     
+
+class SampleSurfaceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleSurface
+        fields = '__all__'
+        
+    def create(self, validated_data):
+        """
+        Override del metodo create per catturare ValidationError dal modello
+        """
+        try:
+            instance = SampleSurface(**validated_data)
+            instance.full_clean()
+            instance.save()
+            return instance
+        except ValidationError as e:
+            raise serializers.ValidationError(e.message_dict)
+
+    def update(self, instance, validated_data):
+        """
+        Override del metodo update per catturare ValidationError dal modello
+        """
+        try:
+            # Aggiorniamo i campi dell'istanza
+            for attr, value in validated_data.items():
+                setattr(instance, attr, value)
+            
+            # Validiamo prima di salvare
+            instance.full_clean()
+            instance.save()
+            return instance
+        except ValidationError as e:
+            raise serializers.ValidationError(e.message_dict)        
+    
+class SampleLandUseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleLandUse
+        fields = '__all__'
+        
+    def create(self, validated_data):
+        try:
+            instance = SampleLandUse(**validated_data)
+            instance.full_clean()
+            instance.save()
+            return instance
+        except ValidationError as e:
+            raise serializers.ValidationError(e.message_dict)
+
+    def update(self, instance, validated_data):
+        try:
+            for attr, value in validated_data.items():
+                setattr(instance, attr, value)
+            instance.full_clean()
+            instance.save()
+            return instance
+        except ValidationError as e:
+            raise serializers.ValidationError(e.message_dict)           
+
+class SampleCultivatedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleCultivated
+        fields = '__all__'
+        
+    def create(self, validated_data):
+        try:
+            instance = SampleCultivated(**validated_data)
+            instance.full_clean()
+            instance.save()
+            return instance
+        except ValidationError as e:
+            raise serializers.ValidationError(e.message_dict)
+
+    def update(self, instance, validated_data):
+        try:
+            for attr, value in validated_data.items():
+                setattr(instance, attr, value)
+            instance.full_clean()
+            instance.save()
+            return instance
+        except ValidationError as e:
+            raise serializers.ValidationError(e.message_dict)
+        
+class SampleNotCultivatedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleNotCultivated
+        fields = '__all__'
+    def create(self, validated_data):
+        try:
+            instance = SampleNotCultivated(**validated_data)
+            instance.full_clean()
+            instance.save()
+            return instance
+        except ValidationError as e:
+            raise serializers.ValidationError(e.message_dict)
+
+    def update(self, instance, validated_data):
+        try:
+            for attr, value in validated_data.items():
+                setattr(instance, attr, value)
+            instance.full_clean()
+            instance.save()
+            return instance
+        except ValidationError as e:
+            raise serializers.ValidationError(e.message_dict)
+
+class SampleLitterLayerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleLitterLayer
+        fields = '__all__'
+
+class SampleSurfaceCracksSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = SampleSurfaceCracks
+        fields = '__all__'
+       
+class SampleCoarseFragmentsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleCoarseFragments
+        fields = '__all__'
+        
+class SampleSurfaceUnevennessSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleSurfaceUnevenness
+        fields = '__all__'
+
+class SampleSurfaceCrustsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleSurfaceCrusts 
+        fields = '__all__'
+
+###########################
+## Lab Data 
+###########################
+class SampleLabDataSerializer(DecimalTruncationSerializerMixin, DateFormatSerializerMixin, serializers.ModelSerializer):
+    class Meta:
+        model = SampleLabData
+        fields = '__all__'
+
+###########################
+# Profile Layer
+###########################
+
+class SampleLayerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleLayer
+        fields = '__all__'
+
+class SampleLayerRemnantsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleLayerRemnants 
+        fields = '__all__'
+    
+class SampleLayerCoarseFragmentsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleLayerCoarseFragments 
+        fields = '__all__'
+        
+class SampleLayerArtefactsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleLayerArtefacts 
+        fields = '__all__'
+    
+class SampleLayerCracksSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleLayerCracks
+        fields = '__all__'
+        
+class SampleLayerStressFeaturesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleLayerStressFeatures 
+        fields = '__all__'
+        
+class SampleLayerMatrixColoursSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleLayerMatrixColours 
+        fields = '__all__'
+        
+class SampleLayerCoarserTexturedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleLayerCoarserTextured 
+        fields = '__all__'
+        
+class SampleLayerRedoximorphicFeaturesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleLayerRedoximorphicFeatures 
+        fields = '__all__'
+
+class SampleLayerLithogenicVariegatesSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = SampleLayerLithogenicVariegates
+        fields = '__all__'
+        
+class SampleLayerRedoximorphicColourSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleLayerRedoximorphicColour 
+        fields = '__all__'
+
+class SampleLayerCoatingsBridgesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleLayerCoatingsBridges 
+        fields = '__all__'
+    
+class SampleLayerRibbonlikeAccumulationsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleLayerRibbonlikeAccumulations 
+        fields = '__all__'
+    
+class SampleLayerCarbonatesSerializer(serializers.ModelSerializer):
+    class Meta: 
+        model = SampleLayerCarbonates 
+        fields = '__all__'
+        
+class SampleLayerGypsumSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleLayerGypsum
+        fields = '__all__'
+
+class SampleLayerSecondarySilicaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleLayerSecondarySilica 
+        fields = '__all__'
+    
+class SampleLayerConsistenceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleLayerConsistence 
+        fields = '__all__'
+    
+class SampleLayerPermafrostFeaturesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleLayerPermafrostFeatures 
+        fields = '__all__'
+        
+class SampleLayerOrganicCarbonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleLayerOrganicCarbon
+        fields = '__all__'
+    
+class SampleLayerRootsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleLayerRoots 
+        fields = '__all__'
+    
+class SampleLayerAnimalActivitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleLayerAnimalActivity 
+        fields = '__all__'
+    
+class  SampleLayerHumanAlterationsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleLayerHumanAlterations 
+        fields = '__all__'
+    
+class  SampleLayerDegreeDecompositionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleLayerDegreeDecomposition 
+        fields = '__all__'
+    
+class  SampleLayerNonMatrixPoreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleLayerNonMatrixPore
+        fields = '__all__'
+        
+class  SampleLayerStructureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SampleLayerStructure 
+        fields = '__all__'
+    
+    def validate(self, data):
+        """
+        Validazione personalizzata per controllare l'unicità prima del salvataggio
+        """
+        layer = data.get('layer')
+        level = data.get('level')
+        
+        # Controlla se esiste già una combinazione profile-layer-level (quando level non è None)
+        if level is not None:
+            # Esclude l'istanza corrente se stiamo aggiornando
+            queryset = SampleLayerStructure.objects.filter(layer=layer, level=level)
+            if self.instance:
+                queryset = queryset.exclude(pk=self.instance.pk)
+            
+            if queryset.exists():
+                raise serializers.ValidationError({
+                    'layer': f"There is already a structure at level '{level}' in layer '{layer}' "
+                })
+        else:
+            raise serializers.ValidationError({
+                'level': f"level is a mandatory field"
+            })        
+        
+        return data
+    
+    def create(self, validated_data):
+        try:
+            return super().create(validated_data)
+        except IntegrityError as e:
+            # Fallback nel caso la validazione preventiva non abbia catturato tutto
+            raise serializers.ValidationError({
+                'non_field_errors': [
+                    f"Errore di integrità del database: {str(e)}"
+                ]
+            })
+    
+    def update(self, instance, validated_data):
+        try:
+            return super().update(instance, validated_data)
+        except IntegrityError as e:
+            raise serializers.ValidationError({
+                'non_field_errors': [
+                    f"Errore di integrità del database: {str(e)}"
+                ]
+            })        
         #read_only_fields = ('id',)  # Il codice è generato automaticamente
 
-class GeoDatasetSerializer(serializers.ModelSerializer):
+
+#########################################
+## Indicators 
+#########################################
+
+class IndicatorSerializer(serializers.ModelSerializer):
     class Meta:
-        model = GeoDataset 
+        model = Indicator  
         fields = '__all__'
-        #read_only_fields = ('id',)  # Il codice è generato automaticamente
+        read_only_fields = ('id',)  
+
+#########################################
+## Requests 
+#########################################
+
+class RequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Request 
+        fields = '__all__'
+        read_only_fields = ('id',)  
+
+  

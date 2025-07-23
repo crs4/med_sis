@@ -42,6 +42,7 @@
     },
     "overrides": {
         "braces": "3.0.3",
-        "glob-parent": "6.0.2"
+        "glob-parent": "6.0.2",
+        "unrs-resolver": "1.8.1"
     }
 }

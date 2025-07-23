@@ -3,7 +3,6 @@ import { NextResponse } from 'next/server'
 const PUBLIC_FILE = /\.(.*)$/;
 
 export async function middleware ( req ) {
-  let forbidden = true; 
   /*try {
      in dev (localhost) this doesn't works
     //if ( req.nextUrl.hostname !== 'localhost' ) {
@@ -27,6 +26,8 @@ export async function middleware ( req ) {
     console.log(e);
   }
   */
+  console.log('Cookie Header:', req.headers.get('cookie'));
+  console.log('All Headers:', Object.fromEntries(req.headers));
 
   if (
     req.nextUrl.pathname.endsWith('/401') ||

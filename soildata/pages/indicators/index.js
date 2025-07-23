@@ -1,5 +1,7 @@
 import { IndicatorService } from '../../service/indicators';
 
+import Purposes from '../../data/purposes';
+import Indicators from '../../data/indicators';
 
 import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { Button } from 'primereact/button';
@@ -30,23 +32,19 @@ export default function Page()  {
   const router = useRouter();
   const toast = useRef(null);
   const user = useUser();
-  const statuses = [ "Created", "Initialized", "Critical error" ];
-  const types = [ 
-    IndicatorService.TYPES['SIMPLE']?.name,
-    IndicatorService.TYPES['COMPLEX']?.name,
-    IndicatorService.TYPES['CUSTOM']?.name
-  ];
+  const statuses = [ "Elaborated", "Initialized", "Errors" ];
+  
 
   useEffect(() => {
-   if ( user.userData.forbidden !== null && user.userData.forbidden )
-        router.push(`/401`);
+      if ( user.userData && user.userData.forbidden1 !== null && user.userData.forbidden1 )
+          router.push(`/401`);
     },[user]);  // eslint-disable-line
 
-  const goToUpload = (id) => {
+  const goToIndicator = (id) => {
     router.push(`/indicators/${id}`);
   };
 
-  const removeUpload = async (id) => {
+  const removeIndicators = async (id) => {
     if ( !id || current )
       return;
     setIsWorking(true);
@@ -57,7 +55,7 @@ export default function Page()  {
   const performRemove = async () => {
     if ( !current )
       return;
-    setIndicators( indicators.filter((el) => el.id !== current) );
+    setIndicators( indicators.filter((el) => el.code !== current) );
     initFilters();
     /*
     try {
@@ -117,30 +115,7 @@ export default function Page()  {
   
   useEffect(() => {
     const fetchData = ( () => {
-      const _data = [ 
-        { 
-          id: 1,
-          name: 'Indicatorstest1',
-          user: 'admin', 
-          date: new Date('2025/05/10'),
-          type: 'SIMPLE',
-          status: IndicatorService.STATUS.CREATED
-        },
-        { id: 2,
-          name: 'Indicatorstest2',
-          user: 'datamanager', 
-          date: new Date('2025/05/10'),
-          type: 'SIMPLE',
-          status: IndicatorService.STATUS.INITIALIZED
-        },
-        { id: 3,
-          name: 'Indicatorstest3',
-          user: 'datamanager', 
-          date: new Date('2025/05/12'),
-          type: 'SIMPLE',
-          status: IndicatorService.STATUS.CRITICAL_ERROR
-        }, 
-      ]
+      const _data = Indicators;
       /*const _users = _data.map ((upload) => {
         return upload.user;
       });*/
@@ -163,7 +138,7 @@ export default function Page()  {
   const initFilters = () => {
     setFilters({
       global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-      id: {
+      code: {
         operator: FilterOperator.AND,
         constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }]
       },
@@ -171,17 +146,9 @@ export default function Page()  {
           operator: FilterOperator.AND,
           constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]
       },
-      user: {
-        operator: FilterOperator.AND,
-        constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]
-      },
       date: {
           operator: FilterOperator.AND,
           constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }]
-      },
-      type: {
-          operator: FilterOperator.OR,
-          constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }]
       },
       status: {
         operator: FilterOperator.OR,
@@ -225,20 +192,7 @@ export default function Page()  {
       return ( <Tag severity="danger" value="Critical error"></Tag>)
   };
 
-  const typeBodyTemplate = (rowData) => {
-    if (rowData.type)
-      return <span >{IndicatorService.TYPES[rowData.type]?.name}</span>;
-    else return '';
-  };
-
-  const typeFilterTemplate = (options) => {
-    return <Dropdown value={options.value} options={types} onChange={(e) => options.filterCallback(e.value, options.index)} itemTemplate={typesItemTemplate} placeholder="Select a Type" className="p-column-filter" showClear />;
-  };
-
-  const typesItemTemplate = (option) => {
-    return <span >{IndicatorService.TYPES[option]?.name}</span>;
-  };
-
+  
   const header = renderHeader();
 
   const mapIndicators = (data) => {
@@ -313,7 +267,6 @@ export default function Page()  {
               <Column header="Name" field="name"  filter filterPlaceholder="Search by name" style={{ minWidth: '14rem' }} />
               <Column header="User" field="user"  filter filterPlaceholder="Search by user" style={{ minWidth: '14rem' }} />
               <Column header="Date"  filterField="date" dataType="date" style={{ minWidth: '10rem' }} body={dateBodyTemplate} filter filterElement={dateFilterTemplate} />
-              <Column header="Type"  field="type" filterMenuStyle={{ width: '10rem' }} style={{ minWidth: '10rem' }} body={typeBodyTemplate} filter filterElement={typeFilterTemplate} />
               <Column header="Status"  field="status" filterMenuStyle={{ width: '12rem' }} style={{ minWidth: '14rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
               <Column header="Actions" body={actionsTemplate} />
             </DataTable>

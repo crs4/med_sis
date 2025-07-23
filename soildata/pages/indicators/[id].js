@@ -16,7 +16,7 @@ export default function Page()  {
   
 
   useEffect(() => {
-    if ( user.userData.forbidden !== null && user.userData.forbidden )
+    if ( user.userData && user.userData.forbidden1 !== null && user.userData.forbidden1 )
         router.push(`/401`);
   },[user]);  // eslint-disable-line
 

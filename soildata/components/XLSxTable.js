@@ -15,11 +15,32 @@ const XLSxTable = ({
 
   const t  = useTranslations('default');
   const [isCollapsed, setIsCollapsed] = useState(true);
+
+  const colLabel = (index) => {
+    if ( !index ) 
+      return '';
+    const a = Number(index);
+    if ( isNaN(a) || a < 1  )
+      return '' ;
+    let q = Math.floor(a/26) ;
+    let r = a % 26;
+    if ( r === 0 ){
+      r=26
+      q-=1
+    }
+    const label = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    if ( a < 27 )
+      return index.toString() + ' or ' + label.charAt(a - 1);
+    else 
+      return index.toString() + ' or ' + label.charAt(q - 1) +label.charAt(r - 1);
+  }
+  
+  
   
   const tableHeader = (
     <div className="p-d-flex p-jc-between p-ai-center"> 
       <div>
-        <h4 className="p-mb-0p-text-capitalize">{title}</h4>
+        <h5 className="p-mb-0p-text-capitalize">{title}</h5>
       </div> 
       <div>
         <Button
@@ -51,7 +72,7 @@ const XLSxTable = ({
   const valueTemplate2 = (rowData) => (
     <>
       <div className="p-d-flex p-jc-start p-ai-center">
-        <div>{rowData[2]? rowData[2]:''}</div>
+        <div>{ rowData[2]? colLabel(rowData[2]):''}</div>
       </div>
     </>
   );

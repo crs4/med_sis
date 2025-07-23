@@ -8,7 +8,7 @@ import base64
 
 # Quick Tests ##
 file_data = None
-#with open('/Users/ppalla/opt/my_geo/src/backoffice/files/mini-data.json', 'r') as f:
+#with open('/usr/src/backoffice/files/mini-data.json', 'r') as f:
 #    file_data = json.load(f)
 
 ######
@@ -71,7 +71,7 @@ class XLSxUploadService:
             return word[:-1] + 'ies'
         elif word.startswith('layer-') or word.startswith('profile-') or word.startswith('lab-') or word.startswith('surface-') or word.startswith('coarse-'):
             if word.endswith('general'):
-                word = re.split('[-_]', word)[0] + 's'
+                word = word + 's'
             if word in ['profile-layer', 'layer-structure', 'layer-non-matrix-pore']:
                 word = word + 's'
             return word
@@ -93,48 +93,127 @@ class XLSxUploadService:
         else:
             # regola generale: aggiunge 's'
             return word + 's'
+        
     def process_uploaded_data(self, xlsx_upload_id):
         try:
             # Recupera l'oggetto XLSxUpload
             xlsx_upload = XLSxUpload.objects.using('backoffice').get(id=xlsx_upload_id)
             
             if xlsx_upload.status != "IN_PROCESS":
-                raise ValueError("L'upload non è in stato UPLOADED")
+                raise ValueError("Upload is not IN_PROCESS status")
                 
             data = xlsx_upload.data
+            if not isinstance(data, dict):
+                data = json.loads(data)
             #data = file_data
-            # Ordine di processamento degli array
+            # Ordine di processamento degli array                              
             processing_order = [
-                "LandformTopography",
+                "LandformTopography",  
                 "ClimateAndWeather",
-                "Cultivated",
-                "LandUse",
-                "Surface",
-                "CoarseFragments",
+                "Cultivated", 
+                "LandUse", 
+                "NotCultivated", 
+                "LitterLayer",
+                "Surface", 
+                "SurfaceUnevenness", 
                 "SurfaceCracks",
-                "SurfaceUnevenness",
+                "CoarseFragments", 
                 "ProfileGeneral",
                 "LayerCoarseFragments",
+                "LayerRemnants",
+                "LayerArtefacts",
                 "LayerNonMatrixPore",
                 "LayerCracks",
+                "LayerStressFeatures",
                 "LayerMatrixColours",
+                "LayerCoarserTextured",
+                "LayerLithogenicVariegates",
+                "LayerRedoximorphicFeatures",
+                "LayerRedoximorphicColour",
                 "LayerCoatingsBridges",
+                "LayerRibbonlikeAccumulations",
                 "LayerCarbonates",
+                "LayerGypsum",
+                "LayerSecondarySilica",
+                "LayerConsistence",
+                "LayerSurfaceCrusts",
                 "LayerPermafrostFeatures",
                 "LayerOrganicCarbon",
                 "LayerRoots",
-                "LayerDegreeDecomposition",
-                "LayerStressFeatures",
                 "LayerAnimalActivity",
+                "LayerHumanAlterations",
+                "LayerDegreeDecomposition",
                 "LabData",
                 "ProfileLayer",
                 "LayerStructure"
+            ]  
+
+            processing_order_sample = [
+                "SampleLandformTopography",  
+                "SampleClimateAndWeather",
+                "SampleCultivated", 
+                "SampleLandUse", 
+                "SampleNotCultivated", 
+                "SampleLitterLayer",
+                "SampleSurface", 
+                "SampleSurfaceUnevenness", 
+                "SampleSurfaceCracks",
+                "SampleCoarseFragments", 
+                "SampleGeneral",
+                "SampleLayerCoarseFragments",
+                "SampleLayerRemnants",
+                "SampleLayerArtefacts",
+                "SampleLayerNonMatrixPore",
+                "SampleLayerCracks",
+                "SampleLayerStressFeatures",
+                "SampleLayerMatrixColours",
+                "SampleLayerCoarserTextured",
+                "SampleLayerLithogenicVariegates",
+                "SampleLayerRedoximorphicFeatures",
+                "SampleLayerRedoximorphicColour",
+                "SampleLayerCoatingsBridges",
+                "SampleLayerRibbonlikeAccumulations",
+                "SampleLayerCarbonates",
+                "SampleLayerGypsum",
+                "SampleLayerSecondarySilica",
+                "SampleLayerConsistence",
+                "SampleLayerSurfaceCrusts",
+                "SampleLayerPermafrostFeatures",
+                "SampleLayerOrganicCarbon",
+                "SampleLayerRoots",
+                "SampleLayerAnimalActivity",
+                "SampleLayerHumanAlterations",
+                "SampleLayerDegreeDecomposition",
+                "SampleLabData",
+                "SampleLayer",
+                "SampleLayerStructure"
             ]
-            
+
+            processing_order_pgenealogies = [
+                "genealogy",  
+                "projects"
+            ]
+
+            processing_order_sgenealogies = [
+                "genealogy",  
+                "projects"
+            ]
+
+            if xlsx_upload.type == 'XLS_S':
+                processing_order = processing_order_sample
+            elif xlsx_upload.type == 'XLS_SG':
+                processing_order = processing_order_sgenealogies 
+            elif xlsx_upload.type == 'XLS_PG':
+                processing_order = processing_order_pgenealogies 
+                
             # Processa ogni array nell'ordine specificato
             for model_name in processing_order:
                 if model_name in data:
-                    self._process_array(model_name, data[model_name])
+                    if (( model_name == 'ProfileGeneral' or model_name == 'SampleGeneral' ) and 
+                        ( xlsx_upload.type == 'XLS_PG' or xlsx_upload.type == 'XLS_SG' )):
+                        self._process_array(model_name, data[model_name], 'PATCH' )
+                    else: 
+                        self._process_array(model_name, data[model_name], xlsx_upload.operation )
             
             # Aggiorna lo stato e il report
             xlsx_upload.status = "IMPORT_SUCCESS" if not self.report["errors"] else "IMPORT_WITH_ERROR"
@@ -151,31 +230,67 @@ class XLSxUploadService:
             xlsx_upload.save(using='backoffice')
             return self.report
     
-    def _process_array(self, model_name, array_data):
+    def _process_array(self, model_name, array_data, operation):
         # Utilizza il metodo per convertire il nome del modello
         endpoint_name = self._model_name_to_endpoint(model_name)
         endpoint = f"{self.base_url}/api/backoffice/{endpoint_name}/"
         
         for item in array_data:
+            _id = item["id"]
             try:
-                response = requests.post(
-                    endpoint, 
-                    json=item,
-                    headers=self.auth_header
-                )
+                if operation == 'POST' : 
+                    response = requests.post(
+                        endpoint, 
+                        json=item,
+                        headers=self.auth_header
+                    )
+                else :
+                    if operation == 'PATCH' : 
+                        response = requests.patch(
+                            endpoint + _id, 
+                            json=item,
+                            headers=self.auth_header
+                        )
+                    else: 
+                        response = requests.put(
+                            endpoint + _id, 
+                            json=item,
+                            headers=self.auth_header
+                        )    
                 operation_result = {
                     "model": model_name,
-                    "data": item,
-                    "status_code": response.status_code,
-                    "response": response.json() if response.status_code == 200 or response.status_code == 201 else None
+                    "element": _id,
+                    "msg": response.status_code
                 }
+                #200 ok with returned obj
+                #201 ok created without returned object
+                #202 is a preliminary ok without returned object
+                #203 ok the proxy erased the returned object
+                #204 ok updated/deleted without returned object
                 
-                if response.status_code != 201 and response.status_code != 200:
-                    self.report["errors"].append(f"Errore nell'importazione di {model_name}: {response.text}")
+                if response.status_code < 200 or response.status_code > 204:
+                    errors = 'data error'
+                    res = response.json()
+                    if  res and res['errors'] :
+                        errors = str(res['errors'])
+                    error = {
+                        "model": model_name,
+                        "element": _id,
+                        "msg": errors
+                    }
+                    self.report["errors"].append(error)
                     self.report["success"] = False
-                
-                self.report["operations"].append(operation_result)
+                else :
+                    self.report["operations"].append(operation_result)
                 
             except Exception as e:
-                self.report["errors"].append(f"Errore nell'importazione di {model_name}: {str(e)}")
+                error = {
+                        "model": model_name,
+                        "element": _id,
+                        "msg": str(e)
+                    }
+                self.report["errors"].append(error)
                 self.report["success"] = False 
+
+
+

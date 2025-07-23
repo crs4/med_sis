@@ -1,125 +1,151 @@
 export const UploadService = {
-  /*
-     UPLOAD
-     UPLOAD_RESULTS = [
-        ("0" , "Created"),
-        ("1" , "Importing"),
-        ("2" , "Imported"),
-        ("3" , "Errors importing data"),
-    ]
-    type : TYPES
-    title : text
-    report = JSON
-    data = JSON    
-    editor: text 
-    date: date
-    status : STATUS
-
-
-
-  */
-  STATUS : {
+  
+  STATUSES : {
     UPLOADED : "UPLOADED",
+    IN_PROCESS : "IN_PROCESS",
     IMPORT_SUCCESS : "IMPORT_SUCCESS",
     IMPORT_WITH_ERROR : "IMPORT_WITH_ERROR",
     CRITICAL_ERROR: "CRITICAL_ERROR",
   },
 
   TYPES : {
-    XLS_P :  {  name : "PROFILES", label : 'Excel Soil Profiles Spreadsheets', sheets: ['General and Surface','Layer descriptions','Soil classification','Lab data'],},
-    XLS_S :   {  name : "SAMPLES", label : 'Excel Soil Samples Spreadsheets', sheets: ['General and Surface','Layer descriptions','Lab data'],},
-    XLS_PG : { name : "PROFILES_GENEALOGY", label : 'Excel Soil Profiles Genealogy Spreadsheets', sheets: ['Genealogy','Project'],},
-    XLS_PG : {  name : "PROFILES_GENEALOGY", label : 'Excel Soil Samples Genealogy Spreadsheets', sheets: ['Genealogy','Project'],},
-    XLS_PH : {  name : "PHOTOS", label : 'Photos Metadata', sheets: ['photos'],},
+    XLS_P :  {  name : "XLS_P", label : 'Soil Profiles', sheets: ['General and Surface','Layer descriptions','Soil classification','Lab data'],},
+    XLS_S :   {  name : "XLS_S", label : 'Soil Samples', sheets: ['General and Surface','Layer descriptions','Lab data','Soil classification'],},
+    XLS_PG : { name : "XLS_PG", label : 'Soil Profiles Genealogy', sheets: ['Genealogy','Project'],},
+    XLS_SG : {  name : "XLS_SG", label : 'Soil Samples Genealogy', sheets: ['Genealogy','Project'],},
   },
 
-  UPLOAD_STATUS : {
-    "EMPTY" : "XSLx data sent to server",
-    "PROCESSING" : "XSLx processing",
-    "ERROR"   : "System error",
-    "WARNING" : "Data partially saved (errors)",
-    "SUCCESS" : "Data sucessfully saved",
+  ACTIONS : {
+    POST :  {  name : "POST", label : 'CREATE IF NOT EXIST', info: 'For each item in the upload the SIS tries to write it in the database. If an item with same id already exists, it throws an error.'},
+    PUT :   {  name : "PUT", label : 'CREATE IF NOT EXIST OR REPLACE IF EXIST', info: 'For each item uploaded, the SIS attempts to replace it with the one in the database. If the item doesn\'t exist, it creates it.'},
+    PATCH : { name : "PATCH", label : 'UPDATE IF EXIST', info: 'For each item uploaded, the SIS makes partial changes to the item\'s fields in the database. If an item with the same id doesn\'t exist, an error is generated.'},
   },
 
+  GET_TYPES_ARRAY() {
+    const keys = Object.keys(UploadService.TYPES);
+    let arr = [];
+    keys.forEach( k => {
+      arr.push(this.TYPES[k])
+    }); 
+    return arr
+  },
+  
+  GET_ACTIONS_ARRAY() {
+    const keys = Object.keys(UploadService.ACTIONS);
+    let arr = [];
+    keys.forEach( k => {
+      arr.push(this.ACTIONS[k])
+    }); 
+    return arr
+  },
 
-  async get(id) {
-        return fetch('/demo/data/customers-small.json', {
-            headers: { 'Cache-Control': 'no-cache' }
+  async get(ck, id) { 
+    let csrftoken = getMyCookie(ck,'csrftoken');
+    if ( csrftoken )
+    { 
+      try { 
+        let response = await fetch( `/api/backoffice/xlsx-uploads/${id}`, { 
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken" : csrftoken
+          },
         })
-            .then((res) => res.json())
-            .then((d) => d.data);
-    },
-
-  async get(id) { 
-    data = null;
-    try { 
-      let res = fetch( `/api/backoffice/uploads/${id}`)
-      if ( res && res.status == 200 ) 
-        data = await res.json();
-    } catch (e) { 
-    } 
-    return data;
+        if ( !response || !response.ok) {
+          // get error message from body or default to response status
+          return { data: null, error: true }
+        }
+        const isJson = response.headers.get('content-type')?.includes('application/json');
+        const data = isJson && await response.json();
+        return { data: data, error: null }
+      }
+      catch( error )  {
+        console.log(error)
+        return { data: null, error: error }
+      }
+    }
   },
 
-  async list() {  
-    let data = [];
-    try {  
-      let res = fetch('/api/backoffice/uploads')
-      if ( res && res.status == 200 ) 
-        data = await res.json();
-    } catch (e) { 
-    } 
-    return data;
+  async list(ck) {  
+    let csrftoken = getMyCookie(ck,'csrftoken');
+    if ( csrftoken )
+    try { 
+      let response = await fetch( '/api/backoffice/xlsx-uploads/', { 
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken" : csrftoken
+        },
+      })
+      const isJson = response.headers.get('content-type')?.includes('application/json');
+      const data = isJson && await response.json();
+      if ( !response || !response.ok) {
+            // get error message from body or default to response status
+          const error = (data && data.message) || response.status;
+          return { data: null, error: error }
+      }
+      return { data: data, error: null }
+    }
+    catch( error ) {
+      return { data: null, error: `Error: ${error}` }
+    }
+    else return { data: null, error: 'Error: wrong token' }
   },  
 
 // formData: 
-  async save(upload) {
-    let data = null;
-    try {  
-      let res = fetch(`/api/backoffice/uploads`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(upload),
-      });
-      if ( res && res.status == 200 ) 
-        data = await res.json();
-    } catch (e) { 
-    } 
-    return data;
+  async save (ck, upload) {
+    let csrftoken = getMyCookie(ck,'csrftoken');
+    if ( csrftoken )
+      try { 
+        let response = await fetch(`/api/backoffice/xlsx-uploads/`, { 
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken" : csrftoken
+          },
+          body: JSON.stringify(upload),
+        })
+        const isJson = response.headers.get('content-type')?.includes('application/json');
+        const data = isJson && await response.json();
+        if ( !response || !response.ok) {
+            return { ok: false, msg: 'Errors sending data' }
+        }
+        return { ok: true, msg: 'Data has been sent' }
+      }
+      catch( error ) {
+          return { ok: false, msg: `Error: ${error}` }
+      }  
+    else return { ok: false, msg: 'Error: Bad token' }
   },
 
-  async remove(id) {
-    let data = null;
-    try {  
-      let res = fetch(`/api/backoffice/uploads/${id}`, {
-        method: "DELETE",
-      });
-      if ( res && res.status == 200 ) 
-        data = await res.json();
-    } catch (e) { 
-    } 
-    return data;
-  },
-
-  async update(upload) {
-    let data = null;
-    try {  
-      let res = fetch(`/api/backoffice/uploads/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(upload),
-      });
-      if ( res && res.status == 200 ) 
-        data = await res.json();
-    } catch (e) { 
-    } 
-    return data;
+  async remove(ck, id) {
+    let csrftoken = getMyCookie(ck,'csrftoken');
+    if ( csrftoken )
+      try { 
+        let response = await fetch(`/api/backoffice/xlsx-uploads/${id}`, { 
+          method: "DELETE", 
+          headers: {
+            "X-CSRFToken" : csrftoken
+        }})
+        const isJson = response.headers.get('content-type')?.includes('application/json');
+        const data = isJson && await response.json();
+        if ( !response || !response.ok) {
+          const error = (data && data.message) || response.status;
+          return { status: response.status, message: error }
+        }
+        return { status: response.status, message: 'Delete successful' }
+      }
+      catch(error) {
+        return { status: null, message: error }
+      }
+    return { status: null, message: 'Bad Token' }
   }
 }
+
+export const getMyCookie = (cookie, name) => {
+  const cookieValue = cookie.split('; ')
+      .find((row) => row.startsWith(`${name}=`))?.split('=')[1];  
+  return cookieValue;
+};
+
 
 export default UploadService
 

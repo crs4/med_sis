@@ -6,24 +6,25 @@ import { bbox } from '@turf/turf';
 import './leaflet-extensions/htmllegend/L.Control.HtmlLegend';
 import { GeoJSON } from 'react-leaflet/GeoJSON';
 
-
-
-
 const MapLegend = ({ legendRef }) => {
   const map = useMap();
 
   useEffect(() => {
-    if (!map || !map.layerJSON || !map.layerJSON.current || legendRef.current ) 
+    if (!map || legendRef.current ) 
       return;
-    console.log (map.layerJSON.current);
-    let layer = map.layerJSON.current;
-    if (layer) {
+    let JSONlayer = null;
+    map.eachLayer(function (layer) {
+      if (layer.key = 'pointsGeoJSON' ){
+        JSONlayer = layer;
+      }
+    });
+    if (JSONlayer) {
       legendRef.current = L.control.htmllegend({
         position: 'bottomleft',
         legends: [
           {
             name: 'Profiles Status',
-            layer,
+            JSONlayer,
             opacity: 1,
             elements: [{
               label: 'OK - profiles without errors',
@@ -82,6 +83,7 @@ export default function S4Mmap ({data}) {
   const bboxArray = bbox(points);
   const bounds = [[bboxArray[1], bboxArray[0]], [bboxArray[3], bboxArray[2]]];
   
+  
   const defaultstyles = {
     'ok'  : { radius: 8, fillColor: '#2f2', color: '#0d0', weight: 2, opacity: 1, fillOpacity: 0.8},
     'ko'  : { radius: 8, fillColor: '#f22', color: '#d22', weight: 2, opacity: 1, fillOpacity: 0.8},
@@ -93,8 +95,7 @@ export default function S4Mmap ({data}) {
     let style = {
       radius: 8, fillColor: '#aaa', color: '#ddd', weight: 2, opacity: 1, fillOpacity: 0.8,
     };
-    if (feature.properties)
-
+    if (feature.properties && feature.properties.status )
       style = defaultstyles[feature.properties.status]
     return L.circleMarker(latlng, style);
   }
@@ -111,6 +112,7 @@ export default function S4Mmap ({data}) {
       }, popupOptions);
     }
   }
+
   return (
     <>
       <MapContainer
@@ -128,7 +130,7 @@ export default function S4Mmap ({data}) {
           <>
           <GeoJSON
             jsonRef={layerJSON} 
-            key={Math.random()}
+            key='pointsGeoJSON'
             pointToLayer={pointToLayer}
             onEachFeature={onEachFeature}
             data={points}

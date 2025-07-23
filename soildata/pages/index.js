@@ -54,7 +54,7 @@ const Home = () => {
   );
 
   useEffect(() => {
-    if ( user.userData.forbidden !== null && user.userData.forbidden )
+    if ( user.userData.forbidden2 !== null && user.userData.forbidden2 )
         router.push(`/401`);
     },[user]);  // eslint-disable-line
 

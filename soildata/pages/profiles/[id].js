@@ -22,9 +22,9 @@ export default function Page()  {
   
 
   useEffect(() => {
-    if ( user.userData.forbidden !== null && user.userData.forbidden )
-        router.push(`/401`);
-  },[user]);  // eslint-disable-line
+      if ( user.userData && user.userData.forbidden1 !== null && user.userData.forbidden1 )
+          router.push(`/401`);
+    },[user]);  // eslint-disable-line
 
   return (
     <>
@@ -47,7 +47,7 @@ export async function getStaticPaths() {
 export async function getStaticProps(context) {
   return {
     props: { 
-      indicator: indicator,
+      profile: profile,
       messages: (await import(`../../translations/${context.locale}.json`)).default
      },
   }

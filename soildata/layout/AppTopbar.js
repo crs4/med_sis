@@ -9,7 +9,6 @@ import { useRouter } from 'next/router';
 import {useTranslations} from 'next-intl';
 
 const AppTopbar = forwardRef((props, ref) => {
-    const displayName = useUser.displayName;
     const t = useTranslations();
     const btnRef1 = useRef(null);
     const menubuttonRef = useRef(null);
@@ -29,15 +28,20 @@ const AppTopbar = forwardRef((props, ref) => {
                 <button ref={menubuttonRef} type="button" className="menu-button p-link" onClick={onMenuToggle}>
                     <i className="pi pi-chevron-left"></i>
                 </button>
-                <Link href="/soildata">
-                    <img id="logo-horizontal" className="horizontal-logo" src={`/soildata/img/logo-${layoutConfig.menuTheme === 'white' || layoutConfig.menuTheme === 'orange' ? 'dark' : 'white'}.png`} alt="s4m" />
+                <Link href="/">
+                    <img 
+                        id="logo-horizontal" 
+                        className="horizontal-logo" 
+                        src={`/soildata/img/logo-${layoutConfig.colorScheme === 'light' && (layoutConfig.menuTheme === 'white' || layoutConfig.menuTheme === 'orange') ? 'dark' : 'white'}.png`}
+                        alt="s4m" 
+                    />
                 </Link>
                 <span className="topbar-separator"></span>
                 <AppBreadCrumb />
                 <img
                     id="logo-mobile"
                     className="mobile-logo"
-                    src={`/soildata/img/logo-${layoutConfig.colorScheme == 'light' && (layoutConfig.menuTheme === 'white' || layoutConfig.menuTheme === 'orange') ? 'dark' : 'white'}.png`}
+                    src={`/soildata/img/logo-${layoutConfig.colorScheme === 'light' && (layoutConfig.menuTheme === 'white' || layoutConfig.menuTheme === 'orange') ? 'dark' : 'white'}.png`}
                     alt="S4M"
                 />
             </div>
@@ -57,7 +61,7 @@ const AppTopbar = forwardRef((props, ref) => {
                         <StyleClass nodeRef={btnRef1} selector="@next" enterClassName="hidden" enterActiveClassName="scalein" leaveToClassName="hidden" leaveActiveClassName="fadeout" hideOnOutsideClick="true">
                             <a tabIndex={0} ref={btnRef1}>
                                 <img src='/soildata/img/user-default.png' alt="user" className="profile-image" />
-                                <span className="profile-name">{user.preferred_username}</span>
+                                <span className="profile-name">{user.userData.preferred_username}</span>
                             </a>
                         </StyleClass>
                     </li>

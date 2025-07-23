@@ -1,4 +1,3 @@
-import React from 'react';
 import { NextIntlClientProvider } from 'next-intl';
 import { LayoutProvider } from '../layout/context/layoutcontext';
 import { UserProvider } from '../context/user';

@@ -8,10 +8,10 @@ import AppFooter from './AppFooter';
 import AppConfig from './AppConfig';
 import AppSearch from './AppSearch';
 import AppBreadCrumb from './AppBreadCrumb';
-import AppRightMenu from './AppRightMenu';
 import PrimeReact from 'primereact/api';
 import { Tooltip } from 'primereact/tooltip';
 import { Toast } from 'primereact/toast';
+import { cookies } from "next/headers"
 
 const Layout = (props) => {
     const { layoutConfig, layoutState, setLayoutState, isSlim, isCompact, isHorizontal, isDesktop } = useContext(LayoutContext);
@@ -133,7 +133,6 @@ const Layout = (props) => {
             <AppConfig />
 
             <AppSearch />
-            <AppRightMenu></AppRightMenu>
             <div className="layout-mask"></div>
         </div>
     );

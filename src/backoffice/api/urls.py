@@ -1,14 +1,12 @@
-from django.urls import path, re_path, include
+from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from . import views
 from .views import *
 
 
 router = DefaultRouter()
-router.register(r'profiles', ProfileGeneralViewSet)
-router.register(r'taxonomies', TaxonomyViewSet)
+router.register(r'xlsx-uploads', XLSxUploadViewSet)
 router.register(r'projects', ProjectViewSet)
-router.register(r'genealogies', GenealogyViewSet)
+router.register(r'profile-generals', ProfileGeneralViewSet)
 router.register(r'landform-topographies', LandformTopographyViewSet)
 router.register(r'coarse-fragments', CoarseFragmentsViewSet)
 router.register(r'climate-and-weathers', ClimateAndWeatherViewSet)
@@ -17,20 +15,16 @@ router.register(r'land-uses', LandUseViewSet)
 router.register(r'not-cultivated', NotCultivatedViewSet)
 router.register(r'surfaces', SurfaceViewSet)
 router.register(r'surface-cracks', SurfaceCracksViewSet)
-router.register(r'litter-layer', LitterLayerViewSet)
+router.register(r'litter-layers', LitterLayerViewSet)
 router.register(r'surface-unevenness', SurfaceUnevennessViewSet)
-router.register(r'xlsx-sheet-conf', XSLxSheetConfViewSet)
-router.register(r'xlsx-uploads', XLSxUploadViewSet)
-router.register(r'xlsx-mapping', XSLxMappingViewSet)
 router.register(r'profile-layers', ProfileLayerViewSet)
-router.register(r'lab-data', LabDataViewSet)
 router.register(r'layer-remnants', LayerRemnantsViewSet )
 router.register(r'layer-coarse-fragments', LayerCoarseFragmentsViewSet)
 router.register(r'layer-artefacts', LayerArtefactsViewSet)
 router.register(r'layer-cracks', LayerCracksViewSet)
 router.register(r'layer-stress-features', LayerStressFeaturesViewSet)
 router.register(r'layer-matrix-colours', LayerMatrixColoursViewSet)
-router.register(r'layer-texture-colours', LayerTextureColourViewSet)
+router.register(r'layer-coarser-textured', LayerCoarserTexturedViewSet)
 router.register(r'layer-lithogenic-variegates', LayerLithogenicVariegatesViewSet)
 router.register(r'layer-redoximorphic-features', LayerRedoximorphicFeaturesViewSet)
 router.register(r'layer-redoximorphic-colours', LayerRedoximorphicColourViewSet)
@@ -49,18 +43,49 @@ router.register(r'layer-human-alterations', LayerHumanAlterationsViewSet)
 router.register(r'layer-degree-decomposition', LayerDegreeDecompositionViewSet)
 router.register(r'layer-non-matrix-pores', LayerNonMatrixPoreViewSet)
 router.register(r'layer-structures', LayerStructureViewSet)
-router.register(r'indicators', IndicatorsViewSet)
-router.register(r'geo-datasets', GeoDatasetViewSet)
+router.register(r'lab-data', LabDataViewSet)
+router.register(r'sample-generals', SampleGeneralViewSet)
+router.register(r'sample-landform-topographies', SampleLandformTopographyViewSet)
+router.register(r'sample-coarse-fragments', SampleCoarseFragmentsViewSet)
+router.register(r'sample-climate-and-weathers', SampleClimateAndWeatherViewSet)
+router.register(r'sample-cultivated', SampleCultivatedViewSet)
+router.register(r'sample-land-uses', SampleLandUseViewSet)
+router.register(r'sample-not-cultivated', SampleNotCultivatedViewSet)
+router.register(r'sample-surfaces', SampleSurfaceViewSet)
+router.register(r'sample-surface-cracks', SampleSurfaceCracksViewSet)
+router.register(r'sample-litter-layers', SampleLitterLayerViewSet)
+router.register(r'sample-surface-unevenness', SampleSurfaceUnevennessViewSet)
+router.register(r'sample-surface-crusts', SampleSurfaceCrustsViewSet)
+router.register(r'sample-layers', SampleLayerViewSet)
+router.register(r'sample-layer-remnants', SampleLayerRemnantsViewSet )
+router.register(r'sample-layer-coarse-fragments', SampleLayerCoarseFragmentsViewSet)
+router.register(r'sample-layer-artefacts', SampleLayerArtefactsViewSet)
+router.register(r'sample-layer-cracks', SampleLayerCracksViewSet)
+router.register(r'sample-layer-stress-features', SampleLayerStressFeaturesViewSet)
+router.register(r'sample-layer-matrix-colours', SampleLayerMatrixColoursViewSet)
+router.register(r'sample-layer-coarser-textured', LayerCoarserTexturedViewSet)
+router.register(r'sample-layer-lithogenic-variegates', SampleLayerLithogenicVariegatesViewSet)
+router.register(r'sample-layer-redoximorphic-features', SampleLayerRedoximorphicFeaturesViewSet)
+router.register(r'sample-layer-redoximorphic-colours', SampleLayerRedoximorphicColourViewSet)
+router.register(r'sample-layer-coatings-bridges', SampleLayerCoatingsBridgesViewSet)
+router.register(r'sample-layer-ribbonlike-accumulations', SampleLayerRibbonlikeAccumulationsViewSet)
+router.register(r'sample-layer-carbonates', SampleLayerCarbonatesViewSet)
+router.register(r'sample-layer-gypsum', SampleLayerGypsumViewSet)
+router.register(r'sample-layer-secondary-silica', SampleLayerSecondarySilicaViewSet)
+router.register(r'sample-layer-consistences', SampleLayerConsistenceViewSet)
+router.register(r'sample-layer-permafrost-features', SampleLayerPermafrostFeaturesViewSet)
+router.register(r'sample-layer-organic-carbon', SampleLayerOrganicCarbonViewSet)
+router.register(r'sample-layer-roots', SampleLayerRootsViewSet)
+router.register(r'sample-layer-animal-activities', SampleLayerAnimalActivityViewSet)
+router.register(r'sample-layer-human-alterations', SampleLayerHumanAlterationsViewSet)
+router.register(r'sample-layer-degree-decomposition', SampleLayerDegreeDecompositionViewSet)
+router.register(r'sample-layer-non-matrix-pores', SampleLayerNonMatrixPoreViewSet)
+router.register(r'sample-layer-structures', SampleLayerStructureViewSet)
+router.register(r'sample-lab-data', SampleLabDataViewSet)
+router.register(r'indicators', IndicatorViewSet)
+router.register(r'requests', RequestViewSet)
 
  
 urlpatterns = [
     path('', include(router.urls)),
-    re_path(r'^taxonomies/(?P<pk>[^/]+)/$', 
-            views.TaxonomyViewSet.as_view({
-                'get': 'retrieve',
-                'put': 'update',
-                'patch': 'partial_update',
-                'delete': 'destroy'
-            }), 
-            name='taxonomy-detail-with-dots'),
 ]

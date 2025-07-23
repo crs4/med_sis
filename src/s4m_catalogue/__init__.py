@@ -17,13 +17,6 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 #########################################################################
-from __future__ import absolute_import, unicode_literals
-
-# Importa l'app Celery per assicurarsi che sia caricata quando Django si avvia
-from .celeryapp import app as celery_app
-
-__all__ = ('celery_app',)
-
 
 import os
 

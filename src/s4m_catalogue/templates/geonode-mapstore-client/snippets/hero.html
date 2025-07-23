@@ -1,4 +1,7 @@
+{% load i18n %}
+{% get_current_language as LANGUAGE %}
 {% load static %}
+
 <div id="s4m-welcome" style="text-align: center;line-height: 1.4;margin: 6rem;color: forestgreen;">
     <div>
         <h1 style="font-size: 2rem;font-weight: 500;">Welcome to the Soils4Med Soil Information System</h1>
@@ -7,11 +10,18 @@
                 This initiative brings together the expertise and resources of more than 15 leading academic institutions and 
                 research centers across the Mediterranean region.Through their combined efforts and diverse contributions, these
                 organizations have created a comprehensive soil monitoring and information system that exemplifies the power of 
-                international scientific cooperation.</p>   
+                international scientific cooperation.</p>
+	  <p style="text-align: justify;font-size: 1rem;margin:15px">
+	        The project SOILS4MED is part of the <a href="https://prima-med.org//" target="_blank" rel="noopener noreferrer">PRIMA Programme</a> supported by the European Union
+          </p>
+	  <p style="text-align: justify;font-size: 1rem;margin:15px">
+	  This site use necessary technical cookies, such as navigation or session cookies, to enable and optimize the functionality of the Website. These cookies are essential for the Website to work properly. More informations at <a href="https://soils4med.crs4.it/privacy_cookies/">Privacy and Cookies policy page</a> 
+	  </p>
+
     </div>
     <div class="logos">
         <a href="https://www.crs4.it//" target="_blank" rel="noopener noreferrer"><img src="/static/img/LogoCRS4.2000x600.png" style="width: 10%;"></a>
-        <a href="https://prima-med.org//" target="_blank" rel="noopener noreferrer"><img src="/static/img/prima-logo-hor.jpg" style="width: 10%;"></a>
         <a href="https://mel.cgiar.org/projects/1866" target="_blank" rel="noopener noreferrer"><img src="/static/img/soils-logo1.jpg" style="width: 10%; margin-bottom: 10px; margin-left: 10px;"></a>
+        <a href="https://prima-med.org//" target="_blank" rel="noopener noreferrer"><img src="/static/img/prima_eu_logo.png" style="width: 25%;"></a>     
     </div>   
 </div>

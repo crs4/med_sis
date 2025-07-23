@@ -5,6 +5,7 @@ WORKDIR /app
 COPY . .
 
 RUN npm install
+RUN npm install sharp
 RUN npm run build
 #RUN npm run dev
 

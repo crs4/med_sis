@@ -1,7 +1,7 @@
 {
   "default": {
     "CHOOSE_FILE" : "Choose file",
-    "IMPORT_DATA" : "Try to save data",
+    "IMPORT_DATA" : "Save Data",
     "RESET" : "Reset",
     "NO_ERROR_FOUND": "No error found",
     "en" : "English",

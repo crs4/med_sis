@@ -71,12 +71,3 @@ local_settings.py
 Vagrantfile
 /.env
 /.env_prod
-
-src/backoffice/files/
-src/.DS_Store
-src/backoffice/migrations/old_migrations/
-src/report.json
-src/backoffice/report.json
-src/backoffice/api/__pycache__
-src/fixtures/backoffice_taxonomy_new.json
-src/celerybeat-schedule

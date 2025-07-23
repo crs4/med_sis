@@ -400,3 +400,32 @@ Starts a vm for test on plain docker service with docker-compose:
 
 [1] to achieve `docker-compose build --no-cache` just destroy vagrant boxes `vagrant destroy -f`
 
+https://api.maptiler.com/tiles/terrain-quantized-mesh/?key=l0pftzvo991zLDeaOhRO
+
+{
+      text: "ArcGISTerrainProvider",
+      onselect: function () {
+        viewer.scene.setTerrain(
+          new Cesium.Terrain(
+            Cesium.ArcGISTiledElevationTerrainProvider.fromUrl(
+              "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer",
+            ),
+          ),
+        );
+      },
+    },
+
+    
+viewer.terrainProvider = new Cesium.CesiumTerrainProvider({
+  url: 'https://api.maptiler.com/tiles/terrain-quantized-mesh/?key={key}' // get your own key at https://cloud.maptiler.com/
+});
+
+ISRIC's Soil Information Workflow
+ 1- needs assessment, 
+ 2- data collection, 
+ 3- laboratory analysis, 
+ 4- soil archiving, 
+ 5- data organization, 
+ 6- modeling and mapping, 
+ 7- applying soil information 
+ 8- serving the data.

@@ -1,16 +1,35 @@
 export const IndicatorService = {
+/*
+    id = models.TextField(primary_key=True, db_comment='identifier')    
+    name = models.TextField( db_comment='Name') 
+    creation = models.DateField( blank=True, null=True, db_comment='Date of the creation')
+    description = models.TextField( db_comment='Description') 
+    type = models.ForeignKey( Taxonomy, on_delete=models.SET_NULL, db_comment='Type of the indicator', related_name='indicators_type_set', blank=True, null=True)
+    keywords = models.TextField( db_comment='Geonode dataset keywords')
+*/ 
   
-  STATUS : {
-    CREATED : "CREATED",
-    INITIALIZED : "INITIALIZED",
-    CRITICAL_ERROR: "CRITICAL_ERROR",
+  async getAvail() { 
+    let data = null;
+    try { 
+      let res = await fetch( `/soildata/data/labdata.geojson`)
+      if ( res && res.status == 200 ) 
+        data = await res.json(); 
+    } catch (e) { 
+    } 
+    return data;
   },
 
-  TYPES : {
-    SIMPLE :  {  name : "SIMPLE", label : 'Simple index  ', note: 'Index calculated using a known formula'},
-    COMPLEX :  {  name : "COMPLEX", label : 'Complex index  ', note: 'Index via model application'},
-    CUSTOM :   {  name : "CUSTOM", label : 'Custom index', note: 'Index calculated using a known formula'},
+  async getTypes() { 
+    let data = null;
+    try { 
+      let res = await fetch( `/soildata/data/indicators_types.json`)
+      if ( res && res.status == 200 ) 
+        data = await res.json(); 
+    } catch (e) { 
+    } 
+    return data;
   },
+
 
   async get(id) { 
     data = null;

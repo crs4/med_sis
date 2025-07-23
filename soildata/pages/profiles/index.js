@@ -11,7 +11,8 @@ import { DataTable } from 'primereact/datatable';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { ConfirmDialog } from 'primereact/confirmdialog'; 
-import { Toast } from 'primereact/toast';
+import { Toast } from 'primereact/toast'; 
+import Loading from '../../components/Loading';
 
 export default function Page()  {
   const router = useRouter();
@@ -28,9 +29,9 @@ export default function Page()  {
          
 
   useEffect(() => {
-    if ( user.userData.forbidden !== null && user.userData.forbidden )
-        router.push(`/401`);
-  },[user]);  // eslint-disable-line
+      if ( user.userData && user.userData.forbidden1 !== null && user.userData.forbidden1 )
+          router.push(`/401`);
+    },[user]);  // eslint-disable-line
   
   const goToProfile = (id) => {
     router.push(`/profiles/${id}`);
@@ -48,12 +49,10 @@ export default function Page()  {
     if ( !current )
       return;
     try {
-      const res = await ProileService.remove(id);
+      const res = await ProfileService.remove(id);
       if ( res && res.status == 200 ) {
-        //let data = await res.json();
-        let data = [];
-        setProfiles( data.filter((el) => el.id !== current) );
-        toast.current.show({severity:'success', summary: 'Done!', detail:'Upload has been deleted', life: 3000});
+        let data = await res.json();
+        toast.current.show({severity:'success', summary: 'Done!', detail:'Profile:'+id+'has been deleted', life: 3000});
       }
       else {
         toast.current.show({severity:'error', summary: 'Error', detail:'Errors deleting profile', life: 3000});
@@ -102,8 +101,7 @@ export default function Page()  {
     const fetchData = async  () => {
       const res = await ProfileService.list();
       if ( res && res.status == 200 ) {
-        //let data = await res.json();
-        let data = [];
+        let data = await res.json();
         setProfiles(mapProfiles(data));
         toast.current.show({severity:'success', summary: 'Done!', detail:'Profiles has been loaded', life: 3000});
       }
@@ -150,10 +148,6 @@ export default function Page()  {
       },
       lon_wgs84: {
           operator: FilterOperator.OR,
-          constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }]
-      },
-      gps: {
-          operator: FilterOperator.AND,
           constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }]
       },
       elev_m_asl: {
@@ -214,11 +208,21 @@ export default function Page()  {
       onClick={() => goToProfile(rowData.id)}
       label=""
     />
+    <Button
+      icon="pi pi-map"
+      className="p-mr-2 p-mb-2 m-1"
+      loading={loading}
+      disabled={isWorking}
+      tooltip={t('SHOW_PROFILE')}
+      tooltipOptions={{ position: 'top' }}
+      onClick={() => goToProfile(rowData.id)}
+      label=""
+    />
     </> 
   );
 
   if ( loading )
-    return <></>
+    return <Loading  title="Loading Soil Prodiles...." />
   else 
     return (
     <div className="layout-dashboard">

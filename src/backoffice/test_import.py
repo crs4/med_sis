@@ -6,8 +6,8 @@ from datetime import datetime
 import sys
 
 # Aggiungi i path necessari per il progetto Django
-sys.path.append('/Users/ppalla/opt/my_geo')
-sys.path.append('/Users/ppalla/opt/my_geo/src')
+sys.path.append('path_to_mygeo')
+sys.path.append('path_to_mygeo/src')
 
 # Configura l'ambiente Django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 's4m_catalogue.settings')

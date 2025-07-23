@@ -2,7 +2,7 @@ from rest_framework.views import exception_handler
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework import status
-
+    
 
 def custom_exception_handler(exc, context):
     response = exception_handler(exc, context)
@@ -15,15 +15,15 @@ def custom_exception_handler(exc, context):
                     if isinstance(messages, list):
                         for message in messages:
                             errors.append({
-                                field: str(message)
-                                #'field': field,
-                                #'message': str(message)
+                                #field: str(message)
+                                'field': field,
+                                'message': str(message.errors)
                             })
                     else:
                         errors.append({
-                            field: str(message)
-                            #'field': field,
-                            #'message': str(messages)
+                            #field: str(field) + ':' + str(message)
+                            'field': field,
+                            'message': str(messages.errors)
                         })
             elif isinstance(exc.detail, list):
                 for message in exc.detail:

@@ -1,7 +1,10 @@
 import AppSubMenu from './AppSubMenu';
+import { useUser } from '../context/user';
+import React, { useEffect, useState } from 'react';
 
 const AppMenu = () => {
-    const model = [
+    const user = useUser();
+    const modelA = [
         {
             label: 'Home',
             icon: 'pi pi-home',
@@ -9,12 +12,34 @@ const AppMenu = () => {
                 {
                     label: 'Catalogue',
                     icon: 'pi pi-fw pi-home',
-                    to: '/'
+                    to: 'https://soils4med.crs4.it/'
                 },
                 {
                     label: 'Back Office',
                     icon: 'pi pi-fw pi-image',
-                    to: '/soildata'
+                    to: '/'
+                }
+            ]
+        },
+        { separator: true },
+        {
+            label: 'Data Request',
+            icon: 'pi pi-fw pi-briefcase',
+            items: [
+                {
+                    label: 'List',
+                    icon: 'pi pi-fw pi-list',
+                    to: '/requests'
+                },
+                {
+                    label: 'New',
+                    icon: 'pi pi-fw pi-plus',
+                    to: '/requests/create'
+                },
+                {
+                    label: 'Elaborate',
+                    icon: 'pi pi-fw pi-cog',
+                    to: '/requests/elaborate'
                 }
             ]
         },
@@ -48,12 +73,7 @@ const AppMenu = () => {
                 {
                     label: 'New',
                     icon: 'pi pi-fw pi-plus',
-                    to: '/profiles/edit'
-                },
-                {
-                    label: 'Publish',
-                    icon: 'pi pi-fw pi-briefcase',
-                    to: '/profiles/publish'
+                    to: '/profiles/create'
                 },
                 {
                     label: 'Backup',
@@ -64,40 +84,35 @@ const AppMenu = () => {
         },
         { separator: true },
         {
-            label: 'Soil Samples',
+            label: 'Samples',
             icon: 'pi pi-fw pi-image',
             items: [
                 {
                     label: 'List',
                     icon: 'pi pi-fw pi-list',
-                    to: '/samples'
+                    to: '/samples/'
                 },
                 {
                     label: 'New',
                     icon: 'pi pi-fw pi-plus',
-                    to: '/samples/edit'
-                },
-                {
-                    label: 'Publish',
-                    icon: 'pi pi-fw pi-briefcase',
-                    to: '/samples/publish'
+                    to: '/samples/create'
                 },
                 {
                     label: 'Backup',
                     icon: 'pi pi-fw pi-file',
                     to: '/samples/backup'
-                }
+                }            
             ]
         },
         { separator: true },
         {
-            label: 'Soil Indicators',
+            label: 'Indicators',
             icon: 'pi pi-fw pi-image',
             items: [
                 {
                     label: 'List',
                     icon: 'pi pi-fw pi-list',
-                    to: '/indicators'
+                    to: '/indicators/'
                 },
                 {
                     label: 'New',
@@ -119,11 +134,58 @@ const AppMenu = () => {
                 {
                     label: 'New',
                     icon: 'pi pi-fw pi-plus',
-                    to: '/photos/uploads'
+                    to: '/photos/create'
                 }
             ]
         }
     ];
+    const modelB = [
+        {
+            label: 'Home',
+            icon: 'pi pi-home',
+            items: [
+                {
+                    label: 'Catalogue',
+                    icon: 'pi pi-fw pi-home',
+                    to: 'https://soil4med.crs4.it/'
+                },
+                {
+                    label: 'Back Office',
+                    icon: 'pi pi-fw pi-image',
+                    to: '/'
+                }
+            ]
+        },
+        { separator: true },
+        {
+            label: 'Requests',
+            icon: 'pi pi-fw pi-briefcase',
+            items: [
+                {
+                    label: 'List',
+                    icon: 'pi pi-fw pi-list',
+                    to: '/requests'
+                },
+                {
+                    label: 'New',
+                    icon: 'pi pi-fw pi-plus',
+                    to: '/requests/create'
+                }
+            ]
+        }
+    ];
+    const [ model, setModel ] = useState(modelA);
+    
+    useEffect(() => {
+        if ( !user.userData || 
+             user.userData.forbidden1 === null ||  
+             user.userData.forbidden1 ){
+            setModel(modelB);
+        }
+        else setModel(modelA);
+        
+    }, [user]);
+
     return <AppSubMenu model={model} />;
 };
 

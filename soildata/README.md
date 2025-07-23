@@ -117,3 +117,107 @@ filetr_id
 
 
 ---users 2 data manager, 1 admin, 2 user + landsupport
+
+
+
+https://opengeo.tech/maps/leaflet-search/examples/outside.html
+
+
+npm install piexifjs
+
+DateTimeOriginal
+
+ GPSLatitude, GPSLatitudeRef, GPSLongitude, GPSLongitudeRef
+
+
+
+ // Show the dates and times when the palm tree photos were taken
+for (const [index, exif] of palmExifs.entries()) {    
+    const dateTime = exif['0th'][piexif.ImageIFD.DateTime];
+    const dateTimeOriginal = exif['Exif'][piexif.ExifIFD.DateTimeOriginal];
+    const subsecTimeOriginal = exif['Exif'][piexif.ExifIFD.SubSecTimeOriginal];
+    
+    console.log(`Date/time taken - Image ${index}`);
+    console.log("-------------------------");
+    console.log(`DateTime: ${dateTime}`);
+    console.log(`DateTimeOriginal: ${dateTimeOriginal}.${subsecTimeOriginal}\n`);
+}
+
+// Show the latitudes and longitudes where the palm tree photos were taken 
+for (const [index, exif] of palmExifs.entries()) {    
+    const latitude = exif['GPS'][piexif.GPSIFD.GPSLatitude];
+    const latitudeRef = exif['GPS'][piexif.GPSIFD.GPSLatitudeRef];
+    const longitude = exif['GPS'][piexif.GPSIFD.GPSLongitude];
+    const longitudeRef = exif['GPS'][piexif.GPSIFD.GPSLongitudeRef];
+    
+    console.log(`Coordinates - Image ${index}`);
+    console.log("---------------------");
+    console.log(`Latitude: ${latitude} ${latitudeRef}`);
+    console.log(`Longitude: ${longitude} ${longitudeRef}\n`);
+
+    const open = require('open');
+    
+    // Convert the latitude and longitude into the format that Google Maps expects
+    // (decimal coordinates and +/- for north/south and east/west)
+    const latitudeMultiplier = latitudeRef == 'N' ? 1 : -1;
+    const decimalLatitude = latitudeMultiplier * piexif.GPSHelper.dmsRationalToDeg(latitude);
+    const longitudeMultiplier = longitudeRef == 'E' ? 1 : -1;
+    const decimalLongitude = longitudeMultiplier * piexif.GPSHelper.dmsRationalToDeg(longitude);
+    
+    const url = `https://www.google.com/maps?q=${decimalLatitude},${decimalLongitude}`;
+    open(url);
+    
+    const latitudeDegrees = piexif.GPSHelper.dmsRationalToDeg(latitude);
+    const longitudeDegrees = piexif.GPSHelper.dmsRationalToDeg(longitude);
+    console.log("Original coordinates");
+
+    const altitudeRational = exif['GPS'][piexif.GPSIFD.GPSAltitude];
+    const altitudeDecimal = rationalToDecimal(altitudeRational);
+    const altitudeRef = exif['GPS'][piexif.GPSIFD.GPSAltitudeRef];
+    
+    console.log(`Altitude - Image ${index}`);
+    console.log("------------------");
+    console.log(`${formatAltitude(altitudeDecimal, altitudeRef)}\n`);
+
+}
+
+
+// Copy the original photo’s picture and Exif data
+const newImageData = getBase64DataFromJpegFile('./images/hotel original.jpg');
+const newExif = {
+    '0th': { ...hotelExif['0th'] },
+    'Exif': { ...hotelExif['Exif'] },
+    'GPS': { ...hotelExif['GPS'] },
+    'Interop': { ...hotelExif['Interop'] },
+    '1st': { ...hotelExif['1st'] },
+    'thumbnail': null
+};
+
+
+
+// Change the latitude to Area 51’s: 37° 14' 3.6" N
+const newLatitudeDecimal = 37.0 + (14 / 60) + (3.6 / 3600);
+newExif['GPS'][piexif.GPSIFD.GPSLatitude] = piexif.GPSHelper.degToDmsRational(newLatitudeDecimal);
+newExif['GPS'][piexif.GPSIFD.GPSLatitudeRef] = 'N';
+       
+// Change the longitude to Area 51’s: 115° 48' 23.99" W
+const newLongitudeDecimal = 115.0 + (48.0 / 60) + (23.99 / 3600);
+newExif['GPS'][piexif.GPSIFD.GPSLongitude] = piexif.GPSHelper.degToDmsRational(newLongitudeDecimal);
+newExif['GPS'][piexif.GPSIFD.GPSLongitudeRef] = 'W';
+
+// Convert the new Exif object into binary form
+const newExifBinary = piexif.dump(newExif);
+
+// Embed the Exif data into the image data
+const newPhotoData = piexif.insert(newExifBinary, newImageData);
+
+// Save the new photo to a file
+let fileBuffer = Buffer.from(newPhotoData, 'binary');
+fs.writeFileSync('./images/hotel revised.jpg', fileBuffer);
+
+
+// Create a “scrubbed” copy of the original hotel photo and save it
+const hotelImageData = getBase64DataFromJpegFile('./images/hotel original.jpg');
+const scrubbedHotelImageData = piexif.remove(hotelImageData);
+fileBuffer = Buffer.from(scrubbedHotelImageData, 'binary');
+fs.writeFileSync('./images/hotel scrubbed.jpg', fileBuffer);

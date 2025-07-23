@@ -21,7 +21,7 @@ until PGPASSWORD=${GEONODE_GEODATABASE_PASSWORD} psql -h "$host" -U ${GEONODE_GE
 done
 
 until PGPASSWORD=${BACKOFFICE_DATABASE_PASSWORD} psql -h "$host" -U ${BACKOFFICE_DATABASE_USER} -d ${BACKOFFICE_DATABASE} -P "pager=off" -c '\l'; do
-  >&2 echo "${GEONODE_GEODATABASE} is unavailable - sleeping"
+  >&2 echo "${BACKOFFICE_DATABASE} is unavailable - sleeping"
   sleep 1
 done
 
