@@ -58,6 +58,7 @@ export const validateXLSFile = async (files, uploadType) => {
   return vresult; 
 }
 
+
 export const validateSheet = (sheet_name, uploadType, sheet_mapping, results) => {
       let code = '';
       let n,i = 1;
@@ -255,14 +256,15 @@ export const createObjectsProfiles = (data) => {
   let taxonomy = null;
   let sheet_mapping = Mapping[uploadType+':'+sheets[0]];
   let sheet = data[sheets[0]];
+  if ( sheet )
   for ( let i = 0; i < sheet.length; i+=1 ) {
-    try {
-      let row = sheet[i];
-      if ( row ) {
-        let id =  row[1];
-        let _id = row[1];
-        for ( let j = 1; j < sheet_mapping.size; j+=1 ) {
-          if ( row[j] && row[j].toString().trim() != '' ){  
+    let row = sheet[i];
+    if ( row ) {
+      let id =  row[1];
+      let _id = row[1];
+      for ( let j = 1; j < sheet_mapping.size; j+=1 ) 
+        if ( typeof row[j] !== "undefined" && row[j].toString().trim() != '' ){ 
+          try { 
             model = sheet_mapping[j].m;
             field = sheet_mapping[j].f;
             level = sheet_mapping[j].lf;
@@ -292,24 +294,23 @@ export const createObjectsProfiles = (data) => {
               if ( model === 'NotCultivated' ) 
                 fixtures['NotCultivated'][_id]['land_use'] = id; 
             }
+          } catch (e) {
+            console.log(e);
           }  
         }
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  } 
-  
+    } 
+  }
   // Layer  LayerRedoximorphicColour  LayerStructure
   sheet_mapping = Mapping[uploadType+':'+sheets[1]];
-  sheet = data[sheets[1]]; 
+  sheet = data[sheets[1]];
+  if ( sheet ) 
   for ( let i = 0; i < sheet.length; i+=1 ) {
-    try {
-      let row = sheet[i];
-      if ( row ) {
-        let l_id = row[1] + '@' + row[3];
-        for ( let j = 1; j < sheet_mapping.size; j+=1 ) {
-          if (  row[j] === 0 || (row[j] && row[j].toString().trim() != '') ){ 
+    let row = sheet[i];
+    if ( row ) {
+      let l_id = row[1] + '@' + row[3];
+      for ( let j = 1; j < sheet_mapping.size; j+=1 ) 
+        if ( typeof row[j] !== "undefined" && row[j].toString().trim() != '') { 
+          try {
             let _id = l_id; 
             model = sheet_mapping[j].m;
             field = sheet_mapping[j].f;
@@ -342,22 +343,21 @@ export const createObjectsProfiles = (data) => {
               fixtures['LayerStructure'][_id]['layer'] = l_id;
               fixtures['LayerStructure'][_id][level] = value; 
             }
-          }
+          } catch (e) {
+            console.log(e);
+          } 
         }
-      }
-      
-    } catch (e) {
-        console.log(e);
-    } 
-  } 
+    }
+  }
   // labdata  
   sheet_mapping = Mapping[uploadType+':'+sheets[3]];
   sheet = data[sheets[3]];
   fixtures['LabData'] = { };
+  if ( sheet )
   for ( let i = 0; i < sheet.length; i+=1 ) {
     try {
       let row = sheet[i];
-      if ( row ) {
+      if ( row && row[1] && row[3]) {
         let id =  row[1] + '@' + row[3];
         if ( fixtures['ProfileLayer'][id] )
           fixtures['ProfileLayer'][id]['labdata'] = id;
@@ -365,27 +365,28 @@ export const createObjectsProfiles = (data) => {
         if ( !fixtures['LabData'][id] ) 
           fixtures['LabData'][id] =  {};
         fixtures['LabData'][id]['id'] = id;
-        for ( let j = 1; j < sheet_mapping.size; j+=1 ) {
-          if ( row[j] === 0 || (row[j] && row[j].toString().trim() != '') ){  
+        for ( let j = 1; j < sheet_mapping.size; j+=1 ) 
+          if ( typeof row[j] !== "undefined" && row[j].toString().trim() != ''){  
             field = sheet_mapping[j].f;
             fixtures['LabData'][id][field] = row[j];
           }
-        }
-      }
+      } 
     } catch (e) {
-        console.log(e);
-    } 
-  } 
+      console.log(e);
+    }  
+  }
+   
   // classification  
   sheet_mapping = Mapping[uploadType+':'+sheets[2]];
   sheet = data[sheets[2]];
+  if ( sheet )
   for ( let i = 0; i < sheet.length; i+=1 ) {
     try {
       let row = sheet[i];
       if ( row ) {
         let id =  row[1];
         for ( let j = 1; j < sheet_mapping.size; j+=1 ) {
-          if (  row[j] === 0 || (row[j] && row[j].toString().trim() != '') ){  
+          if (  typeof row[j] !== "undefined" && row[j].toString().trim() != '') {  
             field = sheet_mapping[j].f;
             taxonomy = sheet_mapping[j].t;
             if ( fixtures['ProfileGeneral'][id] && field !== 'profile' ) 
@@ -412,60 +413,6 @@ export const createObjectsProfiles = (data) => {
       }
     }
   }  
-  let pointsdata = [];
-  let depthdata = [];
-  let datedata = [];
-  let data_obj = {};
-
-  /// geo points
-  model = fixtures['ProfileGeneral'];
-  let keys = Object.keys(model); 
-  for ( let k = 0; k < keys.length; k+=1 ){
-    let obj = model[keys[k]];
-    if ( obj && obj['id'] )
-      pointsdata[ obj['id'] ] = [ obj['lon_wgs84'], obj['lat_wgs84'] ]
-      datedata[ obj['id'] ] = obj['date']
-  }
-  /// depth data for points
-  model = fixtures['ProfileLayer'];
-  keys = Object.keys(model); 
-  for ( let k = 0; k < keys.length; k+=1 ){
-    let obj = model[keys[k]];
-    if ( obj && obj['id'] )
-      depthdata[ obj['id'] ] = [ obj['upper'], obj['lower'] ]
-  }
-  /*
-  models = Object.keys(fixtures); 
-  for ( let k = 0; k < models.length; k+=1 ){
-    let points = [];
-    data_obj[models[k]] = [];
-    if ( fixtures[models[k]] ) {
-      let objs = Object.keys(fixtures[models[k]]);
-      for ( let c = 0; c < objs.length; c+=1 ){
-        let p_id = null;
-        let obj = fixtures[models[k]][objs[c]];
-        if ( obj ) {
-          data_obj[models[k]].push(obj);
-          if (obj['id'] )
-            p_id = obj['id'].split('@')[0];
-          if ( models[k] === 'LabData' && depthdata[ obj['id'] ] ){
-            obj['upper'] = depthdata[ obj['id'] ][0];
-            obj['lower'] = depthdata[ obj['id'] ][1];
-          }
-          if ( models[k] === 'LabData' && datedata[ p_id ] ){
-            obj['date'] = datedata[ p_id ];
-          }
-          if ( pointsdata[p_id] )
-            points.push( point ( pointsdata[p_id], obj, { id: objs[c] } ));
-          else console.log ( p_id );    
-        }
-      }
-       
-    }
-    
-  } 
-  */
-  ////GeoJSON......30 layer
   return result
 }
 
@@ -482,6 +429,7 @@ export const createObjectsSamples = (data) => {
   let taxonomy = null;
   let sheet_mapping = Mapping[uploadType+':'+sheets[0]];
   let sheet = data[sheets[0]];
+  if ( sheet )
   for ( let i = 0; i < sheet.length; i+=1 ) {
     try {
       let row = sheet[i];
@@ -489,7 +437,7 @@ export const createObjectsSamples = (data) => {
         let id =  row[1];
         let _id = row[1];
         for ( let j = 1; j < sheet_mapping.size; j+=1 ) {
-          if ( row[j] && row[j].toString().trim() != '' ){  
+          if ( typeof row[j] !== "undefined" && row[j].toString().trim() != '' ){  
             model = sheet_mapping[j].m;
             field = sheet_mapping[j].f;
             level = sheet_mapping[j].lf;
@@ -529,6 +477,7 @@ export const createObjectsSamples = (data) => {
   // Layer  LayerRedoximorphicColour  LayerStructure
   sheet_mapping = Mapping[uploadType+':'+sheets[1]];
   sheet = data[sheets[1]]; 
+  if ( sheet )
   for ( let i = 0; i < sheet.length; i+=1 ) {
     try {
       let row = sheet[i];
@@ -586,9 +535,10 @@ export const createObjectsSamples = (data) => {
     } 
   } 
   // labdata  
-  sheet_mapping = Mapping[uploadType+':'+sheets[3]];
-  sheet = data[sheets[3]];
+  sheet_mapping = Mapping[uploadType+':'+sheets[2]];
+  sheet = data[sheets[2]];
   fixtures['LabData'] = { };
+  if ( sheet )
   for ( let i = 0; i < sheet.length; i+=1 ) {
     try {
       let row = sheet[i];
@@ -601,7 +551,7 @@ export const createObjectsSamples = (data) => {
           fixtures['LabData'][id] =  {};
         fixtures['LabData'][id]['id'] = id;
         for ( let j = 1; j < sheet_mapping.size; j+=1 ) {
-          if ( row[j] === 0 || (row[j] && row[j].toString().trim() != '') ){  
+          if ( typeof row[j] !== "undefined" && row[j].toString().trim() != '' ){  
             field = sheet_mapping[j].f;
             fixtures['LabData'][id][field] = row[j];
           }
@@ -612,15 +562,16 @@ export const createObjectsSamples = (data) => {
     } 
   } 
   // classification  
-  sheet_mapping = Mapping[uploadType+':'+sheets[2]];
-  sheet = data[sheets[2]];
+  sheet_mapping = Mapping[uploadType+':'+sheets[3]];
+  sheet = data[sheets[3]];
+  if ( sheet )
   for ( let i = 0; i < sheet.length; i+=1 ) {
     try {
       let row = sheet[i];
       if ( row ) {
         let id =  row[1];
         for ( let j = 1; j < sheet_mapping.size; j+=1 ) {
-          if (  row[j] === 0 || (row[j] && row[j].toString().trim() != '') ){  
+          if (  typeof row[j] !== "undefined" && row[j].toString().trim() != '' ){  
             field = sheet_mapping[j].f;
             taxonomy = sheet_mapping[j].t;
             if ( fixtures['ProfileGeneral'][id] && field !== 'profile' ) 
@@ -647,60 +598,6 @@ export const createObjectsSamples = (data) => {
       }
     }
   }  
-  let pointsdata = [];
-  let depthdata = [];
-  let datedata = [];
-  let data_obj = {};
-
-  /// geo points
-  model = fixtures['ProfileGeneral'];
-  let keys = Object.keys(model); 
-  for ( let k = 0; k < keys.length; k+=1 ){
-    let obj = model[keys[k]];
-    if ( obj && obj['id'] )
-      pointsdata[ obj['id'] ] = [ obj['lon_wgs84'], obj['lat_wgs84'] ]
-      datedata[ obj['id'] ] = obj['date']
-  }
-  /// depth data for points
-  model = fixtures['ProfileLayer'];
-  keys = Object.keys(model); 
-  for ( let k = 0; k < keys.length; k+=1 ){
-    let obj = model[keys[k]];
-    if ( obj && obj['id'] )
-      depthdata[ obj['id'] ] = [ obj['upper'], obj['lower'] ]
-  }
-  /*
-  models = Object.keys(fixtures); 
-  for ( let k = 0; k < models.length; k+=1 ){
-    let points = [];
-    data_obj[models[k]] = [];
-    if ( fixtures[models[k]] ) {
-      let objs = Object.keys(fixtures[models[k]]);
-      for ( let c = 0; c < objs.length; c+=1 ){
-        let p_id = null;
-        let obj = fixtures[models[k]][objs[c]];
-        if ( obj ) {
-          data_obj[models[k]].push(obj);
-          if (obj['id'] )
-            p_id = obj['id'].split('@')[0];
-          if ( models[k] === 'LabData' && depthdata[ obj['id'] ] ){
-            obj['upper'] = depthdata[ obj['id'] ][0];
-            obj['lower'] = depthdata[ obj['id'] ][1];
-          }
-          if ( models[k] === 'LabData' && datedata[ p_id ] ){
-            obj['date'] = datedata[ p_id ];
-          }
-          if ( pointsdata[p_id] )
-            points.push( point ( pointsdata[p_id], obj, { id: objs[c] } ));
-          else console.log ( p_id );    
-        }
-      }
-       
-    }
-    
-  } 
-  */
-  ////GeoJSON......30 layer
   return result
 }
 
@@ -708,22 +605,18 @@ export const createObjectsGenealogy = (data,uploadType) => {
 //// XLS profile sheets
   const sheets = UploadService.TYPES[uploadType].sheets;
   let fixtures = {}
-  // General  
   let model = null;
   let field = null;
-  let level = null;
-  let value = null; 
-  let taxonomy = null;
   let sheet_mapping = Mapping[uploadType+':'+sheets[0]];
   for ( let z = 0; z < 2; z+=1 ) {
     let sheet = data[sheets[z]];
+    if ( sheet )
     for ( let i = 0; i < sheet.length; i+=1 ) {
       try {
         let row = sheet[i];
         if ( row ) {
-          let id =  row[1];
           for ( let j = 1; j < sheet_mapping.size; j+=1 ) {
-            if (  row[j] === 0 || ( row[j] && row[j].toString().trim() != '' )){  
+            if (  typeof row[j] !== "undefined" && row[j].toString().trim() != '' ){  
               model = sheet_mapping[j].m;
               field = sheet_mapping[j].f;
               if ( !fixtures[model] )

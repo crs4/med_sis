@@ -190,13 +190,13 @@ class XLSxUploadService:
             ]
 
             processing_order_pgenealogies = [
-                "genealogy",  
-                "projects"
+                "Project",
+                "ProfileGeneral"     
             ]
 
             processing_order_sgenealogies = [
-                "genealogy",  
-                "projects"
+                "Project",
+                "SampleGeneral"
             ]
 
             if xlsx_upload.type == 'XLS_S':
@@ -276,7 +276,7 @@ class XLSxUploadService:
                     error = {
                         "model": model_name,
                         "element": _id,
-                        "msg": errors
+                        "msg": "CODE: " + response.status_code + ",MSG: " + errors
                     }
                     self.report["errors"].append(error)
                     self.report["success"] = False

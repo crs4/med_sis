@@ -127,6 +127,7 @@ export default function Page( )  {
     setValidating(true);
     setFileId(files[0].name);
     let result = await validateXLSFile (files,upload.type);
+    console.log(result)
     if ( result  ){ 
       setValidated(result['validated'])
       if  ( result['data'] && result['report'] ) {
@@ -198,6 +199,7 @@ export default function Page( )  {
   const showActionInfo = async () => {
     setVisibleDlg2(true);
   };
+
   useEffect(() => {
       if ( uploading )
         saveData();
@@ -208,25 +210,57 @@ export default function Page( )  {
           router.push(`/401`);
       
     },[user]);  // eslint-disable-line
+  
+  useEffect(() => {
+    const today = new Date();
+    if ( uploadType ) {
+      if (!upload ) 
+        setUpload({
+          date : today,
+          title : uploadType.label+' '+today.toDateString(),
+          type: uploadType.name,
+          data: {},
+          report: {},
+          status: UploadService.STATUSES.UPLOADED,
+          operation: null
+        })
+      else setUpload({
+          date : today,
+          title : uploadType.label+' '+today.toDateString(),
+          type: uploadType.name,
+          data: {},
+          report: {},
+          status: UploadService.STATUSES.UPLOADED,
+          operation: upload.operation
+        })  
+    }
+  },[uploadType]);
 
   useEffect(() => {
     const today = new Date();
-    if (!upload && uploadType && uploadAction) {
-      setUpload ({
-        date : today,
-        title : uploadType.label+' upload - ' + today.toDateString(),
-        type: uploadType.name,
-        data: {},
-        report: {},
-        status: UploadService.STATUSES.UPLOADED,
-        operation: uploadAction.name
-      })
-    } 
-    else if ( upload && uploadType ) {
-      upload.type = uploadType.name; 
-      upload.title = uploadType.label+' '+today.toDateString();   
-    }  
-  },[upload, uploadType, uploadAction]);
+    if ( uploadAction ) {
+      if (upload) 
+        setUpload({
+          date : today,
+          title : upload.title,
+          type: upload.type,
+          data: {},
+          report: {},
+          status: UploadService.STATUSES.UPLOADED,
+          operation: uploadAction.name
+        }) 
+      else  
+        setUpload({
+          date : today,
+          title : '',
+          type: null,
+          data: {},
+          report: {},
+          status: UploadService.STATUSES.UPLOADED,
+          operation:  uploadAction.name
+        })
+    }
+  },[uploadAction]);
 
   useEffect(() => {
     const fetchMap = async () => {
@@ -383,7 +417,7 @@ export default function Page( )  {
                 aria-expanded={visibleDlg2 ? true : false} >
           </Button>
         </div> 
-        {(upload) && ( 
+        {(uploadAction && uploadType) && ( 
         <>
           <div class="flex flex-row mt-4">
             <span class="font-bold text-lg">Upload title:&nbsp;</span> <span class="font-bold text-lg text-blue-500"> { upload?.title }</span>
@@ -405,7 +439,7 @@ export default function Page( )  {
           </div>
         </>
         )}  
-        {(upload && fileId !== null) && ( 
+        {(fileId !== null) && ( 
         <>
           <Message severity="success" content={'File: ' + fileId} /> 
           <div class="flex flex-row mt-4 mb-4">
