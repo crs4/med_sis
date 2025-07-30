@@ -83,28 +83,42 @@
                                     </a>
                                 </li>
                                 <li class="s4m-menu-item" style="--s4m-menu-icon-bg: #09b014;">
-                                    <a href="/soildata/requests">
+                                    <a href="/soildata/monitoring">
                                         <div class="s4m-menu-icon">
                                             <img src="/static/img/pedology_white.png">
                                         </div>
                                         <div class="s4m-menu-label" style="font-weight: 600;">
-                                        {% if LANGUAGE == 'fr-fr' %} Profils <br/>de sols  
-                                        {% elif LANGUAGE == 'it-it' %} Profili <br/>del suolo
-                                        {% elif LANGUAGE == 'es-es' %} Perfiles <br/>de suelo
-                                        {% else  %} Soil <br/>profiles
+                                        {% if LANGUAGE == 'fr-fr' %} Surveillance <br/> 
+                                        {% elif LANGUAGE == 'it-it' %} Monitoraggio<br/>
+                                        {% elif LANGUAGE == 'es-es' %} Monitoreo <br/>
+                                        {% else  %} Soil<br/>Monitoring
+                                        {% endif %}
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="s4m-menu-item" style="--s4m-menu-icon-bg: #09b014;">
+                                    <a href="/soildata/legacy">
+                                        <div class="s4m-menu-icon">
+                                            <img src="/static/img/pedology_white.png">
+                                        </div>
+                                        <div class="s4m-menu-label" style="font-weight: 600;">
+                                        {% if LANGUAGE == 'fr-fr' %} Données <br/> Héritées 
+                                        {% elif LANGUAGE == 'it-it' %} Dati <br/>Legacy
+                                        {% elif LANGUAGE == 'es-es' %} Datos <br/> Heredados
+                                        {% else  %} Legacy <br/>Data
                                         {% endif %}
                                         </div>
                                     </a>
                                 </li>
                                 <li class="s4m-menu-item" style="--s4m-menu-icon-bg: #ce7d12;">
-                                    <a href="/catalogue/#/?f=dataset&f=map&filter%7Bkeywords.slug.in%7D=soil_organic_matter">
+                                    <a href="/catalogue/#/?f=dataset&f=map&filter%7Bkeywords.slug.in%7D=soil_map">
                                         <div class="s4m-menu-icon">
                                             <img src="/static/img/maps.svg">
                                         </div>
                                         <div class="s4m-menu-label" style="font-weight: 600;">
                                         {% if LANGUAGE == 'fr-fr' %} Carte  <br/>de sols  
                                         {% elif LANGUAGE == 'it-it' %} Carta <br/>del suolo
-                                        {% elif LANGUAGE == 'es-es' %} mapa <br/>de suelos 
+                                        {% elif LANGUAGE == 'es-es' %} Mapa <br/>de suelos 
                                         {% else  %} Soil <br/>map
                                         {% endif %}
                                         </div>
@@ -122,10 +136,10 @@
                                             <img src="/static/img/chemical.png">
                                         </div>
                                         <div class="s4m-menu-label" style="font-weight: 600;">
-                                        {% if LANGUAGE == 'fr-fr' %}Santé chimique<br/>du sol 
-                                        {% elif LANGUAGE == 'it-it' %}Salute chimica<br/>del suolo
-                                        {% elif LANGUAGE == 'es-es' %}Salud química<br/>del suelo 
-                                        {% else  %} Soil Chemical<br/>Health
+                                        {% if LANGUAGE == 'fr-fr' %}Santé <br/>chimique 
+                                        {% elif LANGUAGE == 'it-it' %}Salute <br/>chimica
+                                        {% elif LANGUAGE == 'es-es' %}Salud <br/>química 
+                                        {% else  %} Chemical<br/>Health
                                         {% endif %}
                                         </div>
                                     </a>
@@ -136,10 +150,10 @@
                                             <img src="/static/img/physical.png">
                                         </div>
                                         <div class="s4m-menu-label" style="font-weight: 600;">
-                                        {% if LANGUAGE == 'fr-fr' %}Santé physique<br/>du sol 
-                                        {% elif LANGUAGE == 'it-it' %}Salute fisica<br/>del suolo
-                                        {% elif LANGUAGE == 'es-es' %}Salud física<br/>del suelo 
-                                        {% else  %} Soil Physical<br/>Health
+                                        {% if LANGUAGE == 'fr-fr' %}Santé <br/>physique 
+                                        {% elif LANGUAGE == 'it-it' %}Salute <br/>fisica
+                                        {% elif LANGUAGE == 'es-es' %}Salud <br/>física 
+                                        {% else  %} Soil <br/>Physical
                                         {% endif %}
                                         </div>
                                     </a>
@@ -150,10 +164,10 @@
                                             <img src="/static/img/biological.png">
                                         </div>
                                         <div class="s4m-menu-label" style="font-weight: 600;">
-                                        {% if LANGUAGE == 'fr-fr' %}Santé biologique<br/>des sols 
-                                        {% elif LANGUAGE == 'it-it' %}Salute biologica<br/>del suolo
-                                        {% elif LANGUAGE == 'es-es' %}Salud biológica<br/>del suelo 
-                                        {% else  %} Soil Biological<br/>Health
+                                        {% if LANGUAGE == 'fr-fr' %}Santé <br/>biologique 
+                                        {% elif LANGUAGE == 'it-it' %}Salute <br/>biologica
+                                        {% elif LANGUAGE == 'es-es' %}Salud <br/>biológica 
+                                        {% else  %} Biological<br/>Health
                                         {% endif %}
                                         </div>
                                     </a>

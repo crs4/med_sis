@@ -149,44 +149,44 @@ class XLSxUploadService:
             ]  
 
             processing_order_sample = [
-                "SampleLandformTopography",  
-                "SampleClimateAndWeather",
-                "SampleCultivated", 
-                "SampleLandUse", 
-                "SampleNotCultivated", 
-                "SampleLitterLayer",
-                "SampleSurface", 
-                "SampleSurfaceUnevenness", 
-                "SampleSurfaceCracks",
-                "SampleCoarseFragments", 
-                "SampleGeneral",
-                "SampleLayerCoarseFragments",
-                "SampleLayerRemnants",
-                "SampleLayerArtefacts",
-                "SampleLayerNonMatrixPore",
-                "SampleLayerCracks",
-                "SampleLayerStressFeatures",
-                "SampleLayerMatrixColours",
-                "SampleLayerCoarserTextured",
-                "SampleLayerLithogenicVariegates",
-                "SampleLayerRedoximorphicFeatures",
-                "SampleLayerRedoximorphicColour",
-                "SampleLayerCoatingsBridges",
-                "SampleLayerRibbonlikeAccumulations",
-                "SampleLayerCarbonates",
-                "SampleLayerGypsum",
-                "SampleLayerSecondarySilica",
-                "SampleLayerConsistence",
-                "SampleLayerSurfaceCrusts",
-                "SampleLayerPermafrostFeatures",
-                "SampleLayerOrganicCarbon",
-                "SampleLayerRoots",
-                "SampleLayerAnimalActivity",
-                "SampleLayerHumanAlterations",
-                "SampleLayerDegreeDecomposition",
-                "SampleLabData",
-                "SampleLayer",
-                "SampleLayerStructure"
+                "MonitoringLandformTopography",  
+                "MonitoringClimateAndWeather",
+                "MonitoringCultivated", 
+                "MonitoringLandUse", 
+                "MonitoringNotCultivated", 
+                "MonitoringLitterLayer",
+                "MonitoringSurface", 
+                "MonitoringSurfaceUnevenness", 
+                "MonitoringSurfaceCracks",
+                "MonitoringCoarseFragments", 
+                "MonitoringGeneral",
+                "MonitoringLayerCoarseFragments",
+                "MonitoringLayerRemnants",
+                "MonitoringLayerArtefacts",
+                "MonitoringLayerNonMatrixPore",
+                "MonitoringLayerCracks",
+                "MonitoringLayerStressFeatures",
+                "MonitoringLayerMatrixColours",
+                "MonitoringLayerCoarserTextured",
+                "MonitoringLayerLithogenicVariegates",
+                "MonitoringLayerRedoximorphicFeatures",
+                "MonitoringLayerRedoximorphicColour",
+                "MonitoringLayerCoatingsBridges",
+                "MonitoringLayerRibbonlikeAccumulations",
+                "MonitoringLayerCarbonates",
+                "MonitoringLayerGypsum",
+                "MonitoringLayerSecondarySilica",
+                "MonitoringLayerConsistence",
+                "MonitoringLayerSurfaceCrusts",
+                "MonitoringLayerPermafrostFeatures",
+                "MonitoringLayerOrganicCarbon",
+                "MonitoringLayerRoots",
+                "MonitoringLayerAnimalActivity",
+                "MonitoringLayerHumanAlterations",
+                "MonitoringLayerDegreeDecomposition",
+                "MonitoringLabData",
+                "MonitoringLayer",
+                "MonitoringLayerStructure"
             ]
 
             processing_order_pgenealogies = [
@@ -196,7 +196,7 @@ class XLSxUploadService:
 
             processing_order_sgenealogies = [
                 "Project",
-                "SampleGeneral"
+                "MonitoringGeneral"
             ]
 
             if xlsx_upload.type == 'XLS_S':
@@ -209,7 +209,7 @@ class XLSxUploadService:
             # Processa ogni array nell'ordine specificato
             for model_name in processing_order:
                 if model_name in data:
-                    if (( model_name == 'ProfileGeneral' or model_name == 'SampleGeneral' ) and 
+                    if (( model_name == 'ProfileGeneral' or model_name == 'MonitoringGeneral' ) and 
                         ( xlsx_upload.type == 'XLS_PG' or xlsx_upload.type == 'XLS_SG' )):
                         self._process_array(model_name, data[model_name], 'PATCH' )
                     else: 

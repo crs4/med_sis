@@ -24,7 +24,6 @@ export default function Page()  {
   const [isWorking, setIsWorking] = useState(false);
   const [current, setCurrent] = useState(null);
   const [visibleDlg1, setVisibleDlg1] = useState(false);
-  const [visibleDlg2, setVisibleDlg2] = useState(false);
   const [loading, setLoading] = useState(true);
   const [uploads, setUploads] = useState(null);
   const router = useRouter();
@@ -41,14 +40,6 @@ export default function Page()  {
 
   const goToUpload = (id) => {
     router.push(`/uploads/${id}`);
-  };
-
-  const replayUpload = async (id) => {
-    if ( !id || current )
-      return;
-    setIsWorking(true);
-    setCurrent(id);
-    setVisibleDlg2(true);
   };
 
   const removeUpload = async (id) => {
@@ -73,33 +64,7 @@ export default function Page()  {
     initFilters();
     setCurrent(null);
     setIsWorking(false);
-  };
-
-  
-  const performReplay = async () => {
-    if ( !current )
-      return;
-    /*try {
-      const res = await UploadService.remove(id);
-      const json = await res.json();
-      if (json.errors) {
-        toast.current.show({severity:'error', summary: 'Error', detail:'Errors deleting upload', life: 3000});
-      }
-      else  {
-        setUploads((omp) => (omp.filter((p) => p.id !== id)));
-        toast.current.show({severity:'success', summary: 'Done!', detail:'Upload has been deleted', life: 3000});
-      } 
-    } 
-    catch (e) { 
-      toast.current.show({severity:'error', summary: 'Error', detail:'Something went wrong', life: 3000});
-    }
-    finally {
-      setIsDeleting(null);
-    }
-    */  
-    setCurrent(null);
-    setIsWorking(false);
-  };
+  };  
 
   const clearFilters = () => {
     initFilters();
@@ -129,12 +94,6 @@ export default function Page()  {
     setCurrent(null);
     setIsWorking(false);
   };
-
-  const rejectDlg2 = () => {
-    setCurrent(null);
-    setIsWorking(false);
-  };
-  
 
   useEffect(() => {
     const fetchData = ( async() => {
@@ -249,7 +208,6 @@ export default function Page()  {
     return <span >{UploadService.ACTIONS[option]?.label}</span>;
   };
 
-
   const typeBodyTemplate = (rowData) => {
     if (rowData.type)
       return <span >{UploadService.TYPES[rowData.type]?.label}</span>;
@@ -296,32 +254,13 @@ export default function Page()  {
       className="p-mr-2 p-mb-2 m-1"
       loading={loading}
       disabled={isWorking}
-      tooltip={t('LOAD_UPLOAD')}
+      tooltip={t('SHOW_UPLOAD')}
       tooltipOptions={{ position: 'top' }}
       onClick={() => goToUpload(rowData.id)}
       label=""
     />
     </>
     )}
-    { (rowData.status !== UploadService.STATUSES.IN_PROCESS &&
-       rowData.status !== UploadService.STATUSES.UPLOADED &&
-       rowData.status !== UploadService.STATUSES.IMPORT_WITH_ERROR
-      ) && (
-    <>     
-    <Button
-      icon="pi pi-replay"
-      className="p-button-help p-mr-2 p-mb-2 m-1"
-      loading={loading}
-      disabled={isWorking}
-      tooltip={t('REPLAY_UPLOAD')}
-      tooltipOptions={{ position: 'top' }}
-      onClick={() => replayUpload(rowData.id)}
-      label=""
-      aria-controls={visibleDlg2 ? 'dlg_replay' : null} 
-      aria-expanded={visibleDlg2 ? true : false}
-    />
-    </>
-      )}
     </> 
   );
 
@@ -334,8 +273,6 @@ export default function Page()  {
           <div className="card">
             <ConfirmDialog id="dlg_remove" group="declarative"  visible={visibleDlg1} onHide={() => setVisibleDlg1(false)} message="Are you sure you want to delete xlsx upload?" 
               header="Confirmation" icon="pi pi-exclamation-triangle" accept={performRemove} reject={rejectDlg1} />
-            <ConfirmDialog id="dlg_replay" group="declarative"  visible={visibleDlg2} onHide={() => setVisibleDlg2(false)} message="Are you sure you want to replay old XLSx Upload? The active soil data will be replaced!" 
-              header="Confirmation" icon="pi pi-exclamation-triangle" accept={performReplay} reject={rejectDlg2} />
             <Toast ref={toast} />
             <h5>Soil Data Uploads List</h5>
             <DataTable

@@ -62,45 +62,35 @@ const AppMenu = () => {
         },
         { separator: true },
         {
-            label: 'Soil Profiles',
+            label: 'Legacy Data',
             icon: 'pi pi-fw pi-image',
             items: [
                 {
                     label: 'List',
                     icon: 'pi pi-fw pi-list',
-                    to: '/profiles'
-                },
-                {
-                    label: 'New',
-                    icon: 'pi pi-fw pi-plus',
-                    to: '/profiles/create'
+                    to: '/lagacy'
                 },
                 {
                     label: 'Backup',
                     icon: 'pi pi-fw pi-file',
-                    to: '/profiles/backup'
+                    to: '/lagacy/backup'
                 }
             ]
         },
         { separator: true },
         {
-            label: 'Samples',
+            label: 'Monitoring Data',
             icon: 'pi pi-fw pi-image',
             items: [
                 {
                     label: 'List',
                     icon: 'pi pi-fw pi-list',
-                    to: '/samples/'
-                },
-                {
-                    label: 'New',
-                    icon: 'pi pi-fw pi-plus',
-                    to: '/samples/create'
+                    to: '/monitoring/'
                 },
                 {
                     label: 'Backup',
                     icon: 'pi pi-fw pi-file',
-                    to: '/samples/backup'
+                    to: '/monitoring/backup'
                 }            
             ]
         },
@@ -132,7 +122,7 @@ const AppMenu = () => {
                     to: '/photos'
                 },
                 {
-                    label: 'New',
+                    label: 'Add',
                     icon: 'pi pi-fw pi-plus',
                     to: '/photos/create'
                 }

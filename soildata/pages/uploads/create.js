@@ -51,7 +51,7 @@ export default function Page( )  {
         return panel;
       try {
         panel = '<div class="flex flex-wrap  justify-content-center">';
-        panel += '<span class="text-cyan-500 align-items-center font-bold" >Profile:</span><span> '+code+'</span></div>';
+        panel += '<span class="text-cyan-500 align-items-center font-bold" >Legacy:</span><span> '+code+'</span></div>';
         let keys = Object.keys(result);
         let values;
         let v;
@@ -234,7 +234,7 @@ export default function Page( )  {
           operation: upload.operation
         })  
     }
-  },[uploadType]);
+  },[upload, uploadType]);
 
   useEffect(() => {
     const today = new Date();
@@ -260,7 +260,7 @@ export default function Page( )  {
           operation:  uploadAction.name
         })
     }
-  },[uploadAction]);
+  },[upload,uploadAction]);
 
   useEffect(() => {
     const fetchMap = async () => {
@@ -399,16 +399,16 @@ export default function Page( )  {
         </Panel>
         <div class="flex flex-row justify-content-center mt-4">
           <Dropdown value={uploadType} onChange={(e) => setUploadType(e.value)} options={UploadService.GET_TYPES_ARRAY()} optionLabel="label" 
-                    placeholder="Choose the Type" className="w-full mr-2 md:w-18rem" 
+                    placeholder="Choose the Type" className="w-full mr-2 md:w-14rem" 
                     disabled={fileId !== null}
           />
-          <Button label="?" class="p-button p-component p-button-outlined p-button-rounded p-button-info font-bold mr-8"
+          <Button label="?" class="p-button p-component p-button-outlined p-button-rounded p-button-info font-bold"
                 onClick={() => showTypeInfo()} 
                 aria-controls={visibleDlg1 ? 'dialog_for_type' : null} 
                 aria-expanded={visibleDlg1 ? true : false} >
           </Button> 
           <Dropdown value={uploadAction} onChange={(e) => setUploadAction(e.value)} options={UploadService.GET_ACTIONS_ARRAY()} optionLabel="label" 
-                    placeholder="Choose the Action" className="w-full mr-2 md:w-14rem" 
+                    placeholder="Choose the Action" className="w-full ml-8 mr-2 md:w-14rem" 
                     disabled={fileId !== null}
           />
           <Button label="?" class="p-button p-component p-button-outlined p-button-rounded p-button-info font-bold"

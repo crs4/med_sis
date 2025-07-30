@@ -68,10 +68,8 @@ class XLSxUploadViewSet(viewsets.ModelViewSet):
             item.pop('report')
         return Response(serializer.data)
     
-    
-
 ###########################
-# Profile\Samples Genealogy
+# Projects for Genealogy
 ###########################
 
 class ProjectViewSet(viewsets.ModelViewSet):
@@ -104,8 +102,6 @@ class ProjectViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(descr__icontains=descr)
             
         return queryset
-
-
 
 ###########################
 # Profile General
@@ -1138,19 +1134,19 @@ class LabDataViewSet(viewsets.ModelViewSet):
             
         return queryset
 
-###########################
-# Sample General
-###########################
+#########################################
+## Monitoring General
+#########################################
 
-class SampleGeneralViewSet(viewsets.ModelViewSet):
+class MonitoringGeneralViewSet(viewsets.ModelViewSet):
    
-    queryset = SampleGeneral.objects.all()
-    serializer_class = SampleGeneralSerializer
+    queryset = MonitoringGeneral.objects.all()
+    serializer_class = MonitoringGeneralSerializer
     permission_classes = [permissions.IsAdminUser ]
     
     
     def get_queryset(self):
-        queryset = SampleGeneral.objects.all()
+        queryset = MonitoringGeneral.objects.all()
         # Filtri per codice e data
         date = self.request.query_params.get('date', None)
         _from = self.request.query_params.get('from', None)
@@ -1192,12 +1188,12 @@ class SampleGeneralViewSet(viewsets.ModelViewSet):
             
         return queryset
     
-class SampleLandformTopographyViewSet(viewsets.ModelViewSet):
+class MonitoringLandformTopographyViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le caratteristiche topografiche del terreno.
     """
-    queryset = SampleLandformTopography.objects.all()
-    serializer_class = SampleLandformTopographySerializer
+    queryset = MonitoringLandformTopography.objects.all()
+    serializer_class = MonitoringLandformTopographySerializer
     permission_classes = [permissions.IsAdminUser ]
 
     
@@ -1205,7 +1201,7 @@ class SampleLandformTopographyViewSet(viewsets.ModelViewSet):
             """
             Filtra le caratteristiche topografiche in base ai parametri di query.
             """
-            queryset = SampleLandformTopography.objects.all()
+            queryset = MonitoringLandformTopography.objects.all()
             
             id = self.request.query_params.get('id', None)
             if id is not None:
@@ -1257,19 +1253,19 @@ class SampleLandformTopographyViewSet(viewsets.ModelViewSet):
             
             return queryset
  
-class SampleClimateAndWeatherViewSet(viewsets.ModelViewSet):
+class MonitoringClimateAndWeatherViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le informazioni climatiche e meteorologiche.
     """
-    queryset = SampleClimateAndWeather.objects.all()
-    serializer_class = SampleClimateAndWeatherSerializer
+    queryset = MonitoringClimateAndWeather.objects.all()
+    serializer_class = MonitoringClimateAndWeatherSerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le informazioni climatiche e meteorologiche in base ai parametri di query.
         """
-        queryset = SampleClimateAndWeather.objects.all()
+        queryset = MonitoringClimateAndWeather.objects.all()
         
         id = self.request.query_params.get('id', None)
         if id is not None:
@@ -1311,13 +1307,13 @@ class SampleClimateAndWeatherViewSet(viewsets.ModelViewSet):
             
         return queryset
 
-class SampleCultivatedViewSet(viewsets.ModelViewSet):
-    queryset = SampleCultivated.objects.all()
-    serializer_class = SampleCultivatedSerializer
+class MonitoringCultivatedViewSet(viewsets.ModelViewSet):
+    queryset = MonitoringCultivated.objects.all()
+    serializer_class = MonitoringCultivatedSerializer
     permission_classes = [permissions.IsAdminUser ]
     
     def get_queryset(self):
-        queryset = SampleCultivated.objects.all()
+        queryset = MonitoringCultivated.objects.all()
         type = self.request.query_params.get('type', None)
         actual = self.request.query_params.get('actual', None)
         last = self.request.query_params.get('last', None)
@@ -1358,19 +1354,19 @@ class SampleCultivatedViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(cessation__lte=_to)    
         return queryset
 
-class SampleLandUseViewSet(viewsets.ModelViewSet):
+class MonitoringLandUseViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le informazioni sull'uso del suolo.
     """
-    queryset = SampleLandUse.objects.all()
-    serializer_class = SampleLandUseSerializer
+    queryset = MonitoringLandUse.objects.all()
+    serializer_class = MonitoringLandUseSerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le informazioni sull'uso del suolo in base ai parametri di query.
         """
-        queryset = SampleLandUse.objects.all()
+        queryset = MonitoringLandUse.objects.all()
         
         id = self.request.query_params.get('id', None)
         if id is not None:
@@ -1387,19 +1383,19 @@ class SampleLandUseViewSet(viewsets.ModelViewSet):
             
         return queryset
 
-class SampleNotCultivatedViewSet(viewsets.ModelViewSet):
+class MonitoringNotCultivatedViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = SampleNotCultivated.objects.all()
-    serializer_class = SampleNotCultivatedSerializer
+    queryset = MonitoringNotCultivated.objects.all()
+    serializer_class = MonitoringNotCultivatedSerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le X in base ai parametri di query.
         """
-        queryset = SampleNotCultivated.objects.all()
+        queryset = MonitoringNotCultivated.objects.all()
         landuse = self.request.query_params.get('landuse', None)
         stratum = self.request.query_params.get('stratum', None)
         veget1 = self.request.query_params.get('veget1', None)
@@ -1444,19 +1440,19 @@ class SampleNotCultivatedViewSet(viewsets.ModelViewSet):
                       queryset.filter(species3=specie)
         return queryset
     
-class SampleSurfaceViewSet(viewsets.ModelViewSet):
+class MonitoringSurfaceViewSet(viewsets.ModelViewSet):
     """ 
     API endpoint che permette di visualizzare e modificare le caratteristiche della superficie.
     """
-    queryset = SampleSurface.objects.all()
-    serializer_class = SampleSurfaceSerializer
+    queryset = MonitoringSurface.objects.all()
+    serializer_class = MonitoringSurfaceSerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le caratteristiche della superficie in base ai parametri di query.
         """
-        queryset = SampleSurface.objects.all()
+        queryset = MonitoringSurface.objects.all()
         
         id = self.request.query_params.get('id', None)
         crust_area_min = self.request.query_params.get('crust_area_min', None)
@@ -1528,19 +1524,19 @@ class SampleSurfaceViewSet(viewsets.ModelViewSet):
         
         return queryset
 
-class SampleSurfaceCracksViewSet(viewsets.ModelViewSet):
+class MonitoringSurfaceCracksViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = SampleSurfaceCracks.objects.all()
-    serializer_class = SampleSurfaceCracksSerializer
+    queryset = MonitoringSurfaceCracks.objects.all()
+    serializer_class = MonitoringSurfaceCracksSerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le X in base ai parametri di query.
         """
-        queryset = SampleSurfaceCracks.objects.all()
+        queryset = MonitoringSurfaceCracks.objects.all()
         
         # Filtro per codice
         id = self.request.query_params.get('id', None)
@@ -1574,19 +1570,19 @@ class SampleSurfaceCracksViewSet(viewsets.ModelViewSet):
             
         return queryset
 
-class SampleLitterLayerViewSet(viewsets.ModelViewSet):
+class MonitoringLitterLayerViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = SampleLitterLayer.objects.all()
-    serializer_class = SampleLitterLayerSerializer
+    queryset = MonitoringLitterLayer.objects.all()
+    serializer_class = MonitoringLitterLayerSerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le X in base ai parametri di query.
         """
-        queryset = SampleLitterLayer.objects.all()
+        queryset = MonitoringLitterLayer.objects.all()
         
         # Filtro per codice
         id = self.request.query_params.get('id', None)
@@ -1612,19 +1608,19 @@ class SampleLitterLayerViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(max_thick_min__lte=max_thick_max)
         return queryset
 
-class SampleCoarseFragmentsViewSet(viewsets.ModelViewSet):
+class MonitoringCoarseFragmentsViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = SampleCoarseFragments.objects.all()
-    serializer_class = SampleCoarseFragmentsSerializer
+    queryset = MonitoringCoarseFragments.objects.all()
+    serializer_class = MonitoringCoarseFragmentsSerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le X in base ai parametri di query.
         """
-        queryset = SampleCoarseFragments.objects.all()
+        queryset = MonitoringCoarseFragments.objects.all()
         
         # Filtro per codice
         id = self.request.query_params.get('id', None)
@@ -1644,19 +1640,19 @@ class SampleCoarseFragmentsViewSet(viewsets.ModelViewSet):
         
         return queryset
     
-class SampleSurfaceUnevennessViewSet(viewsets.ModelViewSet):
+class MonitoringSurfaceUnevennessViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = SampleSurfaceUnevenness.objects.all()
-    serializer_class = SampleSurfaceUnevennessSerializer
+    queryset = MonitoringSurfaceUnevenness.objects.all()
+    serializer_class = MonitoringSurfaceUnevennessSerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le X in base ai parametri di query.
         """
-        queryset = SampleSurfaceUnevenness.objects.all()
+        queryset = MonitoringSurfaceUnevenness.objects.all()
         
         # Filtro per codice
         id = self.request.query_params.get('id', None)
@@ -1733,38 +1729,38 @@ class SampleSurfaceUnevennessViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(ero_area__lte=ero_area_max)
         return queryset
 
-class SampleSurfaceCrustsViewSet(viewsets.ModelViewSet):
+class MonitoringSurfaceCrustsViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = SampleSurfaceCrusts.objects.all()
-    serializer_class = SampleSurfaceCrustsSerializer
+    queryset = MonitoringSurfaceCrusts.objects.all()
+    serializer_class = MonitoringSurfaceCrustsSerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le X in base ai parametri di query.
         """
-        queryset = SampleSurfaceCrusts.objects.all()
+        queryset = MonitoringSurfaceCrusts.objects.all()
         return queryset
     
 ###########################
-# Sample Layer
+## Monitoring Layer
 ###########################
 
-class SampleLayerViewSet(viewsets.ModelViewSet):
+class MonitoringLayerViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = SampleLayer.objects.all()
-    serializer_class = SampleLayerSerializer
+    queryset = MonitoringLayer.objects.all()
+    serializer_class = MonitoringLayerSerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le X in base ai parametri di query.
         """
-        queryset = SampleLayer.objects.all()
+        queryset = MonitoringLayer.objects.all()
         
         # Filtro per codice
         id = self.request.query_params.get('id', None)
@@ -1794,369 +1790,369 @@ class SampleLayerViewSet(viewsets.ModelViewSet):
         
         return queryset
 
-class SampleLayerRemnantsViewSet(viewsets.ModelViewSet):
+class MonitoringLayerRemnantsViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = SampleLayerRemnants.objects.all()
-    serializer_class = SampleLayerRemnantsSerializer 
+    queryset = MonitoringLayerRemnants.objects.all()
+    serializer_class = MonitoringLayerRemnantsSerializer 
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le X in base ai parametri di query.
         """
-        queryset = SampleLayerRemnants.objects.all()
+        queryset = MonitoringLayerRemnants.objects.all()
         return queryset
     
-class SampleLayerCoarseFragmentsViewSet(viewsets.ModelViewSet):
+class MonitoringLayerCoarseFragmentsViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = SampleLayerCoarseFragments.objects.all()
-    serializer_class = SampleLayerCoarseFragmentsSerializer
+    queryset = MonitoringLayerCoarseFragments.objects.all()
+    serializer_class = MonitoringLayerCoarseFragmentsSerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le X in base ai parametri di query.
         """
-        queryset = SampleLayerCoarseFragments.objects.all()
+        queryset = MonitoringLayerCoarseFragments.objects.all()
         return queryset
 
-class SampleLayerArtefactsViewSet(viewsets.ModelViewSet):
+class MonitoringLayerArtefactsViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = SampleLayerArtefacts.objects.all()
-    serializer_class = SampleLayerArtefactsSerializer
+    queryset = MonitoringLayerArtefacts.objects.all()
+    serializer_class = MonitoringLayerArtefactsSerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le X in base ai parametri di query.
         """
-        queryset = SampleLayerArtefacts.objects.all()
+        queryset = MonitoringLayerArtefacts.objects.all()
         return queryset
 
-class SampleLayerSecondarySilicaViewSet(viewsets.ModelViewSet):
+class MonitoringLayerSecondarySilicaViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = SampleLayerSecondarySilica.objects.all()
-    serializer_class = SampleLayerSecondarySilicaSerializer
+    queryset = MonitoringLayerSecondarySilica.objects.all()
+    serializer_class = MonitoringLayerSecondarySilicaSerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le X in base ai parametri di query.
         """
-        queryset = SampleLayerSecondarySilica.objects.all()
+        queryset = MonitoringLayerSecondarySilica.objects.all()
         return queryset
 
-class SampleLayerGypsumViewSet(viewsets.ModelViewSet):
+class MonitoringLayerGypsumViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = SampleLayerGypsum.objects.all()
-    serializer_class = SampleLayerGypsumSerializer
+    queryset = MonitoringLayerGypsum.objects.all()
+    serializer_class = MonitoringLayerGypsumSerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le X in base ai parametri di query.
         """
-        queryset = SampleLayerGypsum.objects.all()
+        queryset = MonitoringLayerGypsum.objects.all()
         return queryset
 
-class SampleLayerCarbonatesViewSet(viewsets.ModelViewSet):
+class MonitoringLayerCarbonatesViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = SampleLayerCarbonates.objects.all()
-    serializer_class = SampleLayerCarbonatesSerializer
+    queryset = MonitoringLayerCarbonates.objects.all()
+    serializer_class = MonitoringLayerCarbonatesSerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le X in base ai parametri di query.
         """
-        queryset = SampleLayerCarbonates.objects.all()
+        queryset = MonitoringLayerCarbonates.objects.all()
         return queryset
 
-class SampleLayerRibbonlikeAccumulationsViewSet(viewsets.ModelViewSet):
+class MonitoringLayerRibbonlikeAccumulationsViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = SampleLayerRibbonlikeAccumulations.objects.all()
-    serializer_class = SampleLayerRibbonlikeAccumulationsSerializer
+    queryset = MonitoringLayerRibbonlikeAccumulations.objects.all()
+    serializer_class = MonitoringLayerRibbonlikeAccumulationsSerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le X in base ai parametri di query.
         """
-        queryset = SampleLayerRibbonlikeAccumulations.objects.all()
+        queryset = MonitoringLayerRibbonlikeAccumulations.objects.all()
         return queryset
 
-class SampleLayerCoatingsBridgesViewSet(viewsets.ModelViewSet):
+class MonitoringLayerCoatingsBridgesViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = SampleLayerCoatingsBridges.objects.all()
-    serializer_class = SampleLayerCoatingsBridgesSerializer
+    queryset = MonitoringLayerCoatingsBridges.objects.all()
+    serializer_class = MonitoringLayerCoatingsBridgesSerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le X in base ai parametri di query.
         """
-        queryset = SampleLayerCoatingsBridges.objects.all()
+        queryset = MonitoringLayerCoatingsBridges.objects.all()
         return queryset
 
-class SampleLayerRedoximorphicColourViewSet(viewsets.ModelViewSet):
+class MonitoringLayerRedoximorphicColourViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = SampleLayerRedoximorphicColour.objects.all()
-    serializer_class = SampleLayerRedoximorphicColourSerializer
+    queryset = MonitoringLayerRedoximorphicColour.objects.all()
+    serializer_class = MonitoringLayerRedoximorphicColourSerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le X in base ai parametri di query.
         """
-        queryset = SampleLayerRedoximorphicColour.objects.all()
+        queryset = MonitoringLayerRedoximorphicColour.objects.all()
         return queryset
 
-class SampleLayerRedoximorphicFeaturesViewSet(viewsets.ModelViewSet):
+class MonitoringLayerRedoximorphicFeaturesViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = SampleLayerRedoximorphicFeatures.objects.all()
-    serializer_class = SampleLayerRedoximorphicFeaturesSerializer
+    queryset = MonitoringLayerRedoximorphicFeatures.objects.all()
+    serializer_class = MonitoringLayerRedoximorphicFeaturesSerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le X in base ai parametri di query.
         """
-        queryset = SampleLayerRedoximorphicFeatures.objects.all()
+        queryset = MonitoringLayerRedoximorphicFeatures.objects.all()
         return queryset
 
-class SampleLayerLithogenicVariegatesViewSet(viewsets.ModelViewSet):
+class MonitoringLayerLithogenicVariegatesViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = SampleLayerLithogenicVariegates.objects.all()
-    serializer_class = SampleLayerLithogenicVariegatesSerializer
+    queryset = MonitoringLayerLithogenicVariegates.objects.all()
+    serializer_class = MonitoringLayerLithogenicVariegatesSerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le X in base ai parametri di query.
         """
-        queryset = SampleLayerLithogenicVariegates.objects.all()
+        queryset = MonitoringLayerLithogenicVariegates.objects.all()
         return queryset
 
-class SampleLayerCoarserTexturedViewSet(viewsets.ModelViewSet):
+class MonitoringLayerCoarserTexturedViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = SampleLayerCoarserTextured.objects.all()
-    serializer_class = SampleLayerCoarserTexturedSerializer
+    queryset = MonitoringLayerCoarserTextured.objects.all()
+    serializer_class = MonitoringLayerCoarserTexturedSerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le X in base ai parametri di query.
         """
-        queryset = SampleLayerCoarserTextured.objects.all()
+        queryset = MonitoringLayerCoarserTextured.objects.all()
         return queryset
 
-class SampleLayerMatrixColoursViewSet(viewsets.ModelViewSet):
+class MonitoringLayerMatrixColoursViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = SampleLayerMatrixColours.objects.all()
-    serializer_class = SampleLayerMatrixColoursSerializer
+    queryset = MonitoringLayerMatrixColours.objects.all()
+    serializer_class = MonitoringLayerMatrixColoursSerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le X in base ai parametri di query.
         """
-        queryset = SampleLayerMatrixColours.objects.all()
+        queryset = MonitoringLayerMatrixColours.objects.all()
         return queryset
 
-class SampleLayerStressFeaturesViewSet(viewsets.ModelViewSet):
+class MonitoringLayerStressFeaturesViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = SampleLayerStressFeatures.objects.all()
-    serializer_class = SampleLayerStressFeaturesSerializer
+    queryset = MonitoringLayerStressFeatures.objects.all()
+    serializer_class = MonitoringLayerStressFeaturesSerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le X in base ai parametri di query.
         """
-        queryset = SampleLayerStressFeatures.objects.all()
+        queryset = MonitoringLayerStressFeatures.objects.all()
         return queryset
 
-class SampleLayerCracksViewSet(viewsets.ModelViewSet):
+class MonitoringLayerCracksViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = SampleLayerCracks.objects.all()
-    serializer_class = SampleLayerCracksSerializer
+    queryset = MonitoringLayerCracks.objects.all()
+    serializer_class = MonitoringLayerCracksSerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le X in base ai parametri di query.
         """
-        queryset = SampleLayerCracks.objects.all()
+        queryset = MonitoringLayerCracks.objects.all()
         return queryset
 
-class SampleLayerStructureViewSet(viewsets.ModelViewSet):
+class MonitoringLayerStructureViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = SampleLayerStructure.objects.all()
-    serializer_class = SampleLayerStructureSerializer
+    queryset = MonitoringLayerStructure.objects.all()
+    serializer_class = MonitoringLayerStructureSerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le X in base ai parametri di query.
         """
-        queryset = SampleLayerStructure.objects.all()
+        queryset = MonitoringLayerStructure.objects.all()
         return queryset
 
-class SampleLayerNonMatrixPoreViewSet(viewsets.ModelViewSet):
+class MonitoringLayerNonMatrixPoreViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = SampleLayerNonMatrixPore.objects.all()
-    serializer_class = SampleLayerNonMatrixPoreSerializer
+    queryset = MonitoringLayerNonMatrixPore.objects.all()
+    serializer_class = MonitoringLayerNonMatrixPoreSerializer
     permission_classes = [permissions.IsAdminUser ]
 
-class SampleLayerDegreeDecompositionViewSet(viewsets.ModelViewSet):
+class MonitoringLayerDegreeDecompositionViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = SampleLayerDegreeDecomposition.objects.all()
-    serializer_class = SampleLayerDegreeDecompositionSerializer
+    queryset = MonitoringLayerDegreeDecomposition.objects.all()
+    serializer_class = MonitoringLayerDegreeDecompositionSerializer
     permission_classes = [permissions.IsAdminUser ]
 
-class SampleLayerHumanAlterationsViewSet(viewsets.ModelViewSet):
+class MonitoringLayerHumanAlterationsViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = SampleLayerHumanAlterations.objects.all()
-    serializer_class = SampleLayerHumanAlterationsSerializer
+    queryset = MonitoringLayerHumanAlterations.objects.all()
+    serializer_class = MonitoringLayerHumanAlterationsSerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le X in base ai parametri di query.
         """
-        queryset = SampleLayerHumanAlterations.objects.all()
+        queryset = MonitoringLayerHumanAlterations.objects.all()
         return queryset
 
-class SampleLayerAnimalActivityViewSet(viewsets.ModelViewSet):
+class MonitoringLayerAnimalActivityViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = SampleLayerAnimalActivity.objects.all()
-    serializer_class = SampleLayerAnimalActivitySerializer
+    queryset = MonitoringLayerAnimalActivity.objects.all()
+    serializer_class = MonitoringLayerAnimalActivitySerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le X in base ai parametri di query.
         """
-        queryset = SampleLayerAnimalActivity.objects.all()
+        queryset = MonitoringLayerAnimalActivity.objects.all()
         return queryset
 
-class SampleLayerRootsViewSet(viewsets.ModelViewSet):
+class MonitoringLayerRootsViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = SampleLayerRoots.objects.all()
-    serializer_class = SampleLayerRootsSerializer
+    queryset = MonitoringLayerRoots.objects.all()
+    serializer_class = MonitoringLayerRootsSerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le X in base ai parametri di query.
         """
-        queryset = SampleLayerRoots.objects.all()
+        queryset = MonitoringLayerRoots.objects.all()
         return queryset
 
-class SampleLayerOrganicCarbonViewSet(viewsets.ModelViewSet):
+class MonitoringLayerOrganicCarbonViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = SampleLayerOrganicCarbon.objects.all()
-    serializer_class = SampleLayerOrganicCarbonSerializer
+    queryset = MonitoringLayerOrganicCarbon.objects.all()
+    serializer_class = MonitoringLayerOrganicCarbonSerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le X in base ai parametri di query.
         """
-        queryset = SampleLayerOrganicCarbon.objects.all()
+        queryset = MonitoringLayerOrganicCarbon.objects.all()
         return queryset
 
-class SampleLayerPermafrostFeaturesViewSet(viewsets.ModelViewSet):
+class MonitoringLayerPermafrostFeaturesViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = SampleLayerPermafrostFeatures.objects.all()
-    serializer_class = SampleLayerPermafrostFeaturesSerializer
+    queryset = MonitoringLayerPermafrostFeatures.objects.all()
+    serializer_class = MonitoringLayerPermafrostFeaturesSerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le X in base ai parametri di query.
         """
-        queryset = SampleLayerPermafrostFeatures.objects.all()
+        queryset = MonitoringLayerPermafrostFeatures.objects.all()
         return queryset
 
-class SampleLayerConsistenceViewSet(viewsets.ModelViewSet):
+class MonitoringLayerConsistenceViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = SampleLayerConsistence.objects.all()
-    serializer_class = SampleLayerConsistenceSerializer
+    queryset = MonitoringLayerConsistence.objects.all()
+    serializer_class = MonitoringLayerConsistenceSerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le X in base ai parametri di query.
         """
-        queryset = SampleLayerConsistence.objects.all()
+        queryset = MonitoringLayerConsistence.objects.all()
         return queryset
 
 #########################################
 ## Lab Data 
 #########################################
 
-class SampleLabDataViewSet(viewsets.ModelViewSet):
+class MonitoringLabDataViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = SampleLabData.objects.all()
-    serializer_class = SampleLabDataSerializer
+    queryset = MonitoringLabData.objects.all()
+    serializer_class = MonitoringLabDataSerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le X in base ai parametri di query.
         """
-        queryset = SampleLabData.objects.all()
+        queryset = MonitoringLabData.objects.all()
         
         # Filtro per codice
         id = self.request.query_params.get('pk', None)

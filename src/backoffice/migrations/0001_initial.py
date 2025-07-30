@@ -7361,13 +7361,13 @@ class Migration(migrations.Migration):
                 (
                     "type",
                     models.TextField(
-                        db_comment="Data type: Profiles/Samples/Indicator"
+                        db_comment="Data type: Profiles/Monitoring/Indicator"
                     ),
                 ),
                 (
                     "dataid",
                     models.TextField(
-                        db_comment="Data keys: fields of Profile, Sample or an Indicator id"
+                        db_comment="Data keys: fields of Profile, Monitoring or an Indicator id"
                     ),
                 ),
                 ("purpose", models.TextField(db_comment="Purpose")),
@@ -7428,7 +7428,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleClimateAndWeather",
+            name="MonitoringClimateAndWeather",
             fields=[
                 (
                     "id",
@@ -7627,7 +7627,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleCoarseFragments",
+            name="MonitoringCoarseFragments",
             fields=[
                 (
                     "id",
@@ -7747,7 +7747,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleCultivated",
+            name="MonitoringCultivated",
             fields=[
                 (
                     "id",
@@ -7861,7 +7861,7 @@ class Migration(migrations.Migration):
                             ("OT", "Other"),
                             ("NO", "None"),
                         ],
-                        db_comment="Report the techniques that refer to the surrounding area of the soil sample. If more than one type of technique is present, report in the array up to three, the dominant one first. Value from p_productivity_techniques",
+                        db_comment="Report the techniques that refer to the surrounding area of the soil monitoring. If more than one type of technique is present, report in the array up to three, the dominant one first. Value from p_productivity_techniques",
                         null=True,
                     ),
                 ),
@@ -7960,12 +7960,12 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleGeneral",
+            name="MonitoringGeneral",
             fields=[
                 (
                     "id",
                     models.TextField(
-                        db_comment="sample identifier",
+                        db_comment="monitoring identifier",
                         primary_key=True,
                         serialize=False,
                     ),
@@ -7987,7 +7987,7 @@ class Migration(migrations.Migration):
                 (
                     "location",
                     models.TextField(
-                        blank=True, db_comment="Name of the sample location", null=True
+                        blank=True, db_comment="Name of the monitoring location", null=True
                     ),
                 ),
                 (
@@ -8060,54 +8060,6 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 ("notes", models.TextField(blank=True, null=True)),
-                ("s_ploughing", models.TextField(blank=True, db_comment="", null=True)),
-                ("d_ploughing", models.TextField(blank=True, db_comment="", null=True)),
-                ("tillage", models.TextField(blank=True, db_comment="", null=True)),
-                ("use_inputs", models.TextField(blank=True, db_comment="", null=True)),
-                ("irrigation", models.TextField(blank=True, db_comment="", null=True)),
-                (
-                    "conserv_measure",
-                    models.TextField(blank=True, db_comment="", null=True),
-                ),
-                (
-                    "worm_casts",
-                    models.DecimalField(
-                        blank=True,
-                        db_comment="",
-                        decimal_places=0,
-                        max_digits=6,
-                        null=True,
-                        validators=[backoffice.models.validate_positive],
-                    ),
-                ),
-                (
-                    "disturbed0_20",
-                    models.BooleanField(blank=True, db_comment="", null=True),
-                ),
-                (
-                    "disturbed20_50",
-                    models.BooleanField(blank=True, db_comment="", null=True),
-                ),
-                (
-                    "sampler_type",
-                    models.TextField(blank=True, db_comment="", null=True),
-                ),
-                (
-                    "indisturbed0_20_1",
-                    models.BooleanField(blank=True, db_comment="", null=True),
-                ),
-                (
-                    "indisturbed0_20_2",
-                    models.BooleanField(blank=True, db_comment="", null=True),
-                ),
-                (
-                    "indisturbed0_20_3",
-                    models.BooleanField(blank=True, db_comment="", null=True),
-                ),
-                (
-                    "indisturbed20_50",
-                    models.BooleanField(blank=True, db_comment="", null=True),
-                ),
                 (
                     "cls_sys",
                     models.TextField(
@@ -8153,34 +8105,34 @@ class Migration(migrations.Migration):
                     "climateandweather",
                     models.OneToOneField(
                         blank=True,
-                        db_comment="Sample - Climate weather",
+                        db_comment="Monitoring - Climate weather",
                         default=None,
                         null=True,
                         on_delete=django.db.models.deletion.SET_DEFAULT,
-                        to="backoffice.sampleclimateandweather",
+                        to="backoffice.monitoringclimateandweather",
                     ),
                 ),
                 (
                     "coarsefragments",
                     models.OneToOneField(
                         blank=True,
-                        db_comment="Sample -Coarse Fragments",
+                        db_comment="Monitoring -Coarse Fragments",
                         default=None,
                         null=True,
                         on_delete=django.db.models.deletion.SET_DEFAULT,
-                        to="backoffice.samplecoarsefragments",
+                        to="backoffice.monitoringcoarsefragments",
                     ),
                 ),
             ],
             options={
-                "db_table": "sample_general",
+                "db_table": "monitoring_general",
                 "db_table_comment": "The Soil Profile main table",
                 "permissions": (("view", "can view data"), ("write", "can write data")),
                 "managed": True,
             },
         ),
         migrations.CreateModel(
-            name="SampleLandformTopography",
+            name="MonitoringLandformTopography",
             fields=[
                 (
                     "id",
@@ -8192,7 +8144,7 @@ class Migration(migrations.Migration):
                     "grad_ups",
                     models.DecimalField(
                         blank=True,
-                        db_comment="Ground surface upslope inclination with respect to the horizontal plane. If the sample lies on a flat surface, the gradient is 0%. ",
+                        db_comment="Ground surface upslope inclination with respect to the horizontal plane. If the monitoring lies on a flat surface, the gradient is 0%. ",
                         decimal_places=10,
                         max_digits=30,
                         null=True,
@@ -8203,7 +8155,7 @@ class Migration(migrations.Migration):
                     "grad_downs",
                     models.DecimalField(
                         blank=True,
-                        db_comment="Ground surface downslope inclination with respect to the horizontal plane. If the sample lies on a flat surface, the gradient is 0%. ",
+                        db_comment="Ground surface downslope inclination with respect to the horizontal plane. If the monitoring lies on a flat surface, the gradient is 0%. ",
                         decimal_places=10,
                         max_digits=30,
                         null=True,
@@ -8214,7 +8166,7 @@ class Migration(migrations.Migration):
                     "slope_asp",
                     models.DecimalField(
                         blank=True,
-                        db_comment="If the sample lies on a slope, report the compass direction that the slope faces, viewed downslope; e.g., 225°",
+                        db_comment="If the monitoring lies on a slope, report the compass direction that the slope faces, viewed downslope; e.g., 225°",
                         decimal_places=10,
                         max_digits=30,
                         null=True,
@@ -8265,7 +8217,7 @@ class Migration(migrations.Migration):
                                 "vertical curvature Convex, horizontal curvature Concave",
                             ),
                         ],
-                        db_comment="If the sample lies on a slope, report the slope shape in 2 directions: up-/downslope (perpendicular to the elevation contour, i.e. the vertical curvature) and across slope (along the elevation contour, i.e. the horizontal curvature); e.g., Linear (L), Convex (V) or Concave (C).",
+                        db_comment="If the monitoring lies on a slope, report the slope shape in 2 directions: up-/downslope (perpendicular to the elevation contour, i.e. the vertical curvature) and across slope (along the elevation contour, i.e. the horizontal curvature); e.g., Linear (L), Convex (V) or Concave (C).",
                         null=True,
                     ),
                 ),
@@ -8285,7 +8237,7 @@ class Migration(migrations.Migration):
                             ("OB", "Basin with outflow"),
                             ("EB", "Endorheic basin"),
                         ],
-                        db_comment="If the sample lies in an uneven terrain, report the sample position.",
+                        db_comment="If the monitoring lies in an uneven terrain, report the monitoring position.",
                         null=True,
                     ),
                 ),
@@ -8678,7 +8630,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleLandUse",
+            name="MonitoringLandUse",
             fields=[
                 (
                     "id",
@@ -8830,7 +8782,7 @@ class Migration(migrations.Migration):
                         default=None,
                         null=True,
                         on_delete=django.db.models.deletion.SET_DEFAULT,
-                        to="backoffice.samplecultivated",
+                        to="backoffice.monitoringcultivated",
                     ),
                 ),
             ],
@@ -8841,7 +8793,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleLayerAnimalActivity",
+            name="MonitoringLayerAnimalActivity",
             fields=[
                 (
                     "id",
@@ -9028,7 +8980,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleLayerArtefacts",
+            name="MonitoringLayerArtefacts",
             fields=[
                 (
                     "id",
@@ -9430,7 +9382,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleLayerCarbonates",
+            name="MonitoringLayerCarbonates",
             fields=[
                 (
                     "id",
@@ -9760,7 +9712,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleLayerCoarseFragments",
+            name="MonitoringLayerCoarseFragments",
             fields=[
                 (
                     "id",
@@ -11133,7 +11085,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleLayerCoarserTextured",
+            name="MonitoringLayerCoarserTextured",
             fields=[
                 (
                     "id",
@@ -11194,7 +11146,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleLayerCoatingsBridges",
+            name="MonitoringLayerCoatingsBridges",
             fields=[
                 (
                     "id",
@@ -11323,7 +11275,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleLayerConsistence",
+            name="MonitoringLayerConsistence",
             fields=[
                 (
                     "id",
@@ -11673,7 +11625,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleLayerCracks",
+            name="MonitoringLayerCracks",
             fields=[
                 (
                     "id",
@@ -11737,7 +11689,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleLayerDegreeDecomposition",
+            name="MonitoringLayerDegreeDecomposition",
             fields=[
                 (
                     "id",
@@ -11834,7 +11786,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleLayerGypsum",
+            name="MonitoringLayerGypsum",
             fields=[
                 (
                     "id",
@@ -11982,7 +11934,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleLayerHumanAlterations",
+            name="MonitoringLayerHumanAlterations",
             fields=[
                 (
                     "id",
@@ -12223,7 +12175,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleLayerLithogenicVariegates",
+            name="MonitoringLayerLithogenicVariegates",
             fields=[
                 (
                     "id",
@@ -12315,7 +12267,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleLayerMatrixColours",
+            name="MonitoringLayerMatrixColours",
             fields=[
                 (
                     "id",
@@ -12368,7 +12320,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleLayerNonMatrixPore",
+            name="MonitoringLayerNonMatrixPore",
             fields=[
                 (
                     "id",
@@ -12636,7 +12588,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleLayerOrganicCarbon",
+            name="MonitoringLayerOrganicCarbon",
             fields=[
                 (
                     "id",
@@ -12768,7 +12720,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleLayerPermafrostFeatures",
+            name="MonitoringLayerPermafrostFeatures",
             fields=[
                 (
                     "id",
@@ -12888,7 +12840,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleLayerRedoximorphicFeatures",
+            name="MonitoringLayerRedoximorphicFeatures",
             fields=[
                 (
                     "id",
@@ -12974,7 +12926,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleLayerRemnants",
+            name="MonitoringLayerRemnants",
             fields=[
                 (
                     "id",
@@ -13186,7 +13138,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleLayerRibbonlikeAccumulations",
+            name="MonitoringLayerRibbonlikeAccumulations",
             fields=[
                 (
                     "id",
@@ -13236,7 +13188,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleLayerRoots",
+            name="MonitoringLayerRoots",
             fields=[
                 (
                     "id",
@@ -13481,7 +13433,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleLayerSecondarySilica",
+            name="MonitoringLayerSecondarySilica",
             fields=[
                 (
                     "id",
@@ -13596,7 +13548,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleLayerStressFeatures",
+            name="MonitoringLayerStressFeatures",
             fields=[
                 (
                     "id",
@@ -13635,7 +13587,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleLitterLayer",
+            name="MonitoringLitterLayer",
             fields=[
                 (
                     "id",
@@ -13676,13 +13628,13 @@ class Migration(migrations.Migration):
             ],
             options={
                 "db_table": "s_litter_layer",
-                "db_table_comment": "Observe an area of 5 m x 5 m with the sample at its centre. Report the average and the maximum thickness of the litter layer in cm. If there is no litter layer, report 0 cm as thickness.",
+                "db_table_comment": "Observe an area of 5 m x 5 m with the monitoring at its centre. Report the average and the maximum thickness of the litter layer in cm. If there is no litter layer, report 0 cm as thickness.",
                 "permissions": (("view", "can view data"), ("write", "can write data")),
                 "managed": True,
             },
         ),
         migrations.CreateModel(
-            name="SampleSurface",
+            name="MonitoringSurface",
             fields=[
                 (
                     "id",
@@ -14121,7 +14073,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleSurfaceCracks",
+            name="MonitoringSurfaceCracks",
             fields=[
                 (
                     "id",
@@ -14276,13 +14228,13 @@ class Migration(migrations.Migration):
             ],
             options={
                 "db_table": "s_surface_cracks",
-                "db_table_comment": "For each sample, compile as many rows as the width classes are. If surface cracks are present, report the average width of the cracks. If the soil surface between cracks of larger width classes is regularly divided by cracks of smaller width classes, report the two width classes.",
+                "db_table_comment": "For each monitoring, compile as many rows as the width classes are. If surface cracks are present, report the average width of the cracks. If the soil surface between cracks of larger width classes is regularly divided by cracks of smaller width classes, report the two width classes.",
                 "permissions": (("view", "can view data"), ("write", "can write data")),
                 "managed": True,
             },
         ),
         migrations.CreateModel(
-            name="SampleSurfaceCrusts",
+            name="MonitoringSurfaceCrusts",
             fields=[
                 (
                     "id",
@@ -14385,7 +14337,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleSurfaceUnevenness",
+            name="MonitoringSurfaceUnevenness",
             fields=[
                 (
                     "id",
@@ -15483,9 +15435,9 @@ class Migration(migrations.Migration):
                     models.TextField(
                         choices=[
                             ("XLS_P", "XLSx Profiles upload"),
-                            ("XLS_S", "XLSx Samples upload"),
+                            ("XLS_S", "XLSx Monitoring upload"),
                             ("XLS_PG", "XLSx Profiles Genealogy upload"),
-                            ("XLS_SG", "XLSx Samples Genealogy upload"),
+                            ("XLS_SG", "XLSx Monitoring Genealogy upload"),
                             ("XLS_PH", "XLSx Photo metadata upload"),
                         ],
                         db_comment="Type of the upload",
@@ -15539,7 +15491,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleLayerRedoximorphicColour",
+            name="MonitoringLayerRedoximorphicColour",
             fields=[
                 (
                     "id",
@@ -15737,8 +15689,8 @@ class Migration(migrations.Migration):
                     models.ForeignKey(
                         db_comment="LayerRedoximorphicFeatures",
                         on_delete=django.db.models.deletion.CASCADE,
-                        related_name="samplelayerredoximorphiccolour_features_set",
-                        to="backoffice.samplelayerredoximorphicfeatures",
+                        related_name="monitoringlayerredoximorphiccolour_features_set",
+                        to="backoffice.monitoringlayerredoximorphicfeatures",
                     ),
                 ),
             ],
@@ -15750,7 +15702,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleLayer",
+            name="MonitoringLayer",
             fields=[
                 (
                     "id",
@@ -16517,7 +16469,7 @@ class Migration(migrations.Migration):
                         default=None,
                         null=True,
                         on_delete=django.db.models.deletion.SET_DEFAULT,
-                        to="backoffice.samplelayeranimalactivity",
+                        to="backoffice.monitoringlayeranimalactivity",
                     ),
                 ),
                 (
@@ -16528,7 +16480,7 @@ class Migration(migrations.Migration):
                         default=None,
                         null=True,
                         on_delete=django.db.models.deletion.SET_DEFAULT,
-                        to="backoffice.samplelayerartefacts",
+                        to="backoffice.monitoringlayerartefacts",
                     ),
                 ),
                 (
@@ -16539,7 +16491,7 @@ class Migration(migrations.Migration):
                         default=None,
                         null=True,
                         on_delete=django.db.models.deletion.SET_DEFAULT,
-                        to="backoffice.samplelayercarbonates",
+                        to="backoffice.monitoringlayercarbonates",
                     ),
                 ),
                 (
@@ -16550,7 +16502,7 @@ class Migration(migrations.Migration):
                         default=None,
                         null=True,
                         on_delete=django.db.models.deletion.SET_DEFAULT,
-                        to="backoffice.samplelayercoarsefragments",
+                        to="backoffice.monitoringlayercoarsefragments",
                     ),
                 ),
                 (
@@ -16561,7 +16513,7 @@ class Migration(migrations.Migration):
                         default=None,
                         null=True,
                         on_delete=django.db.models.deletion.SET_DEFAULT,
-                        to="backoffice.samplelayercoatingsbridges",
+                        to="backoffice.monitoringlayercoatingsbridges",
                     ),
                 ),
                 (
@@ -16572,7 +16524,7 @@ class Migration(migrations.Migration):
                         default=None,
                         null=True,
                         on_delete=django.db.models.deletion.SET_DEFAULT,
-                        to="backoffice.samplelayerconsistence",
+                        to="backoffice.monitoringlayerconsistence",
                     ),
                 ),
                 (
@@ -16583,7 +16535,7 @@ class Migration(migrations.Migration):
                         default=None,
                         null=True,
                         on_delete=django.db.models.deletion.SET_DEFAULT,
-                        to="backoffice.samplelayercracks",
+                        to="backoffice.monitoringlayercracks",
                     ),
                 ),
                 (
@@ -16594,7 +16546,7 @@ class Migration(migrations.Migration):
                         default=None,
                         null=True,
                         on_delete=django.db.models.deletion.SET_DEFAULT,
-                        to="backoffice.samplelayerdegreedecomposition",
+                        to="backoffice.monitoringlayerdegreedecomposition",
                     ),
                 ),
                 (
@@ -16605,7 +16557,7 @@ class Migration(migrations.Migration):
                         default=None,
                         null=True,
                         on_delete=django.db.models.deletion.SET_DEFAULT,
-                        to="backoffice.samplelayergypsum",
+                        to="backoffice.monitoringlayergypsum",
                     ),
                 ),
                 (
@@ -16616,7 +16568,7 @@ class Migration(migrations.Migration):
                         default=None,
                         null=True,
                         on_delete=django.db.models.deletion.SET_DEFAULT,
-                        to="backoffice.samplelayerhumanalterations",
+                        to="backoffice.monitoringlayerhumanalterations",
                     ),
                 ),
                 (
@@ -16627,7 +16579,7 @@ class Migration(migrations.Migration):
                         default=None,
                         null=True,
                         on_delete=django.db.models.deletion.SET_DEFAULT,
-                        to="backoffice.samplelayerlithogenicvariegates",
+                        to="backoffice.monitoringlayerlithogenicvariegates",
                     ),
                 ),
                 (
@@ -16638,7 +16590,7 @@ class Migration(migrations.Migration):
                         default=None,
                         null=True,
                         on_delete=django.db.models.deletion.SET_DEFAULT,
-                        to="backoffice.samplelayermatrixcolours",
+                        to="backoffice.monitoringlayermatrixcolours",
                     ),
                 ),
                 (
@@ -16649,7 +16601,7 @@ class Migration(migrations.Migration):
                         default=None,
                         null=True,
                         on_delete=django.db.models.deletion.SET_DEFAULT,
-                        to="backoffice.samplelayernonmatrixpore",
+                        to="backoffice.monitoringlayernonmatrixpore",
                     ),
                 ),
                 (
@@ -16660,7 +16612,7 @@ class Migration(migrations.Migration):
                         default=None,
                         null=True,
                         on_delete=django.db.models.deletion.SET_DEFAULT,
-                        to="backoffice.samplelayerorganiccarbon",
+                        to="backoffice.monitoringlayerorganiccarbon",
                     ),
                 ),
                 (
@@ -16671,7 +16623,7 @@ class Migration(migrations.Migration):
                         default=None,
                         null=True,
                         on_delete=django.db.models.deletion.SET_DEFAULT,
-                        to="backoffice.samplelayerpermafrostfeatures",
+                        to="backoffice.monitoringlayerpermafrostfeatures",
                     ),
                 ),
                 (
@@ -16682,7 +16634,7 @@ class Migration(migrations.Migration):
                         default=None,
                         null=True,
                         on_delete=django.db.models.deletion.SET_DEFAULT,
-                        to="backoffice.samplelayerredoximorphicfeatures",
+                        to="backoffice.monitoringlayerredoximorphicfeatures",
                     ),
                 ),
                 (
@@ -16693,7 +16645,7 @@ class Migration(migrations.Migration):
                         default=None,
                         null=True,
                         on_delete=django.db.models.deletion.SET_DEFAULT,
-                        to="backoffice.samplelayerremnants",
+                        to="backoffice.monitoringlayerremnants",
                     ),
                 ),
                 (
@@ -16704,7 +16656,7 @@ class Migration(migrations.Migration):
                         default=None,
                         null=True,
                         on_delete=django.db.models.deletion.SET_DEFAULT,
-                        to="backoffice.samplelayerribbonlikeaccumulations",
+                        to="backoffice.monitoringlayerribbonlikeaccumulations",
                     ),
                 ),
                 (
@@ -16715,16 +16667,16 @@ class Migration(migrations.Migration):
                         default=None,
                         null=True,
                         on_delete=django.db.models.deletion.SET_DEFAULT,
-                        to="backoffice.samplelayerroots",
+                        to="backoffice.monitoringlayerroots",
                     ),
                 ),
                 (
-                    "sample",
+                    "site",
                     models.ForeignKey(
-                        db_comment="Foreign Key field: sample",
+                        db_comment="Foreign Key field: monitoring site",
                         on_delete=django.db.models.deletion.CASCADE,
-                        related_name="samplelayer_sample_set",
-                        to="backoffice.samplegeneral",
+                        related_name="monitoringlayer_site_set",
+                        to="backoffice.monitoringgeneral",
                     ),
                 ),
                 (
@@ -16735,7 +16687,7 @@ class Migration(migrations.Migration):
                         default=None,
                         null=True,
                         on_delete=django.db.models.deletion.SET_DEFAULT,
-                        to="backoffice.samplelayersecondarysilica",
+                        to="backoffice.monitoringlayersecondarysilica",
                     ),
                 ),
                 (
@@ -16746,7 +16698,7 @@ class Migration(migrations.Migration):
                         default=None,
                         null=True,
                         on_delete=django.db.models.deletion.SET_DEFAULT,
-                        to="backoffice.samplelayerstressfeatures",
+                        to="backoffice.monitoringlayerstressfeatures",
                     ),
                 ),
                 (
@@ -16757,7 +16709,7 @@ class Migration(migrations.Migration):
                         default=None,
                         null=True,
                         on_delete=django.db.models.deletion.SET_DEFAULT,
-                        to="backoffice.samplelayercoarsertextured",
+                        to="backoffice.monitoringlayercoarsertextured",
                     ),
                 ),
             ],
@@ -16768,7 +16720,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleLabData",
+            name="MonitoringLabData",
             fields=[
                 (
                     "id",
@@ -17641,12 +17593,12 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
-                    "sample",
+                    "site",
                     models.ForeignKey(
-                        db_comment="Foreign Key field: sample",
+                        db_comment="Foreign Key field: monitoring site",
                         on_delete=django.db.models.deletion.CASCADE,
-                        related_name="samplelabdata_sample_set",
-                        to="backoffice.samplegeneral",
+                        related_name="monitoringlabdata_site_set",
+                        to="backoffice.monitoringgeneral",
                     ),
                 ),
             ],
@@ -17657,99 +17609,99 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.AddField(
-            model_name="samplegeneral",
+            model_name="monitoringgeneral",
             name="landformtopography",
             field=models.OneToOneField(
                 blank=True,
-                db_comment="Sample - Landform Topography",
+                db_comment="Monitoring - Landform Topography",
                 default=None,
                 null=True,
                 on_delete=django.db.models.deletion.SET_DEFAULT,
-                to="backoffice.samplelandformtopography",
+                to="backoffice.monitoringlandformtopography",
             ),
         ),
         migrations.AddField(
-            model_name="samplegeneral",
+            model_name="monitoringgeneral",
             name="landuse",
             field=models.OneToOneField(
                 blank=True,
-                db_comment="Sample - Land Use ",
+                db_comment="Monitoring - Land Use ",
                 default=None,
                 null=True,
                 on_delete=django.db.models.deletion.SET_DEFAULT,
-                to="backoffice.samplelanduse",
+                to="backoffice.monitoringlanduse",
             ),
         ),
         migrations.AddField(
-            model_name="samplegeneral",
+            model_name="monitoringgeneral",
             name="litterlayer",
             field=models.OneToOneField(
                 blank=True,
-                db_comment="Sample - Litter Layer",
+                db_comment="Monitoring - Litter Layer",
                 default=None,
                 null=True,
                 on_delete=django.db.models.deletion.SET_DEFAULT,
-                to="backoffice.samplelitterlayer",
+                to="backoffice.monitoringlitterlayer",
             ),
         ),
         migrations.AddField(
-            model_name="samplegeneral",
+            model_name="monitoringgeneral",
             name="project",
             field=models.ForeignKey(
                 blank=True,
                 db_comment="Survey/Project identifier",
                 null=True,
                 on_delete=django.db.models.deletion.SET_NULL,
-                related_name="samplegeneral_project_set",
+                related_name="monitoringgeneral_project_set",
                 to="backoffice.project",
             ),
         ),
         migrations.AddField(
-            model_name="samplegeneral",
+            model_name="monitoringgeneral",
             name="surface",
             field=models.OneToOneField(
                 blank=True,
-                db_comment="Sample - Surface ",
+                db_comment="Monitoring - Surface ",
                 default=None,
                 null=True,
                 on_delete=django.db.models.deletion.SET_DEFAULT,
-                to="backoffice.samplesurface",
+                to="backoffice.monitoringsurface",
             ),
         ),
         migrations.AddField(
-            model_name="samplegeneral",
+            model_name="monitoringgeneral",
             name="surfacecracks",
             field=models.OneToOneField(
                 blank=True,
-                db_comment="Sample - Surface cracks",
+                db_comment="Monitoring - Surface cracks",
                 default=None,
                 null=True,
                 on_delete=django.db.models.deletion.SET_DEFAULT,
-                to="backoffice.samplesurfacecracks",
+                to="backoffice.monitoringsurfacecracks",
             ),
         ),
         migrations.AddField(
-            model_name="samplegeneral",
+            model_name="monitoringgeneral",
             name="surfacecrusts",
             field=models.OneToOneField(
                 blank=True,
-                db_comment="Sample - Surface Crusts",
+                db_comment="Monitoring - Surface Crusts",
                 default=None,
                 null=True,
                 on_delete=django.db.models.deletion.SET_DEFAULT,
-                to="backoffice.samplesurfacecrusts",
+                to="backoffice.monitoringsurfacecrusts",
             ),
         ),
         migrations.AddField(
-            model_name="samplegeneral",
+            model_name="monitoringgeneral",
             name="surfaceunevenness",
             field=models.OneToOneField(
                 blank=True,
-                db_comment="Sample - Surface Unevenness",
+                db_comment="Monitoring - Surface Unevenness",
                 default=None,
                 null=True,
                 on_delete=django.db.models.deletion.SET_DEFAULT,
-                to="backoffice.samplesurfaceunevenness",
+                to="backoffice.monitoringsurfaceunevenness",
             ),
         ),
         migrations.CreateModel(
@@ -19052,7 +19004,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="SampleNotCultivated",
+            name="MonitoringNotCultivated",
             fields=[
                 (
                     "id",
@@ -19321,21 +19273,21 @@ class Migration(migrations.Migration):
                     "landuse",
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
-                        related_name="sample_notcultivated_landuse_set",
-                        to="backoffice.samplelanduse",
+                        related_name="monitoringnotcultivated_landuse_set",
+                        to="backoffice.monitoringlanduse",
                     ),
                 ),
             ],
             options={
                 "db_table": "s_not_cultivated",
-                "db_table_comment": "For each sample, compile as many rows as the vegetation strata (STRATA_TYPES) are. Report the average height and the maximum height in m above ground for each stratum separately. Report the vegetation cover. For the upper stratum and the mid-stratum, report the percentage (by area) of the crown cover. For the ground stratum, report the percentage (by area) of the ground cover. Report up to three important species per stratum, e.g., Fagus orientalis. If you do not know the species, report the next higher taxonomic rank. The (maximum 3) species must be insert in the array column species.",
+                "db_table_comment": "For each monitoring, compile as many rows as the vegetation strata (STRATA_TYPES) are. Report the average height and the maximum height in m above ground for each stratum separately. Report the vegetation cover. For the upper stratum and the mid-stratum, report the percentage (by area) of the crown cover. For the ground stratum, report the percentage (by area) of the ground cover. Report up to three important species per stratum, e.g., Fagus orientalis. If you do not know the species, report the next higher taxonomic rank. The (maximum 3) species must be insert in the array column species.",
                 "permissions": (("view", "can view data"), ("write", "can write data")),
                 "managed": True,
                 "unique_together": {("stratum", "landuse")},
             },
         ),
         migrations.CreateModel(
-            name="SampleLayerStructure",
+            name="MonitoringLayerStructure",
             fields=[
                 (
                     "id",
@@ -19593,10 +19545,10 @@ class Migration(migrations.Migration):
                 (
                     "layer",
                     models.ForeignKey(
-                        db_comment="Sample Layer",
+                        db_comment="Monitoring Layer",
                         on_delete=django.db.models.deletion.CASCADE,
-                        related_name="samplelayerstructure_layer_set",
-                        to="backoffice.samplelayer",
+                        related_name="monitoringlayerstructure_layer_set",
+                        to="backoffice.monitoringlayer",
                     ),
                 ),
             ],

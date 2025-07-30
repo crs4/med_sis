@@ -53,13 +53,7 @@ const XLSxTable = ({
   const valueTemplate2 = (rowData) => (
     <>
       <div className="p-d-flex p-jc-start p-ai-center">
-        <div>
-          {rowData['msg']===200 ? 'Succesfully cretaed ':''}
-          {rowData['msg']===201 ? 'Succesfully cretaed ':''}
-          {rowData['msg']===202 ? 'Success ':''}
-          {rowData['msg']===203 ? 'Success ':''}
-          {rowData['msg']===204 ? 'Succesfully updated ':rowData['msg']}
-        </div>
+        <div>{rowData['msg']? rowData['msg']:''}</div>
       </div>
     </>
   );

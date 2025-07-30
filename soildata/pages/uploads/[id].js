@@ -44,29 +44,29 @@ export default function Page()  {
         if ( errors[e] )
           map_err.push( errors[e]['element'] )
     }
-    let main = data['ProfileGeneral']
-    if ( !main )
-      main = data['SampleGeneral']
-    for ( let j=1; j<main.length; j+=1 ){
-/// skip row with null or errors in lat,lon or key
-      try {
-        let status = 'ok';
-        let obj = main[j]
-        if ( obj && obj.id && obj.lat_wgs84 && obj.lon_wgs84 ) {
-          if ( map_err.indexOf(obj.id) !== -1)
-            status = 'ko'
-          points.push( point( [obj.lon_wgs84 , obj.lat_wgs84], 
-                      { key: obj.id, status: status, popupContent : obj.id  },
-                      { id: obj.id } ) );
+    let main = data['ProfileGeneral']? data['ProfileGeneral'] : data['SampleGeneral']
+    if ( main ) {
+      for ( let j=1; j<main.length; j+=1 ){
+  /// skip row with null or errors in lat,lon or key
+        try {
+          let status = 'ok';
+          let obj = main[j]
+          if ( obj && obj.id && obj.lat_wgs84 && obj.lon_wgs84 ) {
+            if ( map_err.indexOf(obj.id) !== -1)
+              status = 'ko'
+            points.push( point( [obj.lon_wgs84 , obj.lat_wgs84], 
+                        { key: obj.id, status: status, popupContent : obj.id  },
+                        { id: obj.id } ) );
+          }
+        } catch (e) {
+          console.log(e);
         }
-      } catch (e) {
-        console.log(e);
       }
-    }
-    if ( points.length > 0 ) {
-      setPointsGeoJSON( featureCollection(points) );
-      toast.current.show({severity:'success', summary: 'GeoJSON created!', detail:'GeoJSON for elements created', life: 3000});
-    }  
+      if ( points.length > 0 ) {
+        setPointsGeoJSON( featureCollection(points) );
+        toast.current.show({severity:'success', summary: 'GeoJSON created!', detail:'GeoJSON for elements created', life: 3000});
+      }
+    }    
   }
 
   useEffect(() => {
@@ -86,7 +86,6 @@ export default function Page()  {
         toast.current.show({severity:'error', summary: 'Errors!', detail: 'Errors reading upload ' + id , life: 3000});
       else { 
         toast.current.show({severity:'success', summary: 'Success!', detail: 'The upload ' + id + ' has been loaded' , life: 3000});
-        console.log(_data.data)
         setUpload(_data.data);
       }
       setLoading(false); 

@@ -1,7 +1,9 @@
+"use client"
+
 import React, { useEffect, useState, useRef  } from 'react';
+import { useTranslations } from 'next-intl';
 import { ProfileService } from '../../service/profiles';
 import { FilterMatchMode, FilterOperator } from 'primereact/api';
-import { useTranslations } from 'next-intl';
 import { useUser } from '../../context/user';
 import { useRouter } from 'next/router';
 import { Button } from 'primereact/button';
@@ -18,6 +20,7 @@ export default function Page()  {
   const router = useRouter();
   const t = useTranslations('default');
   const user = useUser();
+  const toast = useRef(null);
   const [filters, setFilters] = useState(null);
   const [globalFilterValue, setGlobalFilterValue] = useState('');   
   const [isWorking, setIsWorking] = useState(false);
@@ -25,7 +28,7 @@ export default function Page()  {
   const [profiles, setProfiles] = useState([]);
   const [visibleDlg, setVisibleDlg] = useState(false);
   const [loading, setLoading] = useState(true);
-  const toast = useRef(null);
+  
          
 
   useEffect(() => {

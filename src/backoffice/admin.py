@@ -20,14 +20,14 @@ class ProfileGeneralAdmin(admin.ModelAdmin):
     list_filter = ('id', 'date', 'surveyors', 'location','gps', 'elev_m_asl', 'elev_dem', 'survey_m')
     search_fields = ('id', 'date',)
 
-@admin.register(SampleLayer)
-class SampleLayerAdmin(admin.ModelAdmin):
-    list_display = ('sample', 'design', 'number', 'upper', 'lower', 'lower_bound')
-    list_filter = ('sample', 'number', 'upper', 'lower')
-    search_fields = ('profile__id', 'design','number')
+@admin.register(MonitoringLayer)
+class MonitoringLayerAdmin(admin.ModelAdmin):
+    list_display = ('site', 'design', 'number', 'upper', 'lower', 'lower_bound')
+    list_filter = ('site', 'number', 'upper', 'lower')
+    search_fields = ('site__id', 'design','number')
 
-@admin.register(SampleGeneral)
-class SampleGeneralAdmin(admin.ModelAdmin):
+@admin.register(MonitoringGeneral)
+class MonitoringGeneralAdmin(admin.ModelAdmin):
     list_display = ('id', 'date', 'surveyors', 'location', 'lat_wgs84', 'lon_wgs84', 'gps', 'elev_m_asl', 'elev_dem', 'survey_m' )
     list_filter = ('id', 'date', 'surveyors', 'location','gps', 'elev_m_asl', 'elev_dem', 'survey_m')
     search_fields = ('id', 'date')
@@ -50,20 +50,20 @@ class LandUseAdmin(admin.ModelAdmin):
     search_fields = ('id',)
     
 
-@admin.register(SampleCultivated)
-class SampleCultivatedAdmin(admin.ModelAdmin):
+@admin.register(MonitoringCultivated)
+class MonitoringCultivatedAdmin(admin.ModelAdmin):
     list_filter = ('id',)
     search_fields = ('id',)
     
 
-@admin.register(SampleNotCultivated)
-class SampleNotCultivatedAdmin(admin.ModelAdmin):
+@admin.register(MonitoringNotCultivated)
+class MonitoringNotCultivatedAdmin(admin.ModelAdmin):
     list_filter = ('id',)
     search_fields = ('id',)
     
 
-@admin.register(SampleLandUse)
-class SampleLandUseAdmin(admin.ModelAdmin):
+@admin.register(MonitoringLandUse)
+class MonitoringLandUseAdmin(admin.ModelAdmin):
     list_filter = ('id',)
     search_fields = ('id',)
     
@@ -85,20 +85,20 @@ class ClimateAndWeatherAdmin(admin.ModelAdmin):
     search_fields = ('id',)
     
 
-@admin.register(SampleCoarseFragments)
-class SampleCoarseFragmentsAdmin(admin.ModelAdmin):
+@admin.register(MonitoringCoarseFragments)
+class MonitoringCoarseFragmentsAdmin(admin.ModelAdmin):
     list_filter = ('id',)
     search_fields = ('id',)
     
       
-@admin.register(SampleLandformTopography)
-class SampleLandformTopographyAdmin(admin.ModelAdmin):
+@admin.register(MonitoringLandformTopography)
+class MonitoringLandformTopographyAdmin(admin.ModelAdmin):
     list_filter = ('id',)
     search_fields = ('id',)
     
     
-@admin.register(SampleClimateAndWeather)
-class SampleClimateAndWeatherAdmin(admin.ModelAdmin):
+@admin.register(MonitoringClimateAndWeather)
+class MonitoringClimateAndWeatherAdmin(admin.ModelAdmin):
     search_fields = ('id',)
     
     
@@ -122,23 +122,23 @@ class SurfaceUnevennessAdmin(admin.ModelAdmin):
     search_fields = ('id',) 
     
 
-@admin.register(SampleSurface)
-class SampleSurfaceAdmin(admin.ModelAdmin):
+@admin.register(MonitoringSurface)
+class MonitoringSurfaceAdmin(admin.ModelAdmin):
     search_fields = ('id',) 
       
 
-@admin.register(SampleSurfaceCracks)
-class SampleSurfaceCracksAdmin(admin.ModelAdmin):
+@admin.register(MonitoringSurfaceCracks)
+class MonitoringSurfaceCracksAdmin(admin.ModelAdmin):
     search_fields = ('id',)
      
 
-@admin.register(SampleLitterLayer)
-class SampleLitterLayerAdmin(admin.ModelAdmin):
+@admin.register(MonitoringLitterLayer)
+class MonitoringLitterLayerAdmin(admin.ModelAdmin):
     search_fields = ('id',) 
     
 
-@admin.register(SampleSurfaceUnevenness)
-class SampleSurfaceUnevennessAdmin(admin.ModelAdmin):
+@admin.register(MonitoringSurfaceUnevenness)
+class MonitoringSurfaceUnevennessAdmin(admin.ModelAdmin):
     search_fields = ('id',) 
     
 
@@ -290,128 +290,128 @@ class LayerConsistenceAdmin(admin.ModelAdmin):
     search_fields = ('layer__id', 'id','layer',)
     
 
-@admin.register(SampleLabData)
-class SampleLabDataAdmin(admin.ModelAdmin):
+@admin.register(MonitoringLabData)
+class MonitoringLabDataAdmin(admin.ModelAdmin):
     search_fields = ('id', 'upper', 'lower', 'cls_sys', 'texture')
 
-@admin.register(SampleLayerRemnants)
-class SampleLayerRemnantsAdmin(admin.ModelAdmin):
+@admin.register(MonitoringLayerRemnants)
+class MonitoringLayerRemnantsAdmin(admin.ModelAdmin):
     search_fields = ('id', )
 
-@admin.register(SampleLayerCoarseFragments)
-class SampleLayerCoarseFragmentsAdmin(admin.ModelAdmin):
+@admin.register(MonitoringLayerCoarseFragments)
+class MonitoringLayerCoarseFragmentsAdmin(admin.ModelAdmin):
     search_fields = ('id', )
 
-@admin.register(SampleLayerArtefacts)
-class SampleLayerArtefactsAdmin(admin.ModelAdmin):
+@admin.register(MonitoringLayerArtefacts)
+class MonitoringLayerArtefactsAdmin(admin.ModelAdmin):
     search_fields = ('id', )
 
-@admin.register(SampleLayerCracks)
-class SampleLayerCracksAdmin(admin.ModelAdmin):
-    search_fields = ('id', )
-    
-
-@admin.register(SampleLayerStressFeatures)
-class SampleLayerStressFeaturesAdmin(admin.ModelAdmin):
+@admin.register(MonitoringLayerCracks)
+class MonitoringLayerCracksAdmin(admin.ModelAdmin):
     search_fields = ('id', )
     
 
-@admin.register(SampleLayerMatrixColours)
-class SampleLayerMatrixColoursAdmin(admin.ModelAdmin):
+@admin.register(MonitoringLayerStressFeatures)
+class MonitoringLayerStressFeaturesAdmin(admin.ModelAdmin):
     search_fields = ('id', )
     
 
-@admin.register(SampleLayerCoarserTextured)
-class SampleLayerCoarserTexturedAdmin(admin.ModelAdmin):
+@admin.register(MonitoringLayerMatrixColours)
+class MonitoringLayerMatrixColoursAdmin(admin.ModelAdmin):
     search_fields = ('id', )
     
 
-@admin.register(SampleLayerLithogenicVariegates)
-class SampleLayerLithogenicVariegatesAdmin(admin.ModelAdmin):
+@admin.register(MonitoringLayerCoarserTextured)
+class MonitoringLayerCoarserTexturedAdmin(admin.ModelAdmin):
     search_fields = ('id', )
     
 
-@admin.register(SampleLayerRedoximorphicFeatures)
-class SampleLayerRedoximorphicFeaturesAdmin(admin.ModelAdmin):
+@admin.register(MonitoringLayerLithogenicVariegates)
+class MonitoringLayerLithogenicVariegatesAdmin(admin.ModelAdmin):
     search_fields = ('id', )
     
 
-@admin.register(SampleLayerRedoximorphicColour)
-class SampleLayerRedoximorphicColourAdmin(admin.ModelAdmin):
+@admin.register(MonitoringLayerRedoximorphicFeatures)
+class MonitoringLayerRedoximorphicFeaturesAdmin(admin.ModelAdmin):
     search_fields = ('id', )
     
 
-@admin.register(SampleLayerCoatingsBridges)
-class SampleLayerCoatingsBridgesAdmin(admin.ModelAdmin):
+@admin.register(MonitoringLayerRedoximorphicColour)
+class MonitoringLayerRedoximorphicColourAdmin(admin.ModelAdmin):
     search_fields = ('id', )
     
 
-@admin.register(SampleLayerRibbonlikeAccumulations)
-class SampleLayerRibbonlikeAccumulationsAdmin(admin.ModelAdmin):
+@admin.register(MonitoringLayerCoatingsBridges)
+class MonitoringLayerCoatingsBridgesAdmin(admin.ModelAdmin):
     search_fields = ('id', )
     
 
-@admin.register(SampleLayerCarbonates)
-class SampleLayerCarbonatesAdmin(admin.ModelAdmin):
+@admin.register(MonitoringLayerRibbonlikeAccumulations)
+class MonitoringLayerRibbonlikeAccumulationsAdmin(admin.ModelAdmin):
     search_fields = ('id', )
     
 
-@admin.register(SampleLayerGypsum)
-class SampleLayerGypsumAdmin(admin.ModelAdmin):
+@admin.register(MonitoringLayerCarbonates)
+class MonitoringLayerCarbonatesAdmin(admin.ModelAdmin):
     search_fields = ('id', )
     
 
-@admin.register(SampleLayerSecondarySilica)
-class SampleLayerSecondarySilicaAdmin(admin.ModelAdmin):
+@admin.register(MonitoringLayerGypsum)
+class MonitoringLayerGypsumAdmin(admin.ModelAdmin):
     search_fields = ('id', )
     
 
-@admin.register(SampleLayerConsistence)
-class SampleLayerConsistenceAdmin(admin.ModelAdmin):
+@admin.register(MonitoringLayerSecondarySilica)
+class MonitoringLayerSecondarySilicaAdmin(admin.ModelAdmin):
     search_fields = ('id', )
     
 
-@admin.register(SampleSurfaceCrusts)
-class SampleLayerSurfaceCrustsAdmin(admin.ModelAdmin):
+@admin.register(MonitoringLayerConsistence)
+class MonitoringLayerConsistenceAdmin(admin.ModelAdmin):
     search_fields = ('id', )
     
 
-@admin.register(SampleLayerPermafrostFeatures)
-class SampleLayerPermafrostFeaturesAdmin(admin.ModelAdmin):
+@admin.register(MonitoringSurfaceCrusts)
+class MonitoringLayerSurfaceCrustsAdmin(admin.ModelAdmin):
     search_fields = ('id', )
     
 
-@admin.register(SampleLayerOrganicCarbon)
-class SampleLayerOrganicCarbonAdmin(admin.ModelAdmin):
+@admin.register(MonitoringLayerPermafrostFeatures)
+class MonitoringLayerPermafrostFeaturesAdmin(admin.ModelAdmin):
     search_fields = ('id', )
     
 
-@admin.register(SampleLayerRoots)
-class SampleLayerRootsAdmin(admin.ModelAdmin):
+@admin.register(MonitoringLayerOrganicCarbon)
+class MonitoringLayerOrganicCarbonAdmin(admin.ModelAdmin):
     search_fields = ('id', )
     
 
-@admin.register(SampleLayerAnimalActivity)
-class SampleLayerAnimalActivityAdmin(admin.ModelAdmin):
+@admin.register(MonitoringLayerRoots)
+class MonitoringLayerRootsAdmin(admin.ModelAdmin):
     search_fields = ('id', )
     
 
-@admin.register(SampleLayerHumanAlterations)
-class SampleLayerHumanAlterationsAdmin(admin.ModelAdmin):
+@admin.register(MonitoringLayerAnimalActivity)
+class MonitoringLayerAnimalActivityAdmin(admin.ModelAdmin):
     search_fields = ('id', )
     
 
-@admin.register(SampleLayerDegreeDecomposition)
-class SampleLayerDegreeDecompositionAdmin(admin.ModelAdmin):
+@admin.register(MonitoringLayerHumanAlterations)
+class MonitoringLayerHumanAlterationsAdmin(admin.ModelAdmin):
     search_fields = ('id', )
     
 
-@admin.register(SampleLayerNonMatrixPore)
-class SampleLayerNonMatrixPoreAdmin(admin.ModelAdmin):
+@admin.register(MonitoringLayerDegreeDecomposition)
+class MonitoringLayerDegreeDecompositionAdmin(admin.ModelAdmin):
     search_fields = ('id', )
     
 
-@admin.register(SampleLayerStructure)
-class SampleLayerStructureAdmin(admin.ModelAdmin):
+@admin.register(MonitoringLayerNonMatrixPore)
+class MonitoringLayerNonMatrixPoreAdmin(admin.ModelAdmin):
+    search_fields = ('id', )
+    
+
+@admin.register(MonitoringLayerStructure)
+class MonitoringLayerStructureAdmin(admin.ModelAdmin):
     search_fields = ('layer__id', 'id','layer',)
     
