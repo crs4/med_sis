@@ -27,9 +27,8 @@ export default function Page()  {
   const [map, setMap] = useState(null); 
 
   const createGeoJSON = ( ) => {
-    if (!upload || !upload.data ) 
+    if (!upload || !upload.data || typeof upload.data !== "string" ) 
       return; 
-    
     let points = [];
     const data = JSON.parse(upload.data);
     const errors = upload.report['errors'];

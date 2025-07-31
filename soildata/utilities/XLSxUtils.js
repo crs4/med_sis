@@ -258,12 +258,12 @@ export const createObjectsLegacy = (data) => {
   let sheet = data[sheets[0]];
   
   if ( sheet )
-  for ( let i = 0; i < sheet.length; i+=1 ) {
+  for ( let i = 0; i < sheet.length+1; i+=1 ) {
     let row = sheet[i];
     if ( row ) {
       let id =  row[1];
       let _id = row[1];
-      for ( let j = 1; j < sheet_mapping.size; j+=1 ) 
+      for ( let j = 1; j < sheet_mapping.size + 1; j+=1 ) 
         if ( typeof row[j] !== "undefined" && row[j].toString().trim() != '' ){ 
           try { 
             model = sheet_mapping[j].m;
@@ -307,11 +307,11 @@ export const createObjectsLegacy = (data) => {
   
   
   if ( sheet ) 
-  for ( let i = 0; i < sheet.length; i+=1 ) {
+  for ( let i = 0; i < sheet.length+1; i+=1 ) {
     let row = sheet[i];
     if ( row ) {
       let l_id = row[1] + '@' + row[3];
-      for ( let j = 1; j < sheet_mapping.size; j+=1 ) 
+      for ( let j = 1; j < sheet_mapping.size+1; j+=1 ) 
         if ( typeof row[j] !== "undefined" && row[j].toString().trim() != '') { 
           try {
             let _id = l_id; 
@@ -370,7 +370,7 @@ export const createObjectsLegacy = (data) => {
         if ( !fixtures['LabData'][id] ) 
           fixtures['LabData'][id] =  {};
         fixtures['LabData'][id]['id'] = id;
-        for ( let j = 1; j < sheet_mapping.size; j+=1 ) 
+        for ( let j = 1; j < sheet_mapping.size+1; j+=1 ) 
           if ( typeof row[j] !== "undefined" && row[j].toString().trim() != ''){  
             field = sheet_mapping[j].f;
             fixtures['LabData'][id][field] = row[j];
@@ -392,7 +392,7 @@ export const createObjectsLegacy = (data) => {
       let row = sheet[i];
       if ( row ) {
         let id =  row[1];
-        for ( let j = 1; j < sheet_mapping.size; j+=1 ) {
+        for ( let j = 1; j < sheet_mapping.size+1; j+=1 ) {
           if (  typeof row[j] !== "undefined" && row[j].toString().trim() != '') {  
             field = sheet_mapping[j].f;
             taxonomy = sheet_mapping[j].t;
