@@ -31,8 +31,8 @@ UPLOAD_RESULTS = [
     ("CRITICAL_ERROR" , "CRITICAL_ERROR"),
 ]  
 UPLOAD_TYPES = [
-    ("XLS_P" , "XLSx Profiles upload"),
-    ("XLS_S" , "XLSx Samples upload"),
+    ("XLS_P" , "XLSx Legacy Data Upload"),
+    ("XLS_S" , "XLSx Monitoring Data upload"),
     ("XLS_PG" , "XLSx Profiles Genealogy upload"),
     ("XLS_SG" , "XLSx Samples Genealogy upload"),
     ("XLS_PH" , "XLSx Photo metadata upload")

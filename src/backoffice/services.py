@@ -148,7 +148,7 @@ class XLSxUploadService:
                 "LayerStructure"
             ]  
 
-            processing_order_sample = [
+            monitoring = [
                 "MonitoringLandformTopography",  
                 "MonitoringClimateAndWeather",
                 "MonitoringCultivated", 
@@ -200,7 +200,7 @@ class XLSxUploadService:
             ]
 
             if xlsx_upload.type == 'XLS_S':
-                processing_order = processing_order_sample
+                processing_order = monitoring
             elif xlsx_upload.type == 'XLS_SG':
                 processing_order = processing_order_sgenealogies 
             elif xlsx_upload.type == 'XLS_PG':
@@ -276,7 +276,7 @@ class XLSxUploadService:
                     error = {
                         "model": model_name,
                         "element": _id,
-                        "msg": "CODE: " + response.status_code + ",MSG: " + errors
+                        "msg": "CODE: " + str(response.status_code) + ",MSG: " + errors
                     }
                     self.report["errors"].append(error)
                     self.report["success"] = False

@@ -235,15 +235,15 @@ export const validateSheet = (sheet_name, uploadType, sheet_mapping, results) =>
 
 export const createObjects = (data, uploadType) => {
   if ( uploadType === 'XLS_P')
-    return createObjectsProfiles(data)
+    return createObjectsLegacy(data)
   else if ( uploadType === 'XLS_S')
-    return createObjectsSamples(data)
+    return createObjectsMonitoring(data)
   else if ( uploadType === 'XLS_PG' || uploadType === 'XLS_SG' )
     return createObjectsGenealogy(data)
   else return null; 
 }   
 
-export const createObjectsProfiles = (data) => {
+export const createObjectsLegacy = (data) => {
 //// XLS profile sheets
   let uploadType = 'XLS_P'
   const sheets = UploadService.TYPES[uploadType].sheets;
@@ -256,6 +256,7 @@ export const createObjectsProfiles = (data) => {
   let taxonomy = null;
   let sheet_mapping = Mapping[uploadType+':'+sheets[0]];
   let sheet = data[sheets[0]];
+  
   if ( sheet )
   for ( let i = 0; i < sheet.length; i+=1 ) {
     let row = sheet[i];
@@ -303,6 +304,8 @@ export const createObjectsProfiles = (data) => {
   // Layer  LayerRedoximorphicColour  LayerStructure
   sheet_mapping = Mapping[uploadType+':'+sheets[1]];
   sheet = data[sheets[1]];
+  
+  
   if ( sheet ) 
   for ( let i = 0; i < sheet.length; i+=1 ) {
     let row = sheet[i];
@@ -353,6 +356,8 @@ export const createObjectsProfiles = (data) => {
   sheet_mapping = Mapping[uploadType+':'+sheets[3]];
   sheet = data[sheets[3]];
   fixtures['LabData'] = { };
+  
+  
   if ( sheet )
   for ( let i = 0; i < sheet.length; i+=1 ) {
     try {
@@ -379,6 +384,8 @@ export const createObjectsProfiles = (data) => {
   // classification  
   sheet_mapping = Mapping[uploadType+':'+sheets[2]];
   sheet = data[sheets[2]];
+  
+  
   if ( sheet )
   for ( let i = 0; i < sheet.length; i+=1 ) {
     try {
@@ -412,11 +419,12 @@ export const createObjectsProfiles = (data) => {
           result[models[k]].push(obj);  
       }
     }
-  }  
+  }
+    
   return result
 }
 
-export const createObjectsSamples = (data) => {
+export const createObjectsMonitoring = (data) => {
 //// XLS profile sheets
   let uploadType = 'XLS_S'
   const sheets = UploadService.TYPES[uploadType].sheets;

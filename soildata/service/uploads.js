@@ -9,10 +9,10 @@ export const UploadService = {
   },
 
   TYPES : {
-    XLS_P :  {  name : "XLS_P", label : 'Soil Profiles', sheets: ['General and Surface','Layer descriptions','Soil classification','Lab data'],},
-    XLS_S :   {  name : "XLS_S", label : 'Soil Samples', sheets: ['General and Surface','Layer descriptions','Lab data','Soil classification'],},
-    XLS_PG : { name : "XLS_PG", label : 'Soil Profiles Genealogy', sheets: ['Genealogy','Project'],},
-    XLS_SG : {  name : "XLS_SG", label : 'Soil Samples Genealogy', sheets: ['Genealogy','Project'],},
+    XLS_P :  {  name : "XLS_P", label : 'Legacy Soil Data', sheets: ['General and Surface','Layer descriptions','Soil classification','Lab data'],},
+    XLS_S :   {  name : "XLS_S", label : 'Monitoring Soil Data', sheets: ['General and Surface','Layer descriptions','Lab data','Soil classification'],},
+    XLS_PG : { name : "XLS_PG", label : 'Legacy Data Genealogy', sheets: ['Genealogy','Project'],},
+    XLS_SG : {  name : "XLS_SG", label : 'Monitoring Data Genealogy', sheets: ['Genealogy','Project'],},
   },
 
   ACTIONS : {
