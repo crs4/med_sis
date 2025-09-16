@@ -3,7 +3,7 @@ LABEL GeoNode development team
 
 RUN mkdir -p /usr/src/s4m_catalogue
 
-RUN apt-get update -y && apt-get install curl wget unzip gnupg2 locales -y
+RUN apt-get update -y && apt-get install curl wget unzip gnupg2 saga locales -y
 
 RUN sed -i -e 's/# C.UTF-8 UTF-8/C.UTF-8 UTF-8/' /etc/locale.gen && \
     locale-gen

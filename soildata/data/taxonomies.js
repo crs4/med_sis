@@ -1760,40 +1760,17 @@ const Taxonomies = {
         '523' : 'Sea and ocean. Zone seaward of the lowest tide limit.', 
     },
     'xlsx_upload_types' : {
-        'XLSX_P' : 'XLSx Profiles upload',
-        'XLSX_S' : 'XLSx Samples upload',
-        'XLSX_PG' : 'XLSx Profiles Genealogy upload',
-        'XLSX_SG' : 'XLSx Samples Genealogy upload',
-        'XLSX_PH' : 'XLSx Photo metadata upload',
-    },
-    'xlsx_sheets' : {
-        'XLSX_P' : 'XLSx Profiles upload',
-        'XLSX_S' : 'XLSx Samples upload',
-        'XLSX_PG' : 'XLSx Profiles Genealogy upload',
-        'XLSX_SG' : 'XLSx Samples Genealogy upload',
+        'XLSX_P' : 'XLSx Soil Data Point upload',
+        'XLSX_PJ' : 'XLSx Projects upload',
     },
     'XLS_P_sheets': {
         '1' : 'General and Surface',
         '2' : 'Layer descriptions',
-        '3' : 'Soil classification',
-        '4' : 'Lab data'
+        '3' : 'Lab data',
+        '4' : 'Lab data by sampling depth'
     },
-    'XLS_S_sheets': {
-        '1' : 'General and Surface',
-        '2' : 'Layer descriptions',
-        '3' : 'Soil classification',
-        '4' : 'Lab data'
-    },
-    'XLS_PG_sheets': {
-        '1' : 'Genealogy',
-        '2' : 'Project',
-    },
-    'XLS_SG_sheets': {
-        '1' : 'Genealogy',
-        '2' : 'Project',
-    },
-    'XLS_PH_sheets': {
-        '1' : 'Metadata',
+    'XLS_PJ_sheets': {
+        '1' : 'Project',
     },
     'WRB_Paragraphs': {
         '8.2.1': 'General',

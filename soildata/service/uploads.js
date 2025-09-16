@@ -9,10 +9,8 @@ export const UploadService = {
   },
 
   TYPES : {
-    XLS_P :  {  name : "XLS_P", label : 'Legacy Soil Data', sheets: ['General and Surface','Layer descriptions','Soil classification','Lab data'],},
-    XLS_S :   {  name : "XLS_S", label : 'Monitoring Soil Data', sheets: ['General and Surface','Layer descriptions','Lab data','Soil classification'],},
-    XLS_PG : { name : "XLS_PG", label : 'Legacy Data Genealogy', sheets: ['Genealogy','Project'],},
-    XLS_SG : {  name : "XLS_SG", label : 'Monitoring Data Genealogy', sheets: ['Genealogy','Project'],},
+    XLS_P :  {  name : "XLS_P", label : 'Point Soil Data', sheets: ['General and Surface','Layer descriptions','Lab data','Lab data by sampling depth'],},
+    XLS_PJ :   {  name : "XLS_PJ", label : 'Soil Surveys', sheets: ['Project'],},
   },
 
   ACTIONS : {

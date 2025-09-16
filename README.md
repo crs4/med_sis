@@ -1,5 +1,6 @@
 
 # My_Geo
+geonode updatelayers --skip-geonode-registered  -u admin 
 
 GeoNode template project. Generates a django project with GeoNode support.
 
@@ -429,3 +430,17 @@ ISRIC's Soil Information Workflow
  6- modeling and mapping, 
  7- applying soil information 
  8- serving the data.
+
+python manage.py updatelayers --skip-geonode-registered -s backoffice 
+
+
+ Ciao Robi,
+
+per inserire del codice che crei delle view (e le cancelli in caso di rollback) puoi fare così:
+
+Puoi creare un’empty migration per la tua app backoffice con: python manage.py makemigrations backoffice --empty --name create_profile_general_geo_view
+Modifichi la migration appena creata con le istruzioni nella migrazione allegata alla mail
+Effettui la migrazione nel container per l'app backoffice ed il relativo db: docker-compose exec django python manage.py migrate backoffice --database=backoffice
+Fammi sapere se riesci.
+
+Pg

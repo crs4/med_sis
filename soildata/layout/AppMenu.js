@@ -62,18 +62,18 @@ const AppMenu = () => {
         },
         { separator: true },
         {
-            label: 'Legacy Data',
+            label: 'Points Soil Data',
             icon: 'pi pi-fw pi-image',
             items: [
                 {
                     label: 'List',
                     icon: 'pi pi-fw pi-list',
-                    to: '/lagacy'
+                    to: '/points'
                 },
                 {
                     label: 'Backup',
                     icon: 'pi pi-fw pi-file',
-                    to: '/lagacy/backup'
+                    to: '/points/backup'
                 }
             ]
         },

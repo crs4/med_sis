@@ -11,7 +11,6 @@ import AppBreadCrumb from './AppBreadCrumb';
 import PrimeReact from 'primereact/api';
 import { Tooltip } from 'primereact/tooltip';
 import { Toast } from 'primereact/toast';
-import { cookies } from "next/headers"
 
 const Layout = (props) => {
     const { layoutConfig, layoutState, setLayoutState, isSlim, isCompact, isHorizontal, isDesktop } = useContext(LayoutContext);

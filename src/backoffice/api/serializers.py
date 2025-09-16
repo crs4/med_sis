@@ -172,7 +172,7 @@ class XLSxUploadSerializer(serializers.ModelSerializer):
         return instance
    
 ###########################
-# Profile\Monitorings Genealogy
+# Point\Monitorings Genealogy
 ###########################
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -181,11 +181,11 @@ class ProjectSerializer(serializers.ModelSerializer):
         fields = '__all__'
         
 ###########################
-# Profile General
+# Point General
 ###########################
-class ProfileGeneralSerializer(DecimalTruncationSerializerMixin, DateFormatSerializerMixin, serializers.ModelSerializer):
+class PointGeneralSerializer(DecimalTruncationSerializerMixin, DateFormatSerializerMixin, serializers.ModelSerializer):
     class Meta:
-        model = ProfileGeneral
+        model = PointGeneral
         fields = '__all__'
 
 class LandformTopographySerializer(serializers.ModelSerializer):
@@ -358,14 +358,19 @@ class LabDataSerializer(DecimalTruncationSerializerMixin, DateFormatSerializerMi
     class Meta:
         model = LabData
         fields = '__all__'
-
-###########################
-# Profile Layer
-###########################
-
-class ProfileLayerSerializer(serializers.ModelSerializer):
+        
+class LabDataSamplingSerializer(DecimalTruncationSerializerMixin, DateFormatSerializerMixin, serializers.ModelSerializer):
     class Meta:
-        model = ProfileLayer
+        model = LabDataSampling
+        fields = '__all__'
+
+###########################
+# Point Layer
+###########################
+
+class PointLayerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PointLayer
         fields = '__all__'
 
 class LayerRemnantsSerializer(serializers.ModelSerializer):
@@ -496,7 +501,7 @@ class  LayerStructureSerializer(serializers.ModelSerializer):
         layer = data.get('layer')
         level = data.get('level')
         
-        # Controlla se esiste già una combinazione profile-layer-level (quando level non è None)
+        # Controlla se esiste già una combinazione Point-layer-level (quando level non è None)
         if level is not None:
             # Esclude l'istanza corrente se stiamo aggiornando
             queryset = LayerStructure.objects.filter(layer=layer, level=level)
@@ -562,386 +567,6 @@ class RequestSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ('id',)  
 
-###########################
-# Monitoring General
-###########################
-class MonitoringGeneralSerializer(DecimalTruncationSerializerMixin, DateFormatSerializerMixin, serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringGeneral
-        fields = '__all__'
-
-class MonitoringLandformTopographySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringLandformTopography
-        fields = '__all__'
-    
-    def create(self, validated_data):
-        """
-        Override del metodo create per catturare ValidationError dal modello
-        """
-        try:
-            instance = MonitoringLandformTopography(**validated_data)
-            instance.full_clean()
-            instance.save()
-            return instance
-        except ValidationError as e:
-            raise serializers.ValidationError(e.message_dict)
-
-    def update(self, instance, validated_data):
-        """
-        Override del metodo update per catturare ValidationError dal modello
-        """
-        try:
-            # Aggiorniamo i campi dell'istanza
-            for attr, value in validated_data.items():
-                setattr(instance, attr, value)
-            
-            # Validiamo prima di salvare
-            instance.full_clean()
-            instance.save()
-            return instance
-        except ValidationError as e:
-            raise serializers.ValidationError(e.message_dict)
  
-class MonitoringClimateAndWeatherSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringClimateAndWeather
-        fields = '__all__'     
-
-class MonitoringSurfaceSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringSurface
-        fields = '__all__'
-        
-    def create(self, validated_data):
-        """
-        Override del metodo create per catturare ValidationError dal modello
-        """
-        try:
-            instance = MonitoringSurface(**validated_data)
-            instance.full_clean()
-            instance.save()
-            return instance
-        except ValidationError as e:
-            raise serializers.ValidationError(e.message_dict)
-
-    def update(self, instance, validated_data):
-        """
-        Override del metodo update per catturare ValidationError dal modello
-        """
-        try:
-            # Aggiorniamo i campi dell'istanza
-            for attr, value in validated_data.items():
-                setattr(instance, attr, value)
-            
-            # Validiamo prima di salvare
-            instance.full_clean()
-            instance.save()
-            return instance
-        except ValidationError as e:
-            raise serializers.ValidationError(e.message_dict)        
-    
-class MonitoringLandUseSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringLandUse
-        fields = '__all__'
-        
-    def create(self, validated_data):
-        try:
-            instance = MonitoringLandUse(**validated_data)
-            instance.full_clean()
-            instance.save()
-            return instance
-        except ValidationError as e:
-            raise serializers.ValidationError(e.message_dict)
-
-    def update(self, instance, validated_data):
-        try:
-            for attr, value in validated_data.items():
-                setattr(instance, attr, value)
-            instance.full_clean()
-            instance.save()
-            return instance
-        except ValidationError as e:
-            raise serializers.ValidationError(e.message_dict)           
-
-class MonitoringCultivatedSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringCultivated
-        fields = '__all__'
-        
-    def create(self, validated_data):
-        try:
-            instance = MonitoringCultivated(**validated_data)
-            instance.full_clean()
-            instance.save()
-            return instance
-        except ValidationError as e:
-            raise serializers.ValidationError(e.message_dict)
-
-    def update(self, instance, validated_data):
-        try:
-            for attr, value in validated_data.items():
-                setattr(instance, attr, value)
-            instance.full_clean()
-            instance.save()
-            return instance
-        except ValidationError as e:
-            raise serializers.ValidationError(e.message_dict)
-        
-class MonitoringNotCultivatedSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringNotCultivated
-        fields = '__all__'
-    def create(self, validated_data):
-        try:
-            instance = MonitoringNotCultivated(**validated_data)
-            instance.full_clean()
-            instance.save()
-            return instance
-        except ValidationError as e:
-            raise serializers.ValidationError(e.message_dict)
-
-    def update(self, instance, validated_data):
-        try:
-            for attr, value in validated_data.items():
-                setattr(instance, attr, value)
-            instance.full_clean()
-            instance.save()
-            return instance
-        except ValidationError as e:
-            raise serializers.ValidationError(e.message_dict)
-
-class MonitoringLitterLayerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringLitterLayer
-        fields = '__all__'
-
-class MonitoringSurfaceCracksSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = MonitoringSurfaceCracks
-        fields = '__all__'
-       
-class MonitoringCoarseFragmentsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringCoarseFragments
-        fields = '__all__'
-        
-class MonitoringSurfaceUnevennessSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringSurfaceUnevenness
-        fields = '__all__'
-
-class MonitoringSurfaceCrustsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringSurfaceCrusts 
-        fields = '__all__'
-
-###########################
-## Lab Data 
-###########################
-class MonitoringLabDataSerializer(DecimalTruncationSerializerMixin, DateFormatSerializerMixin, serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringLabData
-        fields = '__all__'
-
-###########################
-# Profile Layer
-###########################
-
-class MonitoringLayerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringLayer
-        fields = '__all__'
-
-class MonitoringLayerRemnantsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringLayerRemnants 
-        fields = '__all__'
-    
-class MonitoringLayerCoarseFragmentsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringLayerCoarseFragments 
-        fields = '__all__'
-        
-class MonitoringLayerArtefactsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringLayerArtefacts 
-        fields = '__all__'
-    
-class MonitoringLayerCracksSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringLayerCracks
-        fields = '__all__'
-        
-class MonitoringLayerStressFeaturesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringLayerStressFeatures 
-        fields = '__all__'
-        
-class MonitoringLayerMatrixColoursSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringLayerMatrixColours 
-        fields = '__all__'
-        
-class MonitoringLayerCoarserTexturedSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringLayerCoarserTextured 
-        fields = '__all__'
-        
-class MonitoringLayerRedoximorphicFeaturesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringLayerRedoximorphicFeatures 
-        fields = '__all__'
-
-class MonitoringLayerLithogenicVariegatesSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = MonitoringLayerLithogenicVariegates
-        fields = '__all__'
-        
-class MonitoringLayerRedoximorphicColourSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringLayerRedoximorphicColour 
-        fields = '__all__'
-
-class MonitoringLayerCoatingsBridgesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringLayerCoatingsBridges 
-        fields = '__all__'
-    
-class MonitoringLayerRibbonlikeAccumulationsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringLayerRibbonlikeAccumulations 
-        fields = '__all__'
-    
-class MonitoringLayerCarbonatesSerializer(serializers.ModelSerializer):
-    class Meta: 
-        model = MonitoringLayerCarbonates 
-        fields = '__all__'
-        
-class MonitoringLayerGypsumSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringLayerGypsum
-        fields = '__all__'
-
-class MonitoringLayerSecondarySilicaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringLayerSecondarySilica 
-        fields = '__all__'
-    
-class MonitoringLayerConsistenceSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringLayerConsistence 
-        fields = '__all__'
-    
-class MonitoringLayerPermafrostFeaturesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringLayerPermafrostFeatures 
-        fields = '__all__'
-        
-class MonitoringLayerOrganicCarbonSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringLayerOrganicCarbon
-        fields = '__all__'
-    
-class MonitoringLayerRootsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringLayerRoots 
-        fields = '__all__'
-    
-class MonitoringLayerAnimalActivitySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringLayerAnimalActivity 
-        fields = '__all__'
-    
-class  MonitoringLayerHumanAlterationsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringLayerHumanAlterations 
-        fields = '__all__'
-    
-class  MonitoringLayerDegreeDecompositionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringLayerDegreeDecomposition 
-        fields = '__all__'
-    
-class  MonitoringLayerNonMatrixPoreSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringLayerNonMatrixPore
-        fields = '__all__'
-        
-class  MonitoringLayerStructureSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MonitoringLayerStructure 
-        fields = '__all__'
-    
-    def validate(self, data):
-        """
-        Validazione personalizzata per controllare l'unicità prima del salvataggio
-        """
-        layer = data.get('layer')
-        level = data.get('level')
-        
-        # Controlla se esiste già una combinazione profile-layer-level (quando level non è None)
-        if level is not None:
-            # Esclude l'istanza corrente se stiamo aggiornando
-            queryset = MonitoringLayerStructure.objects.filter(layer=layer, level=level)
-            if self.instance:
-                queryset = queryset.exclude(pk=self.instance.pk)
-            
-            if queryset.exists():
-                raise serializers.ValidationError({
-                    'layer': f"There is already a structure at level '{level}' in layer '{layer}' "
-                })
-        else:
-            raise serializers.ValidationError({
-                'level': f"level is a mandatory field"
-            })        
-        
-        return data
-    
-    def create(self, validated_data):
-        try:
-            return super().create(validated_data)
-        except IntegrityError as e:
-            # Fallback nel caso la validazione preventiva non abbia catturato tutto
-            raise serializers.ValidationError({
-                'non_field_errors': [
-                    f"Errore di integrità del database: {str(e)}"
-                ]
-            })
-    
-    def update(self, instance, validated_data):
-        try:
-            return super().update(instance, validated_data)
-        except IntegrityError as e:
-            raise serializers.ValidationError({
-                'non_field_errors': [
-                    f"Errore di integrità del database: {str(e)}"
-                ]
-            })        
-        #read_only_fields = ('id',)  # Il codice è generato automaticamente
-
-
-#########################################
-## Indicators 
-#########################################
-
-class IndicatorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Indicator  
-        fields = '__all__'
-        read_only_fields = ('id',)  
-
-#########################################
-## Requests 
-#########################################
-
-class RequestSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Request 
-        fields = '__all__'
-        read_only_fields = ('id',)  
 
   

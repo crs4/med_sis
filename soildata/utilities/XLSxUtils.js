@@ -13,6 +13,7 @@ export const validateXLSFile = async (files, uploadType) => {
     const buffer = await blob.arrayBuffer();
     await workbook.xlsx.load(buffer);
   } catch (e) {
+    console('Error reading file')
     return null;
   }
   let vresult = { 'validated' : 0,'data' : [], report : { 'errors': [], 'tree': [] } };
@@ -42,40 +43,47 @@ export const validateXLSFile = async (files, uploadType) => {
               }
             })  
           }
-          total_valid += validateSheet(sheets[s], uploadType, sheet_mapping, vresult);
+          if ( uploadType === 'XLS_P')
+            total_valid += validatePointSheet(sheets[s], sheet_mapping, vresult);
+          else total_valid = total_rows;
           perc = (total_valid/total_rows)*100;
           vresult['validated'] = ( Number(perc).toPrecision(2));
         }
         else  {
-          console.log(sheets);
+          console.log('Error worksheet'+sheets[s]);
         }
       } catch (e) {
         console.log(e);
-        return null
       }
     }  
   } 
   return vresult; 
 }
 
-
-export const validateSheet = (sheet_name, uploadType, sheet_mapping, results) => {
+export const validatePointSheet = (sheet_name, sheet_mapping, results) => {
       let code = '';
       let n,i = 1;
       let keys = [];
       
-      const isGenealogy = !(uploadType === 'XLS_P' || uploadType === 'XLS_S' );
-      const isGeneral = (!isGenealogy && ( sheet_name === UploadService.TYPES['XLS_P'].sheets[0] || sheet_name === UploadService.TYPES['XLS_S'].sheets[0] )); 
-      const isLayer =  (!isGenealogy && ( sheet_name === UploadService.TYPES['XLS_P'].sheets[1] || sheet_name === UploadService.TYPES['XLS_S'].sheets[1] ));  
-      const isCls =  (!isGenealogy && ( sheet_name === UploadService.TYPES['XLS_P'].sheets[2] || sheet_name === UploadService.TYPES['XLS_S'].sheets[3] )); 
-      const isLabData = (!isGenealogy && ( sheet_name === UploadService.TYPES['XLS_P'].sheets[3] || sheet_name === UploadService.TYPES['XLS_S'].sheets[2] )); 
-      if ( !isGenealogy && !isGeneral && !isCls && !isLabData && !isLayer) 
+      const isGeneral = ( sheet_name === UploadService.TYPES['XLS_P'].sheets[0] ); 
+      const isLayer =  ( sheet_name === UploadService.TYPES['XLS_P'].sheets[1] );  
+      const isLabData =  ( sheet_name === UploadService.TYPES['XLS_P'].sheets[2] ); 
+      const isLabData_sampling = (sheet_name === UploadService.TYPES['XLS_P'].sheets[3]); 
+      if ( !isGeneral && !isLabData && !isLabData_sampling && !isLayer) {
+        console.log("Error sheet name " + sheet_name)
         return 0; // sheet mapping file error 
-      let j = 1;
+      }  
+      
+      if ( !results['data'] || !results['data'][sheet_name] ){
+        console.log("Error raw data " + sheet_name)
+        return 0 ; // sheet mapping file error 
+      }  
+
       let raw_data = results['data'][sheet_name];
       results['report']['errors'][sheet_name] = [];
       let validated_row = 0;
-      for ( ; j<raw_data.length ; j+=1 ){
+      
+      for ( let j = sheet_mapping['startRow']; j<raw_data.length ; j+=1 ){
         let wrong = 0;
         let filled = 0;
         const row = raw_data[j];
@@ -85,17 +93,19 @@ export const validateSheet = (sheet_name, uploadType, sheet_mapping, results) =>
             /// key for a profile layer or profile labdata === row[1] + '@' + row[3]
             /// key for a sample labdata === row[1] + '@' + row[2] + '@' + row[3]
             /// 
-            if ( row[1] ) { // no principal key -> skip row
-              if (( !isLayer && !isLabData && keys[row[1]]) || 
-                  ( uploadType === 'XLS_P' && ( isLayer || isLabData ) && ( !row[3] || keys[row[1]+'@'+row[3]] ) ) || 
-                  ( uploadType === 'XLS_S' && isLabData && ( !row[3] || !row[2] || keys[row[1]+'@'+row[2]+'@'+row[3]] ) ) ){
+            if ( !row[1] ) 
+              results['report']['errors'][sheet_name].push(['?',j,1,'-k']);  /// wrong key
+            else { // no primary key -> skip row
+              if (( !isLayer && !isLabData && !isLabData_sampling && keys[row[1]]) || 
+                  ( isLayer || isLabData ) && ( !row[3] || keys[row[1]+'@'+row[3]] )  || 
+                  ( isLabData_sampling && ( !row[3] || !row[2] || keys[row[1]+'@'+row[2]+'@'+row[3]] ) ) ) {
                   results['report']['errors'][sheet_name].push(['?',j,1,'-k']);  /// wrong key or duplicate key
               }
               else {
                 let key = row[1];
-                if ( ( isLayer || isLabData ) && uploadType === 'XLS_P' )
+                if ( isLayer || isLabData )
                   key = row[1]+'@'+row[3];
-                else if ( isLabData && uploadType === 'XLS_S' )
+                else if ( isLabData_sampling )
                   key = row[1]+'@'+row[2]+'@'+row[3];
                 keys[key] = j;
                 wrong = 0;
@@ -212,8 +222,8 @@ export const validateSheet = (sheet_name, uploadType, sheet_mapping, results) =>
                   results['report']['tree'][row[1]]['Layer '+ key] = perc + ':' + wrong;
                 else if ( isLabData )
                   results['report']['tree'][row[1]]['Lab Data '+ key] = perc + ':' + wrong;
-                else if ( isCls )
-                  results['report']['tree'][row[1]]['Classification'] = perc + ':' + wrong;
+                else if ( isLabData_sampling )
+                  results['report']['tree'][row[1]]['Lab Data Sampling'] = perc + ':' + wrong;
                 if ( results['report']['errors'][sheet_name]['total_errors'] )
                   results['report']['errors'][sheet_name]['total_errors'] += wrong;
                 else results['report']['errors'][sheet_name]['total_errors'] = wrong
@@ -230,23 +240,13 @@ export const validateSheet = (sheet_name, uploadType, sheet_mapping, results) =>
           }
         }    
       }
+      console.log(results);
       return validated_row;
-} 
+}  
 
-export const createObjects = (data, uploadType) => {
-  if ( uploadType === 'XLS_P')
-    return createObjectsLegacy(data)
-  else if ( uploadType === 'XLS_S')
-    return createObjectsMonitoring(data)
-  else if ( uploadType === 'XLS_PG' || uploadType === 'XLS_SG' )
-    return createObjectsGenealogy(data)
-  else return null; 
-}   
-
-export const createObjectsLegacy = (data) => {
+export const createObjectsPoints = (data) => {
 //// XLS profile sheets
-  let uploadType = 'XLS_P'
-  const sheets = UploadService.TYPES[uploadType].sheets;
+  const sheets = UploadService.TYPES['XLS_P'].sheets;
   let fixtures = {}
   // General  
   let model = null;
@@ -254,157 +254,161 @@ export const createObjectsLegacy = (data) => {
   let level = null;
   let value = null; 
   let taxonomy = null;
-  let sheet_mapping = Mapping[uploadType+':'+sheets[0]];
+  let sheet_mapping = Mapping[ 'XLS_P:'+sheets[0]];
   let sheet = data[sheets[0]];
   
   if ( sheet )
-  for ( let i = 0; i < sheet.length+1; i+=1 ) {
-    let row = sheet[i];
-    if ( row ) {
-      let id =  row[1];
-      let _id = row[1];
-      for ( let j = 1; j < sheet_mapping.size + 1; j+=1 ) 
-        if ( typeof row[j] !== "undefined" && row[j].toString().trim() != '' ){ 
-          try { 
-            model = sheet_mapping[j].m;
-            field = sheet_mapping[j].f;
-            level = sheet_mapping[j].lf;
-            value = sheet_mapping[j].lv;
-            taxonomy = sheet_mapping[j].t;
-            if ( !fixtures[model] )
-              fixtures[model] = { };
-            if ( model === 'NotCultivated' )
-              _id = id + '@' + value;
-            else _id = id;
-            if ( !fixtures[model][_id] ){  
-              fixtures[model][_id] = {};
-              fixtures[model][_id]['id'] = _id;
-            }
-            fixtures[model][_id][field] = row[j];
-            if ( model !== 'ProfileGeneral' && model !== 'NotCultivated' && model !== 'Cultivated' ) { 
-              let m = model.toLowerCase().trim()
-              fixtures['ProfileGeneral'][id][m] = id; 
-            }
-            if ( model === 'Cultivated' || model === 'NotCultivated' ) {
-              if ( !fixtures['LandUse'] ) 
-                fixtures['LandUse'] = { }
-              if ( !fixtures['LandUse'][id] ) 
-                fixtures['LandUse'][id] = { id: id }
-              if ( model === 'Cultivated' ) 
-                fixtures['LandUse'][_id]['cultivated'] = id; 
-              if ( model === 'NotCultivated' ) 
-                fixtures['NotCultivated'][_id]['land_use'] = id; 
-            }
-          } catch (e) {
-            console.log(e);
-          }  
-        }
-    } 
-  }
+    for ( let i = 0; i < sheet.length; i+=1 ) {
+      let row = sheet[i];
+      if ( row ) {
+        let id =  row[1];
+        let _id = row[1];
+        for ( let j = 1; j < sheet_mapping.size + 1; j+=1 ) 
+          if ( sheet_mapping[j] && typeof row[j] !== "undefined" && row[j].toString().trim() != '' ){ 
+            try { 
+              model = sheet_mapping[j].m;
+              field = sheet_mapping[j].f;
+              level = sheet_mapping[j].lf;
+              value = sheet_mapping[j].lv;
+              taxonomy = sheet_mapping[j].t;
+              if ( !fixtures[model] )
+                fixtures[model] = { };
+              if ( model === 'NotCultivated' )
+                _id = id + '@' + value;
+              else _id = id;
+              if ( !fixtures[model][_id] ){  
+                fixtures[model][_id] = {};
+                fixtures[model][_id]['id'] = _id;
+              }
+              fixtures[model][_id][field] = row[j];
+              if ( model !== 'PointGeneral' && model !== 'NotCultivated' && model !== 'Cultivated' ) { 
+                let m = model.toLowerCase().trim()
+                fixtures['PointGeneral'][id][m] = id; 
+              }
+              if ( model === 'Cultivated' || model === 'NotCultivated' ) {
+                if ( !fixtures['LandUse'] ) 
+                  fixtures['LandUse'] = { }
+                if ( !fixtures['LandUse'][id] ) 
+                  fixtures['LandUse'][id] = { id: id }
+                if ( model === 'Cultivated' ) 
+                  fixtures['LandUse'][_id]['cultivated'] = id; 
+                if ( model === 'NotCultivated' ) 
+                  fixtures['NotCultivated'][_id]['land_use'] = id; 
+              }
+            } catch (e) {
+              console.log(e);
+            }  
+          }
+      } 
+    }
+  else console.log ('No sheet 1')
+    
   // Layer  LayerRedoximorphicColour  LayerStructure
-  sheet_mapping = Mapping[uploadType+':'+sheets[1]];
+  sheet_mapping = Mapping['XLS_P:'+sheets[1]];
   sheet = data[sheets[1]];
   
-  
   if ( sheet ) 
-  for ( let i = 0; i < sheet.length+1; i+=1 ) {
-    let row = sheet[i];
-    if ( row ) {
-      let l_id = row[1] + '@' + row[3];
-      for ( let j = 1; j < sheet_mapping.size+1; j+=1 ) 
-        if ( typeof row[j] !== "undefined" && row[j].toString().trim() != '') { 
-          try {
-            let _id = l_id; 
-            model = sheet_mapping[j].m;
-            field = sheet_mapping[j].f;
-            level = sheet_mapping[j].lf;
-            value = sheet_mapping[j].lv;           
-            taxonomy = sheet_mapping[j].t;
-            if ( !fixtures[model] )
-              fixtures[model] = { };
-            if ( model === 'LayerRedoximorphicColour' || model === 'LayerStructure' )
-              _id = _id + '@' + value;
-            if ( !fixtures[model][_id] )  
-              fixtures[model][_id] = { id: _id };
-            fixtures[model][_id][field] = row[j];
-            if ( model !== 'ProfileLayer' && model !== 'LayerRedoximorphicColour' && model !== 'LayerStructure' ) { 
-              let m = model.toLowerCase().trim();
-              if ( !fixtures['ProfileLayer'] )
-                fixtures['ProfileLayer'] = {};
-              if ( !fixtures['ProfileLayer'][l_id] )
-                fixtures['ProfileLayer'][l_id] = { };
-              fixtures['ProfileLayer'][l_id][m] = _id; 
-            }
-            if ( model === 'LayerRedoximorphicColour' ) {
-              if ( !fixtures['LayerRedoximorphicFeatures'] )
-                fixtures['LayerRedoximorphicFeatures'] = { };
-              if ( !fixtures['LayerRedoximorphicFeatures'][l_id] )
-                fixtures['LayerRedoximorphicFeatures'][l_id] = { id : l_id };
-              fixtures['LayerRedoximorphicColour'][_id]['features'] = l_id; 
-            }
-            if ( model === 'LayerStructure' ) {
-              fixtures['LayerStructure'][_id]['layer'] = l_id;
-              fixtures['LayerStructure'][_id][level] = value; 
-            }
-          } catch (e) {
-            console.log(e);
-          } 
-        }
+    for ( let i = 0; i < sheet.length+1; i+=1 ) {
+      let row = sheet[i];
+      if ( row ) {
+        let l_id = row[1] + '@' + row[3];
+        for ( let j = 1; j < sheet_mapping.size+1; j+=1 ) 
+          if ( typeof row[j] !== "undefined" && row[j].toString().trim() != '') { 
+            try {
+              let _id = l_id; 
+              model = sheet_mapping[j].m;
+              field = sheet_mapping[j].f;
+              level = sheet_mapping[j].lf;
+              value = sheet_mapping[j].lv;           
+              taxonomy = sheet_mapping[j].t;
+              if ( !fixtures[model] )
+                fixtures[model] = { };
+              if ( model === 'LayerRedoximorphicColour' || model === 'LayerStructure' )
+                _id = _id + '@' + value;
+              if ( !fixtures[model][_id] )  
+                fixtures[model][_id] = { id: _id };
+              fixtures[model][_id][field] = row[j];
+              if ( model !== 'PointLayer' && model !== 'LayerRedoximorphicColour' && model !== 'LayerStructure' ) { 
+                let m = model.toLowerCase().trim();
+                if ( !fixtures['PointLayer'] )
+                  fixtures['PointLayer'] = {};
+                if ( !fixtures['PointLayer'][l_id] )
+                  fixtures['PointLayer'][l_id] = { };
+                fixtures['PointLayer'][l_id][m] = _id; 
+              }
+              if ( model === 'LayerRedoximorphicColour' ) {
+                if ( !fixtures['LayerRedoximorphicFeatures'] )
+                  fixtures['LayerRedoximorphicFeatures'] = { };
+                if ( !fixtures['LayerRedoximorphicFeatures'][l_id] )
+                  fixtures['LayerRedoximorphicFeatures'][l_id] = { id : l_id };
+                fixtures['LayerRedoximorphicColour'][_id]['features'] = l_id; 
+              }
+              if ( model === 'LayerStructure' ) {
+                fixtures['LayerStructure'][_id]['layer'] = l_id;
+                fixtures['LayerStructure'][_id][level] = value; 
+              }
+            } catch (e) {
+              console.log(e);
+            } 
+          }
+      }
     }
-  }
-  // labdata  
-  sheet_mapping = Mapping[uploadType+':'+sheets[3]];
-  sheet = data[sheets[3]];
-  fixtures['LabData'] = { };
+  else console.log ('No sheet 2')
   
+  // labdata  
+  sheet_mapping = Mapping['XLS_P:'+sheets[2]];
+  sheet = data[sheets[2]];
+  fixtures['LabData'] = { };
+  if ( sheet )
+    for ( let i = 0; i < sheet.length; i+=1 ) {
+      try {
+        let row = sheet[i];
+        if ( row && row[1] && row[3]) {
+          let id =  row[1] + '@' + row[3];
+          if ( fixtures['PointLayer'][id] )
+            fixtures['PointLayer'][id]['labdata'] = id;
+          else console.log("Warning obj: " + id);
+          if ( !fixtures['LabData'][id] ) 
+            fixtures['LabData'][id] =  {};
+          fixtures['LabData'][id]['id'] = id;
+          for ( let j = 1; j < sheet_mapping.size+1; j+=1 ) 
+            if ( typeof row[j] !== "undefined" && row[j].toString().trim() != ''){  
+              field = sheet_mapping[j].f;
+              fixtures['LabData'][id][field] = row[j];
+            }
+        } 
+      } catch (e) {
+        console.log(e);
+      }  
+    }
+  else console.log ('No sheet 3')
+  
+  
+  // labdata  
+  sheet_mapping = Mapping['XLS_P:'+sheets[3]];
+  sheet = data[sheets[3]];
+  fixtures['LabDataSampling'] = { };
   
   if ( sheet )
   for ( let i = 0; i < sheet.length; i+=1 ) {
     try {
       let row = sheet[i];
-      if ( row && row[1] && row[3]) {
-        let id =  row[1] + '@' + row[3];
-        if ( fixtures['ProfileLayer'][id] )
-          fixtures['ProfileLayer'][id]['labdata'] = id;
-        else console.log("Warning obj: " + id);
-        if ( !fixtures['LabData'][id] ) 
-          fixtures['LabData'][id] =  {};
-        fixtures['LabData'][id]['id'] = id;
+      if ( row && row[1]  && row[2]  && row[3] ) {
+        let id =  row[1] + '@' + row[2] + '@' + row[3];
+        if ( !fixtures['LabDataSampling'][id] ) 
+          fixtures['LabDataSampling'][id] = {};
+        fixtures['LabDataSampling'][id]['id'] = id;
         for ( let j = 1; j < sheet_mapping.size+1; j+=1 ) 
           if ( typeof row[j] !== "undefined" && row[j].toString().trim() != ''){  
             field = sheet_mapping[j].f;
-            fixtures['LabData'][id][field] = row[j];
+            fixtures['LabDataSampling'][id][field] = row[j];
           }
       } 
     } catch (e) {
       console.log(e);
     }  
   }
-   
-  // classification  
-  sheet_mapping = Mapping[uploadType+':'+sheets[2]];
-  sheet = data[sheets[2]];
-  
-  
-  if ( sheet )
-  for ( let i = 0; i < sheet.length; i+=1 ) {
-    try {
-      let row = sheet[i];
-      if ( row ) {
-        let id =  row[1];
-        for ( let j = 1; j < sheet_mapping.size+1; j+=1 ) {
-          if (  typeof row[j] !== "undefined" && row[j].toString().trim() != '') {  
-            field = sheet_mapping[j].f;
-            taxonomy = sheet_mapping[j].t;
-            if ( fixtures['ProfileGeneral'][id] && field !== 'profile' ) 
-              fixtures['ProfileGeneral'][id][field] = row[j]; 
-          }
-        }
-      }
-    } catch (e) {
-        console.log(e);
-    } 
-  }
+  else console.log ('No sheet 4')
   
   // re-organize data
   let result = {}
@@ -420,205 +424,26 @@ export const createObjectsLegacy = (data) => {
       }
     }
   }
-    
+  console.log(result) 
   return result
 }
 
-export const createObjectsMonitoring = (data) => {
-//// XLS profile sheets
-  let uploadType = 'XLS_S'
-  const sheets = UploadService.TYPES[uploadType].sheets;
-  let fixtures = {}
-  // General  
-  let model = null;
-  let field = null;
-  let level = null;
-  let value = null; 
-  let taxonomy = null;
-  let sheet_mapping = Mapping[uploadType+':'+sheets[0]];
-  let sheet = data[sheets[0]];
-  if ( sheet )
-  for ( let i = 0; i < sheet.length; i+=1 ) {
-    try {
-      let row = sheet[i];
-      if ( row ) {
-        let id =  row[1];
-        let _id = row[1];
-        for ( let j = 1; j < sheet_mapping.size; j+=1 ) {
-          if ( typeof row[j] !== "undefined" && row[j].toString().trim() != '' ){  
-            model = sheet_mapping[j].m;
-            field = sheet_mapping[j].f;
-            level = sheet_mapping[j].lf;
-            value = sheet_mapping[j].lv;
-            taxonomy = sheet_mapping[j].t;
-            if ( !fixtures[model] )
-              fixtures[model] = { };
-            if ( model === 'SampleNotCultivated' )
-              _id = id + '@' + value;
-            else _id = id;
-            if ( !fixtures[model][_id] ){  
-              fixtures[model][_id] = {};
-              fixtures[model][_id]['id'] = _id;
-            }
-            fixtures[model][_id][field] = row[j];
-            if ( model !== 'SampleGeneral' && model !== 'SampleNotCultivated' && model !== 'SampleCultivated' ) { 
-              let m = model.toLowerCase().trim()
-              fixtures['SampleGeneral'][id][m] = id; 
-            }
-            if ( model === 'SampleCultivated' || model === 'SampleNotCultivated' ) {
-              if ( !fixtures['SampleLandUse'] ) 
-                fixtures['SampleLandUse'] = { }
-              if ( !fixtures['SampleLandUse'][id] ) 
-                fixtures['SampleLandUse'][id] = { id: id }
-              if ( model === 'SampleCultivated' ) 
-                fixtures['SampleLandUse'][_id]['cultivated'] = id; 
-              if ( model === 'SampleNotCultivated' ) 
-                fixtures['SampleNotCultivated'][_id]['land_use'] = id; 
-            }
-          }  
-        }
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  } 
-  // Layer  LayerRedoximorphicColour  LayerStructure
-  sheet_mapping = Mapping[uploadType+':'+sheets[1]];
-  sheet = data[sheets[1]]; 
-  if ( sheet )
-  for ( let i = 0; i < sheet.length; i+=1 ) {
-    try {
-      let row = sheet[i];
-      if ( row ) {
-        let l_id = row[1] + '@' + row[3];
-        let s_id = row[1]
-        for ( let j = 1; j < sheet_mapping.size; j+=1 ) {
-          if ( typeof row[j] !== "undefined" &&  row[j].toString().trim() != '' ){ 
-            let _id = l_id; 
-            model = sheet_mapping[j].m;
-            field = sheet_mapping[j].f;
-            level = sheet_mapping[j].lf;
-            value = sheet_mapping[j].lv;           
-            taxonomy = sheet_mapping[j].t;
-            if ( !fixtures[model] )
-              fixtures[model] = { };
-            if ( model === 'SampleLayerRedoximorphicColour' || model === 'SampleLayerStructure' )
-              _id = _id + '@' + value;
-            if ( !fixtures[model][_id] )  
-              fixtures[model][_id] = { id: _id };
-            fixtures[model][_id][field] = row[j];
-            if ( model === 'SampleLayer' ){ 
-              if ( !fixtures['SampleGeneral'] )
-                fixtures['SampleGeneral'] = {};
-              if ( !fixtures['SampleGeneral'][s_id] ){ 
-                fixtures['SampleGeneral'][s_id] = { };
-              };
-            }
-            if ( model !== 'SampleLayer' && model !== 'SampleLayerRedoximorphicColour' && model !== 'SampleLayerStructure' ) { 
-              let m = model.toLowerCase().trim();
-              if ( !fixtures['SampleLayer'] )
-                fixtures['SampleLayer'] = {};
-              if ( !fixtures['SampleLayer'][l_id] ){ 
-                fixtures['SampleLayer'][l_id] = { };
-              };
-              fixtures['SampleLayer'][l_id][m] = _id; 
-            }
-            if ( model === 'LayerRedoximorphicColour' ) {
-              if ( !fixtures['LayerRedoximorphicFeatures'] )
-                fixtures['LayerRedoximorphicFeatures'] = { };
-              if ( !fixtures['LayerRedoximorphicFeatures'][l_id] )
-                fixtures['LayerRedoximorphicFeatures'][l_id] = { id : l_id };
-              fixtures['LayerRedoximorphicColour'][_id]['features'] = l_id; 
-            }
-            if ( model === 'LayerStructure' ) {
-              fixtures['LayerStructure'][_id]['layer'] = l_id;
-              fixtures['LayerStructure'][_id][level] = value; 
-            }
-          }
-        }
-      }
-      
-    } catch (e) {
-        console.log(e);
-    } 
-  } 
-  // labdata  
-  sheet_mapping = Mapping[uploadType+':'+sheets[2]];
-  sheet = data[sheets[2]];
-  fixtures['LabData'] = { };
-  if ( sheet )
-  for ( let i = 0; i < sheet.length; i+=1 ) {
-    try {
-      let row = sheet[i];
-      if ( row ) {
-        let id =  row[1] + '@' + row[3];
-        if ( fixtures['ProfileLayer'][id] )
-          fixtures['ProfileLayer'][id]['labdata'] = id;
-        else console.log("Warning obj: " + id);
-        if ( !fixtures['LabData'][id] ) 
-          fixtures['LabData'][id] =  {};
-        fixtures['LabData'][id]['id'] = id;
-        for ( let j = 1; j < sheet_mapping.size; j+=1 ) {
-          if ( typeof row[j] !== "undefined" && row[j].toString().trim() != '' ){  
-            field = sheet_mapping[j].f;
-            fixtures['LabData'][id][field] = row[j];
-          }
-        }
-      }
-    } catch (e) {
-        console.log(e);
-    } 
-  } 
-  // classification  
-  sheet_mapping = Mapping[uploadType+':'+sheets[3]];
-  sheet = data[sheets[3]];
-  if ( sheet )
-  for ( let i = 0; i < sheet.length; i+=1 ) {
-    try {
-      let row = sheet[i];
-      if ( row ) {
-        let id =  row[1];
-        for ( let j = 1; j < sheet_mapping.size; j+=1 ) {
-          if (  typeof row[j] !== "undefined" && row[j].toString().trim() != '' ){  
-            field = sheet_mapping[j].f;
-            taxonomy = sheet_mapping[j].t;
-            if ( fixtures['ProfileGeneral'][id] && field !== 'profile' ) 
-              fixtures['ProfileGeneral'][id][field] = row[j]; 
-          }
-        }
-      }
-    } catch (e) {
-        console.log(e);
-    } 
-  }
-  
-  // re-organize data
-  let result = {}
-  let models = Object.keys(fixtures); 
-  for ( let k = 0; k < models.length; k+=1 ){
-    result[models[k]] = [];
-    if ( fixtures[models[k]] ) {
-      let objs = Object.keys(fixtures[models[k]]);
-      for ( let c = 0; c < objs.length; c+=1 ){
-        let obj = fixtures[models[k]][objs[c]];
-        if ( obj ) 
-          result[models[k]].push(obj);  
-      }
-    }
-  }  
-  return result
-}
+export const createObjects = (data, uploadType) => {
+  if ( uploadType === 'XLS_P')
+    return createObjectsPoints(data)
+  else if ( uploadType === 'XLS_PJ' )
+    return createObjectsProjects(data)
+  else return null; 
+}  
 
-export const createObjectsGenealogy = (data,uploadType) => {
+export const createObjectsProjects = (data) => {
 //// XLS profile sheets
-  const sheets = UploadService.TYPES[uploadType].sheets;
   let fixtures = {}
   let model = null;
   let field = null;
-  let sheet_mapping = Mapping[uploadType+':'+sheets[0]];
-  for ( let z = 0; z < 2; z+=1 ) {
-    let sheet = data[sheets[z]];
-    if ( sheet )
+  let sheet_mapping = Mapping['XLS_PJ:Project'];
+  let sheet = data['Project'];
+  if ( sheet )
     for ( let i = 0; i < sheet.length; i+=1 ) {
       try {
         let row = sheet[i];
@@ -637,7 +462,6 @@ export const createObjectsGenealogy = (data,uploadType) => {
         console.log(e);
       }
     }
-  }
   // re-organize data
   let result = {}
   let models = Object.keys(fixtures); 

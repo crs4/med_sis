@@ -69,10 +69,10 @@ class XLSxUploadService:
         if word.endswith('y') and len(word) > 1 and word[-2] not in 'aeiou':
             # city -> cities, category -> categories
             return word[:-1] + 'ies'
-        elif word.startswith('layer-') or word.startswith('profile-') or word.startswith('lab-') or word.startswith('surface-') or word.startswith('coarse-'):
+        elif word.startswith('layer-') or word.startswith('point-') or word.startswith('lab-') or word.startswith('surface-') or word.startswith('coarse-'):
             if word.endswith('general'):
                 word = word + 's'
-            if word in ['profile-layer', 'layer-structure', 'layer-non-matrix-pore']:
+            if word in ['point-layer', 'layer-structure', 'layer-non-matrix-pore']:
                 word = word + 's'
             return word
         elif word.endswith(('s', 'ss', 'sh', 'ch', 'x', 'z')):
@@ -118,7 +118,8 @@ class XLSxUploadService:
                 "SurfaceUnevenness", 
                 "SurfaceCracks",
                 "CoarseFragments", 
-                "ProfileGeneral",
+                "PointGeneral",
+                "LabDataSampling",
                 "LayerCoarseFragments",
                 "LayerRemnants",
                 "LayerArtefacts",
@@ -144,76 +145,22 @@ class XLSxUploadService:
                 "LayerHumanAlterations",
                 "LayerDegreeDecomposition",
                 "LabData",
-                "ProfileLayer",
+                "PointLayer",
                 "LayerStructure"
             ]  
 
-            monitoring = [
-                "MonitoringLandformTopography",  
-                "MonitoringClimateAndWeather",
-                "MonitoringCultivated", 
-                "MonitoringLandUse", 
-                "MonitoringNotCultivated", 
-                "MonitoringLitterLayer",
-                "MonitoringSurface", 
-                "MonitoringSurfaceUnevenness", 
-                "MonitoringSurfaceCracks",
-                "MonitoringCoarseFragments", 
-                "MonitoringGeneral",
-                "MonitoringLayerCoarseFragments",
-                "MonitoringLayerRemnants",
-                "MonitoringLayerArtefacts",
-                "MonitoringLayerNonMatrixPore",
-                "MonitoringLayerCracks",
-                "MonitoringLayerStressFeatures",
-                "MonitoringLayerMatrixColours",
-                "MonitoringLayerCoarserTextured",
-                "MonitoringLayerLithogenicVariegates",
-                "MonitoringLayerRedoximorphicFeatures",
-                "MonitoringLayerRedoximorphicColour",
-                "MonitoringLayerCoatingsBridges",
-                "MonitoringLayerRibbonlikeAccumulations",
-                "MonitoringLayerCarbonates",
-                "MonitoringLayerGypsum",
-                "MonitoringLayerSecondarySilica",
-                "MonitoringLayerConsistence",
-                "MonitoringLayerSurfaceCrusts",
-                "MonitoringLayerPermafrostFeatures",
-                "MonitoringLayerOrganicCarbon",
-                "MonitoringLayerRoots",
-                "MonitoringLayerAnimalActivity",
-                "MonitoringLayerHumanAlterations",
-                "MonitoringLayerDegreeDecomposition",
-                "MonitoringLabData",
-                "MonitoringLayer",
-                "MonitoringLayerStructure"
-            ]
 
             processing_order_pgenealogies = [
-                "Project",
-                "ProfileGeneral"     
+                "Project",     
             ]
 
-            processing_order_sgenealogies = [
-                "Project",
-                "MonitoringGeneral"
-            ]
-
-            if xlsx_upload.type == 'XLS_S':
-                processing_order = monitoring
-            elif xlsx_upload.type == 'XLS_SG':
-                processing_order = processing_order_sgenealogies 
-            elif xlsx_upload.type == 'XLS_PG':
+            if xlsx_upload.type == 'XLS_PJ':
                 processing_order = processing_order_pgenealogies 
                 
             # Processa ogni array nell'ordine specificato
             for model_name in processing_order:
                 if model_name in data:
-                    if (( model_name == 'ProfileGeneral' or model_name == 'MonitoringGeneral' ) and 
-                        ( xlsx_upload.type == 'XLS_PG' or xlsx_upload.type == 'XLS_SG' )):
-                        self._process_array(model_name, data[model_name], 'PATCH' )
-                    else: 
-                        self._process_array(model_name, data[model_name], xlsx_upload.operation )
+                    self._process_array(model_name, data[model_name], xlsx_upload.operation )
             
             # Aggiorna lo stato e il report
             xlsx_upload.status = "IMPORT_SUCCESS" if not self.report["errors"] else "IMPORT_WITH_ERROR"

@@ -14,32 +14,36 @@ const Home = () => {
   const user = useUser();
   const router = useRouter();
   const headerP = (
-    <Image alt="Profiles" src={profileIMG} />
+    <Image alt="Points Data" src={profileIMG} />
   );
 
   const headerS = (
-    <Image alt="Samples" src={sampleIMG} />
+    <Image alt="Laboratory data" src={sampleIMG} />
   );
 
   const headerI = (
-    <Image alt="Indicators" src={indicatorIMG} />
+    <Image alt="Soil Indicators" src={indicatorIMG} />
+  );
+
+  const headerM = (
+    <Image alt="Soil Maps" src={indicatorIMG} />
   );
 
   const footerP = (
     
     <div className="flex flex-wrap justify-content-center gap-2">
-      <Link href="/profiles">
+      <Link href="/points">
         <i className="layout-menuitem-icon fad fa-columns"></i>
-        <span className="layout-menuitem-text p-m-2">{t('GO_TO_PROFILES')}</span>
+        <span className="layout-menuitem-text p-m-2">{t('GO_TO_LEGACY')}</span>
       </Link>
     </div>
   );
 
   const footerS = (
     <div className="flex flex-wrap justify-content-center gap-2">
-      <Link href="/samples">
+      <Link href="/todo">
         <i className="layout-menuitem-icon fad fa-columns"></i>
-        <span className="layout-menuitem-text p-m-2">{t('GO_TO_SAMPLES')}</span>
+        <span className="layout-menuitem-text p-m-2">{t('GO_TO_MONITORING')}</span>
       </Link>
     </div>
   );
@@ -53,6 +57,15 @@ const Home = () => {
     </div>
   );
 
+  const footerM = (
+    <div className="flex flex-wrap justify-content-center gap-2">
+      <Link href="/todo">
+        <i className="layout-menuitem-icon fad fa-columns"></i>
+        <span className="layout-menuitem-text p-m-2">{t('GO_TO_SOILS_MAP')}</span>
+      </Link>  
+    </div>
+  );
+
   useEffect(() => {
     if ( user.userData.forbidden2 !== null && user.userData.forbidden2 )
         router.push(`/401`);
@@ -62,17 +75,22 @@ const Home = () => {
       <div className="layout-dashboard">
         <div className="grid grid-cols-12">
           <div className="col-4 flex justify-center">
-            <Card title={t('PROFILES')} subTitle="Some text and metrics" footer={footerP} header={headerP} className="col-25rem">
+            <Card title={t('POINTS DATA')} subTitle="Some text and metrics" footer={footerP} header={headerP} className="col-25rem">
                 
             </Card>
           </div>
           <div className="col-4 flex justify-center">
-            <Card  title={t('SAMPLES')} subTitle="Some text and metrics"  footer={footerS} header={headerS} className="col-25rem">
+            <Card  title={t('LABORATORY DATA')} subTitle="Some text and metrics"  footer={footerS} header={headerS} className="col-25rem">
                 
             </Card>
           </div>
           <div className="col-4 flex justify-center">
             <Card  title={t('INDICATORS')} subTitle="Some text and metrics" footer={footerI} header={headerI} className="col-25rem">
+                   
+            </Card>
+          </div>
+          <div className="col-4 flex justify-center">
+            <Card  title={t('SOILS_MAP')} subTitle="Some text and metrics" footer={footerM} header={headerM} className="col-25rem">
                    
             </Card>
           </div>

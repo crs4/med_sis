@@ -15,12 +15,17 @@ import { InputText } from 'primereact/inputtext';
 import { ConfirmDialog } from 'primereact/confirmdialog'; 
 import { Toast } from 'primereact/toast'; 
 import Loading from '../../components/Loading';
+import { point, featureCollection } from '@turf/turf';
+import dynamic from "next/dynamic"
+
+const MyMap = dynamic(() => import("../../components/LegacyMap"), { ssr:false })
 
 export default function Page()  {
   const router = useRouter();
   const t = useTranslations('default');
   const user = useUser();
   const toast = useRef(null);
+  const [pointsGeoJSON, setPointsGeoJSON] = useState(null);
   const [filters, setFilters] = useState(null);
   const [globalFilterValue, setGlobalFilterValue] = useState('');   
   const [isWorking, setIsWorking] = useState(false);
@@ -28,16 +33,89 @@ export default function Page()  {
   const [profiles, setProfiles] = useState([]);
   const [visibleDlg, setVisibleDlg] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [mapData, setMapData] = useState(null); 
+  const [selected, setSelected] = useState(null);
+  const mapRef = useRef(null);
   
+  const createGeoJSON = ( ) => {
+    if (!profiles || pointsGeoJSON ) 
+      return; 
+    let points = [];
+    for ( let j=1; j<profiles.length; j+=1 ){
+  /// skip row with null or errors in lat,lon or key
+      try {
+        let obj = profiles[j]
+        if ( obj && obj.id && obj.lat_wgs84 && obj.lon_wgs84 ) {
+          let panel = '<div class="flex flex-wrap  justify-content-center">';
+          panel += '<span class="text-cyan-500 align-items-center font-bold" >Identifier:</span><span> '+obj.id+'</span></div>';
+          panel += '<div><span class="font-bold text-green-500"> Latitude: </span><span class="font-bold"> ' + obj.lat_wgs84  + '</span>';
+          panel += '<span class="font-bold text-green-500"> Longitude: </span><span class="font-bold"> ' + obj.lon_wgs84  + '</span>';
+          if (obj.elev_m_asl) {
+            panel += '<span class="font-bold"> Altitude (ASL):  </span>'
+            panel += '<span class="font-bold"> ' + obj.elev_m_asl  + '</span>';
+          }
+          panel +='</div>'
+          points.push( point( [obj.lon_wgs84 , obj.lat_wgs84], 
+                        { key: obj.id, popupContent : panel  },
+                        { id: obj.id } ) );
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    if ( points.length > 0 ) {
+      setPointsGeoJSON( featureCollection(points) );
+      toast.current.show({severity:'success', summary: 'GeoJSON created!', detail:'GeoJSON for elements created', life: 3000});
+    }    
+  }
          
+  useEffect(() => {
+    if ( user.userData && user.userData.forbidden1 !== null && user.userData.forbidden1 )
+        router.push(`/401`);
+    const fetchData = async  () => {
+      const data = await ProfileService.listLegacy();
+      if ( data ) {
+        setProfiles(mapProfiles(data));
+        toast.current.show({severity:'success', summary: 'Done!', detail:'Legacy data has been loaded', life: 3000});
+      }
+      else {
+        toast.current.show({severity:'error', summary: 'Error', detail:'Errors loading legacy data', life: 3000});
+      }
+      initFilters(); 
+    }
+    fetchData();
+    setLoading(false);  
+  },[user]);  // eslint-disable-line
+  
+  useEffect(() => {
+      createGeoJSON ( );
+  },[profiles]);  // eslint-disable-line
 
   useEffect(() => {
-      if ( user.userData && user.userData.forbidden1 !== null && user.userData.forbidden1 )
-          router.push(`/401`);
-    },[user]);  // eslint-disable-line
-  
+    const fetchMap = async () => {
+      if ( pointsGeoJSON ) {
+        const legacyData = {
+          layer : {
+            points: pointsGeoJSON,
+            styles: {
+              'ok' : { radius: 8, fillColor: '#22f', color: '#00d', weight: 3, opacity: 1, fillOpacity: 0.7, },
+            },
+          },
+          label: 'Legacy data locations',
+        };
+        setMapData(legacyData);
+      }  
+    }
+    fetchMap();
+  }, [pointsGeoJSON]);  
+
   const goToProfile = (id) => {
-    router.push(`/profiles/${id}`);
+    router.push(`/legacy/${id}`);
+  };
+
+  const showProfile = (data) => {
+    setSelected(data);
+    router.push(`/legacy#map`);
   };
 
   const removeProfile = async (id) => {
@@ -52,14 +130,11 @@ export default function Page()  {
     if ( !current )
       return;
     try {
-      const res = await ProfileService.remove(id);
-      if ( res && res.status == 200 ) {
-        let data = await res.json();
+      const ok = await ProfileService.remove('ProfileGeneral',id);
+      if ( ok  ) 
         toast.current.show({severity:'success', summary: 'Done!', detail:'Profile:'+id+'has been deleted', life: 3000});
-      }
-      else {
+      else 
         toast.current.show({severity:'error', summary: 'Error', detail:'Errors deleting profile', life: 3000});
-      }
     } 
     catch (e) { 
       toast.current.show({severity:'error', summary: 'Error', detail:'Something went wrong', life: 3000});
@@ -100,24 +175,6 @@ export default function Page()  {
     setIsWorking(false);
   };
   
-  useEffect(() => {
-    const fetchData = async  () => {
-      const res = await ProfileService.list();
-      if ( res && res.status == 200 ) {
-        let data = await res.json();
-        setProfiles(mapProfiles(data));
-        toast.current.show({severity:'success', summary: 'Done!', detail:'Profiles has been loaded', life: 3000});
-      }
-      else {
-        toast.current.show({severity:'error', summary: 'Error', detail:'Errors loading profiles', life: 3000});
-      }
-      setProfiles([])
-      initFilters(); 
-    }
-    fetchData();
-    setLoading(false);
-  }, []);
-  
   const formatDate = (value) => {
     return value.toLocaleDateString('en-US', {
         day: '2-digit',
@@ -126,10 +183,11 @@ export default function Page()  {
     });
   };
   
+
   const initFilters = () => {
     setFilters({
       global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-      code: {
+      id: {
         operator: FilterOperator.AND,
         constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }]
       },
@@ -145,26 +203,31 @@ export default function Page()  {
           operator: FilterOperator.AND,
           constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }]
       },
-      lat_wgs84: {
-          operator: FilterOperator.OR,
-          constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }]
-      },
-      lon_wgs84: {
-          operator: FilterOperator.OR,
-          constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }]
-      },
-      elev_m_asl: {
-          operator: FilterOperator.OR,
-          constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }]
-      },
-      elev_dem: {
-          operator: FilterOperator.OR,
-          constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }]
-      },
       survey_m: {
           operator: FilterOperator.OR,
           constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }]
-      }  
+      },
+      old_cls: {
+          operator: FilterOperator.OR,
+          constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }]
+      },
+      cls_sys: {
+          operator: FilterOperator.OR,
+          constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }]
+      },
+      new_cls: {
+          operator: FilterOperator.OR,
+          constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }]
+      },
+      old_code: {
+        operator: FilterOperator.AND,
+        constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }]
+      },
+      project: {
+        operator: FilterOperator.AND,
+        constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }]
+      }
+         
     });
     setGlobalFilterValue('');
   };
@@ -182,7 +245,6 @@ export default function Page()  {
   const mapProfiles = (data) => {
     return [...(data || [])].map((d) => {
         d.date = new Date(d.date);
-        d.survey_m = Mapping[d.survey_m]?.name;
         return d;
     });
   };
@@ -206,7 +268,7 @@ export default function Page()  {
       className="p-mr-2 p-mb-2 m-1"
       loading={loading}
       disabled={isWorking}
-      tooltip={t('LOAD_PROFILE')}
+      tooltip={t('INSPECT_PROFILE')}
       tooltipOptions={{ position: 'top' }}
       onClick={() => goToProfile(rowData.id)}
       label=""
@@ -216,50 +278,73 @@ export default function Page()  {
       className="p-mr-2 p-mb-2 m-1"
       loading={loading}
       disabled={isWorking}
-      tooltip={t('SHOW_PROFILE')}
+      tooltip={t('SHOW_IN_MAP')}
       tooltipOptions={{ position: 'top' }}
-      onClick={() => goToProfile(rowData.id)}
+      onClick={() => showProfile(rowData)}
       label=""
     />
     </> 
   );
 
-  if ( loading )
-    return <Loading  title="Loading Soil Prodiles...." />
-  else 
-    return (
-    <div className="layout-dashboard">
+  
+  return (
+  <div className="layout-dashboard">
       <div className="grid">
         <div className="col-12">
           <div className="card">
-            <ConfirmDialog id="dlg_remove" group="declarative"  visible={visibleDlg} onHide={() => setVisibleDlg(false)} message="Are you sure you want to delete xlsx upload?" 
+            <Toast ref={toast} />  
+    {(loading) && (
+            <Loading  title="Loading Legacy data" />
+    )}
+    {(!loading && !profiles) && (
+            <div className="card">
+                <h5 class="font-bold text-green-500">Legacy data not found</h5>
+            </div>
+    )}
+    {(profiles) && (
+          <>
+            <ConfirmDialog id="dlg_remove" group="declarative"  visible={visibleDlg} onHide={() => setVisibleDlg(false)} message="Are you sure you want to delete the profile?" 
               header="Confirmation" icon="pi pi-exclamation-triangle" accept={performRemove} reject={rejectDlg} />
-            <Toast ref={toast} />
+            {(mapData) && ( 
+              <div className="card">
+                <a name="map"/>   
+                <h5 class="font-bold text-green-500">{ mapData ? mapData.label : 'Legacy data locations' }</h5>
+                <MyMap selected={selected} data={mapData} />
+              </div>
+            )}
             <h5>Soil Profiles Table</h5>
             <DataTable
                 value={profiles}
                 paginator
                 dataKey="code"
                 className="p-datatable-gridlines"
-                globalFilterFields={['code','surveyors','location','date lat_wgs84','lon_wgs84','gps','elev_m_asl','elev_dem','survey_m']}
+                globalFilterFields={['id','date','surveyors','survey_m','old_cls','cls_sys','new_cls','project']}
                 showGridlines
-                rows={10}
+                rows={20}
                 filters={filters}
                 filterDisplay="menu"
                 loading={loading}
                 responsiveLayout="scroll"
-                emptyMessage="No uploads found."
+                emptyMessage="No Legacy data found found."
                 header={header}
             >
+              <Column header="Actions" frozen body={actionsTemplate} style={{ minWidth: '12rem' }} />
+              <Column header="Code" field="id"  sortable filter filterPlaceholder="Search by id" style={{ minWidth: '8rem' }} />
+              <Column header="Date" sortable field="date" filterField="date" dataType="date" style={{ minWidth: '10rem' }} body={dateBodyTemplate} filter filterElement={dateFilterTemplate} />
+              <Column header="Surveyors" sortable field="surveyors" filter filterPlaceholder="Search by name" style={{ minWidth: '10rem' }} />
+              <Column header="Survey method" sortable field="survey_m" filter filterPlaceholder="Search by code" style={{ minWidth: '8rem' }}  />
+              <Column header="Old classification" sortable field="old_cls" filter filterPlaceholder="Search by code" style={{ minWidth: '8rem' }}  />
+              <Column header="Classification system" sortable field="cls_sys" filter filterPlaceholder="Search by code" style={{ minWidth: '8rem' }}  />
+              <Column header="New classification" sortable field="new_cls" filter filterPlaceholder="Search by code" style={{ minWidth: '8rem' }}  />
+              <Column header="Project" sortable field="project" filter filterPlaceholder="Search by name" style={{ minWidth: '10rem' }}  />
               
-              <Column header="Identifier" field="code"  filter filterPlaceholder="Search by id" style={{ minWidth: '10rem' }} />
-              <Column header="Date"  filterField="date" dataType="date" style={{ minWidth: '10rem' }} body={dateBodyTemplate} filter filterElement={dateFilterTemplate} />
-              <Column header="Actions" body={actionsTemplate} />
             </DataTable>
-          </div>
+          </>
+    )}
         </div>
       </div>
     </div>
+  </div>
   );
 };
 

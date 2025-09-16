@@ -31,11 +31,8 @@ UPLOAD_RESULTS = [
     ("CRITICAL_ERROR" , "CRITICAL_ERROR"),
 ]  
 UPLOAD_TYPES = [
-    ("XLS_P" , "XLSx Legacy Data Upload"),
-    ("XLS_S" , "XLSx Monitoring Data upload"),
-    ("XLS_PG" , "XLSx Profiles Genealogy upload"),
-    ("XLS_SG" , "XLSx Samples Genealogy upload"),
-    ("XLS_PH" , "XLSx Photo metadata upload")
+    ("XLS_P" , "XLSx Points Soil Data Upload"),
+    ("XLS_PJ" , "XLSx Projects Data upload"),
 ]
 UPLOAD_OPERATION = [
     ("POST" , "Create new"),
@@ -78,11 +75,10 @@ class XLSxUpload(models.Model):
         )
 
 ###########################
-# Profile\Samples Genealogy
+# Projects
 ###########################
 class Project(models.Model):
     id = models.TextField(primary_key=True, db_comment='Project identifier ')
-    old_code = models.TextField(blank=True, null=True, db_comment='Original project id')
     title = models.TextField(blank=True, null=True, db_comment='project name')
     descr = models.TextField(blank=True, null=True, db_comment='project description')
     refer = models.TextField(blank=True, null=True, db_comment='reference')
@@ -1666,7 +1662,7 @@ AGGREGATE_SIZES = [
 ]
 
 ###########################
-# Profile General
+# point General
 ###########################
 class LandformTopography(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')
@@ -1819,6 +1815,19 @@ class Surface(models.Model):
     wat_repell = models.TextField(choices=WATER_REPELLENCE, blank=True, null=True)
     desert_ven = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
     desert_var = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
+    debris_type = models.TextField(blank=True, null=True)
+    debris_cover = models.TextField(blank=True, null=True)
+    natural_alterations = models.TextField(blank=True, null=True)
+    pat_comp_type = models.TextField(blank=True, null=True)
+    pat_comp_cover = models.TextField(blank=True, null=True)
+    saline_efflorescence = models.TextField(blank=True, null=True)
+    worm_cast = models.TextField(blank=True, null=True)
+    lp_signs_ploughing = models.TextField(blank=True, null=True)
+    lp_direction_ploughing = models.TextField(blank=True, null=True)
+    lp_tillage_mode = models.TextField(blank=True, null=True)
+    use_of_inputs = models.TextField(blank=True, null=True)
+    irrigation = models.TextField(blank=True, null=True)
+    conservation = models.TextField(blank=True, null=True)
     
     objects = models.Manager().using('backoffice')
     
@@ -1897,11 +1906,12 @@ class SurfaceUnevenness(models.Model):
             ('write', 'can write data'),
         )
     
-class ProfileGeneral(models.Model):
-    id = models.TextField(primary_key=True, db_comment='profile identifier')
+class PointGeneral(models.Model):
+    id = models.TextField(primary_key=True, db_comment='point identifier')
+    type = models.TextField(blank=True, null=True, db_comment='Point data type')
     date = models.DateField(blank=True, null=True, db_comment='date of the description')
     surveyors = models.TextField(blank=True, null=True, db_comment='surveyors names comma separated')
-    location = models.TextField(blank=True, null=True, db_comment='Name of the profile location')
+    location = models.TextField(blank=True, null=True, db_comment='Name of the point location')
     lat_wgs84 = models.DecimalField(max_digits=14, decimal_places=8, db_comment='WGS84 Latitude in decimal degree')
     lon_wgs84 = models.DecimalField(max_digits=14, decimal_places=8, db_comment='WGS84 Longitude in decimal degree')
     gps = models.BooleanField(blank=True, null=True, db_comment='is a gps acquisition?')
@@ -1910,12 +1920,12 @@ class ProfileGeneral(models.Model):
     survey_m = models.TextField(choices=SURVEY_METHODS,  blank=True, null=True, db_comment='The code of the survey method')
     notes = models.TextField(blank=True, null=True)
 
-    horizons = models.TextField(blank=True, null=True, db_comment='Horizons sequence of the profile')
-    old_cls = models.TextField(blank=True, null=True, db_comment='Old classification of the profile ')
-    new_cls = models.TextField(blank=True, null=True, db_comment='New classification of the profile ')
+    horizons_sequence = models.TextField(blank=True, null=True, db_comment='Horizons sequence of the point')
+    old_cls = models.TextField(blank=True, null=True, db_comment='Old classification of the point ')
+    new_cls = models.TextField(blank=True, null=True, db_comment='New classification of the point ')
     cls_sys = models.TextField(choices=CLASSIFICATION_SYSTEMS, blank=True, null=True, db_comment='value from p_classification_system ')
-    old_code = models.TextField(blank=True, null=True, db_comment='profile original code')
-    project = models.ForeignKey(Project, on_delete=models.SET_NULL, blank=True, null=True, related_name='profilegeneral_project_set', db_comment='Survey/Project identifier')
+    old_id = models.TextField(blank=True, null=True, db_comment='point original code')
+    project = models.ForeignKey(Project, on_delete=models.SET_NULL, blank=True, null=True, related_name='pointgeneral_project_set', db_comment='Survey/Project identifier')
     
     coarsefragments =  models.OneToOneField(CoarseFragments, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='Coarse Fragments')
     litterlayer =  models.OneToOneField(LitterLayer, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='Litter Layer')
@@ -1926,24 +1936,27 @@ class ProfileGeneral(models.Model):
     climateandweather = models.OneToOneField(ClimateAndWeather, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='Climate weather')
     surfaceunevenness =  models.OneToOneField(SurfaceUnevenness, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='Surface Unevenness')
     
-    ## profilelayer_profile_set ProfileLayer
+    ## pointlayer_point_set PointLayer
 
     objects = models.Manager().using('backoffice')
     
     class Meta:
         managed = True
-        db_table = 'profile_general'
-        db_table_comment = 'The Soil Profile main table'
+        db_table = 'point_general'
+        db_table_comment = 'The Soil point main table'
         permissions = (
             ('view', 'can view data'),
             ('write', 'can write data'),
         )
 
+
 #########################################
-## Profile Lab Data 
+## point Lab Data 
 #########################################
-class LabData(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
+class LabDataSampling(models.Model):
+    point = models.ForeignKey(PointGeneral, on_delete=models.CASCADE, related_name='labdatasampling_point_set', db_comment='Foreign Key field: point') 
+    upper = models.DecimalField(max_digits=40, decimal_places=6, validators=[validate_positive],  db_comment='Sampling upper boundary' , blank=True, null=True)
+    lower = models.DecimalField(max_digits=40, decimal_places=6, validators=[validate_positive],  db_comment='Sampling lower boundary' , blank=True, null=True)
     gravel = models.DecimalField(max_digits=40, decimal_places=6, validators=[validate_percentage],  db_comment='Gravel content (%)' , blank=True, null=True)
     cls_sys =  models.TextField(choices=G_CLASSIFICATION_SYSTEMS, db_comment='Classification system used for texture of fine earth', blank=True, null=True)
     texture = models.TextField(choices=TEXTURE_CLASSES, db_comment='texture class', blank=True, null=True)      
@@ -1961,6 +1974,9 @@ class LabData(models.Model):
     clay = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Clay  (percentage of the fine earth)', blank=True, null=True)
     met_clay = models.TextField(choices=SILT_CLAY_CONTENT_METHODS, blank=True, null=True)
     bulk_dens = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Bulk density (g/cm3)'	, blank=True, null=True)
+    met_bulk_dens = models.TextField(blank=True, null=True)
+    slake_test = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Bulk density (g/cm3)'	, blank=True, null=True)
+    met_slake_test = models.TextField(blank=True, null=True)
     el_cond = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Electric conductivity (dS/m)', blank=True, null=True)
     met_el_cond = models.TextField(choices=EL_CONDUCTIVITY_PH_METHODS, db_comment='Method used for Electric conductivity', blank=True, null=True)
     hy_cond = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Hydraulic conductivity at saturation (mm/h)', blank=True, null=True)
@@ -1968,6 +1984,7 @@ class LabData(models.Model):
     satur = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Saturation (percentage)', blank=True, null=True)
     field_cap = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Field capacity (percentage)', blank=True, null=True)
     wilting_p = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Wilting point (percentage)', blank=True, null=True)
+    awc = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Wilting point (percentage)', blank=True, null=True)
     met_s_f_w = models.TextField(choices=WILTING_POINT_METHODS, db_comment='Method used for saturation, field capacity, wilting point', blank=True, null=True)
     acidity = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Soil acidity: Exchangeable Al (meq/100g)', blank=True, null=True)
     met_acidity = models.TextField(db_comment='Method used for Soil acidity: Exchangeable Al (meq/100g)', blank=True, null=True)
@@ -1981,8 +1998,10 @@ class LabData(models.Model):
     met_org_car = models.TextField( choices=ORGANIC_CARBON_METHODS, db_comment='Method used for Organic Carbon content', blank=True, null=True)
     org_mat = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Organic matter content (percentage)', blank=True, null=True)
     met_org_mat = models.TextField(choices=ORGANIC_MATTER_CONTENT_METHODS, db_comment='Method used for organic matter content', blank=True, null=True)
-    caco3 = models.DecimalField( max_digits=30, decimal_places=10, db_comment='CaCO3 content (percentage)', blank=True, null=True)
-    met_caco3 = models.TextField(choices=CACO3_CONTENT_METHODS, db_comment='Method used CaCO3 content',  blank=True, null=True)
+    caco3_content = models.DecimalField( max_digits=30, decimal_places=10, db_comment='CaCO3 content (percentage)', blank=True, null=True)
+    met_content_caco3 = models.TextField(choices=CACO3_CONTENT_METHODS, db_comment='Method used for CaCO3 content',  blank=True, null=True)
+    active_caco3 = models.DecimalField( max_digits=30, decimal_places=10, db_comment='CaCO3 content (percentage)', blank=True, null=True)
+    met_active_caco3 = models.TextField(choices=CACO3_CONTENT_METHODS, db_comment='Method used for active CaCO3',  blank=True, null=True)
     gypsum = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Gypsum content (percentage)', blank=True, null=True)
     met_gypsum = models.TextField(choices=GYPSUM_CONTENT_METHODS, db_comment='Method used for Gypsum content',  blank=True, null=True)
     cec = models.DecimalField( max_digits=30, decimal_places=10, db_comment='CEC (cmol/Kg)', blank=True, null=True)
@@ -1999,10 +2018,18 @@ class LabData(models.Model):
     met_n_tot = models.TextField(choices=N_CONTENT_METHODS, db_comment='Method used for N tot content',  blank=True, null=True)
     p_cont = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Available P content(mg/kg)', blank=True, null=True)
     met_p_cont = models.TextField(choices=P_CONTENT_METHODS, db_comment='Method used for available P content',  blank=True, null=True)
+    nh4 = models.DecimalField( max_digits=30, decimal_places=10, db_comment='', blank=True, null=True)
+    met_nh4 = models.TextField(blank=True, null=True)
+    no3 = models.DecimalField( max_digits=30, decimal_places=10, db_comment='', blank=True, null=True)
+    met_no3 = models.TextField(blank=True, null=True)
+    roc = models.DecimalField( max_digits=30, decimal_places=10, db_comment='', blank=True, null=True)
+    toc400 = models.DecimalField( max_digits=30, decimal_places=10, db_comment='', blank=True, null=True)
+    met_roc_toc400 = models.TextField(blank=True, null=True)
     feox = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Feox (g/kg)', blank=True, null=True)
     fed = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Fed (g/kg)', blank=True, null=True)
     fep = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Fep (g/kg)', blank=True, null=True)
     fe_tot = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Fe tot (g/kg)', blank=True, null=True)
+    met_fe_tot = models.TextField(blank=True, null=True)
     mn = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Mn (mg/kg)', blank=True, null=True)
     met_mn = models.TextField(choices=MN_ZN_CU_METHODS, db_comment='Method used for Mn', blank=True, null=True)
     zn = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Zn (mg/kg)', blank=True, null=True)
@@ -2010,7 +2037,145 @@ class LabData(models.Model):
     cu = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Cu (mg/kg)', blank=True, null=True)
     met_cu = models.TextField(choices=MN_ZN_CU_METHODS, db_comment='Method used for Cu', blank=True, null=True) 
     act_caco3 = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Active CaCO3 (%)', blank=True, null=True)
-    
+    pb = models.DecimalField( max_digits=30, decimal_places=10, db_comment='', blank=True, null=True)
+    met_pb = models.TextField(blank=True, null=True)
+    hg = models.DecimalField( max_digits=30, decimal_places=10, db_comment='', blank=True, null=True)
+    met_hg = models.TextField(blank=True, null=True)
+    cd = models.DecimalField( max_digits=30, decimal_places=10, db_comment='', blank=True, null=True)
+    met_cd = models.TextField(blank=True, null=True)
+    ni = models.DecimalField( max_digits=30, decimal_places=10, db_comment='', blank=True, null=True)
+    met_ni = models.TextField(blank=True, null=True)
+    sb = models.DecimalField( max_digits=30, decimal_places=10, db_comment='', blank=True, null=True)
+    met_sb = models.TextField(blank=True, null=True)
+    cr = models.DecimalField( max_digits=30, decimal_places=10, db_comment='', blank=True, null=True)
+    met_cr = models.TextField(blank=True, null=True)
+    as_value = models.DecimalField( max_digits=30, decimal_places=10, db_comment='', blank=True, null=True)
+    met_as = models.TextField(blank=True, null=True)
+    co = models.DecimalField( max_digits=30, decimal_places=10, db_comment='', blank=True, null=True)
+    met_co = models.TextField(blank=True, null=True)
+    v = models.DecimalField( max_digits=30, decimal_places=10, db_comment='', blank=True, null=True)
+    met_v = models.TextField(blank=True, null=True)
+    notes = models.TextField(blank=True, null=True)  
+
+
+    objects = models.Manager().using('backoffice')
+
+    class Meta:
+        managed = True
+        db_table = 'lab_data_sampling'
+        permissions = (
+            ('view', 'can view data'),
+            ('write', 'can write data'),
+        )
+
+#########################################
+## point Lab Data 
+#########################################
+class LabData(models.Model):
+    id = models.TextField(primary_key=True, db_comment='labdata identifier')
+    horizon = models.TextField( db_comment='Horizon sequence' , blank=True, null=True)
+    l_number = models.DecimalField(max_digits=40, decimal_places=6, validators=[validate_positive],  db_comment='Layer Number' , blank=True, null=True)
+    gravel = models.DecimalField(max_digits=40, decimal_places=6, validators=[validate_percentage],  db_comment='Gravel content (%)' , blank=True, null=True)
+    cls_sys =  models.TextField(choices=G_CLASSIFICATION_SYSTEMS, db_comment='Classification system used for texture of fine earth', blank=True, null=True)
+    texture = models.TextField(choices=TEXTURE_CLASSES, db_comment='texture class', blank=True, null=True)      
+    sand = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], db_comment='Sand  (percentage of the fine earth)', blank=True, null=True)
+    v_c_sand = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage],db_comment='Very coarse sand (percentage of the fine earth)', blank=True, null=True)
+    c_sand = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage],db_comment='Coarse sand (percentage of the fine earth)', blank=True, null=True)
+    m_sand = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage],db_comment='Medium sand (percentage of the fine earth)', blank=True, null=True)
+    f_sand = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage],db_comment='Fine sand (percentage of the fine earth)', blank=True, null=True)
+    v_f_sand  = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], db_comment='Very Fine sand (percentage of the fine earth)', blank=True, null=True)
+    met_sand = models.TextField(choices=SAND_CONTENT_METHODS, blank=True, null=True)
+    silt = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], db_comment='Silt (percentage of the fine earth)', blank=True, null=True)
+    c_silt = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], db_comment='Coarse silt (percentage of the fine earth)', blank=True, null=True)
+    f_silt = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], db_comment='Fine silt  (percentage of the fine earth)', blank=True, null=True)
+    met_silt = models.TextField(choices=SILT_CLAY_CONTENT_METHODS,  blank=True, null=True)
+    clay = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Clay  (percentage of the fine earth)', blank=True, null=True)
+    met_clay = models.TextField(choices=SILT_CLAY_CONTENT_METHODS, blank=True, null=True)
+    bulk_dens = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Bulk density (g/cm3)'	, blank=True, null=True)
+    met_bulk_dens = models.TextField(blank=True, null=True)
+    slake_test = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Bulk density (g/cm3)'	, blank=True, null=True)
+    met_slake_test = models.TextField(blank=True, null=True)
+    el_cond = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Electric conductivity (dS/m)', blank=True, null=True)
+    met_el_cond = models.TextField(choices=EL_CONDUCTIVITY_PH_METHODS, db_comment='Method used for Electric conductivity', blank=True, null=True)
+    hy_cond = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Hydraulic conductivity at saturation (mm/h)', blank=True, null=True)
+    met_hy_cond = models.TextField(choices=HIDRAULIC_CONDUCTIVITY_METHODS, db_comment='Method used for Hydraulic conductivity at saturation', blank=True, null=True)
+    satur = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Saturation (percentage)', blank=True, null=True)
+    field_cap = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Field capacity (percentage)', blank=True, null=True)
+    wilting_p = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Wilting point (percentage)', blank=True, null=True)
+    awc = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Wilting point (percentage)', blank=True, null=True)
+    met_s_f_w = models.TextField(choices=WILTING_POINT_METHODS, db_comment='Method used for saturation, field capacity, wilting point', blank=True, null=True)
+    acidity = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Soil acidity: Exchangeable Al (meq/100g)', blank=True, null=True)
+    met_acidity = models.TextField(db_comment='Method used for Soil acidity: Exchangeable Al (meq/100g)', blank=True, null=True)
+    ph_h2o = models.DecimalField( max_digits=30, decimal_places=10, db_comment='pH (H2O)', blank=True, null=True)
+    met_ph_h20 = models.TextField(choices=EL_CONDUCTIVITY_PH_METHODS, db_comment='Method used for pH (H2O)', blank=True, null=True)
+    ph_kcl = models.DecimalField( max_digits=30, decimal_places=10, db_comment='pH (KCl)', blank=True, null=True)
+    met_ph_kcl = models.TextField(choices=EL_CONDUCTIVITY_PH_METHODS, db_comment='Method used for pH (KCl)', blank=True, null=True)
+    ph_ccl = models.DecimalField( max_digits=30, decimal_places=10, db_comment='pH (CaCl2)', blank=True, null=True)
+    met_ph_ccl = models.TextField(choices=EL_CONDUCTIVITY_PH_METHODS, db_comment='Method used for pH (CaCl2)',  blank=True, null=True)
+    org_car = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Organic Carbon content (g/kg)', blank=True, null=True)
+    met_org_car = models.TextField( choices=ORGANIC_CARBON_METHODS, db_comment='Method used for Organic Carbon content', blank=True, null=True)
+    org_mat = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Organic matter content (percentage)', blank=True, null=True)
+    met_org_mat = models.TextField(choices=ORGANIC_MATTER_CONTENT_METHODS, db_comment='Method used for organic matter content', blank=True, null=True)
+    caco3_content = models.DecimalField( max_digits=30, decimal_places=10, db_comment='CaCO3 content (percentage)', blank=True, null=True)
+    met_content_caco3 = models.TextField(choices=CACO3_CONTENT_METHODS, db_comment='Method used for CaCO3 content',  blank=True, null=True)
+    active_caco3 = models.DecimalField( max_digits=30, decimal_places=10, db_comment='CaCO3 content (percentage)', blank=True, null=True)
+    met_active_caco3 = models.TextField(choices=CACO3_CONTENT_METHODS, db_comment='Method used for active CaCO3',  blank=True, null=True)
+    gypsum = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Gypsum content (percentage)', blank=True, null=True)
+    met_gypsum = models.TextField(choices=GYPSUM_CONTENT_METHODS, db_comment='Method used for Gypsum content',  blank=True, null=True)
+    cec = models.DecimalField( max_digits=30, decimal_places=10, db_comment='CEC (cmol/Kg)', blank=True, null=True)
+    met_cec = models.TextField(choices=CEC_CA_MG_NA_K_METHODS, db_comment='Method used for CEC',  blank=True, null=True)
+    ca = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Ca++ (cmol/Kg)', blank=True, null=True)
+    met_ca = models.TextField(choices=CEC_CA_MG_NA_K_METHODS, db_comment='Method used for Ca++', blank=True, null=True)
+    mg = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Mg++ (cmol/Kg)', blank=True, null=True)
+    met_mg = models.TextField(choices=CEC_CA_MG_NA_K_METHODS, db_comment='Method used for Mg++',  blank=True, null=True)
+    na = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Na+ (cmol/Kg)', blank=True, null=True)
+    met_na = models.TextField(choices=CEC_CA_MG_NA_K_METHODS, db_comment='Method used for Na+',  blank=True, null=True)
+    k = models.DecimalField( max_digits=30, decimal_places=10, db_comment='K+ (cmol/Kg)', blank=True, null=True)
+    met_k = models.TextField(choices=CEC_CA_MG_NA_K_METHODS, db_comment='Method used for K+',  blank=True, null=True)
+    n_tot = models.DecimalField( max_digits=30, decimal_places=10, db_comment='N tot content (g/Kg)', blank=True, null=True)
+    met_n_tot = models.TextField(choices=N_CONTENT_METHODS, db_comment='Method used for N tot content',  blank=True, null=True)
+    p_cont = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Available P content(mg/kg)', blank=True, null=True)
+    met_p_cont = models.TextField(choices=P_CONTENT_METHODS, db_comment='Method used for available P content',  blank=True, null=True)
+    nh4 = models.DecimalField( max_digits=30, decimal_places=10, db_comment='', blank=True, null=True)
+    met_nh4 = models.TextField(blank=True, null=True)
+    no3 = models.DecimalField( max_digits=30, decimal_places=10, db_comment='', blank=True, null=True)
+    met_no3 = models.TextField(blank=True, null=True)
+    roc = models.DecimalField( max_digits=30, decimal_places=10, db_comment='', blank=True, null=True)
+    toc400 = models.DecimalField( max_digits=30, decimal_places=10, db_comment='', blank=True, null=True)
+    met_roc_toc400 = models.TextField(blank=True, null=True)
+    feox = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Feox (g/kg)', blank=True, null=True)
+    fed = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Fed (g/kg)', blank=True, null=True)
+    fep = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Fep (g/kg)', blank=True, null=True)
+    fe_tot = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Fe tot (g/kg)', blank=True, null=True)
+    met_fe_tot = models.TextField(blank=True, null=True)
+    mn = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Mn (mg/kg)', blank=True, null=True)
+    met_mn = models.TextField(choices=MN_ZN_CU_METHODS, db_comment='Method used for Mn', blank=True, null=True)
+    zn = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Zn (mg/kg)', blank=True, null=True)
+    met_zn = models.TextField(choices=MN_ZN_CU_METHODS, db_comment='Method used for Zn', blank=True, null=True)
+    cu = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Cu (mg/kg)', blank=True, null=True)
+    met_cu = models.TextField(choices=MN_ZN_CU_METHODS, db_comment='Method used for Cu', blank=True, null=True) 
+    act_caco3 = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Active CaCO3 (%)', blank=True, null=True)
+    pb = models.DecimalField( max_digits=30, decimal_places=10, db_comment='', blank=True, null=True)
+    met_pb = models.TextField(blank=True, null=True)
+    hg = models.DecimalField( max_digits=30, decimal_places=10, db_comment='', blank=True, null=True)
+    met_hg = models.TextField(blank=True, null=True)
+    cd = models.DecimalField( max_digits=30, decimal_places=10, db_comment='', blank=True, null=True)
+    met_cd = models.TextField(blank=True, null=True)
+    ni = models.DecimalField( max_digits=30, decimal_places=10, db_comment='', blank=True, null=True)
+    met_ni = models.TextField(blank=True, null=True)
+    sb = models.DecimalField( max_digits=30, decimal_places=10, db_comment='', blank=True, null=True)
+    met_sb = models.TextField(blank=True, null=True)
+    cr = models.DecimalField( max_digits=30, decimal_places=10, db_comment='', blank=True, null=True)
+    met_cr = models.TextField(blank=True, null=True)
+    as_value = models.DecimalField( max_digits=30, decimal_places=10, db_comment='', blank=True, null=True)
+    met_as = models.TextField(blank=True, null=True)
+    co = models.DecimalField( max_digits=30, decimal_places=10, db_comment='', blank=True, null=True)
+    met_co = models.TextField(blank=True, null=True)
+    v = models.DecimalField( max_digits=30, decimal_places=10, db_comment='', blank=True, null=True)
+    met_v = models.TextField(blank=True, null=True)
+    notes = models.TextField(blank=True, null=True)  
+
+
     objects = models.Manager().using('backoffice')
 
     class Meta:
@@ -2021,9 +2186,8 @@ class LabData(models.Model):
             ('write', 'can write data'),
         )
 
-
 ###########################
-# Profile Layer
+# point Layer
 ###########################
 class LayerRemnants(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')
@@ -2594,11 +2758,11 @@ class LayerNonMatrixPore(models.Model):
             ('write', 'can write data'),
         )
 
-class ProfileLayer(models.Model):
+class PointLayer(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')
-    profile = models.ForeignKey(ProfileGeneral, on_delete=models.CASCADE, related_name='profilelayer_profile_set', db_comment='Foreign Key field: profile') 
+    point = models.ForeignKey(PointGeneral, on_delete=models.CASCADE, related_name='pointlayer_point_set', db_comment='Foreign Key field: point') 
     design = models.TextField(db_comment='layer horizon designation')
-    number = models.SmallIntegerField(validators=[validate_positive], db_comment='layer order in profile')
+    number = models.SmallIntegerField(validators=[validate_positive], db_comment='layer order in point')
     upper = models.DecimalField(max_digits=12, decimal_places=2, validators=[validate_positive], db_comment='upper depth in cm',blank=True, null=True)
     lower = models.DecimalField(max_digits=12, decimal_places=2, validators=[validate_positive], db_comment='lower depth in cm',blank=True, null=True)
     lower_bound = models.TextField(db_comment='layer lower boundary ', blank=True, null=True )
@@ -2616,6 +2780,7 @@ class ProfileLayer(models.Model):
     rh_value = models.TextField(choices=RH_VALUE, blank=True, null=True, db_comment='Rh Value')
     weathering = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='Initial weathering abundance')
     sol_salts = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='ECSE [dS m-1m-1]')
+    saline_eff_cont = models.DecimalField( max_digits=30, decimal_places=10, blank=True, null=True, db_comment='Saline efflorescence Continuity')
     ph_value = models.DecimalField( max_digits=30, decimal_places=10, blank=True, null=True, db_comment='Potentiometric pH measurement - Measured value')
     ph_solution = models.TextField(choices=POTENZIOMETRIC_MEASURES, blank=True, null=True, db_comment='Potentiometric pH measurement - Solution and mixing ratio')
     fracts = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
@@ -2664,7 +2829,7 @@ class ProfileLayer(models.Model):
     
     class Meta:
         managed = True
-        db_table = 'layer'
+        db_table = 'point_layer'
         permissions = (
             ('view', 'can view data'),
             ('write', 'can write data'),
@@ -2672,7 +2837,7 @@ class ProfileLayer(models.Model):
 
 class LayerStructure(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')  
-    layer = models.ForeignKey(ProfileLayer, on_delete=models.CASCADE, related_name='layerstructure_layer_set', db_comment='Profile Layer' )
+    layer = models.ForeignKey(PointLayer, on_delete=models.CASCADE, related_name='layerstructure_layer_set', db_comment='point Layer' )
     level = models.TextField(choices=STRUCTURE_LEVELS, blank=True, null=True)
     type = models.TextField(choices=STRUCTURE_TYPES, blank=True, null=True)
     grade = models.TextField(choices=STRUCTURE_GRADES, blank=True, null=True)
@@ -2693,1049 +2858,6 @@ class LayerStructure(models.Model):
             ('view', 'can view data'),
             ('write', 'can write data'),
         )
-
-###########################
-# Monitoring General
-###########################
-class MonitoringLandformTopography(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    grad_ups = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='Ground surface upslope inclination with respect to the horizontal plane. If the monitoring site lies on a flat surface, the gradient is 0%. ')
-    grad_downs = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='Ground surface downslope inclination with respect to the horizontal plane. If the monitoring site lies on a flat surface, the gradient is 0%. ')
-    slope_asp = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_positive], blank=True, null=True, db_comment='If the monitoring site lies on a slope, report the compass direction that the slope faces, viewed downslope; e.g., 225°')
-    slope_shp = models.TextField(choices=SHAPES, blank=True, null=True, db_comment='If the monitoring site lies on a slope, report the slope shape in 2 directions: up-/downslope (perpendicular to the elevation contour, i.e. the vertical curvature) and across slope (along the elevation contour, i.e. the horizontal curvature); e.g., Linear (L), Convex (V) or Concave (C).')
-    position = models.TextField(choices=POSITION, blank=True, null=True, db_comment='If the monitoring site lies in an uneven terrain, report the monitoring site position.')
-    landform1 = models.TextField(choices=LANDFORMS, blank=True, null=True, db_comment='Landform1 type.')
-    landform2 = models.TextField(choices=LANDFORMS, blank=True, null=True, db_comment='Landform2 type.')
-    activity1 = models.TextField(choices=ACTIVITIES, blank=True, null=True, db_comment='Activity.')
-    activity2 = models.TextField(choices=ACTIVITIES, blank=True, null=True, db_comment='Activity.')
-    geo_descr = models.TextField(blank=True, null=True)
-    
-    objects = models.Manager().using('backoffice')
-    
-    class Meta:
-        managed = True
-        db_table = 's_landform_topography'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-
-class MonitoringCoarseFragments(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    total_area = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    class1size = models.TextField(choices=SIZES, blank=True, null=True)
-    class2size = models.TextField(choices=SIZES,  blank=True, null=True)
-    class3size = models.TextField(choices=SIZES,  blank=True, null=True)
-    class1area = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    class2area = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    class3area = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    
-    objects = models.Manager().using('backoffice')
-    
-    class Meta:
-        managed = True
-        db_table = 's_coarse_fragments'
-        db_table_comment = 'Report the total percentage of the area that is covered by coarse surface fragments. In addition, report at least one and up to three size classes and report the percentage of the area that is covered by the coarse surface fragments of the respective size class, the dominant one first.\r\nClasses size are in p_coarse_size'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-
-class MonitoringClimateAndWeather(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    clim_koppen = models.TextField(choices=CLIMATE_KOPPEN, blank=True, null=True)
-    eco_shultz = models.TextField(choices=ECOZONE_SHULTZ,   blank=True, null=True)
-    season = models.TextField(choices=SEASON,   blank=True, null=True)
-    curr_weath = models.TextField(choices=CURRENT_WEATHER,  blank=True, null=True)
-    past_weath = models.TextField(choices=PAST_WEATHER,   blank=True, null=True)
-    soil_temp = models.TextField(choices=SOIL_TEMP_REGIME,  blank=True, null=True)
-    soil_moist = models.TextField(choices=SOIL_MOIST_REGIME,   blank=True, null=True)
-    
-    objects = models.Manager().using('backoffice')
-    
-    class Meta:
-        managed = True
-        db_table = 's_climate_weather'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-
-class MonitoringCultivated(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    type = models.TextField(choices=CULTIVATION_TYPE, blank=True, null=True, db_comment='value from p_cultivation_type ')
-    actual1 = models.TextField(blank=True, null=True, db_comment='actual dominant specie')
-    actual2 = models.TextField(blank=True, null=True, db_comment='actual second specie')
-    actual3 = models.TextField(blank=True, null=True, db_comment='actual third specie')
-    cessation = models.DateField(blank=True, null=True, db_comment='editable if last dominant specie is NOT NULL')
-    area = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    prod1_tech = models.TextField(choices=PROD_TECHNIQUES, blank=True, null=True, db_comment='Report the techniques that refer to the surrounding area of the soil monitoring site. If more than one type of technique is present, report in the array up to three, the dominant one first. Value from p_productivity_techniques')
-    prod2_tech = models.TextField(choices=PROD_TECHNIQUES, blank=True, null=True)
-    prod3_tech = models.TextField(choices=PROD_TECHNIQUES, blank=True, null=True)
-    last1 = models.TextField(blank=True, null=True, db_comment="last dominant specie, editable if actual_species1 is NULL")
-    last2 = models.TextField(blank=True, null=True, db_comment="Second last specie, editable if actual_species2 is NULL ")
-    last3 = models.TextField(blank=True, null=True, db_comment="Third last specie, editable if actual_species3 is NULL ")
-    rotation1 = models.TextField(blank=True, null=True, db_comment='Report the dominant specie that have been cultivated in the last five years in rotation with the actual or last species (the first is the most frequent)')
-    rotation2 = models.TextField(blank=True, null=True, db_comment='Report the second specie that have been cultivated in the last five years in rotation with the actual or last species (the first is the mostfrequent)')
-    rotation3 = models.TextField(blank=True, null=True, db_comment='Report the third specie that have been cultivated in the last five years in rotation with the actual or last species (the first is the mostfrequent)')
-    
-    objects = models.Manager().using('backoffice')
-    
-    class Meta:
-        managed = True
-        db_table = 's_cultivated'
-        db_table_comment = 'Report up to three actual cultivated species (in the array "actual_species") using the scientific name. If currently under fallow, report the up to 3 last species (in the array "last_species") and indicate month and year of harvest or of cultivation cessation. Insert the species in the sequence of the area covered starting with the species that covers the largest area. Report the up to 3 species that have been cultivated in the last five years in rotation with the actual or last species (1 is the most frequent) in the array column "rotational_species"'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-     
-class MonitoringLandUse(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    land_use = models.TextField(choices=USES, blank=True, null=True)
-    corine = models.TextField(choices=CORINE, blank=True, null=True)
-    cultivated =  models.OneToOneField(MonitoringCultivated, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='Cultivated Land')
-    
-    objects = models.Manager().using('backoffice')
-
-    class Meta:
-        managed = True
-        db_table = 's_land_use'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-     
-class MonitoringNotCultivated(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    landuse = models.ForeignKey(MonitoringLandUse, on_delete=models.CASCADE, related_name='monitoringnotcultivated_landuse_set')
-    veget1 = models.TextField(choices=VEGETATION_TYPES, blank=True, null=True)
-    veget2 = models.TextField(choices=VEGETATION_TYPES, blank=True, null=True)
-    veget3 = models.TextField(choices=VEGETATION_TYPES, blank=True, null=True)
-    stratum = models.TextField(choices=STRATUM )
-    avg_height = models.DecimalField( max_digits=30, decimal_places=10, blank=True, null=True)
-    max_height = models.DecimalField( max_digits=30, decimal_places=10, blank=True, null=True)
-    area = models.DecimalField( max_digits=30, decimal_places=10, blank=True, null=True)
-    species1 = models.TextField(blank=True, null=True)
-    species2 = models.TextField(blank=True, null=True)
-    species3 = models.TextField(blank=True, null=True)
-
-    objects = models.Manager().using('backoffice')
-
-    class Meta:
-        managed = True
-        db_table = 's_not_cultivated'
-        unique_together = (('stratum', 'landuse'),)
-        db_table_comment = 'For each monitoring  site, compile as many rows as the vegetation strata (STRATA_TYPES) are. Report the average height and the maximum height in m above ground for each stratum separately. Report the vegetation cover. For the upper stratum and the mid-stratum, report the percentage (by area) of the crown cover. For the ground stratum, report the percentage (by area) of the ground cover. Report up to three important species per stratum, e.g., Fagus orientalis. If you do not know the species, report the next higher taxonomic rank. The (maximum 3) species must be insert in the array column species.'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-
-class MonitoringSurface(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    ground_form = models.TextField(choices=GROUND_FORMS, blank=True, null=True, db_comment='Patterned ground form field')
-    tech_alter = models.TextField(choices=TECH_ALTERATIONS, blank=True, null=True)
-    bedr_form = models.TextField(blank=True, null=True)
-    bedr_lith = models.TextField(choices=PARENT_MATERIALS, blank=True, null=True)
-    outc_area = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    outc_dist = models.DecimalField( max_digits=30, decimal_places=10, blank=True, null=True)
-    outc_size = models.DecimalField( max_digits=30, decimal_places=10, blank=True, null=True)
-    ground_wat = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_positive], blank=True, null=True)
-    wat_above = models.TextField(choices=WATER_ABOVE, blank=True, null=True)
-    wat_drain = models.TextField(choices=DRAINAGE_CONDITIONS, blank=True, null=True)
-    wat_repell = models.TextField(choices=WATER_REPELLENCE, blank=True, null=True)
-    desert_ven = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    desert_var = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    
-    objects = models.Manager().using('backoffice')
-    
-    class Meta:
-        managed = True
-        db_table = 's_surface'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-
-class MonitoringSurfaceCracks(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    width1 = models.TextField(choices=WIDTH_TYPES, blank=True, null=True)
-    dist1 = models.TextField(choices=DISTANCE_TYPES, blank=True, null=True)
-    spat_arr1 = models.TextField(choices=ARRANGEMENT, blank=True, null=True)
-    persist1 = models.TextField(choices=PERSISTENCE, blank=True, null=True)
-    width2 = models.TextField(choices=WIDTH_TYPES, blank=True, null=True)
-    dist2 = models.TextField(choices=DISTANCE_TYPES, blank=True, null=True)
-    spat_arr2 = models.TextField(choices=ARRANGEMENT, blank=True, null=True)
-    persist2 = models.TextField(choices=PERSISTENCE, blank=True, null=True)
-    
-    objects = models.Manager().using('backoffice')
-
-    class Meta:
-        managed = True
-        db_table = 's_surface_cracks'
-        db_table_comment = 'For each monitoring  site, compile as many rows as the width classes are. If surface cracks are present, report the average width of the cracks. If the soil surface between cracks of larger width classes is regularly divided by cracks of smaller width classes, report the two width classes.'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-
-class MonitoringLitterLayer(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    avg_thick = models.DecimalField(max_digits=10, decimal_places=2, validators=[validate_percentage], blank=True, null=True)
-    area = models.DecimalField(max_digits=12, decimal_places=6, validators=[validate_positive], blank=True, null=True)
-    max_thick = models.DecimalField(max_digits=12, decimal_places=6, validators=[validate_positive], blank=True, null=True)
-    
-    objects = models.Manager().using('backoffice')
-
-    class Meta:
-        managed = True
-        db_table = 's_litter_layer'
-        db_table_comment = 'Observe an area of 5 m x 5 m with the monitoring  site at its centre. Report the average and the maximum thickness of the litter layer in cm. If there is no litter layer, report 0 cm as thickness.'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
- 
-class MonitoringSurfaceUnevenness(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    position = models.TextField(choices=PROFILE_POSITION, blank=True, null=True)
-    nat_type = models.TextField(choices=NATURAL_TYPE, blank=True, null=True)
-    nat_avg_h = models.DecimalField( max_digits=20, decimal_places=8, validators=[validate_positive], blank=True, null=True)
-    nat_elev = models.DecimalField( max_digits=20, decimal_places=8, validators=[validate_positive], blank=True, null=True)
-    nat_dist = models.DecimalField(max_digits=20, decimal_places=8, validators=[validate_positive], blank=True, null=True)
-    hum_type1 = models.TextField(choices=HUMAN_MADE_TYPE, blank=True, null=True)
-    hum_type2 = models.TextField(choices=HUMAN_MADE_TYPE, blank=True, null=True)
-    hum_ter_h = models.DecimalField( max_digits=12, decimal_places=3, validators=[validate_positive], blank=True, null=True)
-    hum_noter_h = models.DecimalField( max_digits=12, decimal_places=3, validators=[validate_positive], blank=True, null=True)
-    hum_noter_w = models.DecimalField( max_digits=12, decimal_places=3, validators=[validate_positive], blank=True, null=True)
-    hum_noter_d = models.DecimalField( max_digits=12, decimal_places=3, validators=[validate_positive], blank=True, null=True)
-    ero_area = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    ero_type = models.TextField(choices=EROSION_TYPE, blank=True, null=True)
-    ero_degree = models.TextField(choices=EROSION_DEGREE, blank=True, null=True)
-    ero_activ = models.TextField(choices=EROSION_ACTIVITY, blank=True, null=True)
-    
-    objects = models.Manager().using('backoffice')
-
-    class Meta:
-        managed = True
-        db_table = 's_surface_unevenness'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-
-class MonitoringSurfaceCrusts(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    sealing1 = models.TextField(choices=SEALING_AGENT, blank=True, null=True)
-    sealing2 = models.TextField(choices=SEALING_AGENT, blank=True, null=True)
-    sealing3 = models.TextField(choices=SEALING_AGENT, blank=True, null=True)
-    avg_thickn = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    area = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    
-
-    objects = models.Manager().using('backoffice')
-
-    class Meta:
-        managed = True
-        db_table = 's_layer_surface_crusts'
-        db_table_comment = 'A crust is a thin layer of soil constituents bound together into a horizontal mat or into small polygonal plates (see Schoeneberger et al., 2012). Soil crusts develop in the first mineral layer(s) and are formed by a sealing agent of physical, chemical and/or biological origin.'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-
-class MonitoringGeneral(models.Model):
-    id = models.TextField(primary_key=True, db_comment='monitoring site identifier')
-    date = models.DateField(blank=True, null=True, db_comment='date of the description')
-    surveyors = models.TextField(blank=True, null=True, db_comment='surveyors names comma separated')
-    location = models.TextField(blank=True, null=True, db_comment='Name of the monitoring location')
-    lat_wgs84 = models.DecimalField(max_digits=14, decimal_places=8, db_comment='WGS84 Latitude in decimal degree')
-    lon_wgs84 = models.DecimalField(max_digits=14, decimal_places=8, db_comment='WGS84 Longitude in decimal degree')
-    gps = models.BooleanField(blank=True, null=True, db_comment='is a gps acquisition?')
-    elev_m_asl = models.DecimalField( max_digits=30, decimal_places=10, blank=True, null=True, db_comment='Altitude above the sea level in meter')
-    elev_dem = models.DecimalField( max_digits=30, decimal_places=10, blank=True, null=True, db_comment='Altitude in meters retrived from a dem in meter')
-    survey_m = models.TextField(choices=SURVEY_METHODS,  blank=True, null=True, db_comment='The code of the survey method')
-    notes = models.TextField(blank=True, null=True)
-
-    ## s_ploughing = models.TextField( blank=True, null=True, db_comment='')
-    ## d_ploughing = models.TextField( blank=True, null=True, db_comment='')
-    ## tillage = models.TextField( blank=True, null=True, db_comment='')
-    ## use_inputs = models.TextField( blank=True, null=True, db_comment='')
-    ## irrigation = models.TextField( blank=True, null=True, db_comment='')
-    ## conserv_measure = models.TextField( blank=True, null=True, db_comment='')
-    ## worm_casts = models.DecimalField( max_digits=6, decimal_places=0, validators=[validate_positive],db_comment='', blank=True, null=True)
-    ## disturbed0_20 = models.BooleanField(blank=True, null=True, db_comment='')
-    ## disturbed20_50 = models.BooleanField(blank=True, null=True, db_comment='')
-    ## sampler_type = models.TextField( blank=True, null=True, db_comment='')
-    ## indisturbed0_20_1 = models.BooleanField(blank=True, null=True, db_comment='')
-    ## indisturbed0_20_2 = models.BooleanField(blank=True, null=True, db_comment='')
-    ## indisturbed0_20_3 = models.BooleanField(blank=True, null=True, db_comment='')
-    ## indisturbed20_50 = models.BooleanField(blank=True, null=True, db_comment='')
-    
-    cls_sys = models.TextField(choices=CLASSIFICATION_SYSTEMS, blank=True, null=True, db_comment='Classification system')
-    project = models.ForeignKey(Project, on_delete=models.SET_NULL, blank=True, null=True, related_name='monitoringgeneral_project_set', db_comment='Survey/Project identifier')
-    
-    coarsefragments =  models.OneToOneField(MonitoringCoarseFragments, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='Sample -Coarse Fragments')
-    litterlayer =  models.OneToOneField(MonitoringLitterLayer, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='Sample - Litter Layer')
-    landuse =  models.OneToOneField(MonitoringLandUse, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='Sample - Land Use ')
-    surface =  models.OneToOneField(MonitoringSurface, on_delete=models.SET_DEFAULT,default=None, blank=True, null=True, db_comment='Sample - Surface ')
-    surfacecracks =  models.OneToOneField(MonitoringSurfaceCracks, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='Sample - Surface cracks')
-    landformtopography = models.OneToOneField(MonitoringLandformTopography, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='Sample - Landform Topography')
-    climateandweather = models.OneToOneField(MonitoringClimateAndWeather, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='Sample - Climate weather')
-    surfaceunevenness =  models.OneToOneField(MonitoringSurfaceUnevenness, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='Sample - Surface Unevenness')
-    surfacecrusts = models.OneToOneField(MonitoringSurfaceCrusts, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='Sample - Surface Crusts')   
-
-    objects = models.Manager().using('backoffice')
-    
-    class Meta:
-        managed = True
-        db_table = 'monitoring_general'
-        db_table_comment = 'The Soil Monitoring main table'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-
-
-###########################
-# Sample Layer
-###########################
-class MonitoringLayerRemnants(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    abundance = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    cementing1 = models.TextField(choices=CEMENTING_AGENT, blank=True, null=True)
-    cementing2 = models.TextField(choices=CEMENTING_AGENT, blank=True, null=True)
-    size1 = models.TextField(choices=SIZE_SHAPE_TYPES, blank=True, null=True)
-    size2 = models.TextField(choices=SIZE_SHAPE_TYPES, blank=True, null=True)
-    abundance1 = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    abundance2 = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    
-    objects = models.Manager().using('backoffice')
-
-    class Meta:
-        managed = True
-        db_table = 's_layer_remnants'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-
-class MonitoringLayerCoarseFragments(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    litho_type1 = models.TextField(choices=PARENT_MATERIALS, blank=True, null=True)
-    litho_type2 = models.TextField(choices=PARENT_MATERIALS, blank=True, null=True)
-    litho_type3 = models.TextField(choices=PARENT_MATERIALS, blank=True, null=True)
-    litho_type4 = models.TextField(choices=PARENT_MATERIALS, blank=True, null=True)
-    size1 = models.TextField(choices=SIZE_SHAPE_TYPES, blank=True, null=True)
-    size2 = models.TextField(choices=SIZE_SHAPE_TYPES, blank=True, null=True)
-    size3 = models.TextField(choices=SIZE_SHAPE_TYPES, blank=True, null=True)
-    size4 = models.TextField(choices=SIZE_SHAPE_TYPES, blank=True, null=True)
-    weath1 = models.TextField(choices=WEATHERING_STAGE, blank=True, null=True)
-    weath2 = models.TextField(choices=WEATHERING_STAGE, blank=True, null=True)
-    weath3 = models.TextField(choices=WEATHERING_STAGE, blank=True, null=True)
-    weath4 = models.TextField(choices=WEATHERING_STAGE, blank=True, null=True)
-    abundance1 = models.DecimalField(max_digits=6, decimal_places=3, blank=True, null=True, validators=[validate_percentage], db_comment='Report the total percentage of the volume occupied by coarse fragments for class1.')
-    abundance2 = models.DecimalField(max_digits=6, decimal_places=3, blank=True, null=True, validators=[validate_percentage], db_comment='Report the total percentage of the volume occupied by coarse fragments for class2.')
-    abundance3 = models.DecimalField(max_digits=6, decimal_places=3, blank=True, null=True, validators=[validate_percentage], db_comment='Report the total percentage of the volume occupied by coarse fragments for class3.')
-    abundance4 = models.DecimalField(max_digits=6, decimal_places=3, blank=True, null=True, validators=[validate_percentage], db_comment='Report the total percentage of the volume occupied by coarse fragments for class4.')
-    
-    objects = models.Manager().using('backoffice')
-
-    class Meta:
-        managed = True
-        db_table = 's_layer_coarse_fragments'
-        db_table_comment = 'Coarse fragments. A coarse fragment is a mineral particle, derived from the parent material, > 2 mm in its equivalent diameter'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-       
-class MonitoringLayerArtefacts(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    abundance = models.DecimalField( max_digits=30, decimal_places=10, blank=True, null=True, validators=[validate_percentage])
-    black_carb = models.DecimalField( max_digits=30, decimal_places=10, blank=True, null=True, validators=[validate_percentage])
-    type1 = models.TextField(choices=ARTEFACT_TYPES, blank=True, null=True)
-    type2 = models.TextField(choices=ARTEFACT_TYPES, blank=True, null=True)
-    type3 = models.TextField(choices=ARTEFACT_TYPES, blank=True, null=True)
-    type4 = models.TextField(choices=ARTEFACT_TYPES, blank=True, null=True)
-    type5 = models.TextField(choices=ARTEFACT_TYPES, blank=True, null=True)
-    size1 = models.TextField(choices=ARTEFACT_SIZES, blank=True, null=True)
-    size2 = models.TextField(choices=ARTEFACT_SIZES, blank=True, null=True)
-    size3 = models.TextField(choices=ARTEFACT_SIZES, blank=True, null=True)
-    size4 = models.TextField(choices=ARTEFACT_SIZES, blank=True, null=True)
-    size5 = models.TextField(choices=ARTEFACT_SIZES, blank=True, null=True)
-    abundance1 = models.DecimalField(max_digits=6, decimal_places=3, blank=True, null=True, validators=[validate_percentage])
-    abundance2 = models.DecimalField(max_digits=6, decimal_places=3, blank=True, null=True, validators=[validate_percentage])
-    abundance3 = models.DecimalField(max_digits=6, decimal_places=3, blank=True, null=True, validators=[validate_percentage])
-    abundance4 = models.DecimalField(max_digits=6, decimal_places=3, blank=True, null=True, validators=[validate_percentage])
-    abundance5 = models.DecimalField(max_digits=6, decimal_places=3, blank=True, null=True, validators=[validate_percentage])
-    
-    objects = models.Manager().using('backoffice')
-
-    class Meta:
-        managed = True
-        db_table = 's_layer_artefacts'
-        db_table_comment = 'Artefacts are solid or liquid substances that are: created or substantially modified by humans as part of an industrial or artisanal manufacturing process, or brought to the surface by human activity from a depth, where they were not influenced by surface processes, and deposited in an environment, where they do not commonly occur.'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-
-
-    """
-    def clean(self):
-            if self.type1 is not None and self.type1.startswith("l_artefacts."):
-                    raise ValidationError({'type1': ('Wrong classification.')})
-            if self.type2 is not None and self.type2.startswith("l_artefacts."):
-                    raise ValidationError({'type2': ('Wrong classification.')})
-            if self.type3 is not None and self.type3.startswith("l_artefacts."):
-                    raise ValidationError({'type3': ('Wrong classification.')})
-            if self.type4 is not None and self.type4.startswith("l_artefacts."):
-                    raise ValidationError({'type4': ('Wrong classification.')})
-            if self.type5 is not None and self.type5.startswith("l_artefacts."):
-                    raise ValidationError({'type5': ('Wrong classification.')})
-            if self.size_type1 is not None and self.size_type1.startswith("l_artefacts_size."):
-                    raise ValidationError({'size_type1': ('Wrong classification.')})
-            if self.size_type2 is not None and self.size_type2.startswith("l_artefacts_size."):
-                    raise ValidationError({'size_type2': ('Wrong classification.')})
-            if self.size_type3 is not None and self.size_type3.startswith("l_artefacts_size."):
-                    raise ValidationError({'size_type3': ('Wrong classification.')})
-            if self.size_type4 is not None and self.size_type4.startswith("l_artefacts_size."):
-                    raise ValidationError({'size_type4': ('Wrong classification.')})
-            if self.size_type5 is not None and self.size_type5.startswith("l_artefacts_size."):
-                    raise ValidationError({'size_type5': ('Wrong classification.')})         
-    """    
-
-class MonitoringLayerCracks(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    persistenc = models.TextField(choices=CRACKS_PERSISTENCE, blank=True, null=True)
-    continuity = models.TextField(choices=CRACKS_CONTINUITY, blank=True, null=True)
-    avg_width = models.DecimalField(max_digits=16, decimal_places=2, validators=[validate_positive], blank=True, null=True)
-    abundance = models.PositiveIntegerField(blank=True, null=True)
-    
-    objects = models.Manager().using('backoffice')
-
-    class Meta:
-        managed = True
-        db_table = 's_layer_cracks'
-        db_table_comment = 'Report persistence and continuity'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-   
-class MonitoringLayerStressFeatures(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    pressfaces = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='Pressure faces in % of the surfaces of soil aggregates')
-    slicksides = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='Slickensides in % of the surfaces of soil aggregates.')
-    
-    objects = models.Manager().using('backoffice')
-
-    class Meta:
-        managed = True
-        db_table = 's_layer_stress_features'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-
-        db_table_comment = 'Stress features result from soil aggregates that are pressed against each other due to swelling clays. The aggregate surfaces may be shiny. There are two types: Pressure faces do not slide past each other and have no striations, slickensides slide past each other and have striations.'
-
-class MonitoringLayerMatrixColours(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    munsell_m1 = models.TextField(blank=True, null=True)
-    munsell_d1 = models.TextField(blank=True, null=True)
-    area1 = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    munsell_m2 = models.TextField(blank=True, null=True)
-    munsell_d2 = models.TextField(blank=True, null=True)
-    area2 = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    munsell_m3 = models.TextField(blank=True, null=True)
-    munsell_d3 = models.TextField(blank=True, null=True)
-    area3 = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    
-    objects = models.Manager().using('backoffice')
-
-    class Meta:
-        managed = True
-        db_table = 's_layer_matrix_colour'
-        db_table_comment = 'Report the colour of the soil matrix. If there is more than one matrix colour, report up to three, the dominant one first, and give the percentage of the exposed area'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-
-class MonitoringLayerCoarserTextured(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    coars_text = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='the percentage (by exposed area) occupied by coarser-textured parts of any orientation (vertical, horizontal, inclined) having a width of ≥ 0.5 cm')
-    v_tongues = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='the percentage (by exposed area) occupied by continuous vertical tongues of coarser-textured parts with a horizontal extension of ≥ 1 cm (if these tongues are absent, report 0%)')
-    depth = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='the depth range in cm, where these tongues cover ≥ 10% of the exposed area (if they extend across several layers, the length is only reported in the description of that layer, where they start at the layer’s upper limit).')
-    h_area = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='In the middle of the layer, prepare a horizontal surface, 50 cm x 50 cm, and report the percentage (by horizontal area covered) of the coarser-textured parts.')
-    
-    objects = models.Manager().using('backoffice')
-
-    class Meta:
-        managed = True
-        db_table = 's_layer_coarser_textured'
-        db_table_comment = 'If a layer consists of darker-coloured finer-textured and lighter-coloured coarser-textured parts that do not form horizontal layers but can easily be distinguished, describe them separately'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-
-class MonitoringLayerLithogenicVariegates(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier') 
-    munsell_m1 = models.TextField(blank=True, null=True)
-    size1 = models.TextField(choices=LITHOGENIC_SIZES, blank=True, null=True)
-    area1 = models.DecimalField(max_digits=6 , decimal_places=2 , validators=[validate_percentage],  blank=True, null=True)
-    munsell_m2 = models.TextField(blank=True, null=True)
-    size2 = models.TextField(choices=LITHOGENIC_SIZES, blank=True, null=True)
-    area2 = models.DecimalField(max_digits=6 , decimal_places=2 , validators=[validate_percentage],  blank=True, null=True)
-    munsell_m3 = models.TextField(blank=True, null=True)
-    size3 = models.TextField(choices=LITHOGENIC_SIZES, blank=True, null=True)
-    area3 = models.DecimalField(max_digits=6 , decimal_places=2 , validators=[validate_percentage],  blank=True, null=True)
-    
-    objects = models.Manager().using('backoffice')
-
-    class Meta:
-        managed = True
-        db_table = 's_layer_lithogenic_variegates'
-        db_table_comment = 'Report colour, size class, and abundance. If more than one colour occurs, report up to three, the dominant one first, and give size class and abundance for each colour separately.'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-          
-class MonitoringLayerRedoximorphicFeatures(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    oxi_inner = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    oxi_outer = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    oxi_random = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    red_inner = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    red_outer = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    red_random = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    abund_oxi = models.DecimalField(max_digits=12, decimal_places=4, validators=[validate_percentage], db_comment='Abundance of cemented oximorphic features, by volume [%]')
-    
-    #redoximorphic_colour_redoximorphic_features_set from LayerRedoximorphicColour
-    
-    objects = models.Manager().using('backoffice')
-
-    class Meta:
-        managed = True
-        db_table = 's_layer_redoximorphic'
-        db_table_comment = ''
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-
-class MonitoringLayerRedoximorphicColour(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    features = models.ForeignKey(MonitoringLayerRedoximorphicFeatures, on_delete=models.CASCADE, related_name='monitoringlayerredoximorphiccolour_features_set', db_comment='LayerRedoximorphicFeatures')  
-    colour_nr = models.SmallIntegerField(validators=[validate_positive], db_comment='layer redoximorphic colour number')
-    munsell_m = models.TextField(blank=True, null=True)
-    munsell_d = models.TextField(blank=True, null=True)
-    substance = models.TextField(choices=REDOXIMORPHIC_SUBSTANCES, blank=True, null=True)
-    location = models.TextField(choices=REDOXIMORPHIC_LOCATIONS,blank=True, null=True)
-    size1 = models.TextField(choices=OXIMORPHIC_SIZES,blank=True, null=True)
-    size2 = models.TextField(choices=OXIMORPHIC_SIZES,blank=True, null=True)
-    mottles_c = models.TextField(choices=MOTTLES_CONTRAST,blank=True, null=True)
-    mottles_b = models.TextField(choices=MOTTLES_BOUNDARY_TYPES,blank=True, null=True)
-    cement = models.TextField(choices=OXIMORPHIC_CEMENTATION,blank=True, null=True)
-    area = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    
-    objects = models.Manager().using('backoffice')
-
-    class Meta:
-        managed = True
-        db_table = 's_layer_redoximorphic_colour'
-        db_table_comment = 'Report the colour according to the Munsell Color Charts'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-  
-class MonitoringLayerCoatingsBridges(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    clay_coat = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='Abundance of clay coatings in percentage')
-    form_coat = models.TextField(choices=FORM_COATINGS, blank=True, null=True, db_comment='refer to clay coatings')
-    org_coat = models.TextField(choices=ORGANIC_COATINGS, blank=True, null=True, db_comment='Organic matter coatings and oxide coatings on sand and/or coarse silt grains')
-    crack_coat = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='Abundance of cracked coatings in percentage')
-    clay_bridg = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='Abundance of clay bridges in percentage')
-    form_bridg = models.TextField(choices=FORM_COATINGS, blank=True, null=True, db_comment='refer to clay bridge')
-    form_org = models.TextField(choices=FORM_COATINGS, blank=True, null=True, db_comment='refer to organic matter coatings and oxide coatings (report only if matrix colour value ≤ 3)')
-    sand_silt = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='Abundance of uncoated sand and coarse silt grains in percentage')
-    
-    objects = models.Manager().using('backoffice')
-
-    class Meta:
-        managed = True
-        db_table = 's_layer_coatings_bridges'
-        db_table_comment = 'Report the abundance of clay coatings in % of the surfaces of soil aggregates, coarse fragments and/or biopore walls clay bridges between sand grains in % of involved sand grains.'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-                  
-class MonitoringLayerRibbonlikeAccumulations(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    substances = models.TextField(choices=RIBBONLIKE_SUBSTANCES, blank=True, null=True)
-    number = models.IntegerField(blank=True, null=True)
-    comb_thick = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_positive], blank=True, null=True, db_comment='If there are 2 or more ribbon-like accumulations in one layer, report the number of the accumulations and their combined thickness in cm')
-    
-    objects = models.Manager().using('backoffice')
-
-    class Meta:
-        managed = True
-        db_table = 's_layer_ribbonlike_accumulations'
-        db_table_comment = 'Ribbon-like accumulations are thin, horizontally continuous accumulations within the matrix of another layer. Report the accumulated substance(s).'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-           
-class MonitoringLayerCarbonates(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    matr_c = models.TextField(choices=CARBONATE_CONTENTS, blank=True, null=True)
-    matr_c_ret = models.TextField(choices=RETARDED_REACTION, blank=True, null=True)
-    sec_type1 = models.TextField(choices=SECONDARY_CARBONATE_TYPES, blank=True, null=True)
-    sec_type2 = models.TextField(choices=SECONDARY_CARBONATE_TYPES, blank=True, null=True)
-    sec_type3 = models.TextField(choices=SECONDARY_CARBONATE_TYPES, blank=True, null=True)
-    sec_type4 = models.TextField(choices=SECONDARY_CARBONATE_TYPES, blank=True, null=True)
-    sec_size1 = models.TextField(choices=MINERAL_SIZES, blank=True, null=True)
-    sec_size2 = models.TextField(choices=MINERAL_SIZES, blank=True, null=True)
-    sec_size3 = models.TextField(choices=MINERAL_SIZES, blank=True, null=True)
-    sec_size4 = models.TextField(choices=MINERAL_SIZES, blank=True, null=True)
-    sec_shape1 = models.TextField(choices=MINERAL_SHAPES, blank=True, null=True)
-    sec_shape2 = models.TextField(choices=MINERAL_SHAPES, blank=True, null=True)
-    sec_shape3 = models.TextField(choices=MINERAL_SHAPES, blank=True, null=True)
-    sec_shape4 = models.TextField(choices=MINERAL_SHAPES, blank=True, null=True)
-    sec_abund1 = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    sec_abund2 = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    sec_abund3 = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    sec_abund4 = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    
-    objects = models.Manager().using('backoffice')
-
-    class Meta:
-        managed = True
-        db_table = 's_layer_carbonates'
-        db_table_comment = 'Layer Carbonates'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-
-class MonitoringLayerGypsum(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    content = models.TextField(choices=GYPSUM_CONTENT_TYPES, blank=True, null=True)
-    sec_gypsum = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    sgypsum1 = models.TextField(choices=SGYPSUM_TYPES, blank=True, null=True)
-    sgypsum2 = models.TextField(choices=SGYPSUM_TYPES, blank=True, null=True)
-    type1_size = models.TextField(choices=MINERAL_SIZES, blank=True, null=True)
-    type2_size = models.TextField(choices=MINERAL_SIZES, blank=True, null=True)
-    type1_shape = models.TextField(choices=MINERAL_SHAPES, blank=True, null=True)
-    type2_shape = models.TextField(choices=MINERAL_SHAPES, blank=True, null=True)
-    
-    objects = models.Manager().using('backoffice')
-
-    class Meta:
-        managed = True
-        db_table = 's_layer_gypsum'
-        db_table_comment = 'Report the gypsum content in the soil matrix. If readily soluble salts are absent or present in small amounts only, gypsum can be estimated by measuring the electrical conductivity in soil suspensions of different soil-water relations after 30 minutes (in the case of fine-grained gypsum). This method detects primary and secondary gypsum. Note: Higher gypsum contents may be differentiated by abundance of H2O-soluble pseudomycelia/crystals and a soil colour with high value and low chroma'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-
-class MonitoringLayerSecondarySilica(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    type1 = models.TextField(choices=SECONDARY_SILICA_TYPES, blank=True, null=True, db_comment='Report the type of secondary silica, type1 is dominant')
-    type2 = models.TextField(choices=SECONDARY_SILICA_TYPES, blank=True, null=True, db_comment='Report the type of secondary silica')
-    dnfcsize1 = models.TextField(choices=DNFC_SIZES, blank=True, null=True, db_comment='If a layer shows durinodes and/or remnants of a layer that has been cemented by secondary silica, report their size class for type1')
-    dnfcsize2 = models.TextField(choices=DNFC_SIZES, blank=True, null=True, db_comment='If a layer shows durinodes and/or remnants of a layer that has been cemented by secondary silica, report their size class for type2')
-    abund = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='Report the total percentage (by exposed area) of secondary silica')
-    abund_dnfc = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='If a layer shows durinodes and/or remnants of a cemented layer, report in addition the percentage (by volume) of those durinodes and remnants that have a diameter ≥ 1 cm')
-    
-    objects = models.Manager().using('backoffice')
-
-    class Meta:
-        managed = True
-        db_table = 's_layer_secondary_silica'
-        db_table_comment = 'Secondary silica (SiO2) is off-white and predominantly consisting of opal and microcrystalline forms. It occurs as laminar caps, lenses, (partly) filled interstices, bridges between sand grains, and as coatings at surfaces of soil aggregates, biopore walls, coarse fragments, and remnants of broken-up cemented layers. Report the type of secondary silica. If more than one type occurs, report up to two, the dominant one first.'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-
-class MonitoringLayerConsistence(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    cement = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='Report the percentage (by volume, related to the whole soil) of the layer that is cemented.')
-    cement_ag1 = models.TextField(choices=CEMENTING_AGENTS, blank=True, null=True, db_comment='Report the cementing agents')
-    cement_ag2 = models.TextField(choices=CEMENTING_AGENTS, blank=True, null=True)
-    cement_ag3 = models.TextField(choices=CEMENTING_AGENTS, blank=True, null=True)
-    cement_cls = models.TextField(choices=CEMENTATION_CLASSES, blank=True, null=True)
-    rrclass_m = models.TextField(choices=RRCLASSES_MOIST, blank=True, null=True, db_comment='Rupture resistance, non-cemented soil moist')
-    rrclass_d = models.TextField(choices=RRCLASSES_DRY, blank=True, null=True, db_comment='Rupture resistance, non-cemented soil dry')
-    susceptib = models.TextField(choices=SUSCEPTIBILITY, blank=True, null=True, db_comment='Some layers are prone to cementation after repeated drying and wetting. Report the susceptibility')
-    m_failure = models.TextField(choices=MANNER_FAILURE, blank=True, null=True, db_comment='Report the manner of failure (brittleness)')
-    plastic = models.TextField(choices=PLASTICITY, blank=True, null=True, db_comment='Plasticity is the degree to which reworked soil can be permanently deformed without rupturing')
-    penet_res = models.DecimalField( max_digits=30, decimal_places=10, blank=True, null=True)
-    stickiness = models.TextField(choices=STICKINESS, blank=True, null=True)
-    
-    objects = models.Manager().using('backoffice')
-
-    class Meta:
-        managed = True
-        db_table = 's_layer_consistence'
-        db_table_comment = 'Consistence is the degree and kind of cohesion and adhesion that soil exhibits. Consistence is reported separately for cemented and non-cemented (parts of) layers. If a specimen of soil does not fall into pieces by applying low forces, one has to check, whether it is cemented'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-
-class MonitoringLayerPermafrostFeatures(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    cry_alter1 = models.TextField(choices=CRYOGENIC_ALTERATION, blank=True, null=True)
-    cry_alter2 = models.TextField(choices=CRYOGENIC_ALTERATION, blank=True, null=True)
-    cry_alter3 = models.TextField(choices=CRYOGENIC_ALTERATION, blank=True, null=True)
-    permafrost = models.TextField(choices=PERMAFROST_TYPE, blank=True, null=True)
-    cry_abund1 = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    cry_abund2 = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    cry_abund3 = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    
-    objects = models.Manager().using('backoffice')
-
-    class Meta:
-        managed = True
-        db_table = 's_layer_permafrost_features'
-        db_table_comment = 'Estimate the total percentage (by exposed area, related to the whole soil) affected by cryogenic alteration. Report up to three features, the dominant one first, and report the percentage for each feature separately.'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-
-class MonitoringLayerOrganicCarbon(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    contentmin = models.DecimalField( max_digits=30, decimal_places=10, blank=True, null=True)
-    contentmax = models.DecimalField( max_digits=30, decimal_places=10, blank=True, null=True)
-    nat_accum1 = models.TextField(choices=ACCUMULATION_TYPES, blank=True, null=True)
-    nat_accum2 = models.TextField(choices=ACCUMULATION_TYPES, blank=True, null=True)
-    nat_accum3 = models.TextField(choices=ACCUMULATION_TYPES, blank=True, null=True)
-    abundance1 = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    abundance2 = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    abundance3 = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    black_carb = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    
-    objects = models.Manager().using('backoffice')
-
-    class Meta:
-        managed = True
-        db_table = 's_layer_organic_carbon'
-        db_table_comment = 'Report the estimated organic carbon content. It is based on the Munsell value, moist, and the texture'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
- 
-class MonitoringLayerRoots(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    a_lt2mm = models.TextField(choices=ROOT_ABUNDANCE_CLASSES, blank=True, null=True, db_comment='diameter <= 2mm')
-    a_lt05mm = models.TextField(choices=ROOT_ABUNDANCE_CLASSES, blank=True, null=True, db_comment='diameter < 0,5mm')
-    a_05to2mm = models.TextField(choices=ROOT_ABUNDANCE_CLASSES, blank=True, null=True, db_comment='diameter from 0.5 to 2 mm')
-    a_gt2mm = models.TextField(choices=ROOT_ABUNDANCE_CLASSES, blank=True, null=True, db_comment='diameter > 2mm')
-    a_2to5mm = models.TextField(choices=ROOT_ABUNDANCE_CLASSES, blank=True, null=True, db_comment='diameter from 2 to 5 mm')
-    a_gt5mm = models.TextField(choices=ROOT_ABUNDANCE_CLASSES, blank=True, null=True, db_comment='diameter > 5mm')
-    
-    objects = models.Manager().using('backoffice')
-
-    class Meta:
-        managed = True
-        db_table = 's_layer_roots'
-        db_table_comment = 'Count the number of roots per dm2, separately for the six diameter classes, and report the abundance classes'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-
-class MonitoringLayerAnimalActivity(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    type1 = models.TextField(choices=ANIMAL_ACTIVITY_TYPES, blank=True, null=True)
-    type2 = models.TextField(choices=ANIMAL_ACTIVITY_TYPES, blank=True, null=True)
-    type3 = models.TextField(choices=ANIMAL_ACTIVITY_TYPES, blank=True, null=True)
-    type4 = models.TextField(choices=ANIMAL_ACTIVITY_TYPES, blank=True, null=True)
-    type5 = models.TextField(choices=ANIMAL_ACTIVITY_TYPES, blank=True, null=True)
-    mammal = models.DecimalField( max_digits=30, decimal_places=10, blank=True, null=True, validators=[validate_percentage])
-    bird = models.DecimalField( max_digits=30, decimal_places=10, blank=True, null=True, validators=[validate_percentage])
-    worm = models.DecimalField( max_digits=30, decimal_places=10, blank=True, null=True, validators=[validate_percentage])
-    insect = models.DecimalField( max_digits=30, decimal_places=10, blank=True, null=True, validators=[validate_percentage])
-    unspecify = models.DecimalField( max_digits=30, decimal_places=10, blank=True, null=True, validators=[validate_percentage])
-    
-    objects = models.Manager().using('backoffice')
-
-    class Meta:
-        managed = True
-        db_table = 's_layer_animal_activity'
-        db_table_comment = 'Report the animal activity that has visibly changed the features of the layer. If applicable, report up to 5 types, the dominant one first. Report the percentage (by exposed area), separately for mammal activity, bird activity, worm activity, insect activity and unspecified activity'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-
-class MonitoringLayerHumanAlterations(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    nat_mat1 =models.TextField(choices=NATURAL_MATERIAL_TYPES, blank=True, null=True)
-    nat_mat2 = models.TextField(choices=NATURAL_MATERIAL_TYPES, blank=True, null=True)
-    nat_mat3 = models.TextField(choices=NATURAL_MATERIAL_TYPES, blank=True, null=True)
-    abundance1 = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    abundance2 = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    abundance3 = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    texture = models.TextField(choices=TEXTURE_CLASSES, blank=True, null=True)
-    carbonate = models.TextField(choices=SECONDARY_CARBONATE_TYPES, blank=True, null=True)
-    carbon = models.DecimalField( max_digits=30, decimal_places=10, blank=True, null=True)
-    alter1 = models.TextField(choices=ALTERATIONS_TYPES,  blank=True, null=True)
-    alter2 = models.TextField(choices=ALTERATIONS_TYPES, blank=True, null=True)
-    aggregate = models.TextField(choices=AGGREGATE_FORMATION, blank=True, null=True)
-    
-    objects = models.Manager().using('backoffice')
-
-    class Meta:
-        managed = True
-        db_table = 's_layer_human_alterations'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-
-class MonitoringLayerDegreeDecomposition(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    vis_plant = models.DecimalField( max_digits=30, decimal_places=10, blank=True, null=True, validators=[validate_percentage])
-    sbdiv_horz = models.TextField(choices=SUBDVISION_HORIZON, blank=True, null=True)
-    plant_res1 = models.TextField(choices=DEAD_PLANT_TYPES, blank=True, null=True)
-    plant_res2 = models.TextField(choices=DEAD_PLANT_TYPES, blank=True, null=True)
-    abundance1 = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    abundance2 = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    
-    objects = models.Manager().using('backoffice')
-
-    class Meta:
-        managed = True
-        db_table = 's_layer_degree_decomposition'
-        db_table_comment = 'Refer to the transformation of visible plant tissues into visibly homogeneous organic matter.'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-
-class MonitoringLayerNonMatrixPore(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    type1 = models.TextField(choices=NONMATRIX_PORES_TYPES, blank=True, null=True)
-    size1 = models.TextField(choices=PORE_SIZES, blank=True, null=True)
-    abund1 = models.TextField(choices=PORE_ABUNDANCE, blank=True, null=True)
-    type2 = models.TextField(choices=NONMATRIX_PORES_TYPES, blank=True, null=True)
-    size2 = models.TextField(choices=PORE_SIZES, blank=True, null=True)
-    abund2 = models.TextField(choices=PORE_ABUNDANCE, blank=True, null=True)
-    type3 = models.TextField(choices=NONMATRIX_PORES_TYPES, blank=True, null=True)
-    size3 = models.TextField(choices=PORE_SIZES, blank=True, null=True)
-    abund3 = models.TextField(choices=PORE_ABUNDANCE, blank=True, null=True)
-    type4 = models.TextField(choices=NONMATRIX_PORES_TYPES, blank=True, null=True)
-    size4 = models.TextField(choices=PORE_SIZES, blank=True, null=True)
-    abund4 = models.TextField(choices=PORE_ABUNDANCE, blank=True, null=True)
-    
-    objects = models.Manager().using('backoffice')
-
-    class Meta:
-        managed = True
-        db_table = 's_layer_nonmatrix_pore'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-
-class MonitoringLayer(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    site = models.ForeignKey(MonitoringGeneral, on_delete=models.CASCADE, related_name='monitoringlayer_site_set', db_comment='Foreign Key field: site') 
-    design = models.TextField(db_comment='layer horizon designation')
-    number = models.SmallIntegerField(validators=[validate_positive], db_comment='layer order in monitoring site')
-    upper = models.DecimalField(max_digits=12, decimal_places=2, validators=[validate_positive], db_comment='upper depth in cm',blank=True, null=True)
-    lower = models.DecimalField(max_digits=12, decimal_places=2, validators=[validate_positive], db_comment='lower depth in cm',blank=True, null=True)
-    lower_bound = models.TextField(db_comment='layer lower boundary', blank=True, null=True )
-    hom_part = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='Described parts, by exposed area [%]')
-    hom_alluvt = models.TextField(choices=ALLUVIAL_TEPHRA, blank=True, null=True, db_comment='Layer composed of several strata of alluvial sediments or of tephra')
-    wat_satur = models.TextField(choices=WATER_SATURATION, blank=True, null=True, db_comment='Types of water saturation')
-    wat_status = models.TextField(choices=WATER_STATUS, blank=True, null=True, db_comment='Soil water status')
-    o_mineral =  models.TextField(choices=ORGANIC_MINERAL_TYPES, blank=True, null=True, db_comment='organic, organotechnic or mineral layer')
-    bounddist = models.TextField(choices=BOUNDARIES, blank=True, null=True, db_comment="Distinctness of the layer's lower boundary")
-    boundshape = models.TextField(choices=SHAPE_TYPES, blank=True, null=True)
-    wind = models.TextField(choices=WIND, blank=True, null=True, db_comment='Wind deposition')
-    tex_cls = models.TextField(choices=TEXTURE_CLASSES, blank=True, null=True, db_comment='Texture class') 
-    tex_subcls = models.TextField(choices=TEXTURE_SUBCLASSES, blank=True, null=True, db_comment='Texture subclass')
-    struct_w_s = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='Structure Wedge-shaped aggregates tilted between ≥ 10° and ≤ 60° from the horizontal: abundance, by volume [%]')
-    rh_value = models.TextField(choices=RH_VALUE, blank=True, null=True, db_comment='Rh Value')
-    weathering = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='Initial weathering abundance')
-    sol_salts = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='ECSE [dS m-1m-1]')
-    ph_value = models.DecimalField( max_digits=30, decimal_places=10, blank=True, null=True, db_comment='Potentiometric pH measurement - Measured value')
-    ph_solution = models.TextField(choices=POTENZIOMETRIC_MEASURES, blank=True, null=True, db_comment='Potentiometric pH measurement - Solution and mixing ratio')
-    fracts = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    avg_fracts = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    volc_abund = models.TextField(choices=ABUNDANCE_PARTICLES_TYPES, blank=True, null=True)
-    volc_thnaf = models.TextField(choices=THIXOTROPY_NAF, blank=True, null=True)
-    bulk_dens = models.DecimalField( max_digits=30, decimal_places=10, blank=True, null=True)
-    pack_dens = models.TextField(choices=PACKING_DENSITIES, blank=True, null=True, db_comment='Estimate the packing density using a knife with a blade approx. 10 cm long')
-    parent_mat = models.TextField(choices=PARENT_MATERIALS, blank=True, null=True, db_comment='Report the parent material. Use the help of a geological map.')
-    note = models.TextField(blank=True, null=True)
-
-    remnants = models.OneToOneField(MonitoringLayerRemnants, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='Remnants of broken-up cemented layers')
-    coarsefragments = models.OneToOneField(MonitoringLayerCoarseFragments, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='Coarse fragments')
-    artefacts = models.OneToOneField(MonitoringLayerArtefacts, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='Artefacts')
-    cracks = models.OneToOneField(MonitoringLayerCracks, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='Cracks')
-    stressfeatures = models.OneToOneField(MonitoringLayerStressFeatures, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='Stress Features')
-    coatingsbridges = models.OneToOneField(MonitoringLayerCoatingsBridges, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='LayerCoatingsBridges')
-    ribbonlikeaccumulations = models.OneToOneField(MonitoringLayerRibbonlikeAccumulations, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='LayerRibbonlikeAccumulations')
-    carbonates = models.OneToOneField(MonitoringLayerCarbonates, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='Section Layer Carbonates')
-    gypsum = models.OneToOneField(MonitoringLayerGypsum, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='LayerGypsum')
-    secondarysilica = models.OneToOneField(MonitoringLayerSecondarySilica, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='LayerSecondarySilica')
-    consistence = models.OneToOneField(MonitoringLayerConsistence, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='LayerConsistence')
-    permafrost =  models.OneToOneField(MonitoringLayerPermafrostFeatures, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='LayerPermafrostFeatures')   
-    organiccarbon =  models.OneToOneField(MonitoringLayerOrganicCarbon, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='LayerOrganicCarbon')   
-    roots =  models.OneToOneField(MonitoringLayerRoots, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='LayerRoots')   
-    animalactivity  =  models.OneToOneField(MonitoringLayerAnimalActivity, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='LayerAnimalActivity')   
-    humanalterations =  models.OneToOneField(MonitoringLayerHumanAlterations, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='LayerHumanAlterations')   
-    degreedecomposition =  models.OneToOneField(MonitoringLayerDegreeDecomposition, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='LayerDegreeDecomposition')   
-    nonmatrixpore = models.OneToOneField(MonitoringLayerNonMatrixPore, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='LayerNonMatrixPore')   
-    matrixcolours = models.OneToOneField(MonitoringLayerMatrixColours, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='Matrix colour')   
-    texturecolour = models.OneToOneField(MonitoringLayerCoarserTextured, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='Combinations of darker-coloured finer-textured and lighter-coloured coarser-textured parts')
-    lithogenicvariegates = models.OneToOneField(MonitoringLayerLithogenicVariegates, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='LayerLithogenicVariegates')
-    redoximorphicfeatures = models.OneToOneField(MonitoringLayerRedoximorphicFeatures, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='LayerRedoximorphicFeatures')
-    
-    ## layerstructure_layer_set LayerStructure
-
-    def _get_thickness(self):
-        if self.lower and self.upper: 
-            return self.lower - self.upper
-        else: return None
-    thickness = property(_get_thickness)   
-    
-    objects = models.Manager().using('backoffice')
-    
-    class Meta:
-        managed = True
-        db_table = 's_layer'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-
-class MonitoringLayerStructure(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')  
-    layer = models.ForeignKey(MonitoringLayer, on_delete=models.CASCADE, related_name='monitoringlayerstructure_layer_set', db_comment='Sample Layer' )
-    level = models.TextField(choices=STRUCTURE_LEVELS, blank=True, null=True)
-    type = models.TextField(choices=STRUCTURE_TYPES, blank=True, null=True)
-    grade = models.TextField(choices=STRUCTURE_GRADES, blank=True, null=True)
-    penetrab = models.TextField(choices=AGGREGATE_PENETRABILITY, blank=True, null=True)
-    size1 = models.TextField(choices=AGGREGATE_SIZES, blank=True, null=True)
-    size2 = models.TextField(choices=AGGREGATE_SIZES, blank=True, null=True)
-    abundance_vol = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    abundance1 = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    abundance2 = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    
-    objects = models.Manager().using('backoffice')
-
-    class Meta:
-        managed = True
-        db_table = 's_layer_structure_types'
-        unique_together = (('layer', 'level'),)
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-
-#########################################
-## Monitoring Lab Data 
-#########################################
-
-class MonitoringLabData(models.Model):
-    id = models.TextField(primary_key=True, db_comment='identifier')
-    site = models.ForeignKey(MonitoringGeneral, on_delete=models.CASCADE, related_name='monitoringlabdata_site_set', db_comment='Foreign Key field: monitoring site') 
-    upper = models.DecimalField(max_digits=12, decimal_places=2, validators=[validate_positive], db_comment='upper depth in cm',blank=True, null=True)
-    lower = models.DecimalField(max_digits=12, decimal_places=2, validators=[validate_positive], db_comment='lower depth in cm',blank=True, null=True)
-    gravel = models.DecimalField(max_digits=40, decimal_places=6, validators=[validate_percentage],  db_comment='Gravel content (%)' , blank=True, null=True)
-    cls_sys =  models.TextField(choices=CLASSIFICATION_SYSTEMS, db_comment='Classification system used for texture of fine earth', blank=True, null=True)
-    texture = models.TextField(choices=TEXTURE_CLASSES, db_comment='texture class', blank=True, null=True)      
-    sand = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], db_comment='Sand  (percentage of the fine earth)', blank=True, null=True)
-    v_c_sand = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage],db_comment='Very coarse sand (percentage of the fine earth)', blank=True, null=True)
-    c_sand = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage],db_comment='Coarse sand (percentage of the fine earth)', blank=True, null=True)
-    m_sand = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage],db_comment='Medium sand (percentage of the fine earth)', blank=True, null=True)
-    f_sand = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage],db_comment='Fine sand (percentage of the fine earth)', blank=True, null=True)
-    v_f_sand  = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], db_comment='Very Fine sand (percentage of the fine earth)', blank=True, null=True)
-    met_sand = models.TextField(choices=SAND_CONTENT_METHODS, blank=True, null=True)
-    silt = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], db_comment='Silt (percentage of the fine earth)', blank=True, null=True)
-    c_silt = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], db_comment='Coarse silt (percentage of the fine earth)', blank=True, null=True)
-    f_silt = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], db_comment='Fine silt  (percentage of the fine earth)', blank=True, null=True)
-    met_silt = models.TextField(choices=SILT_CLAY_CONTENT_METHODS,  blank=True, null=True)
-    clay = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Clay  (percentage of the fine earth)', blank=True, null=True)
-    met_clay = models.TextField(choices=SILT_CLAY_CONTENT_METHODS, blank=True, null=True)
-    bulk_dens = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Bulk density (g/cm3)'	, blank=True, null=True)
-    el_cond = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Electric conductivity (dS/m)', blank=True, null=True)
-    met_el_cond = models.TextField(choices=EL_CONDUCTIVITY_PH_METHODS, db_comment='Method used for Electric conductivity', blank=True, null=True)
-    hy_cond = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Hydraulic conductivity at saturation (mm/h)', blank=True, null=True)
-    met_hy_cond = models.TextField(choices=HIDRAULIC_CONDUCTIVITY_METHODS, db_comment='Method used for Hydraulic conductivity at saturation', blank=True, null=True)
-    satur = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Saturation (percentage)', blank=True, null=True)
-    field_cap = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Field capacity (percentage)', blank=True, null=True)
-    wilting_p = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Wilting point (percentage)', blank=True, null=True)
-    met_s_f_w = models.TextField(choices=WILTING_POINT_METHODS, db_comment='Method used for saturation, field capacity, wilting point', blank=True, null=True)
-    acidity = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Soil acidity: Exchangeable Al (meq/100g)', blank=True, null=True)
-    met_acidity = models.TextField(db_comment='Method used for Soil acidity: Exchangeable Al (meq/100g)', blank=True, null=True)
-    ph_h2o = models.DecimalField( max_digits=30, decimal_places=10, db_comment='pH (H2O)', blank=True, null=True)
-    met_ph_h20 = models.TextField(choices=EL_CONDUCTIVITY_PH_METHODS, db_comment='Method used for pH (H2O)', blank=True, null=True)
-    ph_kcl = models.DecimalField( max_digits=30, decimal_places=10, db_comment='pH (KCl)', blank=True, null=True)
-    met_ph_kcl = models.TextField(choices=EL_CONDUCTIVITY_PH_METHODS, db_comment='Method used for pH (KCl)', blank=True, null=True)
-    ph_ccl = models.DecimalField( max_digits=30, decimal_places=10, db_comment='pH (CaCl2)', blank=True, null=True)
-    met_ph_ccl = models.TextField(choices=EL_CONDUCTIVITY_PH_METHODS, db_comment='Method used for pH (CaCl2)',  blank=True, null=True)
-    org_car = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Organic Carbon content (g/kg)', blank=True, null=True)
-    met_org_car = models.TextField( choices=ORGANIC_CARBON_METHODS, db_comment='Method used for Organic Carbon content', blank=True, null=True)
-    org_mat = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Organic matter content (percentage)', blank=True, null=True)
-    met_org_mat = models.TextField(choices=ORGANIC_MATTER_CONTENT_METHODS, db_comment='Method used for organic matter content', blank=True, null=True)
-    caco3 = models.DecimalField( max_digits=30, decimal_places=10, db_comment='CaCO3 content (percentage)', blank=True, null=True)
-    met_caco3 = models.TextField(choices=CACO3_CONTENT_METHODS, db_comment='Method used CaCO3 content',  blank=True, null=True)
-    gypsum = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Gypsum content (percentage)', blank=True, null=True)
-    met_gypsum = models.TextField(choices=GYPSUM_CONTENT_METHODS, db_comment='Method used for Gypsum content',  blank=True, null=True)
-    cec = models.DecimalField( max_digits=30, decimal_places=10, db_comment='CEC (cmol/Kg)', blank=True, null=True)
-    met_cec = models.TextField(choices=CEC_CA_MG_NA_K_METHODS, db_comment='Method used for CEC',  blank=True, null=True)
-    ca = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Ca++ (cmol/Kg)', blank=True, null=True)
-    met_ca = models.TextField(choices=CEC_CA_MG_NA_K_METHODS, db_comment='Method used for Ca++', blank=True, null=True)
-    mg = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Mg++ (cmol/Kg)', blank=True, null=True)
-    met_mg = models.TextField(choices=CEC_CA_MG_NA_K_METHODS, db_comment='Method used for Mg++',  blank=True, null=True)
-    na = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Na+ (cmol/Kg)', blank=True, null=True)
-    met_na = models.TextField(choices=CEC_CA_MG_NA_K_METHODS, db_comment='Method used for Na+',  blank=True, null=True)
-    k = models.DecimalField( max_digits=30, decimal_places=10, db_comment='K+ (cmol/Kg)', blank=True, null=True)
-    met_k = models.TextField(choices=CEC_CA_MG_NA_K_METHODS, db_comment='Method used for K+',  blank=True, null=True)
-    n_tot = models.DecimalField( max_digits=30, decimal_places=10, db_comment='N tot content (g/Kg)', blank=True, null=True)
-    met_n_tot = models.TextField(choices=N_CONTENT_METHODS, db_comment='Method used for N tot content',  blank=True, null=True)
-    p_cont = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Available P content(mg/kg)', blank=True, null=True)
-    met_p_cont = models.TextField(choices=P_CONTENT_METHODS, db_comment='Method used for available P content',  blank=True, null=True)
-    feox = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Feox (g/kg)', blank=True, null=True)
-    fed = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Fed (g/kg)', blank=True, null=True)
-    fep = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Fep (g/kg)', blank=True, null=True)
-    fe_tot = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Fe tot (g/kg)', blank=True, null=True)
-    mn = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Mn (mg/kg)', blank=True, null=True)
-    met_mn = models.TextField(choices=MN_ZN_CU_METHODS, db_comment='Method used for Mn', blank=True, null=True)
-    zn = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Zn (mg/kg)', blank=True, null=True)
-    met_zn = models.TextField(choices=MN_ZN_CU_METHODS, db_comment='Method used for Zn', blank=True, null=True)
-    cu = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Cu (mg/kg)', blank=True, null=True)
-    met_cu = models.TextField(choices=MN_ZN_CU_METHODS, db_comment='Method used for Cu', blank=True, null=True) 
-    act_caco3 = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Active CaCO3 (%)', blank=True, null=True)
-    
-    objects = models.Manager().using('backoffice')
-
-    class Meta:
-        managed = True
-        db_table = 's_lab_data'
-        permissions = (
-            ('view', 'can view data'),
-            ('write', 'can write data'),
-        )
-
 
 ## All the Indicators are preconfigured and stored in Geonode
 ## new Indicator 
@@ -3773,8 +2895,8 @@ class Request(models.Model):
     mgrname = models.TextField( db_comment='Assigned To - Name')
     mgremail = models.TextField( db_comment='Assigned To - Email')
     mgrmsg  = models.TextField( db_comment='Message to the user')
-    type = models.TextField( db_comment='Data type: Profiles/Samples/Indicator')
-    dataid = models.TextField( db_comment='Data keys: fields of Profile, Sample or an Indicator id')
+    type = models.TextField( db_comment='Data type: Points/Indicator')
+    dataid = models.TextField( db_comment='Data keys: fields of Point or Indicator ')
     purpose = models.TextField( db_comment='Purpose')
     aoi = models.JSONField( db_comment='AOI in geoJSON format') 
     anchor = models.JSONField( db_comment='AOI anchor in geoJSON format') 
