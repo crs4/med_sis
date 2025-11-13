@@ -111,6 +111,7 @@ export default function S4Mmap ({data}) {
         return feature.properties.popupContent;
       }, popupOptions);
     }
+  //https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile
   }
 
   return (
@@ -121,7 +122,7 @@ export default function S4Mmap ({data}) {
         zoom={zoom}
         bounds={bounds}
         style={{ height: '400px' }}
-      >
+      > 
         <TileLayer
           url='https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}'
           attribution='Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri'

@@ -7,7 +7,7 @@ const Mapping =  {
         '2' : {  'm': 'PointGeneral','f': 'project','t': null,'n': 'Project identifier','lf': null,'lv': null,'s': '0-1','check': 'text'},
         '3' : {  'm': 'PointGeneral','f': 'old_id','t': null,'n': 'Original identifier','lf': null,'lv': null,'s': '0-2','check': 'text'},
         '4' : {  'm': 'PointGeneral','f': 'type','t': null,'n': 'Point data type','lf': null,'lv': null,'s': '0-3','check': 'text'},
-        '5' : {  'm': 'PointGeneral','f': 'reference','t': null,'n': 'Date of description','lf': null,'lv': null,'s': '0-4','check': 'date'},
+        '5' : {  'm': 'PointGeneral','f': 'reference','t': null,'n': 'Reference to profile','lf': null,'lv': null,'s': '0-4','check': 'text'},
         '6' : {  'm': 'PointGeneral','f': 'date','t': null,'n': 'Date of description','lf': null,'lv': null,'s': '0-4','check': 'date'},
         '7' : {  'm': 'PointGeneral','f': 'surveyors','t': null,'n': 'Names of describing authors','lf': null,'lv': null,'s': '0-5','check': 'text'},
         '8' : {  'm': 'PointGeneral','f': 'survey_m','t': 'p_survey_methods','n': 'Method used for survey','lf': null,'lv': null,'s': '0-6','check': 'taxonomy'},

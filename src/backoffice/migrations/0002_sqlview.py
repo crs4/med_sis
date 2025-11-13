@@ -3,7 +3,7 @@ from django.db import migrations
 SQL_CREATE = f"""
   CREATE OR REPLACE VIEW points_geo AS
   SELECT 
-    id as point_id,date,surveyors,location,lat_wgs84,lon_wgs84,gps,elev_m_asl,
+    id as pointid,date,surveyors,location,lat_wgs84,lon_wgs84,gps,elev_m_asl,
     elev_dem,survey_m,project_id,
     ST_SetSRID(
       ST_MakePoint(lon_wgs84, lat_wgs84),
@@ -183,7 +183,8 @@ SQL_CREATE = f"""
           ELSE (a.org_car / a.n_tot)     
       END AS c_n
   FROM public.lab_data a, points_geo b, point_layer l
-  WHERE b.point_id = l.point_id and a.id = l.labdata_id;
+  WHERE b.pointid = l.point_id and a.id = l.labdata_id 
+  and a.n_tot is not null and a.org_car is not null and a.n_tot > 0;
   ALTER VIEW IF EXISTS nutrient_imbalance_soc_decline OWNER TO backoffice_user;
 
   -- Sodium exchangeable percentage
@@ -193,12 +194,10 @@ SQL_CREATE = f"""
       b.*,
       l.upper,
       l.lower,
-      CASE 
-          WHEN a.cec = 0 THEN NULL
-          ELSE (a.na / a.cec)     
-      END AS esp
+      (a.na / a.cec) AS esp
   FROM public.lab_data a, points_geo b, point_layer l
-  WHERE b.point_id = l.point_id and a.id = l.labdata_id;
+  WHERE b.pointid = l.point_id and a.id = l.labdata_id 
+  and a.cec is not null and a.na is not null and a.cec > 0 ;
   ALTER VIEW IF EXISTS sodium_exchangeable_percentage OWNER TO backoffice_user;
 
   CREATE OR REPLACE VIEW sodium_adsorption_ratio AS
@@ -207,12 +206,10 @@ SQL_CREATE = f"""
       b.*,
       l.upper,
       l.lower,
-      CASE 
-          WHEN a.ca IS NULL OR a.mg IS NULL OR (a.ca + a.mg) = 0 THEN NULL
-          ELSE (a.na / SQRT(a.ca + a.mg))
-      END AS sar
+      (a.na / SQRT(a.ca + a.mg)) AS sar
   FROM public.lab_data a, points_geo b, point_layer l
-  WHERE b.point_id = l.point_id and a.id = l.labdata_id;
+  WHERE b.pointid = l.point_id and a.id = l.labdata_id
+  and a.na IS NOT NULL and a.ca IS NOT NULL OR a.mg IS NOT NULL OR (a.ca + a.mg) > 0 ;
   ALTER VIEW IF EXISTS sodium_adsorption_ratio OWNER TO backoffice_user;
 
   -- Sodicity/salinity ratio
@@ -222,13 +219,11 @@ SQL_CREATE = f"""
       b.*,
       l.upper,
       l.lower,
-      CASE 
-          WHEN a.el_cond IS NULL OR a.el_cond = 0 THEN NULL
-          WHEN a.ca IS NULL OR a.mg IS NULL OR (a.ca + a.mg) = 0 THEN NULL
-          ELSE ( (a.na / SQRT(a.ca + a.mg)) / a.el_cond)     
-      END AS sar_elcond
+      ( (a.na / SQRT(a.ca + a.mg)) / a.el_cond) AS sar_elcond
   FROM public.lab_data a, points_geo b, point_layer l
-  WHERE b.point_id = l.point_id and a.id = l.labdata_id;
+  WHERE b.pointid = l.point_id and a.id = l.labdata_id
+  and a.el_cond IS NOT NULL AND a.el_cond > 0 
+  and a.na IS NOT NULL and a.ca IS NOT NULL and a.mg IS NOT NULL AND (a.ca + a.mg) > 0; 
   ALTER VIEW IF EXISTS sodicity_salinity_ratio OWNER TO backoffice_user;
 
   -- Cupper relative content indicator 
@@ -238,12 +233,11 @@ SQL_CREATE = f"""
       b.*,
       l.upper,
       l.lower,
-      CASE 
-          WHEN (a.cu + a.zn + a.pb) = 0 THEN NULL
-          ELSE (a.cu / (a.cu + a.zn + a.pb))*100
+      (a.cu / (a.cu + a.zn + a.pb))*100
       END AS cu_rc
   FROM public.lab_data a, points_geo b, point_layer l
-  WHERE b.point_id = l.point_id and a.id = l.labdata_id;
+  WHERE b.pointid = l.point_id and a.id = l.labdata_id
+  and a.cu is not null and a.zn is not null and a.pb is not null and (a.cu + a.zn + a.pb) > 0;
   ALTER VIEW IF EXISTS cupper_relative_content OWNER TO backoffice_user;
 
   -- Lead relative content indicator
@@ -253,12 +247,10 @@ SQL_CREATE = f"""
       b.*,
       l.upper,
       l.lower,
-      CASE 
-          WHEN (a.cu + a.zn + a.pb) = 0 THEN NULL
-          ELSE (a.pb / (a.cu + a.zn + a.pb))*100
-      END AS pb_rc
+      (a.pb / (a.cu + a.zn + a.pb))*100 AS pb_rc
   FROM public.lab_data a, points_geo b, point_layer l
-  WHERE b.point_id = l.point_id and a.id = l.labdata_id;
+  WHERE b.pointid = l.point_id and a.id = l.labdata_id
+  and a.cu is not null and a.zn is not null and a.pb is not null and (a.cu + a.zn + a.pb) > 0;
   ALTER VIEW IF EXISTS lead_relative_content OWNER TO backoffice_user;
 
   -- Zinc relative content indicator
@@ -273,7 +265,8 @@ SQL_CREATE = f"""
           ELSE (a.zn / (a.cu + a.zn + a.pb))*100
       END AS zn_rc
   FROM public.lab_data a, points_geo b, point_layer l
-  WHERE b.point_id = l.point_id and a.id = l.labdata_id;
+  WHERE b.pointid = l.point_id and a.id = l.labdata_id
+  and a.cu is not null and a.zn is not null and a.pb is not null and (a.cu + a.zn + a.pb) > 0;
   ALTER VIEW IF EXISTS zinc_relative_content OWNER TO backoffice_user;
 
   -- CEC/Clay ratio
@@ -283,12 +276,9 @@ SQL_CREATE = f"""
       b.*,
       l.upper,
       l.lower,
-      CASE 
-          WHEN a.clay = 0 THEN NULL
-          ELSE (a.cec / a.clay)
-      END AS cec_clayratio
+      (a.cec / a.clay) AS cec_clayratio
   FROM public.lab_data a, points_geo b, point_layer l
-  WHERE b.point_id = l.point_id and a.id = l.labdata_id;
+  WHERE b.pointid = l.point_id and a.id = l.labdata_id and a.clay is not null and a.cec is not null and a.clay > 0;
   ALTER VIEW IF EXISTS cec_clay_ratio OWNER TO backoffice_user;
 
   -- Air capacity
@@ -312,7 +302,7 @@ SQL_CREATE = f"""
       l.lower,
       a.field_cap - a.wilting_p AS pawc
   FROM public.lab_data a, points_geo b, point_layer l
-  WHERE b.point_id = l.point_id and a.id = l.labdata_id;
+  WHERE b.pointid = l.point_id and a.id = l.labdata_id and a.field_cap is not null and a.wilting_p is not null;
   ALTER VIEW IF EXISTS plant_avail_water_c OWNER TO backoffice_user;
 
   -- Relative field capacity
@@ -322,12 +312,9 @@ SQL_CREATE = f"""
       b.*,
       l.upper,
       l.lower,
-      CASE 
-          WHEN a.satur = 0 THEN NULL
-          ELSE (a.field_cap / a.satur)
-      END AS rfc
+      ( a.field_cap / a.satur) AS rfc
   FROM public.lab_data a, points_geo b, point_layer l
-  WHERE b.point_id = l.point_id and a.id = l.labdata_id;
+  WHERE b.pointid = l.point_id and a.id = l.labdata_id and a.satur is not null and a.field_cap is not null and a.satur != 0;
   ALTER VIEW IF EXISTS rel_field_capacity OWNER TO backoffice_user;
 """
 ## todo
