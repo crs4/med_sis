@@ -4,7 +4,7 @@ SQL_CREATE = f"""
   CREATE OR REPLACE VIEW points_geo AS
   SELECT 
     id as pointid,date,surveyors,location,lat_wgs84,lon_wgs84,gps,elev_m_asl,
-    elev_dem,survey_m,project_id,
+    elev_dem,survey_m,project,
     ST_SetSRID(
       ST_MakePoint(lon_wgs84, lat_wgs84),
       4326
@@ -14,7 +14,7 @@ SQL_CREATE = f"""
   CREATE OR REPLACE VIEW point_general_geo AS
   SELECT 
     t.id,t.date,t.surveyors,t.location,t.lat_wgs84,t.lon_wgs84,t.gps,t.elev_m_asl,
-    t.elev_dem,t.survey_m, t.horizons_sequence, t.old_cls, t.new_cls, t.cls_sys, t.project_id,
+    t.elev_dem,t.survey_m, t.horizons_sequence, t.old_cls, t.new_cls, t.cls_sys, t.project,
     ST_SetSRID(
       ST_MakePoint(t.lon_wgs84, t.lat_wgs84),
       4326
@@ -135,7 +135,7 @@ SQL_CREATE = f"""
   CREATE OR REPLACE VIEW point_layer_geo AS
     SELECT
       t.date,
-      t.project_id,
+      t.project,
       l.*,
       ST_SetSRID(
         ST_MakePoint(t.lon_wgs84, t.lat_wgs84),
@@ -145,33 +145,72 @@ SQL_CREATE = f"""
     WHERE t.id = l.point_id;
   ALTER VIEW IF EXISTS point_layer_geo OWNER TO backoffice_user;
 
-  CREATE OR REPLACE VIEW labdata_geo AS
-    SELECT
-      t.id as point_id,
-      t.date,
-      pl.upper,
-      pl.lower,
-      l.*,
-      ST_SetSRID(
-        ST_MakePoint(t.lon_wgs84, t.lat_wgs84),
-        4326
-      ) AS geom
-    FROM point_general t, point_layer pl, lab_data l
-    WHERE t.id = pl.point_id AND pl.labdata_id = l.id ;
-  ALTER VIEW IF EXISTS labdata_geo OWNER TO backoffice_user;
+  CREATE OR REPLACE VIEW labdata_profiles_geo AS
+    SELECT 
+    t.id AS point_id,
+    t.date,
+    pl.upper,
+    pl.lower,
+    l.id, 
+    l.horizon, 
+    l.l_number, 
+    l.gravel, l.cls_sys, l.texture, l.sand,
+    l.v_c_sand, l.c_sand, l.m_sand, l.f_sand, l.v_f_sand, l.met_sand, l.silt,
+    l.c_silt, l.f_silt, l.met_silt, l.clay, l.met_clay, l.bulk_dens, l.met_bulk_dens,
+    l.slake_test, l.met_slake_test, l.el_cond, l.met_el_cond, l.hy_cond, l.met_hy_cond, l.satur,
+    l.field_cap, l.wilting_p, l.awc, l.met_s_f_w, l.acidity, l.met_acidity, l.ph_h2o,
+    l.met_ph_h20, l.ph_kcl, l.met_ph_kcl, l.ph_ccl, l.met_ph_ccl, l.org_car, l.met_org_car,
+    l.org_mat, l.met_org_mat, l.caco3_content, l.met_content_caco3, l.active_caco3, l.met_active_caco3,
+    l.gypsum, l.met_gypsum, l.cec, l.met_cec, l.ca, l.met_ca, l.mg,
+    l.met_mg, l.na, l.met_na, l.k, l.met_k, l.n_tot, l.met_n_tot, l.p_cont,
+    l.met_p_cont, l.nh4, l.met_nh4, l.no3, l.met_no3, l.roc, l.toc400, l.met_roc_toc400, l.feox,
+    l.fed, l.fep, l.fe_tot, l.met_fe_tot, l.mn, l.met_mn, l.zn, l.met_zn, l.cu,
+    l.met_cu, l.act_caco3, l.pb, l.met_pb, l.hg, l.met_hg, l.cd, l.met_cd, l.ni,
+    l.met_ni, l.sb, l.met_sb, l.cr, l.met_cr, l.as_value, l.met_as, l.co,
+    l.met_co, l.v, l.met_v, l.notes,
+    st_setsrid(st_makepoint(t.lon_wgs84::double precision, t.lat_wgs84::double precision), 4326) AS geom
+   FROM point_general t,
+    point_layer pl,
+    lab_data l
+  WHERE t.id = pl.point_id AND pl.labdata_id = l.id;
+  
+  ALTER VIEW IF EXISTS labdata_profiles_geo OWNER TO backoffice_user;     
 
   CREATE OR REPLACE VIEW labdata_sampling_geo AS
     SELECT
-      l.*,
-      ST_SetSRID(
-        ST_MakePoint(t.lon_wgs84, t.lat_wgs84),
-        4326
-      ) AS geom
-    FROM point_general t, lab_data_sampling l
-    WHERE t.id = l.point_id ;
+    l.point_id,
+    t.date, 
+    l.upper, 
+    l.lower, 
+    l.id,
+    NULL as horizon,
+    NULL as l_number,
+    l.gravel, l.cls_sys, l.texture, l.sand, l.v_c_sand, l.c_sand,
+    l.m_sand, l.f_sand, l.v_f_sand, l.met_sand, l.silt, l.c_silt,
+    l.f_silt, l.met_silt, l.clay, l.met_clay, l.bulk_dens, l.met_bulk_dens,
+    l.slake_test, l.met_slake_test, l.el_cond, l.met_el_cond, l.hy_cond,
+    l.met_hy_cond, l.satur, l.field_cap, l.wilting_p, l.awc, l.met_s_f_w,
+    l.acidity, l.met_acidity, l.ph_h2o, l.met_ph_h20, l.ph_kcl, l.met_ph_kcl,
+    l.ph_ccl, l.met_ph_ccl, l.org_car, l.met_org_car, l.org_mat, l.met_org_mat,
+    l.caco3_content, l.met_content_caco3, l.active_caco3, l.met_active_caco3, l.gypsum,
+    l.met_gypsum, l.cec, l.met_cec, l.ca, l.met_ca, l.mg, l.met_mg,
+    l.na, l.met_na, l.k, l.met_k, l.n_tot, l.met_n_tot, l.p_cont, l.met_p_cont,
+    l.nh4, l.met_nh4, l.no3, l.met_no3, l.roc, l.toc400, l.met_roc_toc400, l.feox, l.fed,
+    l.fep, l.fe_tot, l.met_fe_tot, l.mn, l.met_mn, l.zn, l.met_zn, l.cu, l.met_cu,
+    l.act_caco3, l.pb, l.met_pb, l.hg, l.met_hg, l.cd, l.met_cd, l.ni,
+    l.met_ni, l.sb, l.met_sb, l.cr, l.met_cr, l.as_value, l.met_as, l.co,
+    l.met_co, l.v, l.met_v, l.notes,
+    st_setsrid(st_makepoint(t.lon_wgs84::double precision, t.lat_wgs84::double precision), 4326) AS geom 
+   FROM point_general t,
+    lab_data_sampling l
+  WHERE t.id = l.point_id;
   ALTER VIEW IF EXISTS labdata_sampling_geo OWNER TO backoffice_user;
-      
--- Nutrient imbalance SOC Decline
+
+  CREATE OR REPLACE VIEW labdata_geo AS
+  select * from labdata_profiles_geo; 
+  ALTER VIEW IF EXISTS labdata_geo OWNER TO backoffice_user;   
+
+  -- Nutrient imbalance SOC Decline
   CREATE OR REPLACE VIEW nutrient_imbalance_soc_decline AS
   SELECT
       a.id as labdata_id,
@@ -187,6 +226,21 @@ SQL_CREATE = f"""
   and a.n_tot is not null and a.org_car is not null and a.n_tot > 0;
   ALTER VIEW IF EXISTS nutrient_imbalance_soc_decline OWNER TO backoffice_user;
 
+  CREATE OR REPLACE VIEW nutrient_imbalance_soc_decline_monitoring AS
+  SELECT
+      a.id as labdata_id,
+      b.*,
+      a.upper,
+      a.lower,
+      CASE 
+          WHEN a.n_tot = 0 THEN NULL
+          ELSE (a.org_car / a.n_tot)     
+      END AS c_n
+  FROM public.lab_data_sampling a, points_geo b
+  WHERE b.pointid = a.point_id 
+  and a.n_tot is not null and a.org_car is not null and a.n_tot > 0;
+  ALTER VIEW IF EXISTS nutrient_imbalance_soc_decline_monitoring OWNER TO backoffice_user;
+
   -- Sodium exchangeable percentage
   CREATE OR REPLACE VIEW sodium_exchangeable_percentage AS
   SELECT
@@ -199,6 +253,18 @@ SQL_CREATE = f"""
   WHERE b.pointid = l.point_id and a.id = l.labdata_id 
   and a.cec is not null and a.na is not null and a.cec > 0 ;
   ALTER VIEW IF EXISTS sodium_exchangeable_percentage OWNER TO backoffice_user;
+
+  CREATE OR REPLACE VIEW sodium_exchangeable_percentage_monitoring AS
+  SELECT
+      a.id as labdata_id,
+      b.*,
+      a.upper,
+      a.lower,
+      (a.na / a.cec) AS esp
+  FROM public.lab_data_sampling a, points_geo b
+  WHERE b.pointid = a.point_id 
+  and a.cec is not null and a.na is not null and a.cec > 0 ;
+  ALTER VIEW IF EXISTS sodium_exchangeable_percentage_monitoring OWNER TO backoffice_user;
 
   CREATE OR REPLACE VIEW sodium_adsorption_ratio AS
   SELECT
@@ -233,8 +299,7 @@ SQL_CREATE = f"""
       b.*,
       l.upper,
       l.lower,
-      (a.cu / (a.cu + a.zn + a.pb))*100
-      END AS cu_rc
+      (a.cu / (a.cu + a.zn + a.pb))*100  AS cu_rc
   FROM public.lab_data a, points_geo b, point_layer l
   WHERE b.pointid = l.point_id and a.id = l.labdata_id
   and a.cu is not null and a.zn is not null and a.pb is not null and (a.cu + a.zn + a.pb) > 0;
@@ -260,10 +325,7 @@ SQL_CREATE = f"""
       b.*,
       l.upper,
       l.lower,
-      CASE 
-          WHEN (a.cu + a.zn + a.pb) = 0 THEN NULL
-          ELSE (a.zn / (a.cu + a.zn + a.pb))*100
-      END AS zn_rc
+      (a.zn / (a.cu + a.zn + a.pb))*100 AS zn_rc
   FROM public.lab_data a, points_geo b, point_layer l
   WHERE b.pointid = l.point_id and a.id = l.labdata_id
   and a.cu is not null and a.zn is not null and a.pb is not null and (a.cu + a.zn + a.pb) > 0;
@@ -290,7 +352,8 @@ SQL_CREATE = f"""
       l.lower,
       a.satur - a.field_cap AS ac
   FROM public.lab_data a, points_geo b, point_layer l
-  WHERE b.point_id = l.point_id and a.id = l.labdata_id;
+  WHERE b.pointid = l.point_id and a.id = l.labdata_id
+  and a.satur is not null and a.field_cap is not null;
   ALTER VIEW IF EXISTS air_capacity OWNER TO backoffice_user;
 
   -- Plant available water capacity
@@ -316,6 +379,113 @@ SQL_CREATE = f"""
   FROM public.lab_data a, points_geo b, point_layer l
   WHERE b.pointid = l.point_id and a.id = l.labdata_id and a.satur is not null and a.field_cap is not null and a.satur != 0;
   ALTER VIEW IF EXISTS rel_field_capacity OWNER TO backoffice_user;
+
+
+CREATE OR REPLACE VIEW sodium_adsorption_ratio_monitoring AS
+  SELECT
+      a.id as labdata_id,
+      b.*,
+      a.upper,
+      a.lower,
+      (a.na / SQRT(a.ca + a.mg)) AS sar
+  FROM public.lab_data_sampling a, points_geo b
+  WHERE b.pointid = a.point_id 
+  and a.na IS NOT NULL and a.ca IS NOT NULL OR a.mg IS NOT NULL OR (a.ca + a.mg) > 0 ;
+  ALTER VIEW IF EXISTS sodium_adsorption_ratio_monitoring OWNER TO backoffice_user;
+
+  -- Sodicity/salinity ratio
+  CREATE OR REPLACE VIEW sodicity_salinity_ratio_monitoring AS
+  SELECT
+      a.id as labdata_id,
+      b.*,
+      a.upper,
+      a.lower,
+      ( (a.na / SQRT(a.ca + a.mg)) / a.el_cond) AS sar_elcond
+  FROM public.lab_data_sampling a, points_geo b
+  WHERE b.pointid = a.point_id 
+  and a.el_cond IS NOT NULL AND a.el_cond > 0 
+  and a.na IS NOT NULL and a.ca IS NOT NULL and a.mg IS NOT NULL AND (a.ca + a.mg) > 0; 
+  ALTER VIEW IF EXISTS sodicity_salinity_ratio_monitoring OWNER TO backoffice_user;
+
+  -- Cupper relative content indicator 
+  CREATE OR REPLACE VIEW cupper_relative_content_monitoring AS
+  SELECT
+      a.id as labdata_id,
+      b.*,
+      a.upper,
+      a.lower,
+      (a.cu / (a.cu + a.zn + a.pb))*100  AS cu_rc
+  FROM public.lab_data_sampling a, points_geo b
+  WHERE b.pointid = a.point_id 
+  and a.cu is not null and a.zn is not null and a.pb is not null and (a.cu + a.zn + a.pb) > 0;
+  ALTER VIEW IF EXISTS cupper_relative_content_monitoring OWNER TO backoffice_user;
+
+  -- Lead relative content indicator
+  CREATE OR REPLACE VIEW lead_relative_content_monitoring AS
+  SELECT
+      a.id as labdata_id,
+      b.*,
+      a.upper,
+      a.lower,
+      (a.pb / (a.cu + a.zn + a.pb))*100 AS pb_rc
+  FROM public.lab_data_sampling a, points_geo b
+  WHERE b.pointid = a.point_id 
+  and a.cu is not null and a.zn is not null and a.pb is not null and (a.cu + a.zn + a.pb) > 0;
+  ALTER VIEW IF EXISTS lead_relative_content_monitoring OWNER TO backoffice_user;
+
+  -- Zinc relative content indicator
+  CREATE OR REPLACE VIEW zinc_relative_content_monitoring AS
+  SELECT
+      a.id as labdata_id,
+      b.*,
+      a.upper,
+      a.lower,
+      (a.zn / (a.cu + a.zn + a.pb))*100 AS zn_rc
+  FROM public.lab_data_sampling a, points_geo b
+  WHERE b.pointid = a.point_id 
+  and a.cu is not null and a.zn is not null and a.pb is not null and (a.cu + a.zn + a.pb) > 0;
+  ALTER VIEW IF EXISTS zinc_relative_content_monitoring OWNER TO backoffice_user;
+
+  -- CEC/Clay ratio
+  CREATE OR REPLACE VIEW cec_clay_ratio_monitoring AS
+  SELECT
+      a.id as labdata_id,
+      b.*,
+      a.upper,
+      a.lower,
+      (a.cec / a.clay) AS cec_clayratio
+  FROM public.lab_data_sampling a, points_geo b
+  WHERE b.pointid = a.point_id  and a.clay is not null and a.cec is not null and a.clay > 0;
+  ALTER VIEW IF EXISTS cec_clay_ratio_monitoring OWNER TO backoffice_user;
+
+  -- Air capacity
+  CREATE OR REPLACE VIEW air_capacity_monitoring AS
+  SELECT
+      a.id as labdata_id,
+      b.*,
+      a.upper,
+      a.lower,
+      a.satur - a.field_cap AS ac
+  FROM public.lab_data_sampling a, points_geo b
+  WHERE b.pointid = a.point_id and a.satur is not null and a.field_cap is not null;
+  ALTER VIEW IF EXISTS air_capacity_monitoring OWNER TO backoffice_user;
+
+  -- Plant available water capacity
+  CREATE OR REPLACE VIEW plant_avail_water_c_monitoring AS
+  SELECT
+      a.id as labdata_id,
+      b.*,
+      a.upper,
+      a.lower,
+      a.field_cap - a.wilting_p AS pawc
+  FROM public.lab_data_sampling a, points_geo b
+  WHERE b.pointid = a.point_id and a.field_cap is not null and a.wilting_p is not null;
+  ALTER VIEW IF EXISTS plant_avail_water_c OWNER TO backoffice_user;
+
+  -- Relative field capacity
+ 
+
+
 """
 ## todo
 # coarsefragments,artefacts,cracks,stressfeatures,coatingsbridges,ribbonlikeaccumulations,
@@ -335,8 +505,8 @@ SQL_DROP = f"""
   DROP VIEW IF EXISTS climate_weather_geo CASCADE;
   DROP VIEW IF EXISTS coarse_fragments_geo CASCADE;
   DROP VIEW IF EXISTS landform_topography_geo CASCADE;
-  DROP VIEW IF EXISTS labdata_geo CASCADE;
   DROP VIEW IF EXISTS labdata_sampling_geo CASCADE;
+  DROP VIEW IF EXISTS labdata_profiles_geo CASCADE;
   DROP VIEW IF EXISTS point_layer_geo CASCADE;
   DROP VIEW IF EXISTS rel_field_capacity CASCADE;
   DROP VIEW IF EXISTS plant_avail_water_c CASCADE;
@@ -344,11 +514,22 @@ SQL_DROP = f"""
   DROP VIEW IF EXISTS cec_clay_ratio CASCADE;
   DROP VIEW IF EXISTS cupper_relative_content CASCADE;
   DROP VIEW IF EXISTS lead_relative_content CASCADE;
-  DROP VIEW IF EXISTS zinc_relative_contentt CASCADE;
+  DROP VIEW IF EXISTS zinc_relative_content CASCADE;
   DROP VIEW IF EXISTS sodicity_salinity_ratio CASCADE;
   DROP VIEW IF EXISTS sodium_adsorption_ratio CASCADE;
   DROP VIEW IF EXISTS sodium_exchangeable_percentage CASCADE;
   DROP VIEW IF EXISTS nutrient_imbalance_soc_decline CASCADE;
+  DROP VIEW IF EXISTS rel_field_capacity_monitoring CASCADE;
+  DROP VIEW IF EXISTS plant_avail_water_c_monitoring CASCADE;
+  DROP VIEW IF EXISTS air_capacity_monitoring CASCADE;
+  DROP VIEW IF EXISTS cec_clay_ratio_monitoring CASCADE;
+  DROP VIEW IF EXISTS cupper_relative_content_monitoring CASCADE;
+  DROP VIEW IF EXISTS lead_relative_content_monitoring CASCADE;
+  DROP VIEW IF EXISTS zinc_relative_content_monitoring CASCADE;
+  DROP VIEW IF EXISTS sodicity_salinity_ratio_monitoring CASCADE;
+  DROP VIEW IF EXISTS sodium_adsorption_ratio_monitoring CASCADE;
+  DROP VIEW IF EXISTS sodium_exchangeable_percentage_monitoring CASCADE;
+  DROP VIEW IF EXISTS nutrient_imbalance_soc_decline_monitoring CASCADE;
 """ 
 
 class Migration(migrations.Migration):

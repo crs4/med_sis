@@ -47,7 +47,7 @@ router.register(r'lab-data', LabDataViewSet)
 router.register(r'lab-data-sampling', LabDataSamplingViewSet) 
 router.register(r'indicators', IndicatorViewSet)
 router.register(r'requests', RequestViewSet)
-
+router.register(r'photos', PhotoViewSet)
  
 urlpatterns = [
     path('', include(router.urls)),

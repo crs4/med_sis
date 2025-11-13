@@ -5,7 +5,6 @@ import { useTranslations } from 'next-intl';
 import { useUser } from '../../context/user';
 import { useRouter } from 'next/router';
 import { useParams } from 'next/navigation'
-import { IndicatorService } from '../../service/indicators';
 
 
 export default function Page()  {
@@ -16,17 +15,29 @@ export default function Page()  {
   
 
   useEffect(() => {
-    if ( user.userData && user.userData.forbidden1 !== null && user.userData.forbidden1 )
+    if ( user.userData.forbidden1 !== null && user.userData.forbidden1 )
         router.push(`/401`);
   },[user]);  // eslint-disable-line
 
   return (
-    <>
-      <ToDo />
-      <Footer />
-    </>
-  );
+      <>
+        <ToDo />
+      </>
+    );
 };
+
+
+export async function getStaticProps(context) {
+  return {
+    props: { 
+      messages: (await import(`../../translations/${context.locale}.json`)).default
+     },
+  }
+}
+
+
+
+
 
 export async function getStaticPaths() {
   return {
@@ -35,14 +46,6 @@ export async function getStaticPaths() {
   }
 }
 
-export async function getStaticProps(context) {
-  return {
-    props: { 
-      indicator: indicator,
-      messages: (await import(`../../translations/${context.locale}.json`)).default
-     },
-  }
-}
 
 
 

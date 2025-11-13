@@ -1,13 +1,11 @@
 import React from 'react';
 import Logo from './Logo';
-import {useTranslations} from 'next-intl';
 import Link from 'next/link';
 import Image from 'next/image';
 import ToDoImg from '../public/img/ToDo.png';
 
-export default function ToDo() {
-  const t = useTranslations('default');
-
+export default function ToDo(  ) {
+  
   return (
     <>
       <div
@@ -23,7 +21,7 @@ export default function ToDo() {
               <Image  src={ToDoImg}  alt="Coming Soon" width={430} />
             </div>
             <p className="p-col-12 p-md-12 p-text-center p-mt-6">
-                <Link href="/soildata">{t('RETURN_TO_HOME')}</Link>
+                <Link href="/">HOME</Link>
             </p> 
           </div>
         </div>
@@ -32,12 +30,6 @@ export default function ToDo() {
   );
 };
 
-export async function getStaticProps(context) {
-  return {
-    props: { 
-      messages: (await import(`../translations/${context.locale}.json`)).default
-     },
-  }
-}
+
 
 

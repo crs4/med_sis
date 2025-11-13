@@ -79,23 +79,6 @@ const AppMenu = () => {
         },
         { separator: true },
         {
-            label: 'Monitoring Data',
-            icon: 'pi pi-fw pi-image',
-            items: [
-                {
-                    label: 'List',
-                    icon: 'pi pi-fw pi-list',
-                    to: '/monitoring/'
-                },
-                {
-                    label: 'Backup',
-                    icon: 'pi pi-fw pi-file',
-                    to: '/monitoring/backup'
-                }            
-            ]
-        },
-        { separator: true },
-        {
             label: 'Indicators',
             icon: 'pi pi-fw pi-image',
             items: [
@@ -120,11 +103,6 @@ const AppMenu = () => {
                     label: 'List',
                     icon: 'pi pi-fw pi-list',
                     to: '/photos'
-                },
-                {
-                    label: 'Add',
-                    icon: 'pi pi-fw pi-plus',
-                    to: '/photos/create'
                 }
             ]
         }

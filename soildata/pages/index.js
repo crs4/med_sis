@@ -25,10 +25,6 @@ const Home = () => {
     <Image alt="Soil Indicators" src={indicatorIMG} />
   );
 
-  const headerM = (
-    <Image alt="Soil Maps" src={indicatorIMG} />
-  );
-
   const footerP = (
     
     <div className="flex flex-wrap justify-content-center gap-2">
@@ -57,14 +53,6 @@ const Home = () => {
     </div>
   );
 
-  const footerM = (
-    <div className="flex flex-wrap justify-content-center gap-2">
-      <Link href="/todo">
-        <i className="layout-menuitem-icon fad fa-columns"></i>
-        <span className="layout-menuitem-text p-m-2">{t('GO_TO_SOILS_MAP')}</span>
-      </Link>  
-    </div>
-  );
 
   useEffect(() => {
     if ( user.userData.forbidden2 !== null && user.userData.forbidden2 )
@@ -86,11 +74,6 @@ const Home = () => {
           </div>
           <div className="col-4 flex justify-center">
             <Card  title={t('INDICATORS')} subTitle="Some text and metrics" footer={footerI} header={headerI} className="col-25rem">
-                   
-            </Card>
-          </div>
-          <div className="col-4 flex justify-center">
-            <Card  title={t('SOILS_MAP')} subTitle="Some text and metrics" footer={footerM} header={headerM} className="col-25rem">
                    
             </Card>
           </div>

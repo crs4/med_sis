@@ -20,11 +20,10 @@ export default function Page()  {
   },[user]);  // eslint-disable-line
 
   return (
-    <>
-      <ToDo />
-      <Footer />
-    </>
-  );
+      <>
+        <ToDo />
+      </>
+    );
 };
 
 export async function getStaticPaths() {

@@ -6446,6 +6446,8 @@ class Migration(migrations.Migration):
                     "abund_oxi",
                     models.DecimalField(
                         db_comment="Abundance of cemented oximorphic features, by volume [%]",
+                        blank=True, 
+                        null=True,
                         decimal_places=4,
                         max_digits=12,
                         validators=[backoffice.models.validate_percentage],
@@ -7275,6 +7277,7 @@ class Migration(migrations.Migration):
                         blank=True, db_comment="Point data type", null=True
                     ),
                 ),
+                ("project", models.TextField(blank=True, null=True)),
                 (
                     "date",
                     models.DateField(
@@ -8568,7 +8571,7 @@ class Migration(migrations.Migration):
                         db_comment="identifier", primary_key=True, serialize=False
                     ),
                 ),
-                ("design", models.TextField(db_comment="layer horizon designation")),
+                ("design", models.TextField(db_comment="layer horizon designation", blank=True, null=True )),
                 (
                     "number",
                     models.SmallIntegerField(
@@ -9608,18 +9611,6 @@ class Migration(migrations.Migration):
                 "permissions": (("view", "can view data"), ("write", "can write data")),
                 "managed": True,
             },
-        ),
-        migrations.AddField(
-            model_name="pointgeneral",
-            name="project",
-            field=models.ForeignKey(
-                blank=True,
-                db_comment="Survey/Project identifier",
-                null=True,
-                on_delete=django.db.models.deletion.SET_NULL,
-                related_name="pointgeneral_project_set",
-                to="backoffice.project",
-            ),
         ),
         migrations.AddField(
             model_name="pointgeneral",

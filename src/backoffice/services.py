@@ -72,7 +72,7 @@ class XLSxUploadService:
         elif word.startswith('layer-') or word.startswith('point-') or word.startswith('lab-') or word.startswith('surface-') or word.startswith('coarse-'):
             if word.endswith('general'):
                 word = word + 's'
-            if word in ['point-layer', 'layer-structure', 'layer-non-matrix-pore']:
+            if word in ['point-layer', 'layer-consistence', 'layer-redoximorphic-colour', 'layer-structure', 'layer-non-matrix-pore']:
                 word = word + 's'
             return word
         elif word.endswith(('s', 'ss', 'sh', 'ch', 'x', 'z')):
@@ -150,12 +150,19 @@ class XLSxUploadService:
             ]  
 
 
-            processing_order_pgenealogies = [
-                "Project",     
+            processing_order_genealogies = [
+                "Project"    
+            ]
+
+            processing_order_photos = [
+                "Photo"     
             ]
 
             if xlsx_upload.type == 'XLS_PJ':
-                processing_order = processing_order_pgenealogies 
+                processing_order = processing_order_genealogies
+
+            if xlsx_upload.type == 'XLS_PH':
+                processing_order = processing_order_photos 
                 
             # Processa ogni array nell'ordine specificato
             for model_name in processing_order:
@@ -180,8 +187,8 @@ class XLSxUploadService:
     def _process_array(self, model_name, array_data, operation):
         # Utilizza il metodo per convertire il nome del modello
         endpoint_name = self._model_name_to_endpoint(model_name)
+        if model_name == 'Photo' : endpoint_name = 'photos'
         endpoint = f"{self.base_url}/api/backoffice/{endpoint_name}/"
-        
         for item in array_data:
             _id = item["id"]
             try:
@@ -193,15 +200,13 @@ class XLSxUploadService:
                     )
                 else :
                     if operation == 'PATCH' : 
-                        response = requests.patch(
-                            endpoint + _id, 
-                            json=item,
+                        response = requests.patch(f"{endpoint}{_id}/", 
+                            data=item,
                             headers=self.auth_header
                         )
                     else: 
-                        response = requests.put(
-                            endpoint + _id, 
-                            json=item,
+                        response = requests.put(f"{endpoint}{_id}/", 
+                            data=item,
                             headers=self.auth_header
                         )    
                 operation_result = {
@@ -214,8 +219,7 @@ class XLSxUploadService:
                 #202 is a preliminary ok without returned object
                 #203 ok the proxy erased the returned object
                 #204 ok updated/deleted without returned object
-                
-                if response.status_code < 200 or response.status_code > 204:
+                if response.status_code < 200 or response.status_code > 299:
                     errors = 'data error'
                     res = response.json()
                     if  res and res['errors'] :
@@ -223,7 +227,7 @@ class XLSxUploadService:
                     error = {
                         "model": model_name,
                         "element": _id,
-                        "msg": "CODE: " + str(response.status_code) + ",MSG: " + errors
+                        "msg": f"CODE: {str(response.status_code)},MSG: {errors}"
                     }
                     self.report["errors"].append(error)
                     self.report["success"] = False
@@ -232,11 +236,9 @@ class XLSxUploadService:
                 
             except Exception as e:
                 error = {
-                        "model": model_name,
-                        "element": _id,
-                        "msg": str(e)
-                    }
+                    "model": model_name,
+                    "element": _id,
+                    "msg": str(e)  
+                }
                 self.report["errors"].append(error)
                 self.report["success"] = False 
-
-

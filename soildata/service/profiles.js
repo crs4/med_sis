@@ -656,7 +656,7 @@ export const ProfileService = {
   },
 
   LEGACY_RELATIONS : {
-    ProfileGeneral : [
+    PointGeneral : [
       { model : 'LandformTopography', field : 'landformtopography',  api: 'landform-topographies' },
       { model : 'ClimateAndWeather', field : 'climateandweather',  api: 'climate-and-weathers'},
       { model : 'LandUse', field : 'landuse',  api: 'land-uses', relations: true},
@@ -665,7 +665,7 @@ export const ProfileService = {
       { model : 'SurfaceCracks', field : 'surfacecracks', api: 'surface-cracks'},
       { model : 'CoarseFragments', field : 'coarsefragments', api: 'coarse-fragments'},
       { model : 'SurfaceUnevenness', field : 'surfaceunevenness', api: 'surface-unevenness'},
-    //{ model : ' ProfileLayer: {  relations: true, field: 'profile', reverse: true, api: 'profile-layers'},
+    //{ model : ' PointLayer: {  relations: true, field: 'point', reverse: true, api: 'point-layers'},
      ],
    
     LandUse : [
@@ -673,7 +673,7 @@ export const ProfileService = {
       { model: 'MonitoringNotCultivated', list : 'landuse',  field : 'not_cultivated',  api: 'monitoring-not-cultivated'}, 
     ],
 
-    ProfileLayer_relations : {
+    PointLayer_relations : {
       LayerCoarseFragments: {  field : 'coarsefragments',  api: 'layer-coarse-fragments'},
       LayerRemants: {  field : 'remnants', api: 'layer-remnants'},
       LayerArtefacts: {  field : 'artefacts',  api: 'layer-artefacts'},
@@ -775,26 +775,26 @@ export const ProfileService = {
 
   async getLegacy( ck, id) { 
     result = {}
-    let model = "ProfileGeneral"
-    let model_api = "profile_generals"
-    let profile = null 
-    profile = await this.get( ck, model_api, id, '')
-    if ( !profile )
+    let model = "PointGeneral"
+    let model_api = "point_generals"
+    let point = null 
+    point = await this.get( ck, model_api, id, '')
+    if ( !point )
       return null;
-    result[model] = profile
-    let data = await resolveRelations( ck, model, profile, LEGACY_RELATIONS) 
+    result[model] = point
+    let data = await resolveRelations( ck, model, point, LEGACY_RELATIONS) 
     result = { ...result, ...data}
     //// get Layers
-    model = "ProfileLayer"
-    model_api = "profile_layers"
-    filter = '?profile=' + profile.id
+    model = "PointLayer"
+    model_api = "point_layers"
+    filter = '?point=' + point.id
     let layers = await this.get( ck, model_api, null, filter )
     if ( layers !== nul && layers.length )  {
       result[model] = []
       for ( let i = 0; i < layers.length; i +=1 ) 
       { 
         const layer = layers[i];
-        let result_layer = { "ProfileLayer" : layer }
+        let result_layer = { "PointLayer" : layer }
         data = await resolveRelations( ck, model, layer, LEGACY_RELATIONS) 
         result_layer = { ...result_layer, ...data}
         result[model].push(result_layer)
@@ -850,7 +850,7 @@ export const ProfileService = {
   async listLegacy() {  
     let data = [];
     try {  
-      let res = await fetch('/api/backoffice/profile-generals')
+      let res = await fetch('/api/backoffice/point-generals')
       if ( res && res.status === 200 ) 
         data = await res.json();
     } catch (e) { 

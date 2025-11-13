@@ -128,12 +128,13 @@ export default function Page( )  {
     setValidating(true);
     setFileId(files[0].name);
     let result = await validateXLSFile (files,upload.type);
-    if ( result  ){ 
+    if ( result && result.validated > 0 ){ 
       setValidated(result['validated'])
       if  ( result['data'] && result['report'] ) {
-        const _data = createObjects(result['data'],upload.type)
+        const _data = await createObjects(result,upload.type,document.cookie);
         setUpload({ 
           ...upload,
+          title: files[0].name,
           data: JSON.stringify(_data),
           report: result['report'],
           operation: uploadAction?.name
@@ -147,6 +148,11 @@ export default function Page( )  {
           toast.current.show({severity:'error', summary: 'Errors generating points!', detail:'Map points not created!', life: 3000});
         }
       }
+    }
+    else if ( result && result.validated === 0 ){ 
+      toast.current.show({severity:'error', summary: 'Errors in file!', detail:'wrong data!', life: 3000});
+      setValidating(false);
+      return;
     }
     else { 
       toast.current.show({severity:'error', summary: 'Errors in file!', detail:'wrong file or sheets!', life: 3000});
@@ -247,9 +253,9 @@ export default function Page( )  {
           layer : {
             points: pointsGeoJSON,
             styles: {
-              'ok' : { radius: 8, fillColor: '#2f2', color: '#0d0', weight: 2, opacity: 1, fillOpacity: 0.8, },
-              'ko' : { radius: 8, fillColor: '#f22', color: '#d22', weight: 2, opacity: 1, fillOpacity: 0.8, },
-              'warn' : { radius: 8, fillColor: '#f80', color: '#d60', weight: 2, opacity: 1, fillOpacity: 0.8, },
+              'New point -success' : { radius: 6, fillColor: '#0d0', color: 'rgba(0, 7, 221, 1)', weight: 3, opacity: 1, fillOpacity: 1, },
+              'New point -errors' : { radius: 6, fillColor: '#f22', color: 'rgba(0, 7, 221, 1)', weight: 3, opacity: 1, fillOpacity: 1, },
+              'New point -warnings' : { radius: 6, fillColor: '#f80', color: 'rgba(0, 7, 221, 1)', weight: 3, opacity: 1, fillOpacity: 1, },
             },
           },
           label: 'Profiles geo points',
@@ -272,8 +278,9 @@ export default function Page( )  {
         <p className="m-4">
           <h4 className="font-bold">You must choose the type of data you want to upload:</h4>
           <ul className="font-bold">
-            <li>Point Soil Data</li>
-            <li>Projects</li>
+            <li>New Point Soil Data</li>
+            <li>Genealogies - Surveys</li>
+            <li>Photos - Surveys</li>
           </ul>
         </p>
       )}
@@ -295,12 +302,27 @@ export default function Page( )  {
       {(uploadType && uploadType === UploadService.TYPES.XLS_PJ) && ( 
         <>
         <div>
-          <h4 className="font-bold m-4">Selected: Projects Data upload </h4>       
+          <h4 className="font-bold m-4">Selected: Genealogies of Data upload </h4>       
           <div class="flex flex-row justify-content-center ">
-            <a href="/soildata/doc/xlsx_profiles_template.xlsx" target="_blank" rel="noopener noreferrer" className="p-button font-bold  m-4">
+            <a href="/soildata/doc/xlsx_genealogy_template.xlsx" target="_blank" rel="noopener noreferrer" className="p-button font-bold  m-4">
               Download the XLSx template
             </a>
-            <a href="/soildata/doc/upload_instructions_profiles.pdf" target="_blank" rel="noopener noreferrer" className="p-button font-bold m-4">
+            <a href="/soildata/doc/upload_instructions_genealogies.pdf" target="_blank" rel="noopener noreferrer" className="p-button font-bold m-4">
+              Download the instructions for filling in the data
+            </a>
+          </div>    
+        </div>
+        </>
+      )}
+      {(uploadType && uploadType === UploadService.TYPES.XLS_PH) && ( 
+        <>
+        <div>
+          <h4 className="font-bold m-4">Selected: Metadata of Photos upload </h4>       
+          <div class="flex flex-row justify-content-center ">
+            <a href="/soildata/doc/xlsx_genealogy_template.xlsx" target="_blank" rel="noopener noreferrer" className="p-button font-bold  m-4">
+              Download the XLSx template
+            </a>
+            <a href="/soildata/doc/upload_instructions_genealogies.pdf" target="_blank" rel="noopener noreferrer" className="p-button font-bold m-4">
               Download the instructions for filling in the data
             </a>
           </div>    
@@ -402,7 +424,7 @@ export default function Page( )  {
                 icon='pi pi-save'
                 type='button'
                 loading={uploading}
-                disabled={validated < 100 || uploading || uploaded }
+                disabled={validated < 100 || validating ||  uploading || uploaded }
                 className='mr-2 mt-4 flex'
                 onClick={() => { setUploading(true); }} 
             /> 
@@ -410,7 +432,7 @@ export default function Page( )  {
         </>
         )}    
         {(validating) && ( 
-          <Message severity="warning" text="PRE-VALIDATING, Please Stay On This Page!" />
+          <Message severity="warn" content="PRE-VALIDATING, Please Stay On This Page!" />
         )}
       </div>
       {(map) && (    
@@ -420,66 +442,71 @@ export default function Page( )  {
       </div>
       )}
       <div className="card"> 
-      {( upload && upload.report && upload.report['errors'] && uploadType  && uploadType.sheets && (
+      {( upload && upload.report && upload.report['errors'] && uploadType  && uploadType.sheets && upload.report['errors'][uploadType.sheets[0]].constructor == Array && (
         <>
+        {( upload.report['total_errors'] > 0 ) && (
+          <Message severity="warn" content={"Found " + upload.report.total_errors + " Errors in " + uploadType.sheets[0] } />
+        )}
         {( uploadType.sheets[0] && upload.report['errors'][uploadType.sheets[0]] && (
           <>
-          {( upload.report['errors'][uploadType.sheets[0]]['total_errors'] > 0 ) && ( 
+          {( upload.report['errors'][uploadType.sheets[0]].length > 0 ) && ( 
             <ReportTable
               elements={upload.report['errors'][uploadType.sheets[0]]}
               headers={reportHeaders}
-              title={'Sheet "' + uploadType.sheets[0] + '": ' + upload.report['errors'][uploadType.sheets[0]]['total_errors'] + ' Errors'}
+              title={'Sheet "' + uploadType.sheets[0] + '": ' + upload.report['errors'][uploadType.sheets[0]].length + ' Errors'}
               className='p-mt-4 p-mb-4' />         
           )}
-          {( upload.report['errors'][uploadType.sheets[0]]['total_errors'] === 0 ) && ( 
+          {(  upload.report['errors'][uploadType.sheets[0]].length === 0 ) && ( 
             <div className="card">
               <h5 class="font-bold text-green-500">No errors found in sheet {uploadType.sheets[0]}</h5>
             </div> 
           )}
           </>
         ))}  
-        {( uploadType.sheets[1] && upload.report['errors'][uploadType.sheets[1]] && (
+        {( uploadType.sheets[1] && upload.report['errors'][uploadType.sheets[1]] && upload.report['errors'][uploadType.sheets[1]].constructor == Array &&(
           <> 
-          {( upload.report['errors'][uploadType.sheets[1]]['total_errors'] > 0 ) && ( 
+          {( upload.report['errors'][uploadType.sheets[1]].length > 0 ) && ( 
+           
             <ReportTable
               elements={upload.report['errors'][uploadType.sheets[1]]}
               headers={reportHeaders}
-              title={'Sheet "' + uploadType.sheets[1] + '": ' + upload.report['errors'][uploadType.sheets[1]]['total_errors'] + ' Errors'}
+              title={'Sheet "' + uploadType.sheets[1] + '": ' + upload.report['errors'][uploadType.sheets[1]].length + ' Errors'}
               className='p-mt-4 p-mb-4' />         
           )}
-          {( upload.report['errors'][uploadType.sheets[1]]['total_errors'] === 0 ) && ( 
+          {(  upload.report['errors'][uploadType.sheets[1]].length === 0 ) && ( 
+          
             <div className="card">
               <h5 class="font-bold text-green-500">No errors found in sheet {uploadType.sheets[1]}</h5>
             </div> 
           )}
           </>
         ))}
-        {( uploadType.sheets[2] && upload.report['errors'][uploadType.sheets[2]] && (
+        {( uploadType.sheets[2] && upload.report['errors'][uploadType.sheets[2]] && upload.report['errors'][uploadType.sheets[2]].constructor == Array && (
          <>
-          {( upload.report['errors'][uploadType.sheets[2]]['total_errors'] > 0 ) && ( 
+          {( upload.report['errors'][uploadType.sheets[2]].length > 0 ) && ( 
             <ReportTable
               elements={upload.report['errors'][uploadType.sheets[2]]}
               headers={reportHeaders}
-              title={'Sheet "' + uploadType.sheets[2] + '": ' + upload.report['errors'][uploadType.sheets[2]]['total_errors'] + ' Errors'}
+              title={'Sheet "' + uploadType.sheets[2] + '": ' + upload.report['errors'][uploadType.sheets[2]].length + ' Errors'}
               className='p-mt-4 p-mb-4' />         
           )}
-          {( upload.report['errors'][uploadType.sheets[2]]['total_errors'] === 0 ) && ( 
+          {( upload.report['errors'][uploadType.sheets[2]].length === 0 ) && ( 
             <div className="card">
               <h5 class="font-bold text-green-500">No errors found in sheet {uploadType.sheets[2]}</h5>
             </div> 
           )}
           </>
         ))}  
-        {( uploadType.sheets[3] && upload.report['errors'][uploadType.sheets[3]] && ( 
+        {( uploadType.sheets[3] && upload.report['errors'][uploadType.sheets[3]] && upload.report['errors'][uploadType.sheets[3]].constructor == Array && ( 
           <>
-          {( upload.report['errors'][uploadType.sheets[3]]['total_errors'] > 0 ) && ( 
+          {( upload.report['errors'][uploadType.sheets[3]].length > 0 ) && ( 
             <ReportTable
-              elements={upload.report['errors'][UploadService.TYPES[uploadType].sheets[3]]}
+              elements={upload.report['errors'][uploadType.sheets[3]]}
               headers={reportHeaders}
-              title={'Sheet "' + uploadType.sheets[3] + '": ' + upload.report['errors'][uploadType.sheets[3]]['total_errors'] + ' Errors'}
+              title={'Sheet "' + uploadType.sheets[3] + '": ' + upload.report['errors'][uploadType.sheets[3]].length + ' Errors'}
               className='p-mt-4 p-mb-4' />         
           )}
-          {( upload.report['errors'][uploadType.sheets[3]]['total_errors'] === 0 ) && ( 
+          {( upload.report['errors'][uploadType.sheets[3]].length === 0 ) && ( 
             <div className="card">
               <h5 class="font-bold text-green-500">No errors found in sheet {uploadType.sheets[3]}</h5>
             </div> 

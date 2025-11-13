@@ -31,7 +31,8 @@ UPLOAD_RESULTS = [
     ("CRITICAL_ERROR" , "CRITICAL_ERROR"),
 ]  
 UPLOAD_TYPES = [
-    ("XLS_P" , "XLSx Points Soil Data Upload"),
+    ("XLS_P" , "XLSx Points Soil Data Upload"),  
+    ("XLS_PH" , "XLSx Photo Data upload"),
     ("XLS_PJ" , "XLSx Projects Data upload"),
 ]
 UPLOAD_OPERATION = [
@@ -1919,13 +1920,13 @@ class PointGeneral(models.Model):
     elev_dem = models.DecimalField( max_digits=30, decimal_places=10, blank=True, null=True, db_comment='Altitude in meters retrived from a dem in meter')
     survey_m = models.TextField(choices=SURVEY_METHODS,  blank=True, null=True, db_comment='The code of the survey method')
     notes = models.TextField(blank=True, null=True)
+    project = models.TextField(blank=True, null=True)
 
     horizons_sequence = models.TextField(blank=True, null=True, db_comment='Horizons sequence of the point')
     old_cls = models.TextField(blank=True, null=True, db_comment='Old classification of the point ')
     new_cls = models.TextField(blank=True, null=True, db_comment='New classification of the point ')
     cls_sys = models.TextField(choices=CLASSIFICATION_SYSTEMS, blank=True, null=True, db_comment='value from p_classification_system ')
     old_id = models.TextField(blank=True, null=True, db_comment='point original code')
-    project = models.ForeignKey(Project, on_delete=models.SET_NULL, blank=True, null=True, related_name='pointgeneral_project_set', db_comment='Survey/Project identifier')
     
     coarsefragments =  models.OneToOneField(CoarseFragments, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='Coarse Fragments')
     litterlayer =  models.OneToOneField(LitterLayer, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='Litter Layer')
@@ -1935,6 +1936,7 @@ class PointGeneral(models.Model):
     landformtopography = models.OneToOneField(LandformTopography, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='landform_topography')
     climateandweather = models.OneToOneField(ClimateAndWeather, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='Climate weather')
     surfaceunevenness =  models.OneToOneField(SurfaceUnevenness, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='Surface Unevenness')
+    
     
     ## pointlayer_point_set PointLayer
 
@@ -2402,7 +2404,7 @@ class LayerRedoximorphicFeatures(models.Model):
     red_inner = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
     red_outer = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
     red_random = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    abund_oxi = models.DecimalField(max_digits=12, decimal_places=4, validators=[validate_percentage], db_comment='Abundance of cemented oximorphic features, by volume [%]')
+    abund_oxi = models.DecimalField(max_digits=12, decimal_places=4, validators=[validate_percentage], db_comment='Abundance of cemented oximorphic features, by volume [%]', blank=True, null=True)
     
     #redoximorphic_colour_redoximorphic_features_set from LayerRedoximorphicColour
     
@@ -2761,7 +2763,7 @@ class LayerNonMatrixPore(models.Model):
 class PointLayer(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')
     point = models.ForeignKey(PointGeneral, on_delete=models.CASCADE, related_name='pointlayer_point_set', db_comment='Foreign Key field: point') 
-    design = models.TextField(db_comment='layer horizon designation')
+    design = models.TextField(db_comment='layer horizon designation', blank=True, null=True )
     number = models.SmallIntegerField(validators=[validate_positive], db_comment='layer order in point')
     upper = models.DecimalField(max_digits=12, decimal_places=2, validators=[validate_positive], db_comment='upper depth in cm',blank=True, null=True)
     lower = models.DecimalField(max_digits=12, decimal_places=2, validators=[validate_positive], db_comment='lower depth in cm',blank=True, null=True)
@@ -2918,4 +2920,34 @@ class Request(models.Model):
             ('view', 'Can view backoffice data'),
             ('write', 'Can write backoffice data'),
         )
+
+###########################
+# Photos
+###########################
+
+
+PHOTO_TYPES = [
+    ("pit", "photo of the pit "),
+    ("site", "photo of the site"),
+]
+class Photo(models.Model):
+    id = models.TextField(primary_key=True, db_comment='Photo identifier ')
+    name = models.TextField( db_comment='Photo name and extension ')
+    caption = models.TextField(blank=True, null=True, db_comment='Description')
+    point = models.ForeignKey(PointGeneral, on_delete=models.CASCADE, related_name='photo_point_set', db_comment='Foreign Key field: point') 
+    type = models.TextField(choices=PHOTO_TYPES, blank=True, null=True)
+    gn_thumb = models.TextField(blank=True, null=True)
+    gn_link = models.TextField(blank=True, null=True)
+    gn_id = models.TextField(blank=True, null=True)
+    objects = models.Manager().using('backoffice')
+    
+    class Meta:
+        managed = True
+        db_table = 'photos'
+        db_table_comment = 'photos descriptor'
+        permissions = (
+            ('view', 'can view data'),
+            ('write', 'can write data'),
+        )
+
 

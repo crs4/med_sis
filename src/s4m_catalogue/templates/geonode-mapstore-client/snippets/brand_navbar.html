@@ -26,10 +26,9 @@
                 <div class="gn-menu-content-left">
                     <ul class="gn-menu-list s4m-menu">
                         <li>
-                            <a href="http://www.crs4.it">
+                            <a href="/">
                                 <img src="/static/img/logo.png">
                             </a>
-                            
                         </li>
                     </ul>                 
                 </div>
@@ -38,10 +37,18 @@
                 <div class="gn-menu-content-right">
                     <ul class="gn-menu-list s4m-menu">
                         {% if request.path == '/' %}
-                        <li style="float: right;">
-                        {% else  %} 
-                        <li>
-                        {% endif %}    
+                            {% if not request.user.is_authenticated %}
+                                <div style="position:absolute;top:170px;margin:-150px;">
+                            {% else  %}
+                                <div style="position:absolute;margin:-100px;">
+                            {% endif %} 
+                            {% block language_selector %}
+                                {% include './language_selector.html' with variant='primary' align_right=True %}
+                            {% endblock %}
+                        </div>
+                        {% endif %}
+                        <li>    
+                         
                             {% if not request.user.is_authenticated %}
                             <a id="sign-in" href="/account/login/?next=%2F" class="nav-link btn btn-info">
                                 <img src="/static/img/login.svg">
@@ -58,7 +65,7 @@
                     {% if request.path == '/' %}  
                     <div class="jumbotron">
                         <h1 class="home">Soils<span>4</span>Med</h1>
-                        <p class="home" style="font-weight: 500;"><span>S</span>oils <span>I</span>nformation <span>S</span>ystem</p>
+                        <p class="home" style="font-weight: 500;text-align: center;"><span>S</span>oils <span>I</span>nformation <span>S</span>ystem</p>
                     </div>
                     {% endif %}
                     <div>
@@ -68,7 +75,7 @@
                     <div style="margin:0.5rem;">
                         <ul class="gn-menu-list">
                             <ul class="s4m-menu" style="list-style: none;">
-                                <li class="s4m-menu-item" style="--s4m-menu-icon-bg: #057005;">
+                                <li class="s4m-menu-item" style="--s4m-menu-icon-bg: #ae5d08;">
                                     <a href="/catalogue/#/?f=dataset&f=map&filter%7Bkeywords.slug.in%7D=soil_map">
                                         <div class="s4m-menu-icon">
                                             <img src="/static/img/pedology_white.png">
@@ -88,29 +95,42 @@
                                             <img src="/static/img/maps.svg">
                                         </div>
                                         <div class="s4m-menu-label" style="font-weight: 600;">
-                                        {% if LANGUAGE == 'fr-fr' %} Carte  <br/>de sols  
-                                        {% elif LANGUAGE == 'it-it' %} Carta <br/>del suolo
-                                        {% elif LANGUAGE == 'es-es' %} Mapa <br/>de suelos 
+                                        {% if LANGUAGE == 'fr-fr' %} D'autres  <br/>cartes   
+                                        {% elif LANGUAGE == 'it-it' %} Altre <br/>mappe
+                                        {% elif LANGUAGE == 'es-es' %} Otros <br/>mapas 
                                         {% else  %} Other <br/>Maps
                                         {% endif %}
                                         </div>
                                     </a>
                                 </li>
                                 <li class="s4m-menu-item" style="--s4m-menu-icon-bg: #ae5d08;">
-                                    <a href="/soildata/legacy">
+                                    <a href="/catalogue/#/?f=dataset&f=map&filter%7Bkeywords.slug.in%7D=soil_point_data">
                                         <div class="s4m-menu-icon">
                                             <img src="/static/img/pedology_white.png">
                                         </div>
                                         <div class="s4m-menu-label" style="font-weight: 600;">
-                                        {% if LANGUAGE == 'fr-fr' %}  Point <br/>Soil Data
-                                        {% elif LANGUAGE == 'it-it' %} Point <br/>Soil Data
-                                        {% elif LANGUAGE == 'es-es' %} Point <br/>Soil Data
+                                        {% if LANGUAGE == 'fr-fr' %}  Données  <br/>Ponctuelles
+                                        {% elif LANGUAGE == 'it-it' %} Dati <br/>Puntuali
+                                        {% elif LANGUAGE == 'es-es' %} Datos  <br/>Puntuales
                                         {% else  %} Point <br/>Soil Data
                                         {% endif %}
                                         </div>
                                     </a>
                                 </li>
-                                
+                                <li class="s4m-menu-item" style="--s4m-menu-icon-bg: #057005;">
+                                    <a href="/catalogue/#/?f=document&filter%7Bkeywords.slug.in%7D=manual">
+                                        <div class="s4m-menu-icon">
+                                            <img src="/static/img/help.svg">
+                                        </div>
+                                        <div class="s4m-menu-label" style="font-weight: 600;">
+                                        {% if LANGUAGE == 'fr-fr' %} Manuels  <br/>d'aide
+                                        {% elif LANGUAGE == 'it-it' %} Manuali <br/>di aiuto
+                                        {% elif LANGUAGE == 'es-es' %} Manuales  <br/>de ayuda
+                                        {% else  %} Help <br/>manuals
+                                        {% endif %}
+                                        </div>
+                                    </a>
+                                </li>
                             </ul>
                         </ul>
                     </div>

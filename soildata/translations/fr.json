@@ -1,5 +1,8 @@
 {
   "default": {
+    "POINTS DATA" : "Soil Point Data",
+    "LABORATORY DATA" : "Laboratory Data",
+    "SOILS_MAP" : "Soils map",
     "SHOW_IN_MAP" : "Show in map",
     "INSPECT_PROFILE" : "Inspect profile",
     "CHOOSE_FILE" : "Choose file",

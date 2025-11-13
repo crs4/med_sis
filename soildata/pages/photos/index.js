@@ -27,7 +27,7 @@ export async function getStaticProps(context) {
   return {
     props: { 
       messages: (await import(`../../translations/${context.locale}.json`)).default
-     },
+    },
   }
 }
 

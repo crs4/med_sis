@@ -567,6 +567,13 @@ class RequestSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ('id',)  
 
- 
+#########################################
+## Photos 
+#########################################
+
+class PhotoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Photo 
+        fields = '__all__' 
 
   

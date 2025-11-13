@@ -1,17 +1,15 @@
 export const RequestService = {
-  
+   
   STATUSES : {
     CREATED :  "Created", 
-    ASSIGNED : "Assigned", 
-    REJECTED : "Rejected", 
+    ASSIGNED : "Assigned",  
     ELABORATED : "Elaborated",
     ELABORATING : "Elaborating", 
     CANCELLED : "Cancelled", 
   },
   TYPES : {
-    PROFILES :  "Profiles", 
-    SAMPLES : "Samples", 
-    INDICATOR : "Indicator", 
+    POINTDATA :  "Soil Point data", 
+    INDICATOR : "Soil Indicator", 
   },
   /* structure:
   return fetch('/demo/data/files.json', {

@@ -1,4 +1,77 @@
 const Taxonomies = {
+
+    'point_data_type' : {
+ 	    'P': 'Profile',
+	    'M': 'Minipit',
+	    'A': 'Auger hole',
+	    'OTH': 'Other specific method'
+    },
+    'p_technogenic_debris_cover_type' : {
+        'AN': 'Artesanal natural material', 
+        'ID': 'Industrial dust', 
+        'MM': 'Mixed material', 
+        'OG': 'Organic garbage', 
+        'PS': 'Pavements and paving stones', 
+        'SL': 'Synthetic liquid', 
+        'SS': 'Synthetic solid', 
+        'WL': 'Waste liquid'
+    },
+    'p_natural_surface_alterations_type' : {
+ 	    'DM': 'disturbance by mammals',
+	    'MH': 'mole\'s heaps',
+	    'SM': 'self-mulching',
+	    'OTH': 'Other specific method'
+    },
+    'p_patterned_compaction_type' : {
+ 	    'AM': 'Animal paths',
+	    'GT': 'Grazing terracettes',
+	    'TP': 'Technogenic paths',
+	    'OTH': 'Other'
+    },
+    'p_continuity_saline_efflorescence_type' : {
+ 	    'CN': 'Continuos',
+	    'DS': 'Discontinuos'
+    },
+    'p_sign_of_ploughing_type' : {
+        '0': 'No visible signs of tillage',
+	    '1': 'No-till',
+        '2': 'Signs of tillage in the past: ridges visible forming a pattern, but ridges less pronounced/flattened',
+	    '3': 'Signs of field recently tilled: patterns of ridges clearly visible that form a pattern'
+    },
+    'p_direction_of_ploughing_type' : {
+        '0': 'Not applicable',
+	    '1': 'Along contours',
+        '2': 'In slope direction, tangent to contour'
+    },
+    'p_tillage_mode' : {
+        '0': 'Not applicable',
+	    '1': 'Manual (hoe)',
+        '2': 'Animal traction (buffalo, bullock, cow, horse, mule/donkey)',
+        '3': 'Mechanical (tractor)'
+    },
+    'p_use_of_input' : {
+        '0': 'No visible signs',
+	    '1': 'Crop residues',
+        '2': 'Green manures and/or compost',
+        '3': 'Manure (FYM, cattle manure, chicken manure, etc.)',
+        '4': 'Inorganic fertilizer'
+    },
+    'p_irrigation_type' : {
+        '1': 'Surface / gravity (can be by use borders, basins, furrow, corrugation (i.e., parallel ridges and grooves, wild flooding, etc.)',
+        '2': 'Sprinkler (different types of sprinklers: central pivot, fixed set of sprinklers, travelling gun irrigation system, etc.)',
+        '3': 'Drip irrigation (trickle, dribble, or localized irrigation in which the water trickles onto or into the soil near the plant)',
+        '4': 'Not applicable'
+    },
+    'p_conservation_measure_type' : {
+        '1': 'Stone line',
+        '2': 'Bench terrace',
+        '3': 'Graded terrace',
+        '4': 'Contour bunds',
+        '5': 'Graded bunch',
+        '6': 'Drains, ditches, and furrows (for retention of water and/or soil)',
+        '7': 'Grass strips (vegetated strips)',
+        '8': 'Not applicable'
+    },
     'lab_data_classification' : {
         'U': 'USDA',
         'W': 'WRB',
@@ -155,7 +228,17 @@ const Taxonomies = {
         'AA': 'Ammonium Acetate (CH3COONH4)',
         'ME': 'Mehlich Extraction',
     },
-    'lab_electric_conductivity_ph_method' : {
+    'lab_electric_conductivity_ph_methods': {
+        'SP' : 'Saturated paste',
+        'OP' : 'Soil to water 1:2.5',
+        'OF' : 'Soil to water 1:5',
+        'OO' : 'Soil to water 1:1',
+        'OT' : 'Soil to water 1:2',
+        'OTH' : 'Other method',
+        'UN' : 'Unknown method',
+        'nd' : 'No Data',
+    }, 
+    'lab_electric_conductivity_ph_methods' : {
         'nd': 'No Data',
         'UN': 'Unknown method',
         'OTH': 'Other method',
@@ -165,15 +248,18 @@ const Taxonomies = {
         'OO': 'Soil to water 1:1',
         'OT': 'Soil to water 1:2',
     },
-    'lab_gypsum_content_method' : {
+    'lab_gypsum_content_methods' : {
         'nd': 'No Data',
         'UN': 'Unknown method',
         'OTH': 'Other method',
         'FA': 'Soluble Calcium, FAAS',
         'AT': 'Acetone, EDTA titration (George Holmgren)',
     },
-    'lab_hydraulic_conductivity_at_saturation_method' : {
-        'nd': 'No Data',
+    'lab_hydraulic_conductivity_at_saturation_methods' : {
+        'CP': 'Constant pressure',
+        'PD': 'Pressure drop',
+        'HA': 'Hole - auger',
+        'DT': 'Double tube',
         'UN': 'Unknown method',
         'OTH': 'Other method',
         'IN': 'Infiltrometer',
@@ -1023,35 +1109,6 @@ const Taxonomies = {
         'NO': 'No evidence of wind deposition',
         'nd': 'no data',
     },
-    'mn_zn_cu_method' : {
-        'nd': 'No Data',
-        'UN': 'Unknown method',
-        'OTH': 'Other method',
-        'EF': 'EDTA, FAAS',
-        'DF': 'DTPA, FAAS',
-    },
-    'n_content_method' : {
-        'nd': 'No Data',
-        'UN': 'Unknown method',
-        'OTH': 'Other method',
-        'KJ': 'Kjeldahl',
-        'EA': 'Elemental analyzer',
-        'CA': 'Coleman nitrogen analyzer',
-    },
-    'organic_carbon_content_method' : {
-        'nd': 'No Data',
-        'UN': 'Unknown method',
-        'OTH': 'Other method',
-        'WB': 'Sieving',
-        'EA': 'Hydrometer method',
-        'SK': 'Springer & Klee',
-    },
-    'organic_matter_content_method' : {
-        'nd': 'No Data',
-        'UN': 'Unknown method',
-        'OTH': 'Other method',
-        'MF': 'Muffle',
-    },
     'p_classification_system' : {
         'nd': 'No Data',
         'US60': 'class_sys: USDA; year:1960',
@@ -1693,6 +1750,13 @@ const Taxonomies = {
         'OTH': 'Other method',
         'PP': 'Pressure Plate Method',
     },
+    'bulk_density_methods' : {
+	    'CM': 'Core method',
+        'EM': 'Excavation method',
+	    'LM': 'Clod method',
+        'OTH': 'Other method',
+        'UN': 'Unknown method'
+    },
     'corine_land_cover' : {
         '1'     : 'Artificial areas.',   
         '11'   : 'Urban fabric Areas. Urban fabric Areas mainly occupied by dwellings and buildings used by administrative/public utilities, including their connected areas (associated lands, approach road network, parking lots)', 
@@ -1759,9 +1823,14 @@ const Taxonomies = {
         '522' : 'Estuaries. The mouth of a river under tidal influence within which the tide ebbs and flows.', 
         '523' : 'Sea and ocean. Zone seaward of the lowest tide limit.', 
     },
+    'photo_type' : {
+         'pit' : 'Photo of the pit',
+         'site' : 'Photo of the site'
+    },
     'xlsx_upload_types' : {
         'XLSX_P' : 'XLSx Soil Data Point upload',
-        'XLSX_PJ' : 'XLSx Projects upload',
+        'XLSX_PJ' : 'XLSx Surveys Data upload',
+        'XLSX_PH' : 'XLSx Photos Metadata upload',
     },
     'XLS_P_sheets': {
         '1' : 'General and Surface',

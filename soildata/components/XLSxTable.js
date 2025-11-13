@@ -91,6 +91,8 @@ const XLSxTable = ({
           {rowData[3]==='-lon'? 'Wrong Logitude value field':''}
           {rowData[3]==='-rt'? 'found Rich Text instead of Plain Text':''}
           {rowData[3]==='-k'? 'Error: duplicate key found':''}
+          {rowData[3]==='-?'? 'Wrong text format':''}
+          {rowData[3]==='-photo'? 'Photo not in catalogue':''}
         </div>
       </div>
     </>

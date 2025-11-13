@@ -24,7 +24,7 @@ const Indicators =   {
     'WATER_INFILTRATION'  : { 'code' : 'WATER_INFILTRATION', 'name' : 'Water infiltration', 'type' : 'Physical', 'purpose' : 'PHYSICAL', 'reference' : 'Hydraulic conductivity at saturation by PTF and/or in the field by Beerkan test (Lassabatère et al., 2006)'},
     'WATER_STORAGE_CAPACITY'  : { 'code' : 'WATER_STORAGE_CAPACITY', 'name' : 'Water storage capacity', 'type' : 'Physical', 'purpose' : 'PHYSICAL', 'reference' : 'Water content at field capacity, water content at wilting point and water holding capacity by PTF and Water content saturation by cylinder method (Uhland, 1950) or PTF'},
     'MICROBIAL'  : { 'code' : 'MICROBIAL', 'name' : 'Microbial activity', 'type' : 'Biological', 'purpose' : 'BIOLOGICAL', 'reference' : 'PLFA (Siles et al., 2024)'},
-    'EARTHWORMS'  : { 'code' : 'EARTHWORMS', 'name' : 'Earthworms’ abundance and diversity', 'type' : 'Biological', 'purpose' : 'BIOLOGICAL', 'reference' : '(Shepherd et al., 2008)'},
+    'EARTHWORMS'  : { 'code' : 'EARTHWORMS', 'name' : 'Earthworms abundance and diversity', 'type' : 'Biological', 'purpose' : 'BIOLOGICAL', 'reference' : '(Shepherd et al., 2008)'},
 }
 									
 									

@@ -1198,4 +1198,29 @@ class RequestViewSet(viewsets.ModelViewSet):
         queryset = Request.objects.all()
         return queryset
 
+#########################################
+## Requests 
+#########################################
+   
+class PhotoViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint che permette di visualizzare e modificare le genealogie.
+    """
+    queryset = Photo.objects.all() 
+    serializer_class = PhotoSerializer
+    permission_classes = [permissions.IsAdminUser ]
+
+    def get_queryset(self):
+        """
+        Filtra le X in base ai parametri di query.
+        """
+        queryset = Photo.objects.all()
+
+        # Filtro per codice
+        id = self.request.query_params.get('id', None)
+        if id is not None:
+            queryset = queryset.filter(pk=id)
+
+        return queryset
+    
 

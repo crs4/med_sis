@@ -10,7 +10,8 @@ export const UploadService = {
 
   TYPES : {
     XLS_P :  {  name : "XLS_P", label : 'Point Soil Data', sheets: ['General and Surface','Layer descriptions','Lab data','Lab data by sampling depth'],},
-    XLS_PJ :   {  name : "XLS_PJ", label : 'Soil Surveys', sheets: ['Project'],},
+    XLS_PJ :   {  name : "XLS_PJ", label : 'Data Genealogy', sheets: ['Project'],},
+    XLS_PH :   {  name : "XLS_PH", label : 'Photos', sheets: ['Photos'],},
   },
 
   ACTIONS : {
@@ -49,6 +50,32 @@ export const UploadService = {
           },
         })
         if ( !response || !response.ok) {
+          // get error message from body or default to response status
+          return { data: null, error: true }
+        }
+        const isJson = response.headers.get('content-type')?.includes('application/json');
+        const data = isJson && await response.json();
+        return { data: data, error: null }
+      }
+      catch( error )  {
+        console.log(error)
+        return { data: null, error: error }
+      }
+    }
+  },
+
+  async getGnDocument(id, ck) { 
+    let csrftoken = getMyCookie(ck,'csrftoken');
+    if ( csrftoken )
+    { 
+      try {
+        let response = await fetch( `/api/v2/resources/?filter{resource_type}=document&filter{title}=${id}&format=json`, { 
+          headers: {
+            "X-CSRFToken" : csrftoken
+          },
+        })
+        
+        if ( !response || !response.ok ) {
           // get error message from body or default to response status
           return { data: null, error: true }
         }

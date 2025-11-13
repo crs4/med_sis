@@ -221,6 +221,9 @@ class LayerDegreeDecompositionAdmin(admin.ModelAdmin):
 class LayerNonMatrixPoreAdmin(admin.ModelAdmin):
     search_fields = ('id', )
     
+@admin.register(Photo)
+class PhotoAdmin(admin.ModelAdmin):
+    search_fields = ('id', )
 
 @admin.register(LayerStructure)
 class LayerConsistenceAdmin(admin.ModelAdmin):
