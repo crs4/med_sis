@@ -1,0 +1,19 @@
+<layer>
+  <name>surface_unevenness_geo</name>
+  <id>LayerInfoImpl--d81fc44:1994e223eb8:-73ae</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--d81fc44:1994e223eb8:-55f2</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--d81fc44:1994e223eb8:-73af</id>
+  </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2025-09-17 08:55:27.880 UTC</dateCreated>
+  <dateModified>2025-09-17 17:21:13.845 UTC</dateModified>
+</layer>

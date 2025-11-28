@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?><sld:StyledLayerDescriptor xmlns:sld="http://www.opengis.net/sld" xmlns="http://www.opengis.net/sld" xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc" version="1.0.0">
+  <sld:NamedLayer>
+    <sld:Name>Soil Map Italy -Sicily</sld:Name>
+    <sld:UserStyle>
+      <sld:Name>Soil Map Italy -Sicily</sld:Name>
+      <sld:Title>Soil Map Italy -Sicily</sld:Title>
+      <sld:FeatureTypeStyle>
+        <sld:Name>name</sld:Name>
+        <sld:Rule>
+          <sld:Name>Calcaric, Eutric,  Calcaric Gleyic, Calcaric Endoleptic, and Vertic Cambisol; Calcic Chernozem; Haplic, Leptic, Vertic, and Calcaric Phaeozem; Calcaric Regosol; Haplic Calcisol; Calcic Kastanozem</sld:Name>
+          <sld:PolygonSymbolizer>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#d753c1</sld:CssParameter>
+            </sld:Fill>
+          </sld:PolygonSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>Calcic, Sodic, and Haplic Vertisol; Fluvic and Calcaric Cambisol; Calcic Luvisol; Gypsiric Regosol</sld:Name>
+          <sld:PolygonSymbolizer>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#85cd58</sld:CssParameter>
+            </sld:Fill>
+          </sld:PolygonSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>Chromic, Calcic, and Haplic Luvisol; Haplic, Calcic, Chromic, and  Hyposodic Vertisol; Haplic Calcisol; Calcaric and Eutric Cambisol; Calcaric Regosol; Calcaric Phaeozem</sld:Name>
+          <sld:PolygonSymbolizer>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#cb5939</sld:CssParameter>
+            </sld:Fill>
+          </sld:PolygonSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>Endoleptic Luvisol (Vitric); Luvic Vitric Phaeozem (Siltic); Calcaric Leptosol; Dystric Andic Cambisol</sld:Name>
+          <sld:PolygonSymbolizer>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#2cc826</sld:CssParameter>
+            </sld:Fill>
+          </sld:PolygonSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>Eutric Leptosol; Andic, Eutric, Thaptoandic, and Calcaric Cambisol; Haplic Luvisol (Vitric); Vitric and Mollic Vitric Andosol; Tephric and Eutric Regosol</sld:Name>
+          <sld:PolygonSymbolizer>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#c851e6</sld:CssParameter>
+            </sld:Fill>
+          </sld:PolygonSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>Eutric Planosol (Sodic); Brunic Arenosol; Gleyic Solonchak; Luvic Phaeozem; Chromic and Leptic Luvisol; Eutric Fluvisol (Arenic); Eutric and Sapric Histosol; Mollic and Calcaric Gleysol; Gleyic Vertic Cambisol; Chromic Vertisol (Grumic); Salic Sodic Vert</sld:Name>
+          <sld:PolygonSymbolizer>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#ef1a37</sld:CssParameter>
+            </sld:Fill>
+          </sld:PolygonSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>Eutric, Calcaric, Dystric, Stagnic, Fluvic, Vertic, and Leptic Cambisol; Calcaric Regosol; Calcaric Leptosol; Haplic Luvisol (Profondic)</sld:Name>
+          <sld:PolygonSymbolizer>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#e6da57</sld:CssParameter>
+            </sld:Fill>
+          </sld:PolygonSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>Eutric, Calcaric, Vertic, and Fluvic Cambisol; Haplic Calcisol; Calcaric Regosol; Haplic, Luvic, Endoleptic, Leptic, and Skeletic Phaeozem; Luvic Kastanozem</sld:Name>
+          <sld:PolygonSymbolizer>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#d48a2a</sld:CssParameter>
+            </sld:Fill>
+          </sld:PolygonSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>Haplic and Leptic Umbrisol (Arenic, Humic); Dystric Cambisol; Umbric Leptosol; Silandic Andosol</sld:Name>
+          <sld:PolygonSymbolizer>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#eb1e81</sld:CssParameter>
+            </sld:Fill>
+          </sld:PolygonSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>Haplic and Petric Calcisol; Calcic, Chromic, and Skeletic Luvisol; Calcaric and Luvic Phaeozem; Calcaric Fluvisol; Haplic and Calcic Vertisol; Calcic Kastanozem; Eutric, Fluvic, Endogleyic, and Calcaric Cambisol; Vitric Andosol; Calcaric Regosol; Calcari</sld:Name>
+          <sld:PolygonSymbolizer>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#75d3d8</sld:CssParameter>
+            </sld:Fill>
+          </sld:PolygonSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>Haplic Calcisol (Hypercalcic); Mollic Vitric Andosol; Haplic Luvisol (Vitric)</sld:Name>
+          <sld:PolygonSymbolizer>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#a6dd10</sld:CssParameter>
+            </sld:Fill>
+          </sld:PolygonSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>Leptic and Luvic Phaeozem; Leptic and Chromic Luvisol; Haplic Calcisol; Calcic Chernozem; Calcaric Regosol; Calcaric Cambisol; Calcic Kastanozem; Calcaric Leptosol; Calcaric Arenosol</sld:Name>
+          <sld:PolygonSymbolizer>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#6cd5b5</sld:CssParameter>
+            </sld:Fill>
+          </sld:PolygonSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>Leptic Umbrisol; Dystric Leptic Cambisol; Eutric Regosol; Mollic Leptosol (Vitric); Mollic Vitric and Silandic Andosol</sld:Name>
+          <sld:PolygonSymbolizer>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#5278e7</sld:CssParameter>
+            </sld:Fill>
+          </sld:PolygonSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>Mollic, Eutrisilic, Vitric, and Silandic Andosol; Rendzic Leptosol; Eutric Leptic Cambisol (Humic); Eutrisilic Leptic Andosol (Mollic); Haplic Luvisol (Andic); Calcaric Fluvic Cambisol</sld:Name>
+          <sld:PolygonSymbolizer>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#268cd0</sld:CssParameter>
+            </sld:Fill>
+          </sld:PolygonSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>Rhodic, Leptic, Rendzic, Calcic, and Chromic Luvisol</sld:Name>
+          <sld:PolygonSymbolizer>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#6411ca</sld:CssParameter>
+            </sld:Fill>
+          </sld:PolygonSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>Urban areas</sld:Name>
+          <sld:PolygonSymbolizer>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#dcdcdc</sld:CssParameter>
+            </sld:Fill>
+          </sld:PolygonSymbolizer>
+        </sld:Rule>
+      </sld:FeatureTypeStyle>
+    </sld:UserStyle>
+  </sld:NamedLayer>
+</sld:StyledLayerDescriptor>
+

@@ -1,0 +1,19 @@
+<style>
+  <id>StyleInfoImpl-92bd292:1994dc6abb7:-7ffc</id>
+  <name>gadm41_esp_3</name>
+  <workspace>
+    <id>WorkspaceInfoImpl-78ff667e:12476299803:-7ffd</id>
+  </workspace>
+  <format>sld</format>
+  <languageVersion>
+    <version>1.0.0</version>
+  </languageVersion>
+  <filename>gadm41_esp_3.sld</filename>
+  <metadata>
+    <entry key="msEditorType">visual</entry>
+    <entry key="msStyleJSON">{&quot;name&quot;:&quot;Default Polygon&quot;,&quot;rules&quot;:[{&quot;name&quot;:&quot;Gray Polygon with Black Outline&quot;,&quot;symbolizers&quot;:[{&quot;kind&quot;:&quot;Fill&quot;,&quot;color&quot;:&quot;#aaaaaa&quot;,&quot;outlineColor&quot;:&quot;#d0021b&quot;,&quot;outlineWidth&quot;:0.5,&quot;symbolizerId&quot;:&quot;342b6951-924e-11f0-962e-7712cfe3890d&quot;,&quot;fillOpacity&quot;:0,&quot;outlineOpacity&quot;:1}],&quot;ruleId&quot;:&quot;342b6950-924e-11f0-962e-7712cfe3890d&quot;,&quot;collapsed&quot;:false}]}</entry>
+    <entry key="msMD5Hash">77bc818e035e1ce388527307da9c1d0e</entry>
+  </metadata>
+  <dateCreated>2025-09-15 14:28:13.127 UTC</dateCreated>
+  <dateModified>2025-09-16 09:42:32.102 UTC</dateModified>
+</style>

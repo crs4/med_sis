@@ -1,0 +1,19 @@
+<layer>
+  <name>points_geo</name>
+  <id>LayerInfoImpl-92bd292:1994dc6abb7:-7fea</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-92bd292:1994dc6abb7:-7fe7</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-92bd292:1994dc6abb7:-7feb</id>
+  </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2025-09-15 15:04:45.617 UTC</dateCreated>
+  <dateModified>2025-10-23 03:04:53.828 UTC</dateModified>
+</layer>

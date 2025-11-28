@@ -1,0 +1,19 @@
+<layer>
+  <name>point_photo_geo</name>
+  <id>LayerInfoImpl-7e26bd6:19a1e822e55:-7fb8</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-7e26bd6:19a1e822e55:-6b59</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-7e26bd6:19a1e822e55:-7fb9</id>
+  </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2025-10-26 06:05:14.529 UTC</dateCreated>
+  <dateModified>2025-10-26 06:06:34.6 UTC</dateModified>
+</layer>

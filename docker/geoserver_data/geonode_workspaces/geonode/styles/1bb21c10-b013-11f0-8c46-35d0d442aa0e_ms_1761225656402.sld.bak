@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?><sld:StyledLayerDescriptor xmlns:sld="http://www.opengis.net/sld" xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc" xmlns="http://www.opengis.net/sld" version="1.0.0">
+  <sld:NamedLayer>
+    <sld:Name>Opaque Raster</sld:Name>
+    <sld:UserStyle>
+      <sld:Name>Opaque Raster</sld:Name>
+      <sld:Title>Opaque Raster</sld:Title>
+      <sld:FeatureTypeStyle>
+        <sld:Name>name</sld:Name>
+        <sld:Rule>
+          <sld:RasterSymbolizer>
+            <sld:ColorMap>
+              <sld:ColorMapEntry color="#1A9641" opacity="1" quantity="0.0" label="Non sodic soil (0.0)"/>
+              <sld:ColorMapEntry color="#A6D96A" opacity="1" quantity="0.0375" label="Non sodic soil (0.0375)"/>
+              <sld:ColorMapEntry color="#FFFFC0" opacity="1" quantity="0.075" label="Non sodic soil (0.075)"/>
+              <sld:ColorMapEntry color="#FDAE61" opacity="1" quantity="0.1125" label="Non sodic soil (01125)"/>
+              <sld:ColorMapEntry color="#D7191C" opacity="1" quantity="0.15" label="Sodic soil (0.15)"/>
+            </sld:ColorMap>
+            <sld:ContrastEnhancement/>
+          </sld:RasterSymbolizer>
+        </sld:Rule>
+      </sld:FeatureTypeStyle>
+    </sld:UserStyle>
+  </sld:NamedLayer>
+</sld:StyledLayerDescriptor>
+

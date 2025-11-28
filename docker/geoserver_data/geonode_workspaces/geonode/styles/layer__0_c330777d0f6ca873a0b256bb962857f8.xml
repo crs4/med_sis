@@ -1,0 +1,19 @@
+<style>
+  <id>StyleInfoImpl--d81fc44:19981c4e487:-4b2e</id>
+  <name>layer__0_c330777d0f6ca873a0b256bb962857f8</name>
+  <workspace>
+    <id>WorkspaceInfoImpl-78ff667e:12476299803:-7ffd</id>
+  </workspace>
+  <format>sld</format>
+  <languageVersion>
+    <version>1.0.0</version>
+  </languageVersion>
+  <filename>layer__0_c330777d0f6ca873a0b256bb962857f8.sld</filename>
+  <metadata>
+    <entry key="msEditorType">visual</entry>
+    <entry key="msStyleJSON">{&quot;name&quot;:&quot;Blue Line&quot;,&quot;rules&quot;:[{&quot;name&quot;:&quot;Blue Line&quot;,&quot;symbolizers&quot;:[{&quot;kind&quot;:&quot;Line&quot;,&quot;color&quot;:&quot;#ff0000&quot;,&quot;symbolizerId&quot;:&quot;833abfb1-a7b5-11f0-8c58-dd1f1842f7f7&quot;,&quot;width&quot;:4,&quot;join&quot;:&quot;round&quot;,&quot;opacity&quot;:1}],&quot;ruleId&quot;:&quot;833abfb0-a7b5-11f0-8c58-dd1f1842f7f7&quot;}]}</entry>
+    <entry key="msMD5Hash">a50f086b9c01812f96e176782043f4ce</entry>
+  </metadata>
+  <dateCreated>2025-09-28 22:21:14.996 UTC</dateCreated>
+  <dateModified>2025-10-12 21:52:31.68 UTC</dateModified>
+</style>

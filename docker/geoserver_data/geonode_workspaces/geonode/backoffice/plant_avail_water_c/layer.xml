@@ -1,0 +1,19 @@
+<layer>
+  <name>plant_avail_water_c</name>
+  <id>LayerInfoImpl--d81fc44:1994e223eb8:-7393</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--d81fc44:1994e223eb8:-5fd8</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--d81fc44:1994e223eb8:-7394</id>
+  </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2025-09-17 16:36:50.23 UTC</dateCreated>
+  <dateModified>2025-09-17 17:20:35.682 UTC</dateModified>
+</layer>
