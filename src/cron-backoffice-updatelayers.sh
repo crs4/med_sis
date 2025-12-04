@@ -7,4 +7,4 @@ set +a
 
 export SPATIALITE_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/mod_spatialite.so
 cd /usr/src/s4m_catalogue
-python manage.py updatelayers --skip-geonode-registered -s backoffice
+python manage.py updatelayers -s backoffice
