@@ -12,14 +12,16 @@ def process_xlsx_upload(self, upload_id):
     """
     upload = None
     try:
+        logger.info(f"Starting processing upload {upload_id}")
         # Recupera l'oggetto XLSxUpload
         upload = XLSxUpload.objects.using('backoffice').get(id=upload_id)
         
         # Verifica che lo stato sia IN_PROCESS
         if upload.status != "IN_PROCESS":
-            logger.warning(f"Upload {upload_id} is not in IN_PROCESS status  (cuurente state: {upload.status})")
+            logger.warning(f"Upload {upload_id} is not in IN_PROCESS status  (current state: {upload.status})")
             return False
 
+        logger.info(f"Processing upload {upload_id} data...")
         service = XLSxUploadService()
         report = service.process_uploaded_data(upload_id)
         
@@ -27,9 +29,13 @@ def process_xlsx_upload(self, upload_id):
         upload.report = report
         if report.get('errors'):
             upload.status = "IMPORT_WITH_ERROR"
+            logger.warning(f"Upload {upload_id} completed with {len(report.get('errors', []))} errors")
+            for error in report.get('errors', [])[:5]:  # Log primi 5 errori
+                logger.error(f"Upload {upload_id} error: {error}")
         else:
             upload.status = "IMPORT_SUCCESS"
-        upload.save()
+            logger.info(f"Upload {upload_id} completed successfully with {len(report.get('operations', []))} operations")
+        upload.save(using='backoffice')
 
         upload.refresh_from_db(using='backoffice')
         logger.info(f"End of upload {upload_id} elaboration with status: {upload.status}")
