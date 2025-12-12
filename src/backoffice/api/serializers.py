@@ -9,6 +9,10 @@ from datetime import datetime
 
 from rest_framework import serializers
 from decimal import Decimal, ROUND_DOWN
+import logging
+
+# Configura il logger
+logger = logging.getLogger(__name__)
 
 ###########################
 ## Mixin
@@ -170,8 +174,45 @@ class XLSxUploadSerializer(serializers.ModelSerializer):
         instance = super().create(validated_data)
         instance.start_processing()
         return instance
-   
-###########################
+    
+    def update(self, instance, validated_data):
+        """
+        Override del metodo update per riavviare l'elaborazione
+        se vengono modificati i dati o l'operazione.
+        """
+        # Esegui l'aggiornamento standard dei campi
+        instance = super().update(instance, validated_data)
+        
+        # Controlla se sono stati modificati campi che richiedono un riprocessamento
+        # (es. 'data' o 'operation'). Se modifico il titolo non deve riprocessare.
+        # L'if il task solo se vengono modificati i campi che richiedono un ri-processamento.
+        if 'data' in validated_data and 'operation' in validated_data:
+            
+            # start_processing in models.py controlla: if self.status == "UPLOADED"
+            # Se l'oggetto era già stato processato (es. status "IMPORT_SUCCESS" o "IMPORT_WITH_ERRORS"), 
+            # start_processing fallisce. Dobbiamo forzare lo stato a "UPLOADED".
+            instance.status = "UPLOADED"
+            
+            # Pulisci eventuali report precedenti se necessario per chiarezza
+            instance.report = {} 
+            
+            instance.save(using='backoffice')
+            
+            # Avvia il processo
+            started = instance.start_processing()
+            
+            # Opzionale: Loggare se il processo non è partito per qualche motivo
+            if not started:
+                logger.error(
+                    f"Impossible to restart processing for upload ID {instance.id}. "
+                    f"Current status: {instance.status}. "
+                    "Check Celery configuration or model constraints."
+                )
+                # Opzionale: Aggiungere un warning nel report dell'oggetto
+                instance.report = {"warning": "Processing task failed to start automatically upon update."}
+                instance.save(using='backoffice')
+
+        return instance
 # Point\Monitorings Genealogy
 ###########################
 
