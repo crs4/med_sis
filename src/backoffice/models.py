@@ -2931,8 +2931,8 @@ PHOTO_TYPES = [
     ("site", "photo of the site"),
 ]
 class Photo(models.Model):
-    id = models.TextField(primary_key=True, db_comment='Photo identifier ')
-    name = models.TextField( db_comment='Photo name and extension ')
+    id = models.TextField(primary_key=True, db_comment='Photo identifier')
+    name = models.TextField(db_comment='Photo name and extension')
     caption = models.TextField(blank=True, null=True, db_comment='Description')
     point = models.ForeignKey(PointGeneral, on_delete=models.CASCADE, related_name='photo_point_set', db_comment='Foreign Key field: point') 
     type = models.TextField(choices=PHOTO_TYPES, blank=True, null=True)
