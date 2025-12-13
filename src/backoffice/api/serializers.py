@@ -180,6 +180,10 @@ class XLSxUploadSerializer(serializers.ModelSerializer):
         Override del metodo update per riavviare l'elaborazione
         se vengono modificati i dati o l'operazione.
         """
+        # --- DEBUG START ---
+        print(f"DEBUG: UPDATE chiamato per ID {instance.id}", flush=True)
+        print(f"DEBUG: Dati ricevuti (keys): {list(validated_data.keys())}", flush=True)
+        # --- DEBUG END ---
         # Esegui l'aggiornamento standard dei campi
         instance = super().update(instance, validated_data)
         
@@ -187,7 +191,7 @@ class XLSxUploadSerializer(serializers.ModelSerializer):
         # (es. 'data' o 'operation'). Se modifico il titolo non deve riprocessare.
         # L'if il task solo se vengono modificati i campi che richiedono un ri-processamento.
         if 'data' in validated_data and 'operation' in validated_data:
-            
+            print("DEBUG: Condizione IF soddisfatta. Avvio start_processing...", flush=True)
             # start_processing in models.py controlla: if self.status == "UPLOADED"
             # Se l'oggetto era già stato processato (es. status "IMPORT_SUCCESS" o "IMPORT_WITH_ERRORS"), 
             # start_processing fallisce. Dobbiamo forzare lo stato a "UPLOADED".
@@ -200,7 +204,9 @@ class XLSxUploadSerializer(serializers.ModelSerializer):
             
             # Avvia il processo
             started = instance.start_processing()
-            
+            print(f"DEBUG: start_processing restituito: {started}", flush=True)
+        else:
+            print("DEBUG: Condizione IF NON soddisfatta. Task saltato.", flush=True)
             # Opzionale: Loggare se il processo non è partito per qualche motivo
             if not started:
                 logger.error(
