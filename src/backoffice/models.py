@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+from django.db import transaction
 
 
 def validate_percentage(value):
@@ -58,8 +59,11 @@ class XLSxUpload(models.Model):
         from .tasks import process_xlsx_upload
         if self.status == "UPLOADED":
             self.status = "IN_PROCESS"
-            self.save()
-            process_xlsx_upload.delay(self.id)
+            self.save(using='backoffice')
+            # Questo garantisce che il task parta SOLO quando il dato è realmente scritto su DB.
+            transaction.on_commit(
+                lambda: process_xlsx_upload.delay(self.id),
+                using='backoffice')
             return True
         return False
 
