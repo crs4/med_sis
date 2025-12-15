@@ -1,5 +1,11 @@
+<<<<<<< HEAD
 import React, { useEffect, useState, useRef } from 'react';
 import Loading from '../../components/Loading';
+=======
+import React, { useEffect } from 'react';
+import Footer from '../../components/Footer';
+import ToDo from '../../components/ToDo';
+>>>>>>> 58dcde557d1da9070628851a32775b2507519611
 import { useTranslations } from 'next-intl';
 import { useUser } from '../../context/user';
 import { useRouter } from 'next/router';

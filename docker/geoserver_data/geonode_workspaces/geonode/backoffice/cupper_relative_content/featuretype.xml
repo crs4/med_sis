@@ -5,51 +5,49 @@
   <namespace>
     <id>NamespaceInfoImpl-78ff667e:12476299803:-7ffe</id>
   </namespace>
-  <title>Cupper relative content indicator (CuRC)</title>
-  <abstract>Cupper relative content indicator ( &apos;Contamination&apos; fao soilstat domain)  represents anthropic activity impact indicator based on Cu, Zn and Pb total concentrations (Weng et al., 2003)</abstract>
+  <title>Cupper relative content indicator</title>
+  <abstract>Cupper relative content indicator represents anthropic activity impact indicator based on Cu, Zn and Pb total concentrations (Weng et al., 2003)</abstract>
   <keywords>
     <string>features</string>
-    <string>soil indicator</string>
-    <string>Cu</string>
-    <string>CuRC</string>
-    <string>soil chemical health</string>
-    <string>cupper</string>
+    <string>chemical indicator</string>
+    <string>cupper_relative_content</string>
+    <string>Soil Chemical Health</string>
   </keywords>
   <metadataLinks>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=bc4eab87-e9c5-49e1-b8de-1d0c47351ad5&amp;outputschema=http%3A%2F%2Fwww.w3.org%2F2005%2FAtom&amp;elementsetname=full</content>
+      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=e50129de-929d-476b-be8e-9c17745cc9a6&amp;outputschema=http%3A%2F%2Fwww.w3.org%2F2005%2FAtom&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=bc4eab87-e9c5-49e1-b8de-1d0c47351ad5&amp;outputschema=http%3A%2F%2Fgcmd.gsfc.nasa.gov%2FAboutus%2Fxml%2Fdif%2F&amp;elementsetname=full</content>
+      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=e50129de-929d-476b-be8e-9c17745cc9a6&amp;outputschema=http%3A%2F%2Fgcmd.gsfc.nasa.gov%2FAboutus%2Fxml%2Fdif%2F&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=bc4eab87-e9c5-49e1-b8de-1d0c47351ad5&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2F2.0.2&amp;elementsetname=full</content>
+      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=e50129de-929d-476b-be8e-9c17745cc9a6&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2F2.0.2&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=bc4eab87-e9c5-49e1-b8de-1d0c47351ad5&amp;outputschema=urn%3Aoasis%3Anames%3Atc%3Aebxml-regrep%3Axsd%3Arim%3A3.0&amp;elementsetname=full</content>
+      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=e50129de-929d-476b-be8e-9c17745cc9a6&amp;outputschema=urn%3Aoasis%3Anames%3Atc%3Aebxml-regrep%3Axsd%3Arim%3A3.0&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>text/xml</type>
       <metadataType>FGDC</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=bc4eab87-e9c5-49e1-b8de-1d0c47351ad5&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2Fcsdgm&amp;elementsetname=full</content>
+      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=e50129de-929d-476b-be8e-9c17745cc9a6&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2Fcsdgm&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=bc4eab87-e9c5-49e1-b8de-1d0c47351ad5&amp;outputschema=http%3A%2F%2Fwww.isotc211.org%2F2005%2Fgmd&amp;elementsetname=full</content>
+      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=e50129de-929d-476b-be8e-9c17745cc9a6&amp;outputschema=http%3A%2F%2Fwww.isotc211.org%2F2005%2Fgmd&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/showmetadata/xsl/4</content>
+      <content>https://soils4med.crs4.it/showmetadata/xsl/17</content>
     </metadataLink>
   </metadataLinks>
   <nativeCRS>GEOGCS[&quot;WGS 84&quot;, 
@@ -92,8 +90,6 @@
   </store>
   <serviceConfiguration>false</serviceConfiguration>
   <simpleConversionEnabled>false</simpleConversionEnabled>
-  <internationalTitle/>
-  <internationalAbstract/>
   <maxFeatures>0</maxFeatures>
   <numDecimals>0</numDecimals>
   <padWithZeros>false</padWithZeros>

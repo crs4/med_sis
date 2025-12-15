@@ -5,6 +5,7 @@
   <namespace>
     <id>NamespaceInfoImpl-78ff667e:12476299803:-7ffe</id>
   </namespace>
+<<<<<<< HEAD
   <title>Point soil data: surface unevenness </title>
   <abstract>Surface unevenness can result from natural processes, human activities, or erosion. Report surface unevenness with an average height difference ≥ 5 cm</abstract>
   <keywords>
@@ -12,42 +13,80 @@
     <string>soil</string>
     <string>features</string>
     <string>surface unevenness</string>
+=======
+  <title>surface_unevenness_geo</title>
+  <abstract>Surface unevenness can result from natural processes, human activities, or erosion. Report surface unevenness with an average height difference ≥ 5 cm</abstract>
+  <keywords>
+    <string>Points Soil Data</string>
+    <string>Soils</string>
+    <string>features</string>
+    <string>surface_unevenness_geo</string>
+    <string>Soil Data Points</string>
+>>>>>>> 58dcde557d1da9070628851a32775b2507519611
   </keywords>
   <metadataLinks>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
+<<<<<<< HEAD
       <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=b71e27fe-7f9a-4521-be78-df64b384c964&amp;outputschema=http%3A%2F%2Fwww.w3.org%2F2005%2FAtom&amp;elementsetname=full</content>
+=======
+      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=bad28133-76cc-4aa8-92c9-cb799e8e4bf0&amp;outputschema=http%3A%2F%2Fwww.w3.org%2F2005%2FAtom&amp;elementsetname=full</content>
+>>>>>>> 58dcde557d1da9070628851a32775b2507519611
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
+<<<<<<< HEAD
       <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=b71e27fe-7f9a-4521-be78-df64b384c964&amp;outputschema=http%3A%2F%2Fgcmd.gsfc.nasa.gov%2FAboutus%2Fxml%2Fdif%2F&amp;elementsetname=full</content>
+=======
+      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=bad28133-76cc-4aa8-92c9-cb799e8e4bf0&amp;outputschema=http%3A%2F%2Fgcmd.gsfc.nasa.gov%2FAboutus%2Fxml%2Fdif%2F&amp;elementsetname=full</content>
+>>>>>>> 58dcde557d1da9070628851a32775b2507519611
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
+<<<<<<< HEAD
       <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=b71e27fe-7f9a-4521-be78-df64b384c964&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2F2.0.2&amp;elementsetname=full</content>
+=======
+      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=bad28133-76cc-4aa8-92c9-cb799e8e4bf0&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2F2.0.2&amp;elementsetname=full</content>
+>>>>>>> 58dcde557d1da9070628851a32775b2507519611
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
+<<<<<<< HEAD
       <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=b71e27fe-7f9a-4521-be78-df64b384c964&amp;outputschema=urn%3Aoasis%3Anames%3Atc%3Aebxml-regrep%3Axsd%3Arim%3A3.0&amp;elementsetname=full</content>
+=======
+      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=bad28133-76cc-4aa8-92c9-cb799e8e4bf0&amp;outputschema=urn%3Aoasis%3Anames%3Atc%3Aebxml-regrep%3Axsd%3Arim%3A3.0&amp;elementsetname=full</content>
+>>>>>>> 58dcde557d1da9070628851a32775b2507519611
     </metadataLink>
     <metadataLink>
       <type>text/xml</type>
       <metadataType>FGDC</metadataType>
+<<<<<<< HEAD
       <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=b71e27fe-7f9a-4521-be78-df64b384c964&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2Fcsdgm&amp;elementsetname=full</content>
+=======
+      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=bad28133-76cc-4aa8-92c9-cb799e8e4bf0&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2Fcsdgm&amp;elementsetname=full</content>
+>>>>>>> 58dcde557d1da9070628851a32775b2507519611
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
+<<<<<<< HEAD
       <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=b71e27fe-7f9a-4521-be78-df64b384c964&amp;outputschema=http%3A%2F%2Fwww.isotc211.org%2F2005%2Fgmd&amp;elementsetname=full</content>
+=======
+      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=bad28133-76cc-4aa8-92c9-cb799e8e4bf0&amp;outputschema=http%3A%2F%2Fwww.isotc211.org%2F2005%2Fgmd&amp;elementsetname=full</content>
+>>>>>>> 58dcde557d1da9070628851a32775b2507519611
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
+<<<<<<< HEAD
       <content>http://localhost/showmetadata/xsl/37</content>
+=======
+      <content>https://soils4med.crs4.it/showmetadata/xsl/34</content>
+>>>>>>> 58dcde557d1da9070628851a32775b2507519611
     </metadataLink>
   </metadataLinks>
   <nativeCRS>GEOGCS[&quot;WGS 84&quot;, 
@@ -63,13 +102,21 @@
   <nativeBoundingBox>
     <minx>-10.0</minx>
     <maxx>60.0</maxx>
+<<<<<<< HEAD
     <miny>10.0</miny>
+=======
+    <miny>20.0</miny>
+>>>>>>> 58dcde557d1da9070628851a32775b2507519611
     <maxy>60.0</maxy>
   </nativeBoundingBox>
   <latLonBoundingBox>
     <minx>-10.0</minx>
     <maxx>60.0</maxx>
+<<<<<<< HEAD
     <miny>10.0</miny>
+=======
+    <miny>20.0</miny>
+>>>>>>> 58dcde557d1da9070628851a32775b2507519611
     <maxy>60.0</maxy>
   </latLonBoundingBox>
   <projectionPolicy>FORCE_DECLARED</projectionPolicy>

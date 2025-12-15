@@ -5,50 +5,51 @@
   <namespace>
     <id>NamespaceInfoImpl-78ff667e:12476299803:-7ffe</id>
   </namespace>
-  <title>Point Soil Data: laboratory data</title>
-  <abstract>Laboratory data of Point Soil Data. It refers to analytical procedures for soil characterization and WRB Annex 2 provides summaries of recommended analytical procedures to be used. Full descriptions can be found in Procedures for soil analysis (Van Reeuwijk, 2002) and the USDA Kellogg Soil Survey Laboratory Methods Manual (Soil Survey Staff, 2014).</abstract>
+  <title>labdata_geo</title>
+  <abstract>Laboratory data of Legacy Point Soil Data. It refers to analytical procedures for soil characterization and WRB Annex 2 provides summaries of recommended analytical procedures to be used. Full descriptions can be found in Procedures for soil analysis (Van Reeuwijk, 2002) and the USDA Kellogg Soil Survey Laboratory Methods Manual (Soil Survey Staff, 2014).</abstract>
   <keywords>
-    <string>laboratory</string>
-    <string>point soil data</string>
-    <string>soil</string>
-    <string>point</string>
+    <string>Soil Physical Health</string>
+    <string>Points Soil Data</string>
+    <string>Soil Chemical Health</string>
+    <string>Soil Legacy Data</string>
+    <string>labdata_geo</string>
     <string>features</string>
   </keywords>
   <metadataLinks>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=fcbdee9f-5f9c-4827-a5c1-cb78d5ce3d4f&amp;outputschema=http%3A%2F%2Fwww.w3.org%2F2005%2FAtom&amp;elementsetname=full</content>
+      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=56a8d574-ca25-45d4-b767-2836b7e72518&amp;outputschema=http%3A%2F%2Fwww.w3.org%2F2005%2FAtom&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=fcbdee9f-5f9c-4827-a5c1-cb78d5ce3d4f&amp;outputschema=http%3A%2F%2Fgcmd.gsfc.nasa.gov%2FAboutus%2Fxml%2Fdif%2F&amp;elementsetname=full</content>
+      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=56a8d574-ca25-45d4-b767-2836b7e72518&amp;outputschema=http%3A%2F%2Fgcmd.gsfc.nasa.gov%2FAboutus%2Fxml%2Fdif%2F&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=fcbdee9f-5f9c-4827-a5c1-cb78d5ce3d4f&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2F2.0.2&amp;elementsetname=full</content>
+      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=56a8d574-ca25-45d4-b767-2836b7e72518&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2F2.0.2&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=fcbdee9f-5f9c-4827-a5c1-cb78d5ce3d4f&amp;outputschema=urn%3Aoasis%3Anames%3Atc%3Aebxml-regrep%3Axsd%3Arim%3A3.0&amp;elementsetname=full</content>
+      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=56a8d574-ca25-45d4-b767-2836b7e72518&amp;outputschema=urn%3Aoasis%3Anames%3Atc%3Aebxml-regrep%3Axsd%3Arim%3A3.0&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>text/xml</type>
       <metadataType>FGDC</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=fcbdee9f-5f9c-4827-a5c1-cb78d5ce3d4f&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2Fcsdgm&amp;elementsetname=full</content>
+      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=56a8d574-ca25-45d4-b767-2836b7e72518&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2Fcsdgm&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=fcbdee9f-5f9c-4827-a5c1-cb78d5ce3d4f&amp;outputschema=http%3A%2F%2Fwww.isotc211.org%2F2005%2Fgmd&amp;elementsetname=full</content>
+      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=56a8d574-ca25-45d4-b767-2836b7e72518&amp;outputschema=http%3A%2F%2Fwww.isotc211.org%2F2005%2Fgmd&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/showmetadata/xsl/5</content>
+      <content>https://soils4med.crs4.it/showmetadata/xsl/18</content>
     </metadataLink>
   </metadataLinks>
   <nativeCRS>GEOGCS[&quot;WGS 84&quot;, 

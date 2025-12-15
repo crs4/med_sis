@@ -1,0 +1,21 @@
+<style>
+  <id>StyleInfoImpl--d81fc44:1997aefcd4c:-38d5</id>
+  <name>8d81a850-9930-11f0-9489-3127f8531725_ms_campionamenti</name>
+  <workspace>
+    <id>WorkspaceInfoImpl-78ff667e:12476299803:-7ffd</id>
+  </workspace>
+  <format>sld</format>
+  <languageVersion>
+    <version>1.0.0</version>
+  </languageVersion>
+  <filename>8d81a850-9930-11f0-9489-3127f8531725_ms_campionamenti.sld</filename>
+  <metadata>
+    <entry key="msEditorType">textarea</entry>
+    <entry key="gnDatasetPk">46</entry>
+    <entry key="msStyleJSON">{&quot;name&quot;:&quot;Red Square Point&quot;,&quot;rules&quot;:[{&quot;name&quot;:&quot;Point&quot;,&quot;symbolizers&quot;:[{&quot;kind&quot;:&quot;Mark&quot;,&quot;color&quot;:&quot;#FFAA00&quot;,&quot;radius&quot;:4,&quot;wellKnownName&quot;:&quot;Circle&quot;,&quot;strokeColor&quot;:&quot;#990000&quot;,&quot;strokeWidth&quot;:2,&quot;symbolizerId&quot;:&quot;8fc815e1-9930-11f0-9489-3127f8531725&quot;}],&quot;ruleId&quot;:&quot;8fc815e0-9930-11f0-9489-3127f8531725&quot;,&quot;filter&quot;:{&quot;filterFields&quot;:[],&quot;groupFields&quot;:[{&quot;id&quot;:1,&quot;logic&quot;:&quot;AND&quot;,&quot;index&quot;:0}]}}]}</entry>
+    <entry key="msMD5Hash">a5999a9ba129550efa90d646d31d8cfe</entry>
+    <entry key="title">campionamenti</entry>
+  </metadata>
+  <dateCreated>2025-09-24 10:24:02.844 UTC</dateCreated>
+  <dateModified>2025-09-26 10:58:10.599 UTC</dateModified>
+</style>

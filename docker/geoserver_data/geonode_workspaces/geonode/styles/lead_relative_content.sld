@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <NamedLayer>
-    <Name>Lead Relative Content (%)</Name>
+    <Name>lead_relative_content</Name>
     <UserStyle>
-      <Name>lead_relative_content</Name>
-      <Title>Lead Relative Content (%)</Title>
+      <Name>circle_point</Name>
+      <Title>Point Red Symbol Border</Title>
       <FeatureTypeStyle>
         <Rule>
           <Name>Lead under content</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>value</PropertyName>
+                <PropertyName>pb_rc</PropertyName>
                 <Literal>0</Literal>
               </PropertyIsGreaterThanOrEqualTo>
               <PropertyIsLessThan>
-                <PropertyName>value</PropertyName>
-                <Literal>3.02</Literal>
+                <PropertyName>pb_rc</PropertyName>
+                <Literal>3.2</Literal>
               </PropertyIsLessThan>
             </And>
           </Filter>
@@ -44,13 +44,13 @@
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>3.02</Literal>
+                <PropertyName>pb_rc</PropertyName>
+                <Literal>3.2</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThanOrEqualTo>
-                <PropertyName>value</PropertyName>
+              <PropertyIsLessThan>
+                <PropertyName>pb_rc</PropertyName>
                 <Literal>39.5</Literal>
-              </PropertyIsLessThanOrEqualTo>
+              </PropertyIsLessThan>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -71,20 +71,16 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
+
+
         <Rule>
           <Name>Lead over enrichment</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-          <And>
-	        <PropertyIsGreaterThan>
-                <PropertyName>value</PropertyName>
+             <PropertyIsGreaterThanOrEqualTo>
+                <PropertyName>pb_rc</PropertyName>
                 <Literal>39.5</Literal>
-            </PropertyIsGreaterThan>
-	        <PropertyIsLessThanOrEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>100</Literal>
-            </PropertyIsLessThanOrEqualTo>
-	      </And>
-          </Filter>
+              </PropertyIsGreaterThanOrEqualTo>
+             </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>

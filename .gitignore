@@ -50,6 +50,7 @@ coverage.xml
 # Django stuff:
 *.log
 celerybeat-schedule.*
+src/celerybeat-schedule
 
 # Sphinx documentation
 docs/_build/

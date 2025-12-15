@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <NamedLayer>
+    <Name>carta_marmilla</Name>
+    <UserStyle>
+      <Name>carta_marmilla</Name>
+      <Title>carta_marmilla</Title>
+      <FeatureTypeStyle>
+        <Rule>
+          <Name>“Terre rosse” colluviali (Cumulic Rhodoxerafs)</Name>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#691cdd</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>“Terre rosse”, “Terre rosse” brunificate e Litosuoli (Typic Rhodoxerafs, Typic Haploxerafs, Lithic Rhodoxerafs)</Name>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#ddd343</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Litosuoli e Roccia affiorante (Lithic Xerorthents)</Name>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#54ccb0</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Litosuoli e Roccia affiorante (Lithic-Ruptic Xerochrepts)</Name>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#31ee41</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Regosuoli e Litosuoli (Ruptic Xerorthents, Lithic Xerorthents)</Name>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#0dce47</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Regosuoli sabbiosi e Terre brune (Typic Xeropsamments, Typic Xerochrepts)</Name>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#32d78a</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Roccia affiorante e Litosuoli (Lithic Xerorthents)</Name>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#5eeae1</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Roccia affiorante e Litosuoli (Lithic-Ruptic Haploxerafs)</Name>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#d787f0</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Roccia affiorante e Litosuoli (Lithic-Ruptic Xerochrepts)</Name>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#e88ba7</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Roccia affiorante, Litosuoli e “Terre rosse” erose (Lithic Rhodoxerafs, Ruptic Rhodoxerafs)</Name>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#485ed8</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Roccia affiorante, Litosuoli e Regosuoli (Lithic-Ruptic Xerorthents)</Name>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#2ad22a</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Roccia affiorante, Litosuoli e Terre brune eutrofiche (Lithic-Ruptic Xerochrepts, Andic Xerochrepts)</Name>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#7fddc1</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Suoli a tessitura argillosa o argillo-limosa (Vertic Xerofluvents)</Name>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#c868c8</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Suoli a tessitura limosa o limo-sabbiosa (Typic Xerofluvents, Psammentic Xerofluvents)</Name>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#59e532</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Suoli idromorfi non organici (Vertic Udifluvents)</Name>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#51da71</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Suoli lisciviati (Aquic Palexeralfs, Typic Palexeralfs)</Name>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#d28451</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Suoli poco lisciviati (Typic Haploxeralfs)</Name>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#dee682</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Terre brune e Regosuoli (Typic Xerochrepts, Aquic Xerorthents)</Name>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#ec3bc0</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Terre brune e Regosuoli (Vertic Xerochrepts, Ruptic Xerorthents)</Name>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#d94a54</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Terre brune erose e Litosuoli (Ruptic-Andic Xerochrepts, Lithic Xerochrepts)</Name>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#cd3282</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Terre brune erose, Terre brune e Litosuoli (Ruptic Xerochrepts, Typic Xerochrepts, Lithic Xerochrepts)</Name>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#cf8b16</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Terre brune eutrofiche e Litosuoli (Andic Xerochrepts, Lithic Xerochrepts)</Name>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#9834ef</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Terre brune, Terre brune erose e Litosuoli (Ultic Haploxerafs, Ruptic Palexeralfs, Lithic Palexeralfs)</Name>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#72d621</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Vertisuoli (Typic Chromoxererts)</Name>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#8e72ce</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>Vertisuoli (Typic Pelloxererts)</Name>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#1f9ae7</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+        <Rule>
+          <Name>other</Name>
+          <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#d27d32</CssParameter>
+            </Fill>
+            <Stroke>
+              <CssParameter name="stroke">#232323</CssParameter>
+            </Stroke>
+          </PolygonSymbolizer>
+        </Rule>
+      </FeatureTypeStyle>
+    </UserStyle>
+  </NamedLayer>
+</StyledLayerDescriptor>

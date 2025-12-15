@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="UTF-8"?><sld:StyledLayerDescriptor xmlns:sld="http://www.opengis.net/sld" xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc" xmlns="http://www.opengis.net/sld" version="1.0.0">
+  <sld:NamedLayer>
+    <sld:Name>Default Styler</sld:Name>
+    <sld:UserStyle>
+      <sld:Name>Default Styler</sld:Name>
+      <sld:Title>Classified by project</sld:Title>
+      <sld:FeatureTypeStyle>
+        <sld:Name>name</sld:Name>
+        <sld:Rule>
+          <sld:Name>LOC</sld:Name>
+          <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+              <ogc:PropertyName>project</ogc:PropertyName>
+              <ogc:Literal>LOC</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+          </ogc:Filter>
+          <sld:PointSymbolizer>
+            <sld:Graphic>
+              <sld:Mark>
+                <sld:WellKnownName>circle</sld:WellKnownName>
+                <sld:Fill>
+                  <sld:CssParameter name="fill">#1f78b4</sld:CssParameter>
+                </sld:Fill>
+                <sld:Stroke/>
+              </sld:Mark>
+              <sld:Size>15</sld:Size>
+            </sld:Graphic>
+          </sld:PointSymbolizer>
+          <sld:TextSymbolizer>
+            <sld:Label>
+              <ogc:PropertyName>project</ogc:PropertyName>
+            </sld:Label>
+            <sld:Font>
+              <sld:CssParameter name="font-family">Arial</sld:CssParameter>
+              <sld:CssParameter name="font-size">13</sld:CssParameter>
+              <sld:CssParameter name="font-style">normal</sld:CssParameter>
+              <sld:CssParameter name="font-weight">normal</sld:CssParameter>
+            </sld:Font>
+            <sld:LabelPlacement>
+              <sld:PointPlacement>
+                <sld:AnchorPoint>
+                  <sld:AnchorPointX>1</sld:AnchorPointX>
+                  <sld:AnchorPointY>1</sld:AnchorPointY>
+                </sld:AnchorPoint>
+                <sld:Displacement>
+                  <sld:DisplacementX>0</sld:DisplacementX>
+                  <sld:DisplacementY>-15</sld:DisplacementY>
+                </sld:Displacement>
+              </sld:PointPlacement>
+            </sld:LabelPlacement>
+            <sld:Halo>
+              <sld:Radius>1</sld:Radius>
+              <sld:Fill>
+                <sld:CssParameter name="fill">#FFFFFF</sld:CssParameter>
+              </sld:Fill>
+            </sld:Halo>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#000000</sld:CssParameter>
+            </sld:Fill>
+          </sld:TextSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>MAN</sld:Name>
+          <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+              <ogc:PropertyName>project</ogc:PropertyName>
+              <ogc:Literal>MAN</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+          </ogc:Filter>
+          <sld:PointSymbolizer>
+            <sld:Graphic>
+              <sld:Mark>
+                <sld:WellKnownName>circle</sld:WellKnownName>
+                <sld:Fill>
+                  <sld:CssParameter name="fill">#33a05c</sld:CssParameter>
+                </sld:Fill>
+                <sld:Stroke/>
+              </sld:Mark>
+              <sld:Size>15</sld:Size>
+            </sld:Graphic>
+          </sld:PointSymbolizer>
+          <sld:TextSymbolizer>
+            <sld:Label>
+              <ogc:PropertyName>project</ogc:PropertyName>
+            </sld:Label>
+            <sld:Font>
+              <sld:CssParameter name="font-family">Arial</sld:CssParameter>
+              <sld:CssParameter name="font-size">13</sld:CssParameter>
+              <sld:CssParameter name="font-style">normal</sld:CssParameter>
+              <sld:CssParameter name="font-weight">normal</sld:CssParameter>
+            </sld:Font>
+            <sld:LabelPlacement>
+              <sld:PointPlacement>
+                <sld:AnchorPoint>
+                  <sld:AnchorPointX>1</sld:AnchorPointX>
+                  <sld:AnchorPointY>1</sld:AnchorPointY>
+                </sld:AnchorPoint>
+                <sld:Displacement>
+                  <sld:DisplacementX>0</sld:DisplacementX>
+                  <sld:DisplacementY>-15</sld:DisplacementY>
+                </sld:Displacement>
+              </sld:PointPlacement>
+            </sld:LabelPlacement>
+            <sld:Halo>
+              <sld:Radius>1</sld:Radius>
+              <sld:Fill>
+                <sld:CssParameter name="fill">#FFFFFF</sld:CssParameter>
+              </sld:Fill>
+            </sld:Halo>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#000000</sld:CssParameter>
+            </sld:Fill>
+          </sld:TextSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>ORR</sld:Name>
+          <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+              <ogc:PropertyName>project</ogc:PropertyName>
+              <ogc:Literal>ORR</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+          </ogc:Filter>
+          <sld:PointSymbolizer>
+            <sld:Graphic>
+              <sld:Mark>
+                <sld:WellKnownName>circle</sld:WellKnownName>
+                <sld:Fill>
+                  <sld:CssParameter name="fill">#e31a1c</sld:CssParameter>
+                </sld:Fill>
+                <sld:Stroke/>
+              </sld:Mark>
+              <sld:Size>15</sld:Size>
+            </sld:Graphic>
+          </sld:PointSymbolizer>
+          <sld:TextSymbolizer>
+            <sld:Label>
+              <ogc:PropertyName>project</ogc:PropertyName>
+            </sld:Label>
+            <sld:Font>
+              <sld:CssParameter name="font-family">Arial</sld:CssParameter>
+              <sld:CssParameter name="font-size">13</sld:CssParameter>
+              <sld:CssParameter name="font-style">normal</sld:CssParameter>
+              <sld:CssParameter name="font-weight">normal</sld:CssParameter>
+            </sld:Font>
+            <sld:LabelPlacement>
+              <sld:PointPlacement>
+                <sld:AnchorPoint>
+                  <sld:AnchorPointX>1</sld:AnchorPointX>
+                  <sld:AnchorPointY>1</sld:AnchorPointY>
+                </sld:AnchorPoint>
+                <sld:Displacement>
+                  <sld:DisplacementX>0</sld:DisplacementX>
+                  <sld:DisplacementY>-15</sld:DisplacementY>
+                </sld:Displacement>
+              </sld:PointPlacement>
+            </sld:LabelPlacement>
+            <sld:Halo>
+              <sld:Radius>1</sld:Radius>
+              <sld:Fill>
+                <sld:CssParameter name="fill">#FFFFFF</sld:CssParameter>
+              </sld:Fill>
+            </sld:Halo>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#000000</sld:CssParameter>
+            </sld:Fill>
+          </sld:TextSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>RIA</sld:Name>
+          <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+              <ogc:PropertyName>project</ogc:PropertyName>
+              <ogc:Literal>RIA</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+          </ogc:Filter>
+          <sld:PointSymbolizer>
+            <sld:Graphic>
+              <sld:Mark>
+                <sld:WellKnownName>circle</sld:WellKnownName>
+                <sld:Fill>
+                  <sld:CssParameter name="fill">#ff7f00</sld:CssParameter>
+                </sld:Fill>
+                <sld:Stroke/>
+              </sld:Mark>
+              <sld:Size>15</sld:Size>
+            </sld:Graphic>
+          </sld:PointSymbolizer>
+          <sld:TextSymbolizer>
+            <sld:Label>
+              <ogc:PropertyName>project</ogc:PropertyName>
+            </sld:Label>
+            <sld:Font>
+              <sld:CssParameter name="font-family">Arial</sld:CssParameter>
+              <sld:CssParameter name="font-size">13</sld:CssParameter>
+              <sld:CssParameter name="font-style">normal</sld:CssParameter>
+              <sld:CssParameter name="font-weight">normal</sld:CssParameter>
+            </sld:Font>
+            <sld:LabelPlacement>
+              <sld:PointPlacement>
+                <sld:AnchorPoint>
+                  <sld:AnchorPointX>1</sld:AnchorPointX>
+                  <sld:AnchorPointY>1</sld:AnchorPointY>
+                </sld:AnchorPoint>
+                <sld:Displacement>
+                  <sld:DisplacementX>0</sld:DisplacementX>
+                  <sld:DisplacementY>-15</sld:DisplacementY>
+                </sld:Displacement>
+              </sld:PointPlacement>
+            </sld:LabelPlacement>
+            <sld:Halo>
+              <sld:Radius>1</sld:Radius>
+              <sld:Fill>
+                <sld:CssParameter name="fill">#FFFFFF</sld:CssParameter>
+              </sld:Fill>
+            </sld:Halo>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#000000</sld:CssParameter>
+            </sld:Fill>
+          </sld:TextSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>COC</sld:Name>
+          <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+              <ogc:PropertyName>project</ogc:PropertyName>
+              <ogc:Literal>COC</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+          </ogc:Filter>
+          <sld:PointSymbolizer>
+            <sld:Graphic>
+              <sld:Mark>
+                <sld:WellKnownName>circle</sld:WellKnownName>
+                <sld:Fill>
+                  <sld:CssParameter name="fill">#6a3d9a</sld:CssParameter>
+                </sld:Fill>
+                <sld:Stroke/>
+              </sld:Mark>
+              <sld:Size>15</sld:Size>
+            </sld:Graphic>
+          </sld:PointSymbolizer>
+          <sld:TextSymbolizer>
+            <sld:Label>
+              <ogc:PropertyName>project</ogc:PropertyName>
+            </sld:Label>
+            <sld:Font>
+              <sld:CssParameter name="font-family">Arial</sld:CssParameter>
+              <sld:CssParameter name="font-size">13</sld:CssParameter>
+              <sld:CssParameter name="font-style">normal</sld:CssParameter>
+              <sld:CssParameter name="font-weight">normal</sld:CssParameter>
+            </sld:Font>
+            <sld:LabelPlacement>
+              <sld:PointPlacement>
+                <sld:AnchorPoint>
+                  <sld:AnchorPointX>1</sld:AnchorPointX>
+                  <sld:AnchorPointY>1</sld:AnchorPointY>
+                </sld:AnchorPoint>
+                <sld:Displacement>
+                  <sld:DisplacementX>0</sld:DisplacementX>
+                  <sld:DisplacementY>-15</sld:DisplacementY>
+                </sld:Displacement>
+              </sld:PointPlacement>
+            </sld:LabelPlacement>
+            <sld:Halo>
+              <sld:Radius>1</sld:Radius>
+              <sld:Fill>
+                <sld:CssParameter name="fill">#FFFFFF</sld:CssParameter>
+              </sld:Fill>
+            </sld:Halo>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#000000</sld:CssParameter>
+            </sld:Fill>
+          </sld:TextSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>CUB</sld:Name>
+          <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+              <ogc:PropertyName>project</ogc:PropertyName>
+              <ogc:Literal>CUB</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+          </ogc:Filter>
+          <sld:PointSymbolizer>
+            <sld:Graphic>
+              <sld:Mark>
+                <sld:WellKnownName>circle</sld:WellKnownName>
+                <sld:Fill>
+                  <sld:CssParameter name="fill">#b15958</sld:CssParameter>
+                </sld:Fill>
+                <sld:Stroke/>
+              </sld:Mark>
+              <sld:Size>15</sld:Size>
+            </sld:Graphic>
+          </sld:PointSymbolizer>
+          <sld:TextSymbolizer>
+            <sld:Label>
+              <ogc:PropertyName>project</ogc:PropertyName>
+            </sld:Label>
+            <sld:Font>
+              <sld:CssParameter name="font-family">Arial</sld:CssParameter>
+              <sld:CssParameter name="font-size">13</sld:CssParameter>
+              <sld:CssParameter name="font-style">normal</sld:CssParameter>
+              <sld:CssParameter name="font-weight">normal</sld:CssParameter>
+            </sld:Font>
+            <sld:LabelPlacement>
+              <sld:PointPlacement>
+                <sld:AnchorPoint>
+                  <sld:AnchorPointX>1</sld:AnchorPointX>
+                  <sld:AnchorPointY>1</sld:AnchorPointY>
+                </sld:AnchorPoint>
+                <sld:Displacement>
+                  <sld:DisplacementX>0</sld:DisplacementX>
+                  <sld:DisplacementY>-15</sld:DisplacementY>
+                </sld:Displacement>
+              </sld:PointPlacement>
+            </sld:LabelPlacement>
+            <sld:Halo>
+              <sld:Radius>1</sld:Radius>
+              <sld:Fill>
+                <sld:CssParameter name="fill">#FFFFFF</sld:CssParameter>
+              </sld:Fill>
+            </sld:Halo>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#000000</sld:CssParameter>
+            </sld:Fill>
+          </sld:TextSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>DET</sld:Name>
+          <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+              <ogc:PropertyName>project</ogc:PropertyName>
+              <ogc:Literal>DET</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+          </ogc:Filter>
+          <sld:PointSymbolizer>
+            <sld:Graphic>
+              <sld:Mark>
+                <sld:WellKnownName>circle</sld:WellKnownName>
+                <sld:Fill>
+                  <sld:CssParameter name="fill">#a6cee3</sld:CssParameter>
+                </sld:Fill>
+                <sld:Stroke/>
+              </sld:Mark>
+              <sld:Size>15</sld:Size>
+            </sld:Graphic>
+          </sld:PointSymbolizer>
+          <sld:TextSymbolizer>
+            <sld:Label>
+              <ogc:PropertyName>project</ogc:PropertyName>
+            </sld:Label>
+            <sld:Font>
+              <sld:CssParameter name="font-family">Arial</sld:CssParameter>
+              <sld:CssParameter name="font-size">13</sld:CssParameter>
+              <sld:CssParameter name="font-style">normal</sld:CssParameter>
+              <sld:CssParameter name="font-weight">normal</sld:CssParameter>
+            </sld:Font>
+            <sld:LabelPlacement>
+              <sld:PointPlacement>
+                <sld:AnchorPoint>
+                  <sld:AnchorPointX>1</sld:AnchorPointX>
+                  <sld:AnchorPointY>1</sld:AnchorPointY>
+                </sld:AnchorPoint>
+                <sld:Displacement>
+                  <sld:DisplacementX>0</sld:DisplacementX>
+                  <sld:DisplacementY>-15</sld:DisplacementY>
+                </sld:Displacement>
+              </sld:PointPlacement>
+            </sld:LabelPlacement>
+            <sld:Halo>
+              <sld:Radius>1</sld:Radius>
+              <sld:Fill>
+                <sld:CssParameter name="fill">#FFFFFF</sld:CssParameter>
+              </sld:Fill>
+            </sld:Halo>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#000000</sld:CssParameter>
+            </sld:Fill>
+          </sld:TextSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>DOR</sld:Name>
+          <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+              <ogc:PropertyName>project</ogc:PropertyName>
+              <ogc:Literal>DOR</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+          </ogc:Filter>
+          <sld:PointSymbolizer>
+            <sld:Graphic>
+              <sld:Mark>
+                <sld:WellKnownName>circle</sld:WellKnownName>
+                <sld:Fill>
+                  <sld:CssParameter name="fill">#b5df8a</sld:CssParameter>
+                </sld:Fill>
+                <sld:Stroke/>
+              </sld:Mark>
+              <sld:Size>15</sld:Size>
+            </sld:Graphic>
+          </sld:PointSymbolizer>
+          <sld:TextSymbolizer>
+            <sld:Label>
+              <ogc:PropertyName>project</ogc:PropertyName>
+            </sld:Label>
+            <sld:Font>
+              <sld:CssParameter name="font-family">Arial</sld:CssParameter>
+              <sld:CssParameter name="font-size">13</sld:CssParameter>
+              <sld:CssParameter name="font-style">normal</sld:CssParameter>
+              <sld:CssParameter name="font-weight">normal</sld:CssParameter>
+            </sld:Font>
+            <sld:LabelPlacement>
+              <sld:PointPlacement>
+                <sld:AnchorPoint>
+                  <sld:AnchorPointX>1</sld:AnchorPointX>
+                  <sld:AnchorPointY>1</sld:AnchorPointY>
+                </sld:AnchorPoint>
+                <sld:Displacement>
+                  <sld:DisplacementX>0</sld:DisplacementX>
+                  <sld:DisplacementY>-15</sld:DisplacementY>
+                </sld:Displacement>
+              </sld:PointPlacement>
+            </sld:LabelPlacement>
+            <sld:Halo>
+              <sld:Radius>1</sld:Radius>
+              <sld:Fill>
+                <sld:CssParameter name="fill">#FFFFFF</sld:CssParameter>
+              </sld:Fill>
+            </sld:Halo>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#000000</sld:CssParameter>
+            </sld:Fill>
+          </sld:TextSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>DRY</sld:Name>
+          <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+              <ogc:PropertyName>project</ogc:PropertyName>
+              <ogc:Literal>DRY</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+          </ogc:Filter>
+          <sld:PointSymbolizer>
+            <sld:Graphic>
+              <sld:Mark>
+                <sld:WellKnownName>circle</sld:WellKnownName>
+                <sld:Fill>
+                  <sld:CssParameter name="fill">#fb9a99</sld:CssParameter>
+                </sld:Fill>
+                <sld:Stroke/>
+              </sld:Mark>
+              <sld:Size>15</sld:Size>
+            </sld:Graphic>
+          </sld:PointSymbolizer>
+          <sld:TextSymbolizer>
+            <sld:Label>
+              <ogc:PropertyName>project</ogc:PropertyName>
+            </sld:Label>
+            <sld:Font>
+              <sld:CssParameter name="font-family">Arial</sld:CssParameter>
+              <sld:CssParameter name="font-size">13</sld:CssParameter>
+              <sld:CssParameter name="font-style">normal</sld:CssParameter>
+              <sld:CssParameter name="font-weight">normal</sld:CssParameter>
+            </sld:Font>
+            <sld:LabelPlacement>
+              <sld:PointPlacement>
+                <sld:AnchorPoint>
+                  <sld:AnchorPointX>1</sld:AnchorPointX>
+                  <sld:AnchorPointY>1</sld:AnchorPointY>
+                </sld:AnchorPoint>
+                <sld:Displacement>
+                  <sld:DisplacementX>0</sld:DisplacementX>
+                  <sld:DisplacementY>-15</sld:DisplacementY>
+                </sld:Displacement>
+              </sld:PointPlacement>
+            </sld:LabelPlacement>
+            <sld:Halo>
+              <sld:Radius>1</sld:Radius>
+              <sld:Fill>
+                <sld:CssParameter name="fill">#FFFFFF</sld:CssParameter>
+              </sld:Fill>
+            </sld:Halo>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#000000</sld:CssParameter>
+            </sld:Fill>
+          </sld:TextSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>FEN</sld:Name>
+          <ogc:Filter>
+            <ogc:PropertyIsEqualTo>
+              <ogc:PropertyName>project</ogc:PropertyName>
+              <ogc:Literal>FEN</ogc:Literal>
+            </ogc:PropertyIsEqualTo>
+          </ogc:Filter>
+          <sld:PointSymbolizer>
+            <sld:Graphic>
+              <sld:Mark>
+                <sld:WellKnownName>circle</sld:WellKnownName>
+                <sld:Fill>
+                  <sld:CssParameter name="fill">#fdbf6f</sld:CssParameter>
+                </sld:Fill>
+                <sld:Stroke/>
+              </sld:Mark>
+              <sld:Size>15</sld:Size>
+            </sld:Graphic>
+          </sld:PointSymbolizer>
+          <sld:TextSymbolizer>
+            <sld:Label>
+              <ogc:PropertyName>project</ogc:PropertyName>
+            </sld:Label>
+            <sld:Font>
+              <sld:CssParameter name="font-family">Arial</sld:CssParameter>
+              <sld:CssParameter name="font-size">13</sld:CssParameter>
+              <sld:CssParameter name="font-style">normal</sld:CssParameter>
+              <sld:CssParameter name="font-weight">normal</sld:CssParameter>
+            </sld:Font>
+            <sld:LabelPlacement>
+              <sld:PointPlacement>
+                <sld:AnchorPoint>
+                  <sld:AnchorPointX>1</sld:AnchorPointX>
+                  <sld:AnchorPointY>1</sld:AnchorPointY>
+                </sld:AnchorPoint>
+                <sld:Displacement>
+                  <sld:DisplacementX>0</sld:DisplacementX>
+                  <sld:DisplacementY>-15</sld:DisplacementY>
+                </sld:Displacement>
+              </sld:PointPlacement>
+            </sld:LabelPlacement>
+            <sld:Halo>
+              <sld:Radius>1</sld:Radius>
+              <sld:Fill>
+                <sld:CssParameter name="fill">#FFFFFF</sld:CssParameter>
+              </sld:Fill>
+            </sld:Halo>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#000000</sld:CssParameter>
+            </sld:Fill>
+          </sld:TextSymbolizer>
+        </sld:Rule>
+        <sld:Rule>
+          <sld:Name>Other</sld:Name>
+          <sld:ElseFilter/>
+          <sld:PointSymbolizer>
+            <sld:Graphic>
+              <sld:Mark>
+                <sld:WellKnownName>circle</sld:WellKnownName>
+                <sld:Fill>
+                  <sld:CssParameter name="fill">#cccccc</sld:CssParameter>
+                </sld:Fill>
+                <sld:Stroke/>
+              </sld:Mark>
+              <sld:Size>15</sld:Size>
+            </sld:Graphic>
+          </sld:PointSymbolizer>
+          <sld:TextSymbolizer>
+            <sld:Label>
+              <ogc:PropertyName>project</ogc:PropertyName>
+            </sld:Label>
+            <sld:Font>
+              <sld:CssParameter name="font-family">Arial</sld:CssParameter>
+              <sld:CssParameter name="font-size">13</sld:CssParameter>
+              <sld:CssParameter name="font-style">normal</sld:CssParameter>
+              <sld:CssParameter name="font-weight">normal</sld:CssParameter>
+            </sld:Font>
+            <sld:LabelPlacement>
+              <sld:PointPlacement>
+                <sld:AnchorPoint>
+                  <sld:AnchorPointX>1</sld:AnchorPointX>
+                  <sld:AnchorPointY>1</sld:AnchorPointY>
+                </sld:AnchorPoint>
+                <sld:Displacement>
+                  <sld:DisplacementX>0</sld:DisplacementX>
+                  <sld:DisplacementY>-15</sld:DisplacementY>
+                </sld:Displacement>
+              </sld:PointPlacement>
+            </sld:LabelPlacement>
+            <sld:Halo>
+              <sld:Radius>1</sld:Radius>
+              <sld:Fill>
+                <sld:CssParameter name="fill">#FFFFFF</sld:CssParameter>
+              </sld:Fill>
+            </sld:Halo>
+            <sld:Fill>
+              <sld:CssParameter name="fill">#000000</sld:CssParameter>
+            </sld:Fill>
+          </sld:TextSymbolizer>
+        </sld:Rule>
+      </sld:FeatureTypeStyle>
+    </sld:UserStyle>
+  </sld:NamedLayer>
+</sld:StyledLayerDescriptor>
+

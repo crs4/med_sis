@@ -3,19 +3,32 @@
   <NamedLayer>
     <Name>sodicity_salinity_ratio</Name>
     <UserStyle>
+<<<<<<< HEAD
       <Name>sodicity salinity ratio</Name>
       <Title>sodicity salinity ratio</Title>
+=======
+      <Name>circle_point</Name>
+      <Title>Point Red Symbol Border</Title>
+>>>>>>> 58dcde557d1da9070628851a32775b2507519611
       <FeatureTypeStyle>
         <Rule>
           <Name>Unbeneficial impact of gypsum input</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
+<<<<<<< HEAD
                 <PropertyName>value</PropertyName>
                 <Literal>0</Literal>
               </PropertyIsGreaterThanOrEqualTo>
               <PropertyIsLessThan>
                 <PropertyName>value</PropertyName>
+=======
+                <PropertyName>sar_elcond</PropertyName>
+                <Literal>0</Literal>
+              </PropertyIsGreaterThanOrEqualTo>
+              <PropertyIsLessThan>
+                <PropertyName>sar_elcond</PropertyName>
+>>>>>>> 58dcde557d1da9070628851a32775b2507519611
                 <Literal>5</Literal>
               </PropertyIsLessThan>
             </And>
@@ -44,7 +57,11 @@
           <Name>Beneficial impact of gypsum input</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
              <PropertyIsGreaterThanOrEqualTo>
+<<<<<<< HEAD
                 <PropertyName>value</PropertyName>
+=======
+                <PropertyName>sar_elcond</PropertyName>
+>>>>>>> 58dcde557d1da9070628851a32775b2507519611
                 <Literal>5</Literal>
               </PropertyIsGreaterThanOrEqualTo>
              </Filter>

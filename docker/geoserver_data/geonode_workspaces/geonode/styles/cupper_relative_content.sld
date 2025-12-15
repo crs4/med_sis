@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <NamedLayer>
-    <Name>Cupper Relative Content (%)</Name>
+    <Name>cupper_relative_content</Name>
     <UserStyle>
-      <Name>Cupper Relative Content (%)</Name>
-      <Title>Cupper Relative Content (%)</Title>
+      <Name>circle_point</Name>
+      <Title>Point Red Symbol Border</Title>
       <FeatureTypeStyle>
         <Rule>
           <Name>Cupper under content</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>value</PropertyName>
+                <PropertyName>cu_rc</PropertyName>
                 <Literal>0</Literal>
               </PropertyIsGreaterThanOrEqualTo>
               <PropertyIsLessThan>
-                <PropertyName>value</PropertyName>
+                <PropertyName>cu_rc</PropertyName>
                 <Literal>6.41</Literal>
               </PropertyIsLessThan>
             </And>
@@ -44,13 +44,13 @@
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>value</PropertyName>
+                <PropertyName>cu_rc</PropertyName>
                 <Literal>6.41</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThanOrEqualTo>
-                <PropertyName>value</PropertyName>
+              <PropertyIsLessThan>
+                <PropertyName>cu_rc</PropertyName>
                 <Literal>29.51</Literal>
-              </PropertyIsLessThanOrEqualTo>
+              </PropertyIsLessThan>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -71,20 +71,16 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
+
+
         <Rule>
           <Name>Cupper over enrichment</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-	      <And>             
-	         <PropertyIsGreaterThan>
-                <PropertyName>value</PropertyName>
+             <PropertyIsGreaterThanOrEqualTo>
+                <PropertyName>cu_rc</PropertyName>
                 <Literal>29.51</Literal>
-             </PropertyIsGreaterThan>
-	         <PropertyIsLessThanOrEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>100</Literal>
-             </PropertyIsLessThanOrEqualTo>
-	      </And>
-          </Filter>
+              </PropertyIsGreaterThanOrEqualTo>
+             </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>
@@ -103,6 +99,7 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
+       
       </FeatureTypeStyle>
     </UserStyle>
   </NamedLayer>

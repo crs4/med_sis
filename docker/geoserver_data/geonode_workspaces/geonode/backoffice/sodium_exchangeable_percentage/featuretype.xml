@@ -5,6 +5,7 @@
   <namespace>
     <id>NamespaceInfoImpl-78ff667e:12476299803:-7ffe</id>
   </namespace>
+<<<<<<< HEAD
   <title>Sodium Exchangeable Percentage indicator (ESP)</title>
   <abstract>Sodium exchangeable percentage (&apos;sodification and waterlogging&apos; fao soilstat domain ): it is a salinity indicator, based on exchangeable cation (Ali, 2011)</abstract>
   <keywords>
@@ -13,42 +14,79 @@
     <string>soil chemical health</string>
     <string>ESP</string>
     <string>sodium</string>
+=======
+  <title>Sodium Exchangeable Percentage indicator</title>
+  <abstract>Sodium exchangeable percentage: it is a salinity indicator, based on exchangeable cation (Ali, 2011)</abstract>
+  <keywords>
+    <string>features</string>
+    <string>sodium_exchangeable_percentage</string>
+    <string>Soil Indicator</string>
+    <string>Soil Chemical Health</string>
+>>>>>>> 58dcde557d1da9070628851a32775b2507519611
   </keywords>
   <metadataLinks>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
+<<<<<<< HEAD
       <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=c0801876-400d-4d81-b8b5-cdbe61ec245b&amp;outputschema=http%3A%2F%2Fwww.w3.org%2F2005%2FAtom&amp;elementsetname=full</content>
+=======
+      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=35c3c882-24dc-4834-8d16-4d4c5648d061&amp;outputschema=http%3A%2F%2Fwww.w3.org%2F2005%2FAtom&amp;elementsetname=full</content>
+>>>>>>> 58dcde557d1da9070628851a32775b2507519611
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
+<<<<<<< HEAD
       <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=c0801876-400d-4d81-b8b5-cdbe61ec245b&amp;outputschema=http%3A%2F%2Fgcmd.gsfc.nasa.gov%2FAboutus%2Fxml%2Fdif%2F&amp;elementsetname=full</content>
+=======
+      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=35c3c882-24dc-4834-8d16-4d4c5648d061&amp;outputschema=http%3A%2F%2Fgcmd.gsfc.nasa.gov%2FAboutus%2Fxml%2Fdif%2F&amp;elementsetname=full</content>
+>>>>>>> 58dcde557d1da9070628851a32775b2507519611
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
+<<<<<<< HEAD
       <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=c0801876-400d-4d81-b8b5-cdbe61ec245b&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2F2.0.2&amp;elementsetname=full</content>
+=======
+      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=35c3c882-24dc-4834-8d16-4d4c5648d061&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2F2.0.2&amp;elementsetname=full</content>
+>>>>>>> 58dcde557d1da9070628851a32775b2507519611
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
+<<<<<<< HEAD
       <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=c0801876-400d-4d81-b8b5-cdbe61ec245b&amp;outputschema=urn%3Aoasis%3Anames%3Atc%3Aebxml-regrep%3Axsd%3Arim%3A3.0&amp;elementsetname=full</content>
+=======
+      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=35c3c882-24dc-4834-8d16-4d4c5648d061&amp;outputschema=urn%3Aoasis%3Anames%3Atc%3Aebxml-regrep%3Axsd%3Arim%3A3.0&amp;elementsetname=full</content>
+>>>>>>> 58dcde557d1da9070628851a32775b2507519611
     </metadataLink>
     <metadataLink>
       <type>text/xml</type>
       <metadataType>FGDC</metadataType>
+<<<<<<< HEAD
       <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=c0801876-400d-4d81-b8b5-cdbe61ec245b&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2Fcsdgm&amp;elementsetname=full</content>
+=======
+      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=35c3c882-24dc-4834-8d16-4d4c5648d061&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2Fcsdgm&amp;elementsetname=full</content>
+>>>>>>> 58dcde557d1da9070628851a32775b2507519611
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
+<<<<<<< HEAD
       <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=c0801876-400d-4d81-b8b5-cdbe61ec245b&amp;outputschema=http%3A%2F%2Fwww.isotc211.org%2F2005%2Fgmd&amp;elementsetname=full</content>
+=======
+      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=35c3c882-24dc-4834-8d16-4d4c5648d061&amp;outputschema=http%3A%2F%2Fwww.isotc211.org%2F2005%2Fgmd&amp;elementsetname=full</content>
+>>>>>>> 58dcde557d1da9070628851a32775b2507519611
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
+<<<<<<< HEAD
       <content>http://localhost/showmetadata/xsl/35</content>
+=======
+      <content>https://soils4med.crs4.it/showmetadata/xsl/31</content>
+>>>>>>> 58dcde557d1da9070628851a32775b2507519611
     </metadataLink>
   </metadataLinks>
   <nativeCRS>GEOGCS[&quot;WGS 84&quot;, 
@@ -91,8 +129,11 @@
   </store>
   <serviceConfiguration>false</serviceConfiguration>
   <simpleConversionEnabled>false</simpleConversionEnabled>
+<<<<<<< HEAD
   <internationalTitle/>
   <internationalAbstract/>
+=======
+>>>>>>> 58dcde557d1da9070628851a32775b2507519611
   <maxFeatures>0</maxFeatures>
   <numDecimals>0</numDecimals>
   <padWithZeros>false</padWithZeros>

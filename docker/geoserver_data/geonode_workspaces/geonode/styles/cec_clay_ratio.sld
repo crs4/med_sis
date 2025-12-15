@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <NamedLayer>
-    <Name>CEC/Clay ratio</Name>
+    <Name>cec_clay_ratio</Name>
     <UserStyle>
-      <Name>CEC/Clay ratio</Name>
-      <Title>CEC/Clay ratio</Title>
+      <Name>circle_point</Name>
+      <Title>Point Red Symbol Border</Title>
       <FeatureTypeStyle>
         <Rule>
           <Name>No reactive clay</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>value</PropertyName>
+                <PropertyName>cec_clayratio</PropertyName>
                 <Literal>0</Literal>
               </PropertyIsGreaterThanOrEqualTo>
               <PropertyIsLessThan>
-                <PropertyName>value</PropertyName>
+                <PropertyName>cec_clayratio</PropertyName>
                 <Literal>1</Literal>
               </PropertyIsLessThan>
             </And>
@@ -42,7 +42,7 @@
           <Name>Potentially reactive clay</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
              <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>value</PropertyName>
+                <PropertyName>cec_clayratio</PropertyName>
                 <Literal>1</Literal>
               </PropertyIsGreaterThanOrEqualTo>
              </Filter>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?><sld:StyledLayerDescriptor xmlns:sld="http://www.opengis.net/sld" xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc" xmlns="http://www.opengis.net/sld" version="1.0.0">
+  <sld:NamedLayer>
+    <sld:Name>Opaque Raster</sld:Name>
+    <sld:UserStyle>
+      <sld:Name>Opaque Raster</sld:Name>
+      <sld:Title>Opaque Raster</sld:Title>
+      <sld:FeatureTypeStyle>
+        <sld:Name>name</sld:Name>
+        <sld:Rule>
+          <sld:RasterSymbolizer>
+            <sld:ColorMap>
+              <sld:ColorMapEntry color="#000000" opacity="1" quantity="0.463506817817688" label="0.463507"/>
+              <sld:ColorMapEntry color="#400000" opacity="1" quantity="0.4921252077911049" label="0.492125"/>
+              <sld:ColorMapEntry color="#800000" opacity="1" quantity="0.5207435977645218" label="0.520744"/>
+              <sld:ColorMapEntry color="#bf0000" opacity="1" quantity="0.5729300735983998" label="0.57293"/>
+              <sld:ColorMapEntry color="#ff0000" opacity="1" quantity="0.8944661021232605" label="0.894466"/>
+            </sld:ColorMap>
+            <sld:ContrastEnhancement/>
+          </sld:RasterSymbolizer>
+        </sld:Rule>
+      </sld:FeatureTypeStyle>
+    </sld:UserStyle>
+  </sld:NamedLayer>
+</sld:StyledLayerDescriptor>
+

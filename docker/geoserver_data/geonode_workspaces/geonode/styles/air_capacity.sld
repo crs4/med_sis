@@ -11,11 +11,11 @@
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>value</PropertyName>
+                <PropertyName>ac</PropertyName>
                 <Literal>0</Literal>
               </PropertyIsGreaterThanOrEqualTo>
               <PropertyIsLessThan>
-                <PropertyName>value</PropertyName>
+                <PropertyName>ac</PropertyName>
                 <Literal>10</Literal>
               </PropertyIsLessThan>
             </And>
@@ -44,11 +44,11 @@
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>value</PropertyName>
+                <PropertyName>ac</PropertyName>
                 <Literal>10</Literal>
               </PropertyIsGreaterThanOrEqualTo>
               <PropertyIsLessThan>
-                <PropertyName>value</PropertyName>
+                <PropertyName>ac</PropertyName>
                 <Literal>14</Literal>
               </PropertyIsLessThan>
             </And>
@@ -77,7 +77,7 @@
           <Name>Good root zone aeration</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
              <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>value</PropertyName>
+                <PropertyName>ac</PropertyName>
                 <Literal>14</Literal>
               </PropertyIsGreaterThanOrEqualTo>
              </Filter>

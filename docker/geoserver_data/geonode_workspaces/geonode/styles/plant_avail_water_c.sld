@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <NamedLayer>
+<<<<<<< HEAD
     <Name>Plant Available Water Capacity (%)</Name>
     <UserStyle>
       <Name>Plant Available Water Capacity (%)</Name>
       <Title>Plant Available Water Capacity (%)</Title>
+=======
+    <Name>plant_avail_water_c</Name>
+    <UserStyle>
+      <Name>circle_point</Name>
+      <Title>Point Red Symbol Border</Title>
+>>>>>>> 58dcde557d1da9070628851a32775b2507519611
       <FeatureTypeStyle>
         <Rule>
           <Name>Ideal water storage capacity</Name>
@@ -72,7 +79,11 @@
           </PointSymbolizer>
         </Rule>
 
+<<<<<<< HEAD
         <Rule>
+=======
+ <Rule>
+>>>>>>> 58dcde557d1da9070628851a32775b2507519611
           <Name>Limited water storage capacity</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
@@ -131,6 +142,10 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
+<<<<<<< HEAD
+=======
+       
+>>>>>>> 58dcde557d1da9070628851a32775b2507519611
       </FeatureTypeStyle>
     </UserStyle>
   </NamedLayer>
