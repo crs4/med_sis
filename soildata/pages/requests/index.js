@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { RequestService } from '../../service/requests';
 
 
@@ -12,13 +11,6 @@ import { InputText } from 'primereact/inputtext';
 import { ConfirmDialog } from 'primereact/confirmdialog'; 
 import { Tag } from 'primereact/tag';
 import React, { useEffect, useState, useRef } from 'react';
-=======
-import React, { useEffect } from 'react';
-import Footer from '../../components/Footer';
-import ToDo from '../../components/ToDo';
-import { useTranslations } from 'next-intl';
-import { useUser } from '../../context/user';
->>>>>>> 58dcde557d1da9070628851a32775b2507519611
 import { useRouter } from 'next/router';
 import {useTranslations} from 'next-intl';
 import { Toast } from 'primereact/toast';
