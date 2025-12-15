@@ -1,103 +1,53 @@
 <featureType>
-  <id>FeatureTypeInfoImpl--d81fc44:1994e223eb8:-7386</id>
+  <id>FeatureTypeInfoImpl-9a9970d:19b217b2ae3:-7ff8</id>
   <name>sodium_adsorption_ratio</name>
   <nativeName>sodium_adsorption_ratio</nativeName>
   <namespace>
     <id>NamespaceInfoImpl-78ff667e:12476299803:-7ffe</id>
   </namespace>
-<<<<<<< HEAD
-  <title>Sodium Adsorption Ratio indicator (SAR)</title>
-  <abstract>Sodium adsorption ratio (&apos;sodification and waterlogging&apos; fao soilstat domain): salinity indicator and pore clogging potential for saturated extract only (Ali, 2011)</abstract>
-  <keywords>
-    <string>features</string>
-    <string>soil indicator</string>
-    <string>soil chemical health</string>
-    <string>SAR</string>
-    <string>sodium</string>
-=======
-  <title>Sodium Adsorption Ratio indicator</title>
-  <abstract>Sodium adsorption ratio: salinity indicator and pore clogging potential for saturated extract only (Ali, 2011)</abstract>
+  <title>Sodium adsorption ratio (SAR) indicator</title>
+  <abstract>No abstract provided</abstract>
   <keywords>
     <string>features</string>
     <string>sodium_adsorption_ratio</string>
-    <string>Soil Chemical Health</string>
->>>>>>> 58dcde557d1da9070628851a32775b2507519611
   </keywords>
   <metadataLinks>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-<<<<<<< HEAD
-      <content>http://localhost/showmetadata/xsl/34</content>
-=======
-      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=19016b3e-1b50-439f-b5cf-030a7a856d81&amp;outputschema=http%3A%2F%2Fwww.w3.org%2F2005%2FAtom&amp;elementsetname=full</content>
->>>>>>> 58dcde557d1da9070628851a32775b2507519611
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=86d4c07b-f725-4e77-a974-94ffcef3a478&amp;outputschema=http%3A%2F%2Fwww.w3.org%2F2005%2FAtom&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-<<<<<<< HEAD
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=61d660cf-ef0b-4399-83ef-b75d80745f7d&amp;outputschema=http%3A%2F%2Fwww.w3.org%2F2005%2FAtom&amp;elementsetname=full</content>
-=======
-      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=19016b3e-1b50-439f-b5cf-030a7a856d81&amp;outputschema=http%3A%2F%2Fgcmd.gsfc.nasa.gov%2FAboutus%2Fxml%2Fdif%2F&amp;elementsetname=full</content>
->>>>>>> 58dcde557d1da9070628851a32775b2507519611
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=86d4c07b-f725-4e77-a974-94ffcef3a478&amp;outputschema=http%3A%2F%2Fgcmd.gsfc.nasa.gov%2FAboutus%2Fxml%2Fdif%2F&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-<<<<<<< HEAD
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=61d660cf-ef0b-4399-83ef-b75d80745f7d&amp;outputschema=http%3A%2F%2Fgcmd.gsfc.nasa.gov%2FAboutus%2Fxml%2Fdif%2F&amp;elementsetname=full</content>
-=======
-      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=19016b3e-1b50-439f-b5cf-030a7a856d81&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2F2.0.2&amp;elementsetname=full</content>
->>>>>>> 58dcde557d1da9070628851a32775b2507519611
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=86d4c07b-f725-4e77-a974-94ffcef3a478&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2F2.0.2&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-<<<<<<< HEAD
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=61d660cf-ef0b-4399-83ef-b75d80745f7d&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2F2.0.2&amp;elementsetname=full</content>
-    </metadataLink>
-    <metadataLink>
-      <type>other</type>
-      <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=61d660cf-ef0b-4399-83ef-b75d80745f7d&amp;outputschema=urn%3Aoasis%3Anames%3Atc%3Aebxml-regrep%3Axsd%3Arim%3A3.0&amp;elementsetname=full</content>
-=======
-      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=19016b3e-1b50-439f-b5cf-030a7a856d81&amp;outputschema=urn%3Aoasis%3Anames%3Atc%3Aebxml-regrep%3Axsd%3Arim%3A3.0&amp;elementsetname=full</content>
->>>>>>> 58dcde557d1da9070628851a32775b2507519611
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=86d4c07b-f725-4e77-a974-94ffcef3a478&amp;outputschema=urn%3Aoasis%3Anames%3Atc%3Aebxml-regrep%3Axsd%3Arim%3A3.0&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>text/xml</type>
       <metadataType>FGDC</metadataType>
-<<<<<<< HEAD
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=61d660cf-ef0b-4399-83ef-b75d80745f7d&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2Fcsdgm&amp;elementsetname=full</content>
-=======
-      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=19016b3e-1b50-439f-b5cf-030a7a856d81&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2Fcsdgm&amp;elementsetname=full</content>
->>>>>>> 58dcde557d1da9070628851a32775b2507519611
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=86d4c07b-f725-4e77-a974-94ffcef3a478&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2Fcsdgm&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-<<<<<<< HEAD
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=61d660cf-ef0b-4399-83ef-b75d80745f7d&amp;outputschema=http%3A%2F%2Fwww.isotc211.org%2F2005%2Fgmd&amp;elementsetname=full</content>
-=======
-      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=19016b3e-1b50-439f-b5cf-030a7a856d81&amp;outputschema=http%3A%2F%2Fwww.isotc211.org%2F2005%2Fgmd&amp;elementsetname=full</content>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=86d4c07b-f725-4e77-a974-94ffcef3a478&amp;outputschema=http%3A%2F%2Fwww.isotc211.org%2F2005%2Fgmd&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>https://soils4med.crs4.it/showmetadata/xsl/30</content>
->>>>>>> 58dcde557d1da9070628851a32775b2507519611
+      <content>http://localhost/showmetadata/xsl/35</content>
     </metadataLink>
   </metadataLinks>
-  <nativeCRS>GEOGCS[&quot;WGS 84&quot;, 
-  DATUM[&quot;World Geodetic System 1984&quot;, 
-    SPHEROID[&quot;WGS 84&quot;, 6378137.0, 298.257223563, AUTHORITY[&quot;EPSG&quot;,&quot;7030&quot;]], 
-    AUTHORITY[&quot;EPSG&quot;,&quot;6326&quot;]], 
-  PRIMEM[&quot;Greenwich&quot;, 0.0, AUTHORITY[&quot;EPSG&quot;,&quot;8901&quot;]], 
-  UNIT[&quot;degree&quot;, 0.017453292519943295], 
-  AXIS[&quot;Geodetic longitude&quot;, EAST], 
-  AXIS[&quot;Geodetic latitude&quot;, NORTH], 
-  AUTHORITY[&quot;EPSG&quot;,&quot;4326&quot;]]</nativeCRS>
   <srs>EPSG:4326</srs>
   <nativeBoundingBox>
     <minx>-10.0</minx>
@@ -115,13 +65,6 @@
   <enabled>true</enabled>
   <advertised>true</advertised>
   <metadata>
-    <entry key="time">
-      <dimensionInfo>
-        <enabled>false</enabled>
-        <presentation>LIST</presentation>
-        <units>ISO8601</units>
-      </dimensionInfo>
-    </entry>
     <entry key="cachingEnabled">false</entry>
   </metadata>
   <store class="dataStore">
@@ -129,11 +72,8 @@
   </store>
   <serviceConfiguration>false</serviceConfiguration>
   <simpleConversionEnabled>false</simpleConversionEnabled>
-<<<<<<< HEAD
   <internationalTitle/>
   <internationalAbstract/>
-=======
->>>>>>> 58dcde557d1da9070628851a32775b2507519611
   <maxFeatures>0</maxFeatures>
   <numDecimals>0</numDecimals>
   <padWithZeros>false</padWithZeros>
