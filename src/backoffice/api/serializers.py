@@ -9,6 +9,10 @@ from datetime import datetime
 
 from rest_framework import serializers
 from decimal import Decimal, ROUND_DOWN
+import logging
+
+# Configura il logger
+logger = logging.getLogger(__name__)
 
 ###########################
 ## Mixin
@@ -170,8 +174,45 @@ class XLSxUploadSerializer(serializers.ModelSerializer):
         instance = super().create(validated_data)
         instance.start_processing()
         return instance
-   
-###########################
+    
+    def update(self, instance, validated_data):
+        """
+        Override del metodo update per riavviare l'elaborazione
+        se vengono modificati i dati o l'operazione.
+        """
+        # Esegui l'aggiornamento standard dei campi
+        instance = super().update(instance, validated_data)
+        
+        # Controlla se sono stati modificati campi che richiedono un riprocessamento
+        # (es. 'data' o 'operation'). Se modifico il titolo non deve riprocessare.
+        # L'if il task solo se vengono modificati i campi che richiedono un ri-processamento.
+        if 'data' in validated_data and 'operation' in validated_data:
+            
+            # start_processing in models.py controlla: if self.status == "UPLOADED"
+            # Se l'oggetto era già stato processato (es. status "IMPORT_SUCCESS" o "IMPORT_WITH_ERRORS"), 
+            # start_processing fallisce. Dobbiamo forzare lo stato a "UPLOADED".
+            instance.status = "UPLOADED"
+            
+            # Pulisci eventuali report precedenti se necessario per chiarezza
+            instance.report = {} 
+            
+            instance.save(using='backoffice')
+            
+            # Avvia il processo
+            started = instance.start_processing()
+            
+            # Opzionale: Loggare se il processo non è partito per qualche motivo
+            if not started:
+                logger.error(
+                    f"Impossible to restart processing for upload ID {instance.id}. "
+                    f"Current status: {instance.status}. "
+                    "Check Celery configuration or model constraints."
+                )
+                # Opzionale: Aggiungere un warning nel report dell'oggetto
+                instance.report = {"warning": "Processing task failed to start automatically upon update."}
+                instance.save(using='backoffice')
+
+        return instance
 # Point\Monitorings Genealogy
 ###########################
 
@@ -282,69 +323,6 @@ class LandUseSerializer(serializers.ModelSerializer):
             return instance
         except ValidationError as e:
             raise serializers.ValidationError(e.message_dict)           
-
-class CultivatedSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Cultivated
-        fields = '__all__'
-        
-    def create(self, validated_data):
-        try:
-            instance = Cultivated(**validated_data)
-            instance.full_clean()
-            instance.save()
-            return instance
-        except ValidationError as e:
-            raise serializers.ValidationError(e.message_dict)
-
-    def update(self, instance, validated_data):
-        try:
-            for attr, value in validated_data.items():
-                setattr(instance, attr, value)
-            instance.full_clean()
-            instance.save()
-            return instance
-        except ValidationError as e:
-            raise serializers.ValidationError(e.message_dict)
-        
-class NotCultivatedSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = NotCultivated
-        fields = '__all__'
-    def create(self, validated_data):
-        try:
-            instance = NotCultivated(**validated_data)
-            instance.full_clean()
-            instance.save()
-            return instance
-        except ValidationError as e:
-            raise serializers.ValidationError(e.message_dict)
-
-    def update(self, instance, validated_data):
-        try:
-            for attr, value in validated_data.items():
-                setattr(instance, attr, value)
-            instance.full_clean()
-            instance.save()
-            return instance
-        except ValidationError as e:
-            raise serializers.ValidationError(e.message_dict)
-
-class LitterLayerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = LitterLayer
-        fields = '__all__'
-
-class SurfaceCracksSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = SurfaceCracks
-        fields = '__all__'
-       
-class CoarseFragmentsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CoarseFragments
-        fields = '__all__'
         
 class SurfaceUnevennessSerializer(serializers.ModelSerializer):
     class Meta:
@@ -357,11 +335,6 @@ class SurfaceUnevennessSerializer(serializers.ModelSerializer):
 class LabDataSerializer(DecimalTruncationSerializerMixin, DateFormatSerializerMixin, serializers.ModelSerializer):
     class Meta:
         model = LabData
-        fields = '__all__'
-        
-class LabDataSamplingSerializer(DecimalTruncationSerializerMixin, DateFormatSerializerMixin, serializers.ModelSerializer):
-    class Meta:
-        model = LabDataSampling
         fields = '__all__'
 
 ###########################
@@ -392,25 +365,15 @@ class LayerCracksSerializer(serializers.ModelSerializer):
     class Meta:
         model = LayerCracks
         fields = '__all__'
-        
-class LayerStressFeaturesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = LayerStressFeatures 
-        fields = '__all__'
-        
+               
 class LayerMatrixColoursSerializer(serializers.ModelSerializer):
     class Meta:
         model = LayerMatrixColours 
         fields = '__all__'
-      
-class LayerCoarserTexturedSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = LayerCoarserTextured 
-        fields = '__all__'
         
-class LayerRedoximorphicFeaturesSerializer(serializers.ModelSerializer):
+class LayerRedoximorphicSerializer(serializers.ModelSerializer):
     class Meta:
-        model = LayerRedoximorphicFeatures 
+        model = LayerRedoximorphic 
         fields = '__all__'
 
 class LayerLithogenicVariegatesSerializer(serializers.ModelSerializer):
@@ -418,20 +381,10 @@ class LayerLithogenicVariegatesSerializer(serializers.ModelSerializer):
     class Meta:
         model = LayerLithogenicVariegates
         fields = '__all__'
-        
-class LayerRedoximorphicColourSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = LayerRedoximorphicColour 
-        fields = '__all__'
 
 class LayerCoatingsBridgesSerializer(serializers.ModelSerializer):
     class Meta:
         model = LayerCoatingsBridges 
-        fields = '__all__'
-    
-class LayerRibbonlikeAccumulationsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = LayerRibbonlikeAccumulations 
         fields = '__all__'
     
 class LayerCarbonatesSerializer(serializers.ModelSerializer):
@@ -452,11 +405,6 @@ class LayerSecondarySilicaSerializer(serializers.ModelSerializer):
 class LayerConsistenceSerializer(serializers.ModelSerializer):
     class Meta:
         model = LayerConsistence 
-        fields = '__all__'
-  
-class LayerPermafrostFeaturesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = LayerPermafrostFeatures 
         fields = '__all__'
         
 class LayerOrganicCarbonSerializer(serializers.ModelSerializer):
@@ -488,6 +436,11 @@ class  LayerNonMatrixPoreSerializer(serializers.ModelSerializer):
     class Meta:
         model = LayerNonMatrixPore
         fields = '__all__'
+
+class  LayerPermafrostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LayerPermafrost
+        fields = '__all__'
         
 class  LayerStructureSerializer(serializers.ModelSerializer):
     class Meta:
@@ -500,21 +453,21 @@ class  LayerStructureSerializer(serializers.ModelSerializer):
         """
         layer = data.get('layer')
         level = data.get('level')
-        
+        type = data.get('type')
         # Controlla se esiste già una combinazione Point-layer-level (quando level non è None)
-        if level is not None:
+        if level and type is not None:
             # Esclude l'istanza corrente se stiamo aggiornando
-            queryset = LayerStructure.objects.filter(layer=layer, level=level)
+            queryset = LayerStructure.objects.filter(layer=layer, level=level, type=type)
             if self.instance:
                 queryset = queryset.exclude(pk=self.instance.pk)
             
             if queryset.exists():
                 raise serializers.ValidationError({
-                    'layer': f"There is already a structure at level '{level}' in layer '{layer}' "
+                    'layer': f"There is already a structure at level '{level}' with type '{type}'  in layer '{layer}' "
                 })
         else:
             raise serializers.ValidationError({
-                'level': f"level is a mandatory field"
+                'level': f"level and type are mandatory field"
             })        
         
         return data
@@ -540,22 +493,7 @@ class  LayerStructureSerializer(serializers.ModelSerializer):
                 ]
             })        
         #read_only_fields = ('id',)  # Il codice è generato automaticamente
-
-class LayerSurfaceCrustsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = LayerSurfaceCrusts 
-        fields = '__all__'
-
-
-#########################################
-## Indicators 
-#########################################
-
-class IndicatorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Indicator  
-        fields = '__all__'
-        read_only_fields = ('id',)  
+ 
 
 #########################################
 ## Requests 
@@ -574,6 +512,20 @@ class RequestSerializer(serializers.ModelSerializer):
 class PhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Photo 
+        fields = '__all__' 
+
+#########################################
+## Photos 
+#########################################
+
+class TaxonomyValueSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TaxonomyValue 
+        fields = '__all__' 
+
+class TaxonomySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Taxonomy 
         fields = '__all__' 
 
   

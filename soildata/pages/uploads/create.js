@@ -12,7 +12,7 @@ import { Message } from 'primereact/message';
 import { Toast } from 'primereact/toast';
 import { Dropdown } from 'primereact/dropdown';
 import { Dialog } from 'primereact/dialog';
-import Taxonomies from '../../data/taxonomies';
+import TaxonomyService from '../../service/taxonomies';
 import Mapping from '../../data/mapping';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
@@ -27,6 +27,8 @@ const MyMap = dynamic(() => import("../../components/XLSxMap"), { ssr:false })
 export default function Page( )  {
   
   const [upload, setUpload] = useState(null);
+  const [taxonomies, setTaxonomies] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [uploadType, setUploadType] = useState(null);
   const [uploadAction, setUploadAction] = useState(null);
   const [visibleDlg1, setVisibleDlg1] = useState(false);
@@ -127,9 +129,9 @@ export default function Page( )  {
     }
     setValidating(true);
     setFileId(files[0].name);
-    let result = await validateXLSFile (files,upload.type);
-    if ( result && result.validated > 0 ){ 
-      setValidated(result['validated'])
+    let result = await validateXLSFile (files,upload.type,taxonomies);
+    if ( result && result.validated  ){ 
+      setValidated(result.validated)
       if  ( result['data'] && result['report'] ) {
         const _data = await createObjects(result,upload.type,document.cookie);
         setUpload({ 
@@ -149,7 +151,7 @@ export default function Page( )  {
         }
       }
     }
-    else if ( result && result.validated === 0 ){ 
+    else if ( result && !result.validated  ){ 
       toast.current.show({severity:'error', summary: 'Errors in file!', detail:'wrong data!', life: 3000});
       setValidating(false);
       return;
@@ -213,20 +215,51 @@ export default function Page( )  {
     setVisibleDlg2(true);
   };
 
+  
   useEffect(() => {
-    if ( uploading )
+    const fetchData = ( async() => {
+      let t =  await TaxonomyService.listAllValues(document.cookie)
+      if ( !t )
+        toast.current.show({severity:'error', summary: 'Errors!', detail: 'Errors reading data' , life: 5000});
+      else if ( !t.data || !Array.isArray(t.data) || t.data.length === 0 ) 
+        toast.current.show({severity:'warning', summary: 'No data!', detail: 'No data found' , life: 5000});
+      else {
+        
+        let data = t.data;
+        let taxms = {}
+        for ( let i=0; i<data.length; i+=1 )
+        {
+          let v = data[i]
+          if (v  && v.taxonomy ) {
+            if (!taxms[v.taxonomy]) {
+              taxms[v.taxonomy] = {} 
+            }
+            taxms[v.taxonomy][v.value] = v.descr;
+          } 
+        }
+
+        setTaxonomies(taxms);
+      }
+      setLoading(false); 
+    })
+    if ( user.userData && user.userData.forbidden1 !== null && user.userData.forbidden1 ) {
+      router.push(`/401`);
+    }
+    else {
+      fetchData();
+    }
+  }, [user]); // eslint-disable-line
+
+  useEffect(() => {
+    if ( uploading ){
       saveData();
+    }
   },[uploading]);  // eslint-disable-line
 
   useEffect(() => {
-    if ( user.userData && user.userData.forbidden1 !== null && user.userData.forbidden1 )
-      router.push(`/401`);   
-  },[user]);  // eslint-disable-line
-  
-  useEffect(() => {
     const today = new Date();
     if ( uploadType ) {
-      if (!upload ) 
+      if (!upload ) {
         setUpload({
           date : today,
           title : uploadType.label+' '+today.toDateString(),
@@ -236,13 +269,16 @@ export default function Page( )  {
           status: UploadService.STATUSES.UPLOADED,
           operation: uploadAction?.name
         })
-      else setUpload({ 
+      }
+      else {
+        setUpload({ 
           ...upload,
           date : today,
           title : uploadType.label+' '+today.toDateString(),
           type: uploadType.name,
           operation: uploadAction?.name
-        })  
+        })
+      }  
     }
   },[uploadType]); // eslint-disable-line
 
@@ -268,7 +304,7 @@ export default function Page( )  {
 
   return (
     <div className="layout-dashboard">
-      <Toast ref={toast} />
+      <Toast ref={toast} /> 
       <Dialog 
         header="Help on upload type selection" 
         visible={visibleDlg1} style={{ width: '50vw' }} 
@@ -279,8 +315,8 @@ export default function Page( )  {
           <h4 className="font-bold">You must choose the type of data you want to upload:</h4>
           <ul className="font-bold">
             <li>New Point Soil Data</li>
-            <li>Genealogies - Surveys</li>
-            <li>Photos - Surveys</li>
+            <li>Point Soil Data Genealogies</li>
+            <li>Photos</li>
           </ul>
         </p>
       )}
@@ -441,11 +477,12 @@ export default function Page( )  {
       <MyMap data={map} />
       </div>
       )}
+      { (taxonomies) && (
       <div className="card"> 
       {( upload && upload.report && upload.report['errors'] && uploadType  && uploadType.sheets && upload.report['errors'][uploadType.sheets[0]].constructor == Array && (
         <>
         {( upload.report['total_errors'] > 0 ) && (
-          <Message severity="warn" content={"Found " + upload.report.total_errors + " Errors in " + uploadType.sheets[0] } />
+          <Message severity="danger" content={"Found " + upload.report.total_errors + " errors in sheets" } />
         )}
         {( uploadType.sheets[0] && upload.report['errors'][uploadType.sheets[0]] && (
           <>
@@ -515,7 +552,11 @@ export default function Page( )  {
         ))}
         </>
       ))}
-      </div>  
+      </div>
+      )}
+      {(loading) && (
+        <h2>Loading Data...</h2>
+      )}  
     </div>
   );
 }
@@ -527,5 +568,3 @@ export async function getStaticProps(context) {
     },
   }
 }
-
-

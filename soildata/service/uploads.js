@@ -1,6 +1,5 @@
 export const UploadService = {
-  
-  STATUSES : {
+  STATUSES : { 
     UPLOADED : "UPLOADED",
     IN_PROCESS : "IN_PROCESS",
     IMPORT_SUCCESS : "IMPORT_SUCCESS",
@@ -37,7 +36,7 @@ export const UploadService = {
     }); 
     return arr
   },
-
+  
   async get(ck, id) { 
     let csrftoken = getMyCookie(ck,'csrftoken');
     if ( csrftoken )
@@ -50,32 +49,6 @@ export const UploadService = {
           },
         })
         if ( !response || !response.ok) {
-          // get error message from body or default to response status
-          return { data: null, error: true }
-        }
-        const isJson = response.headers.get('content-type')?.includes('application/json');
-        const data = isJson && await response.json();
-        return { data: data, error: null }
-      }
-      catch( error )  {
-        console.log(error)
-        return { data: null, error: error }
-      }
-    }
-  },
-
-  async getGnDocument(id, ck) { 
-    let csrftoken = getMyCookie(ck,'csrftoken');
-    if ( csrftoken )
-    { 
-      try {
-        let response = await fetch( `/api/v2/resources/?filter{resource_type}=document&filter{title}=${id}&format=json`, { 
-          headers: {
-            "X-CSRFToken" : csrftoken
-          },
-        })
-        
-        if ( !response || !response.ok ) {
           // get error message from body or default to response status
           return { data: null, error: true }
         }

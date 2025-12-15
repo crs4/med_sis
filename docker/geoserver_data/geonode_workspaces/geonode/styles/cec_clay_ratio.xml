@@ -1,0 +1,19 @@
+<style>
+  <id>StyleInfoImpl--d81fc44:1994e223eb8:-68e8</id>
+  <name>cec_clay_ratio</name>
+  <workspace>
+    <id>WorkspaceInfoImpl-78ff667e:12476299803:-7ffd</id>
+  </workspace>
+  <format>sld</format>
+  <languageVersion>
+    <version>1.0.0</version>
+  </languageVersion>
+  <filename>cec_clay_ratio.sld</filename>
+  <metadata>
+    <entry key="msEditorType">textarea</entry>
+    <entry key="msStyleJSON">{&quot;name&quot;:&quot;Red Square Point&quot;,&quot;rules&quot;:[{&quot;ruleId&quot;:&quot;671ac960-985b-11f0-9e90-797635bb44fa&quot;,&quot;kind&quot;:&quot;Classification&quot;,&quot;wellKnownName&quot;:&quot;Circle&quot;,&quot;color&quot;:&quot;#dddddd&quot;,&quot;fillOpacity&quot;:1,&quot;strokeColor&quot;:&quot;#777777&quot;,&quot;strokeOpacity&quot;:1,&quot;strokeWidth&quot;:2,&quot;radius&quot;:7,&quot;rotate&quot;:0,&quot;msBringToFront&quot;:false,&quot;msHeightReference&quot;:&quot;none&quot;,&quot;classification&quot;:[{&quot;title&quot;:&quot; &lt; -0.805395339694197&quot;,&quot;color&quot;:&quot;#006837&quot;,&quot;type&quot;:&quot;Point&quot;,&quot;min&quot;:null,&quot;max&quot;:-0.805395339694197},{&quot;title&quot;:&quot; &gt;= -0.805395339694197 AND &lt;-0.268465113231399&quot;,&quot;color&quot;:&quot;#86cb67&quot;,&quot;type&quot;:&quot;Point&quot;,&quot;min&quot;:-0.805395339694197,&quot;max&quot;:-0.268465113231399},{&quot;title&quot;:&quot; &gt;= -0.268465113231399 AND &lt;0.268465113231399&quot;,&quot;color&quot;:&quot;#ffffbf&quot;,&quot;type&quot;:&quot;Point&quot;,&quot;min&quot;:-0.268465113231399,&quot;max&quot;:0.268465113231399},{&quot;title&quot;:&quot; &gt;= 0.268465113231399 AND &lt;0.805395339694197&quot;,&quot;color&quot;:&quot;#f98e52&quot;,&quot;type&quot;:&quot;Point&quot;,&quot;min&quot;:0.268465113231399,&quot;max&quot;:0.805395339694197},{&quot;title&quot;:&quot; &gt;= 0.805395339694197&quot;,&quot;color&quot;:&quot;#a50026&quot;,&quot;type&quot;:&quot;Point&quot;,&quot;min&quot;:0.805395339694197,&quot;max&quot;:null}],&quot;intervals&quot;:5,&quot;method&quot;:&quot;standardDeviation&quot;,&quot;ramp&quot;:&quot;rdylgn&quot;,&quot;reverse&quot;:true,&quot;symbolizerKind&quot;:&quot;Mark&quot;,&quot;attribute&quot;:&quot;cec_clayratio&quot;}]}</entry>
+    <entry key="msMD5Hash">08d318ad3e61d6fb3666b85ab51efba1</entry>
+  </metadata>
+  <dateCreated>2025-09-17 17:19:47.635 UTC</dateCreated>
+  <dateModified>2025-12-12 20:40:09.595 UTC</dateModified>
+</style>

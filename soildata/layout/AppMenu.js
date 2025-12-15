@@ -79,23 +79,6 @@ const AppMenu = () => {
         },
         { separator: true },
         {
-            label: 'Indicators',
-            icon: 'pi pi-fw pi-image',
-            items: [
-                {
-                    label: 'List',
-                    icon: 'pi pi-fw pi-list',
-                    to: '/indicators/'
-                },
-                {
-                    label: 'New',
-                    icon: 'pi pi-fw pi-plus',
-                    to: '/indicators/create'
-                }
-            ]
-        },
-        { separator: true },
-        {
             label: 'Photos',
             icon: 'pi pi-fw pi-image',
             items: [

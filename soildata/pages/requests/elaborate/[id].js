@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import Footer from '../../../components/Footer';
-import ToDo from '../../../components/todo';
+import ToDo from '../../../components/ToDo';
 import { useTranslations } from 'next-intl';
 import { useUser } from '../../../context/user';
 import { useRouter } from 'next/router';
@@ -20,10 +20,11 @@ export default function Page()  {
   },[user]);  // eslint-disable-line
 
   return (
-      <>
-        <ToDo />
-      </>
-    );
+    <>
+      <ToDo />
+      <Footer />
+    </>
+  );
 };
 
 export async function getStaticPaths() {
@@ -36,6 +37,7 @@ export async function getStaticPaths() {
 export async function getStaticProps(context) {
   return {
     props: { 
+      indicator: indicator,
       messages: (await import(`../../../translations/${context.locale}.json`)).default
      },
   }

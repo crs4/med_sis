@@ -1,0 +1,17 @@
+<layer>
+  <name>layer_structure_geo</name>
+  <id>LayerInfoImpl-701670f8:19b0d9dac21:-7fc1</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-92bd292:1994dc6abb7:-7fe7</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-701670f8:19b0d9dac21:-7fc2</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2025-12-11 14:01:24.179 UTC</dateCreated>
+  <dateModified>2025-12-12 19:02:26.325 UTC</dateModified>
+</layer>

@@ -1,0 +1,17 @@
+<layer>
+  <name>relative_field_capacity</name>
+  <id>LayerInfoImpl-172bd526:19b0f8487ed:-7ff9</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--d81fc44:1994e223eb8:-5c6c</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-172bd526:19b0f8487ed:-7ffa</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2025-12-11 22:33:30.352 UTC</dateCreated>
+  <dateModified>2025-12-12 21:00:16.79 UTC</dateModified>
+</layer>

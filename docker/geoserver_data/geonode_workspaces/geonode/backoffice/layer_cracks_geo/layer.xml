@@ -1,0 +1,16 @@
+<layer>
+  <name>layer_cracks_geo</name>
+  <id>LayerInfoImpl--afa04af:19b13dd101f:-7dfe</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-92bd292:1994dc6abb7:-7fe7</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--afa04af:19b13dd101f:-7dff</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2025-12-12 19:17:43.246 UTC</dateCreated>
+</layer>

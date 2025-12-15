@@ -21,7 +21,7 @@
 # Django settings for the GeoNode project.
 import os
 import ast
-
+import logging.handlers
 try:
     from urllib.parse import urlparse, urlunparse
     from urllib.request import urlopen, Request
@@ -82,7 +82,7 @@ TEMPLATES[0].pop("APP_DIRS", None)
 
 LOGGING = {
     "version": 1,
-    "disable_existing_loggers": True,
+    "disable_existing_loggers": False,
     "formatters": {
         "verbose": {
             "format": "%(levelname)s %(asctime)s %(module)s %(process)d "
@@ -95,7 +95,7 @@ LOGGING = {
     "filters": {"require_debug_false": {"()": "django.utils.log.RequireDebugFalse"}},
     "handlers": {
         "console": {
-            "level": "ERROR",
+            "level": "INFO",
             "class": "logging.StreamHandler",
             "formatter": "simple",
         },
@@ -104,11 +104,17 @@ LOGGING = {
             "filters": ["require_debug_false"],
             "class": "django.utils.log.AdminEmailHandler",
         },
+        "celery_file": {
+            "level": "DEBUG",
+            "class": "logging.handlers.WatchedFileHandler",
+            "filename": os.getenv("CELERY__LOG_FILE", "/var/log/celery.log"),
+            "formatter": "verbose",
+        },
     },
     "loggers": {
         "django": {
             "handlers": ["console"],
-            "level": "ERROR",
+            "level": "DEBUG",
         },
         "geonode": {
             "handlers": ["console"],
@@ -136,6 +142,10 @@ LOGGING = {
         },
         "geonode_logstash.logstash": {
             "handlers": ["console"],
+            "level": "DEBUG",
+        },
+        "backoffice": {
+            "handlers": ["celery_file", "console"],
             "level": "DEBUG",
         },
     },

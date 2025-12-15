@@ -9,6 +9,7 @@ import { point, featureCollection } from '@turf/turf';
 import { useUser } from '../../context/user';
 import ReportTable from '../../components/XLSxResultTable';
 import { UploadService } from '../../service/uploads';
+import { TaxonomyService } from '../../service/taxonomies';
 
 
 const MyMap = dynamic(() => import("../../components/XLSxMap"), { ssr:false })

@@ -1,0 +1,17 @@
+<layer>
+  <name>layer_permafrost_geo</name>
+  <id>LayerInfoImpl-701670f8:19b0d9dac21:-7fd0</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-92bd292:1994dc6abb7:-7fe7</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-701670f8:19b0d9dac21:-7fd1</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2025-12-11 13:56:21.848 UTC</dateCreated>
+  <dateModified>2025-12-12 19:00:36.47 UTC</dateModified>
+</layer>
