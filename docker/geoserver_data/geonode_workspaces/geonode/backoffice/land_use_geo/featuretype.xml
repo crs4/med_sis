@@ -64,16 +64,16 @@
   AUTHORITY[&quot;EPSG&quot;,&quot;4326&quot;]]</nativeCRS>
   <srs>EPSG:4326</srs>
   <nativeBoundingBox>
-    <minx>-10.0</minx>
-    <maxx>60.0</maxx>
+    <minx>-20.0</minx>
+    <maxx>50.0</maxx>
     <miny>10.0</miny>
-    <maxy>60.0</maxy>
+    <maxy>50.0</maxy>
   </nativeBoundingBox>
   <latLonBoundingBox>
-    <minx>-10.0</minx>
-    <maxx>60.0</maxx>
+    <minx>-20.0</minx>
+    <maxx>50.0</maxx>
     <miny>10.0</miny>
-    <maxy>60.0</maxy>
+    <maxy>50.0</maxy>
   </latLonBoundingBox>
   <projectionPolicy>FORCE_DECLARED</projectionPolicy>
   <enabled>true</enabled>
