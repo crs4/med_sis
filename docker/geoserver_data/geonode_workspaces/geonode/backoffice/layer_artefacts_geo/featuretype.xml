@@ -17,32 +17,32 @@
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=347fc7c1-59a6-4708-97cb-150e944c1adb&amp;outputschema=http%3A%2F%2Fwww.w3.org%2F2005%2FAtom&amp;elementsetname=full</content>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=c675bb26-d5a6-4a5e-a49f-323cbc2463f9&amp;outputschema=http%3A%2F%2Fwww.w3.org%2F2005%2FAtom&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=347fc7c1-59a6-4708-97cb-150e944c1adb&amp;outputschema=http%3A%2F%2Fgcmd.gsfc.nasa.gov%2FAboutus%2Fxml%2Fdif%2F&amp;elementsetname=full</content>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=c675bb26-d5a6-4a5e-a49f-323cbc2463f9&amp;outputschema=http%3A%2F%2Fgcmd.gsfc.nasa.gov%2FAboutus%2Fxml%2Fdif%2F&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=347fc7c1-59a6-4708-97cb-150e944c1adb&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2F2.0.2&amp;elementsetname=full</content>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=c675bb26-d5a6-4a5e-a49f-323cbc2463f9&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2F2.0.2&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=347fc7c1-59a6-4708-97cb-150e944c1adb&amp;outputschema=urn%3Aoasis%3Anames%3Atc%3Aebxml-regrep%3Axsd%3Arim%3A3.0&amp;elementsetname=full</content>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=c675bb26-d5a6-4a5e-a49f-323cbc2463f9&amp;outputschema=urn%3Aoasis%3Anames%3Atc%3Aebxml-regrep%3Axsd%3Arim%3A3.0&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>text/xml</type>
       <metadataType>FGDC</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=347fc7c1-59a6-4708-97cb-150e944c1adb&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2Fcsdgm&amp;elementsetname=full</content>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=c675bb26-d5a6-4a5e-a49f-323cbc2463f9&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2Fcsdgm&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=347fc7c1-59a6-4708-97cb-150e944c1adb&amp;outputschema=http%3A%2F%2Fwww.isotc211.org%2F2005%2Fgmd&amp;elementsetname=full</content>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=c675bb26-d5a6-4a5e-a49f-323cbc2463f9&amp;outputschema=http%3A%2F%2Fwww.isotc211.org%2F2005%2Fgmd&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>

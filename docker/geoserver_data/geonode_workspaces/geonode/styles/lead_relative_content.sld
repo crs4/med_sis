@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <NamedLayer>
-    <Name>lead_relative_content</Name>
+    <Name>Lead relative content (%)</Name>
     <UserStyle>
-      <Name>circle_point</Name>
-      <Title>Point Red Symbol Border</Title>
+      <Name>Lead relative content (%)</Name>
+      <Title>Lead relative content (%)</Title>
       <FeatureTypeStyle>
         <Rule>
           <Name>Lead under content</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>pb_rc</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>0</Literal>
               </PropertyIsGreaterThanOrEqualTo>
               <PropertyIsLessThan>
-                <PropertyName>pb_rc</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>3.2</Literal>
               </PropertyIsLessThan>
             </And>
@@ -44,11 +44,11 @@
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>pb_rc</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>3.2</Literal>
               </PropertyIsGreaterThanOrEqualTo>
               <PropertyIsLessThan>
-                <PropertyName>pb_rc</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>39.5</Literal>
               </PropertyIsLessThan>
             </And>
@@ -77,7 +77,7 @@
           <Name>Lead over enrichment</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
              <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>pb_rc</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>39.5</Literal>
               </PropertyIsGreaterThanOrEqualTo>
              </Filter>

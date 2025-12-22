@@ -1,0 +1,17 @@
+<layer>
+  <name>sodium_exchangeable_percentage_sodicity</name>
+  <id>LayerInfoImpl-3323fb77:19b471323fa:-7ff7</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--1d32d7ae:19b3d0b754b:-7fe1</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-3323fb77:19b471323fa:-7ff8</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2025-12-22 17:25:59.577 UTC</dateCreated>
+  <dateModified>2025-12-22 22:03:36.411 UTC</dateModified>
+</layer>

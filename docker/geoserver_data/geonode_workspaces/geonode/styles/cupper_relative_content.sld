@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <NamedLayer>
-    <Name>cupper_relative_content</Name>
+    <Name>Cupper relative content (%)</Name>
     <UserStyle>
-      <Name>circle_point</Name>
-      <Title>Point Red Symbol Border</Title>
+      <Name>Cupper relative content (%)</Name>
+      <Title>Cupper relative content (%)</Title>
       <FeatureTypeStyle>
         <Rule>
           <Name>Cupper under content</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>cu_rc</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>0</Literal>
               </PropertyIsGreaterThanOrEqualTo>
               <PropertyIsLessThan>
-                <PropertyName>cu_rc</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>6.41</Literal>
               </PropertyIsLessThan>
             </And>
@@ -44,11 +44,11 @@
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>cu_rc</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>6.41</Literal>
               </PropertyIsGreaterThanOrEqualTo>
               <PropertyIsLessThan>
-                <PropertyName>cu_rc</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>29.51</Literal>
               </PropertyIsLessThan>
             </And>
@@ -77,7 +77,7 @@
           <Name>Cupper over enrichment</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
              <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>cu_rc</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>29.51</Literal>
               </PropertyIsGreaterThanOrEqualTo>
              </Filter>

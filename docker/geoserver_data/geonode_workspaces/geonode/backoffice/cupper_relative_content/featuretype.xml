@@ -6,7 +6,8 @@
     <id>NamespaceInfoImpl-78ff667e:12476299803:-7ffe</id>
   </namespace>
   <title>Cupper relative content (CuRC) indicator</title>
-  <abstract>Cupper relative content indicator represents anthropic activity impact indicator based on Cu, Zn and Pb total concentrations (Weng et al., 2003)</abstract>
+  <abstract>Soil chemical health: Cupper relative content indicator (CuRC) represents anthropic activity impact indicator based on Cu, Zn and Pb total concentrations (Weng et al., 2003).&#xd;
+FAO SoilSTAT domain: contamination</abstract>
   <keywords>
     <string>features</string>
     <string>chemical indicator</string>
@@ -17,32 +18,32 @@
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=05780a6d-58e2-4aa8-9536-6d3d5516c47b&amp;outputschema=http%3A%2F%2Fwww.w3.org%2F2005%2FAtom&amp;elementsetname=full</content>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=0139572e-c873-476a-864f-a8220422787f&amp;outputschema=http%3A%2F%2Fwww.w3.org%2F2005%2FAtom&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=05780a6d-58e2-4aa8-9536-6d3d5516c47b&amp;outputschema=http%3A%2F%2Fgcmd.gsfc.nasa.gov%2FAboutus%2Fxml%2Fdif%2F&amp;elementsetname=full</content>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=0139572e-c873-476a-864f-a8220422787f&amp;outputschema=http%3A%2F%2Fgcmd.gsfc.nasa.gov%2FAboutus%2Fxml%2Fdif%2F&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=05780a6d-58e2-4aa8-9536-6d3d5516c47b&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2F2.0.2&amp;elementsetname=full</content>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=0139572e-c873-476a-864f-a8220422787f&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2F2.0.2&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=05780a6d-58e2-4aa8-9536-6d3d5516c47b&amp;outputschema=urn%3Aoasis%3Anames%3Atc%3Aebxml-regrep%3Axsd%3Arim%3A3.0&amp;elementsetname=full</content>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=0139572e-c873-476a-864f-a8220422787f&amp;outputschema=urn%3Aoasis%3Anames%3Atc%3Aebxml-regrep%3Axsd%3Arim%3A3.0&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>text/xml</type>
       <metadataType>FGDC</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=05780a6d-58e2-4aa8-9536-6d3d5516c47b&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2Fcsdgm&amp;elementsetname=full</content>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=0139572e-c873-476a-864f-a8220422787f&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2Fcsdgm&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=05780a6d-58e2-4aa8-9536-6d3d5516c47b&amp;outputschema=http%3A%2F%2Fwww.isotc211.org%2F2005%2Fgmd&amp;elementsetname=full</content>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=0139572e-c873-476a-864f-a8220422787f&amp;outputschema=http%3A%2F%2Fwww.isotc211.org%2F2005%2Fgmd&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>

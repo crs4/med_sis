@@ -1019,7 +1019,7 @@ const Taxonomies = {
         "VR" : " class: Very firm; description: Knife does not (or only a little bit) penetrate when forces are applied",
         "ND" : " class: no data; description: no data"
     },
-    PERMAFROST_TYPE : {
+    PERMAFROST_TYPE : { 
         "I" : " Massive ice, cementation by ice or readily visible ice crystals",
         "T" : " Soil temperature of < 0 °C and insufficient water to form readily visible ice crystals",
         "N" : " No permafrost",
@@ -1244,6 +1244,7 @@ const Taxonomies = {
         "N" : " size_cm: none; description: No coarse surface fragments",
         "G" : " size_cm: > 0.2 - 6; description: Gravel"
     },
+    
     SEALING_AGENT : {
         "PP" : " Physical, permanent",
         "PD" : " Physical, only when dry",

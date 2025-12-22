@@ -6,44 +6,43 @@
     <id>NamespaceInfoImpl-78ff667e:12476299803:-7ffe</id>
   </namespace>
   <title>CEC Clay Ratio (CEC/Clay) indicator</title>
-  <abstract>CEC Clay Ratio is the indicator of low or high activity clay</abstract>
+  <abstract>Soil chemical health: Indicator of low or high activity clay (Stewart &amp; Hossner, 2001)&#xd;
+FAO SoilSTAT domain: Waterlogging</abstract>
   <keywords>
-    <string>physical indicator</string>
-    <string>Soil Physical Health</string>
-    <string>Soil Chemical Health</string>
     <string>cec_clay_ratio</string>
+    <string>Soil chemical health</string>
     <string>features</string>
   </keywords>
   <metadataLinks>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=36174812-3e9d-4236-9170-4a295cde6d2e&amp;outputschema=http%3A%2F%2Fwww.w3.org%2F2005%2FAtom&amp;elementsetname=full</content>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=dcaad813-27e3-4c62-ac32-543c0a6b4920&amp;outputschema=http%3A%2F%2Fwww.w3.org%2F2005%2FAtom&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=36174812-3e9d-4236-9170-4a295cde6d2e&amp;outputschema=http%3A%2F%2Fgcmd.gsfc.nasa.gov%2FAboutus%2Fxml%2Fdif%2F&amp;elementsetname=full</content>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=dcaad813-27e3-4c62-ac32-543c0a6b4920&amp;outputschema=http%3A%2F%2Fgcmd.gsfc.nasa.gov%2FAboutus%2Fxml%2Fdif%2F&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=36174812-3e9d-4236-9170-4a295cde6d2e&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2F2.0.2&amp;elementsetname=full</content>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=dcaad813-27e3-4c62-ac32-543c0a6b4920&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2F2.0.2&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=36174812-3e9d-4236-9170-4a295cde6d2e&amp;outputschema=urn%3Aoasis%3Anames%3Atc%3Aebxml-regrep%3Axsd%3Arim%3A3.0&amp;elementsetname=full</content>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=dcaad813-27e3-4c62-ac32-543c0a6b4920&amp;outputschema=urn%3Aoasis%3Anames%3Atc%3Aebxml-regrep%3Axsd%3Arim%3A3.0&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>text/xml</type>
       <metadataType>FGDC</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=36174812-3e9d-4236-9170-4a295cde6d2e&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2Fcsdgm&amp;elementsetname=full</content>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=dcaad813-27e3-4c62-ac32-543c0a6b4920&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2Fcsdgm&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=36174812-3e9d-4236-9170-4a295cde6d2e&amp;outputschema=http%3A%2F%2Fwww.isotc211.org%2F2005%2Fgmd&amp;elementsetname=full</content>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=dcaad813-27e3-4c62-ac32-543c0a6b4920&amp;outputschema=http%3A%2F%2Fwww.isotc211.org%2F2005%2Fgmd&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>

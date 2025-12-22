@@ -6,10 +6,10 @@
     <id>NamespaceInfoImpl-78ff667e:12476299803:-7ffe</id>
   </namespace>
   <title>Air Capacity  (AC) indicator</title>
-  <abstract>Air capacity (AC) indicator represents root zone aeration (Di Prima et al., 2024)</abstract>
+  <abstract>Soil physical health: Root zone aeration indicator (Di Prima et al., 2024).&#xd;
+FAO SoilSTAT domain: Waterlogging</abstract>
   <keywords>
     <string>features</string>
-    <string>physical indicator</string>
     <string>Soil Physical Health</string>
     <string>air_capacity</string>
   </keywords>
@@ -17,32 +17,32 @@
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=3ab25b4f-1da8-4cd1-9692-9b741fbdba81&amp;outputschema=http%3A%2F%2Fwww.w3.org%2F2005%2FAtom&amp;elementsetname=full</content>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=5211964f-7e50-4785-9ec2-93257ec566da&amp;outputschema=http%3A%2F%2Fwww.w3.org%2F2005%2FAtom&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=3ab25b4f-1da8-4cd1-9692-9b741fbdba81&amp;outputschema=http%3A%2F%2Fgcmd.gsfc.nasa.gov%2FAboutus%2Fxml%2Fdif%2F&amp;elementsetname=full</content>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=5211964f-7e50-4785-9ec2-93257ec566da&amp;outputschema=http%3A%2F%2Fgcmd.gsfc.nasa.gov%2FAboutus%2Fxml%2Fdif%2F&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=3ab25b4f-1da8-4cd1-9692-9b741fbdba81&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2F2.0.2&amp;elementsetname=full</content>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=5211964f-7e50-4785-9ec2-93257ec566da&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2F2.0.2&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=3ab25b4f-1da8-4cd1-9692-9b741fbdba81&amp;outputschema=urn%3Aoasis%3Anames%3Atc%3Aebxml-regrep%3Axsd%3Arim%3A3.0&amp;elementsetname=full</content>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=5211964f-7e50-4785-9ec2-93257ec566da&amp;outputschema=urn%3Aoasis%3Anames%3Atc%3Aebxml-regrep%3Axsd%3Arim%3A3.0&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>text/xml</type>
       <metadataType>FGDC</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=3ab25b4f-1da8-4cd1-9692-9b741fbdba81&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2Fcsdgm&amp;elementsetname=full</content>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=5211964f-7e50-4785-9ec2-93257ec566da&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2Fcsdgm&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=3ab25b4f-1da8-4cd1-9692-9b741fbdba81&amp;outputschema=http%3A%2F%2Fwww.isotc211.org%2F2005%2Fgmd&amp;elementsetname=full</content>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=5211964f-7e50-4785-9ec2-93257ec566da&amp;outputschema=http%3A%2F%2Fwww.isotc211.org%2F2005%2Fgmd&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>

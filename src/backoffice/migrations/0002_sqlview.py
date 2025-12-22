@@ -420,8 +420,8 @@ SQL_CREATE = f"""
   WHERE a.n_tot is not null and a.org_car is not null and a.n_tot > 0;
   ALTER VIEW IF EXISTS nutrient_imbalance_soc_decline OWNER TO backoffice_user;
 
-  --2) Sodium exchangeable percentage 
-  CREATE OR REPLACE VIEW sodium_exchangeable_percentage AS
+  --2) Sodium exchangeable percentage - waterlogging
+  CREATE OR REPLACE VIEW sodium_exchangeable_percentage_waterlogging AS
   SELECT
     a.id as labdata_id,
     a.date, a.upper, a.lower, a.survey_m_id, a.project,
@@ -429,10 +429,21 @@ SQL_CREATE = f"""
     '%' as unit, a.geom
   FROM public.labdata_geo a
   WHERE a.cec is not null and a.na is not null and a.cec > 0 ;
-  ALTER VIEW IF EXISTS sodium_exchangeable_percentage OWNER TO backoffice_user;
+  ALTER VIEW IF EXISTS sodium_exchangeable_percentage_waterlogging OWNER TO backoffice_user;
+
+  -- Sodium exchangeable percentage - sodicity
+  CREATE OR REPLACE VIEW sodium_exchangeable_percentage_sodicity AS
+  SELECT
+    a.id as labdata_id,
+    a.date, a.upper, a.lower, a.survey_m_id, a.project,
+    (a.na / a.cec)*100 AS value,
+    '%' as unit, a.geom
+  FROM public.labdata_geo a
+  WHERE a.cec is not null and a.na is not null and a.cec > 0 ;
+  ALTER VIEW IF EXISTS sodium_exchangeable_percentage_sodicity OWNER TO backoffice_user;
 
   --3) Sodium adsorption ratio
-  CREATE OR REPLACE VIEW sodium_adsorption_ratio AS
+  CREATE OR REPLACE VIEW sodium_adsorption_ratio_waterlogging AS
   SELECT
     a.id as labdata_id,
     a.date, a.upper, a.lower, a.survey_m_id, a.project,
@@ -440,7 +451,17 @@ SQL_CREATE = f"""
     'dimensionless' as unit, a.geom  
   FROM public.labdata_geo a
   WHERE a.na IS NOT NULL and a.ca IS NOT NULL AND a.mg IS NOT NULL AND (a.ca + a.mg) > 0 ;
-  ALTER VIEW IF EXISTS sodium_adsorption_ratio OWNER TO backoffice_user;
+  ALTER VIEW IF EXISTS sodium_adsorption_ratio_waterlogging OWNER TO backoffice_user;
+
+  CREATE OR REPLACE VIEW sodium_adsorption_ratio_sodicity AS
+  SELECT
+    a.id as labdata_id,
+    a.date, a.upper, a.lower, a.survey_m_id, a.project,
+    (a.na / SQRT(a.ca + a.mg)) AS value,
+    'dimensionless' as unit, a.geom  
+  FROM public.labdata_geo a
+  WHERE a.na IS NOT NULL and a.ca IS NOT NULL AND a.mg IS NOT NULL AND (a.ca + a.mg) > 0 ;
+  ALTER VIEW IF EXISTS sodium_adsorption_ratio_sodicity OWNER TO backoffice_user;
 
   --4) Sodicity/salinity ratio
   CREATE OR REPLACE VIEW sodicity_salinity_ratio AS

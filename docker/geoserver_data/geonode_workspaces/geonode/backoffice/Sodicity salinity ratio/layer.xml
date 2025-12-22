@@ -1,9 +1,9 @@
 <layer>
-  <name>sodicity_salinity_ratio</name>
+  <name>Sodicity salinity ratio</name>
   <id>LayerInfoImpl-9a9970d:19b217b2ae3:-7ffa</id>
   <type>VECTOR</type>
   <defaultStyle>
-    <id>StyleInfoImpl-92bd292:1994dc6abb7:-7fe7</id>
+    <id>StyleInfoImpl-37b18cc6:14d5d036d48:-8000</id>
   </defaultStyle>
   <resource class="featureType">
     <id>FeatureTypeInfoImpl-9a9970d:19b217b2ae3:-7ffb</id>
@@ -13,5 +13,5 @@
     <logoHeight>0</logoHeight>
   </attribution>
   <dateCreated>2025-12-15 10:10:25.848 UTC</dateCreated>
-  <dateModified>2025-12-15 12:37:28.241 UTC</dateModified>
+  <dateModified>2025-12-22 21:44:39.244 UTC</dateModified>
 </layer>

@@ -1,29 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <NamedLayer>
-<<<<<<< HEAD
-    <Name>Plant Available Water Capacity (%)</Name>
+    <Name>Sodium adsorption ratio (SAR) - waterlogging</Name>
     <UserStyle>
-      <Name>Plant Available Water Capacity (%)</Name>
-      <Title>Plant Available Water Capacity (%)</Title>
-=======
-    <Name>plant_avail_water_c</Name>
-    <UserStyle>
-      <Name>circle_point</Name>
-      <Title>Point Red Symbol Border</Title>
->>>>>>> 58dcde557d1da9070628851a32775b2507519611
+      <Name>Sodium adsorption ratio (SAR) - waterlogging</Name>
+      <Title>Sodium adsorption ratio (SAR) - waterlogging</Title>
       <FeatureTypeStyle>
         <Rule>
-          <Name>Ideal water storage capacity</Name>
+          <Name>Lower waterlogging potential risk due to soil sodicity</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>pawc</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>0</Literal>
               </PropertyIsGreaterThanOrEqualTo>
               <PropertyIsLessThan>
-                <PropertyName>pawc</PropertyName>
-                <Literal>10</Literal>
+                <PropertyName>value</PropertyName>
+                <Literal>2</Literal>
               </PropertyIsLessThan>
             </And>
           </Filter>
@@ -47,16 +40,16 @@
         </Rule>
 
         <Rule>
-          <Name>Good water storage capacity</Name>
+          <Name>Waterlogging potential for soil with high charge density clay</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>pawc</PropertyName>
-                <Literal>10</Literal>
+                <PropertyName>value</PropertyName>
+                <Literal>2</Literal>
               </PropertyIsGreaterThanOrEqualTo>
               <PropertyIsLessThan>
-                <PropertyName>pawc</PropertyName>
-                <Literal>15</Literal>
+                <PropertyName>value</PropertyName>
+                <Literal>8</Literal>
               </PropertyIsLessThan>
             </And>
           </Filter>
@@ -79,21 +72,18 @@
           </PointSymbolizer>
         </Rule>
 
-<<<<<<< HEAD
-        <Rule>
-=======
- <Rule>
->>>>>>> 58dcde557d1da9070628851a32775b2507519611
-          <Name>Limited water storage capacity</Name>
+
+<Rule>
+          <Name>Potential water logging and clay dispersion</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>pawc</PropertyName>
-                <Literal>15</Literal>
+                <PropertyName>value</PropertyName>
+                <Literal>8</Literal>
               </PropertyIsGreaterThanOrEqualTo>
               <PropertyIsLessThan>
-                <PropertyName>pawc</PropertyName>
-                <Literal>20</Literal>
+                <PropertyName>value</PropertyName>
+                <Literal>13</Literal>
               </PropertyIsLessThan>
             </And>
           </Filter>
@@ -117,11 +107,11 @@
         </Rule>
 
         <Rule>
-          <Name>Poor water storage capacity</Name>
+          <Name>Higher waterlogging potential risk due to soil sodicity</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
              <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>pawc</PropertyName>
-                <Literal>20</Literal>
+                <PropertyName>value</PropertyName>
+                <Literal>13</Literal>
               </PropertyIsGreaterThanOrEqualTo>
              </Filter>
           <PointSymbolizer>
@@ -142,10 +132,7 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-<<<<<<< HEAD
-=======
        
->>>>>>> 58dcde557d1da9070628851a32775b2507519611
       </FeatureTypeStyle>
     </UserStyle>
   </NamedLayer>

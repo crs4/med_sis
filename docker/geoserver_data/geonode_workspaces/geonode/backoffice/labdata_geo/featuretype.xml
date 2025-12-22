@@ -8,10 +8,7 @@
   <title>Point soil data: Laboratory data</title>
   <abstract>Laboratory data of Legacy Point Soil Data. It refers to analytical procedures for soil characterization and WRB Annex 2 provides summaries of recommended analytical procedures to be used. Full descriptions can be found in Procedures for soil analysis (Van Reeuwijk, 2002) and the USDA Kellogg Soil Survey Laboratory Methods Manual (Soil Survey Staff, 2014).</abstract>
   <keywords>
-    <string>Soil Physical Health</string>
     <string>Points Soil Data</string>
-    <string>Soil Chemical Health</string>
-    <string>Soil Legacy Data</string>
     <string>labdata_geo</string>
     <string>features</string>
   </keywords>
@@ -19,32 +16,32 @@
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=69578c1e-2893-4588-9d47-0ef73a93d3ec&amp;outputschema=http%3A%2F%2Fwww.w3.org%2F2005%2FAtom&amp;elementsetname=full</content>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=a23b4c6a-db44-4ef3-bb8f-771c848236e9&amp;outputschema=http%3A%2F%2Fwww.w3.org%2F2005%2FAtom&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=69578c1e-2893-4588-9d47-0ef73a93d3ec&amp;outputschema=http%3A%2F%2Fgcmd.gsfc.nasa.gov%2FAboutus%2Fxml%2Fdif%2F&amp;elementsetname=full</content>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=a23b4c6a-db44-4ef3-bb8f-771c848236e9&amp;outputschema=http%3A%2F%2Fgcmd.gsfc.nasa.gov%2FAboutus%2Fxml%2Fdif%2F&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=69578c1e-2893-4588-9d47-0ef73a93d3ec&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2F2.0.2&amp;elementsetname=full</content>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=a23b4c6a-db44-4ef3-bb8f-771c848236e9&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2F2.0.2&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=69578c1e-2893-4588-9d47-0ef73a93d3ec&amp;outputschema=urn%3Aoasis%3Anames%3Atc%3Aebxml-regrep%3Axsd%3Arim%3A3.0&amp;elementsetname=full</content>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=a23b4c6a-db44-4ef3-bb8f-771c848236e9&amp;outputschema=urn%3Aoasis%3Anames%3Atc%3Aebxml-regrep%3Axsd%3Arim%3A3.0&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>text/xml</type>
       <metadataType>FGDC</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=69578c1e-2893-4588-9d47-0ef73a93d3ec&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2Fcsdgm&amp;elementsetname=full</content>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=a23b4c6a-db44-4ef3-bb8f-771c848236e9&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2Fcsdgm&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
       <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=69578c1e-2893-4588-9d47-0ef73a93d3ec&amp;outputschema=http%3A%2F%2Fwww.isotc211.org%2F2005%2Fgmd&amp;elementsetname=full</content>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=a23b4c6a-db44-4ef3-bb8f-771c848236e9&amp;outputschema=http%3A%2F%2Fwww.isotc211.org%2F2005%2Fgmd&amp;elementsetname=full</content>
     </metadataLink>
     <metadataLink>
       <type>other</type>
@@ -92,8 +89,6 @@
   </store>
   <serviceConfiguration>false</serviceConfiguration>
   <simpleConversionEnabled>false</simpleConversionEnabled>
-  <internationalTitle/>
-  <internationalAbstract/>
   <maxFeatures>0</maxFeatures>
   <numDecimals>0</numDecimals>
   <padWithZeros>false</padWithZeros>
