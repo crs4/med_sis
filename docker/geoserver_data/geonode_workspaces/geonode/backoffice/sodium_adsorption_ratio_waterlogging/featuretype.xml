@@ -6,12 +6,48 @@
     <id>NamespaceInfoImpl-78ff667e:12476299803:-7ffe</id>
   </namespace>
   <title>Sodium adsorption ratio (SAR) waterlogging indicator</title>
-  <abstract>Soil chemical health: Salinity indicator and pore clogging potential based on soluble cations (saturated extract only) (Ali, 2011)&#xd;
-FAO SoilSTAT domain: sodification and waterlogging</abstract>
+  <abstract>Soil chemical health: Salinity indicator and pore clogging potential based on soluble cations (saturated extract only) (Ali, 2011) FAO SoilSTAT domain: sodification and waterlogging</abstract>
   <keywords>
     <string>features</string>
     <string>sodium_adsorption_ratio_waterlogging</string>
   </keywords>
+  <metadataLinks>
+    <metadataLink>
+      <type>other</type>
+      <metadataType>other</metadataType>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=bf6d0d69-8cd9-4b24-a2a1-4e4f894277c0&amp;outputschema=http%3A%2F%2Fwww.w3.org%2F2005%2FAtom&amp;elementsetname=full</content>
+    </metadataLink>
+    <metadataLink>
+      <type>other</type>
+      <metadataType>other</metadataType>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=bf6d0d69-8cd9-4b24-a2a1-4e4f894277c0&amp;outputschema=http%3A%2F%2Fgcmd.gsfc.nasa.gov%2FAboutus%2Fxml%2Fdif%2F&amp;elementsetname=full</content>
+    </metadataLink>
+    <metadataLink>
+      <type>other</type>
+      <metadataType>other</metadataType>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=bf6d0d69-8cd9-4b24-a2a1-4e4f894277c0&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2F2.0.2&amp;elementsetname=full</content>
+    </metadataLink>
+    <metadataLink>
+      <type>other</type>
+      <metadataType>other</metadataType>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=bf6d0d69-8cd9-4b24-a2a1-4e4f894277c0&amp;outputschema=urn%3Aoasis%3Anames%3Atc%3Aebxml-regrep%3Axsd%3Arim%3A3.0&amp;elementsetname=full</content>
+    </metadataLink>
+    <metadataLink>
+      <type>text/xml</type>
+      <metadataType>FGDC</metadataType>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=bf6d0d69-8cd9-4b24-a2a1-4e4f894277c0&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2Fcsdgm&amp;elementsetname=full</content>
+    </metadataLink>
+    <metadataLink>
+      <type>other</type>
+      <metadataType>other</metadataType>
+      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=bf6d0d69-8cd9-4b24-a2a1-4e4f894277c0&amp;outputschema=http%3A%2F%2Fwww.isotc211.org%2F2005%2Fgmd&amp;elementsetname=full</content>
+    </metadataLink>
+    <metadataLink>
+      <type>other</type>
+      <metadataType>other</metadataType>
+      <content>http://localhost/showmetadata/xsl/36</content>
+    </metadataLink>
+  </metadataLinks>
   <srs>EPSG:4326</srs>
   <nativeBoundingBox>
     <minx>-20.0</minx>
@@ -27,6 +63,7 @@ FAO SoilSTAT domain: sodification and waterlogging</abstract>
   </latLonBoundingBox>
   <projectionPolicy>FORCE_DECLARED</projectionPolicy>
   <enabled>true</enabled>
+  <advertised>true</advertised>
   <metadata>
     <entry key="cachingEnabled">false</entry>
   </metadata>
@@ -35,8 +72,6 @@ FAO SoilSTAT domain: sodification and waterlogging</abstract>
   </store>
   <serviceConfiguration>false</serviceConfiguration>
   <simpleConversionEnabled>false</simpleConversionEnabled>
-  <internationalTitle/>
-  <internationalAbstract/>
   <maxFeatures>0</maxFeatures>
   <numDecimals>0</numDecimals>
   <padWithZeros>false</padWithZeros>
@@ -44,4 +79,5 @@ FAO SoilSTAT domain: sodification and waterlogging</abstract>
   <overridingServiceSRS>false</overridingServiceSRS>
   <skipNumberMatched>false</skipNumberMatched>
   <circularArcPresent>false</circularArcPresent>
+  <encodeMeasures>false</encodeMeasures>
 </featureType>

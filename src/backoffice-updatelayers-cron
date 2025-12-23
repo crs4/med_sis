@@ -1,2 +1,3 @@
-# ogni ora al minuto 0
+# ogni ora al minuto 0 o al reboot
+@reboot root /usr/src/s4m_catalogue/cron-backoffice-updatelayers.sh >> /var/log/backoffice-updatelayers.log 2>&1
 */5 * * * * root /usr/src/s4m_catalogue/cron-backoffice-updatelayers.sh >> /var/log/backoffice-updatelayers.log 2>&1

@@ -11,11 +11,11 @@
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>c_n</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>0</Literal>
               </PropertyIsGreaterThanOrEqualTo>
               <PropertyIsLessThan>
-                <PropertyName>c_n</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>8</Literal>
               </PropertyIsLessThan>
             </And>
@@ -44,11 +44,11 @@
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>c_n</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>8</Literal>
               </PropertyIsGreaterThanOrEqualTo>
               <PropertyIsLessThan>
-                <PropertyName>c_n</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>12</Literal>
               </PropertyIsLessThan>
             </And>
@@ -77,11 +77,11 @@
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>c_n</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>12</Literal>
               </PropertyIsGreaterThanOrEqualTo>
               <PropertyIsLessThan>
-                <PropertyName>c_n</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>15</Literal>
               </PropertyIsLessThan>
             </And>
@@ -109,7 +109,7 @@
           <Name>Low SOC mineralization potential due to nitrogen starvation and lower microbial carbon accumulation potentials</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
              <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>c_n</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>15</Literal>
               </PropertyIsGreaterThanOrEqualTo>
              </Filter>

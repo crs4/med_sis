@@ -9,7 +9,7 @@
     <id>FeatureTypeInfoImpl-172bd526:19b0f8487ed:-7ffa</id>
   </resource>
   <queryable>true</queryable>
-  <opaque>false</opaque>
+  <opaque>false</opaque> 
   <attribution>
     <logoWidth>0</logoWidth>
     <logoHeight>0</logoHeight>
