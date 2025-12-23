@@ -406,7 +406,6 @@ def prepare(ctx):
     ctx.run("rm -rf /tmp/default_site.json", pty=True)
     _prepare_site_fixture()
 
-
 @task
 def fixtures(ctx):
     print("**************************fixtures********************************")
@@ -430,13 +429,18 @@ def fixtures(ctx):
 --settings={_localsettings()}",
         pty=True,
     )
+
+    ctx.run(
+        f"python manage.py loaddata fixtures/s4m_keys.json \
+--settings={_localsettings()}",
+        pty=True,
+    )
+
     ctx.run(
         f"python manage.py loaddata --app backoffice --database backoffice taxonomies.json \
 --settings={_localsettings()}",
         pty=True,
     )
-    
-
 
 @task
 def collectstatic(ctx):
@@ -446,7 +450,6 @@ def collectstatic(ctx):
 --settings={_localsettings()}",
         pty=True,
     )
-
 
 @task
 def monitoringfixture(ctx):
@@ -473,13 +476,11 @@ def monitoringfixture(ctx):
         except Exception as e:
             logger.error(f"ERROR installing monitoring fixture: {str(e)}")
 
-
 @task
 def updategeoip(ctx):
     print("**************************update geoip*******************************")
     if ast.literal_eval(os.environ.get("MONITORING_ENABLED", "False")):
         ctx.run(f"django-admin updategeoip --settings={_localsettings()}", pty=True)
-
 
 @task
 def updateadmin(ctx):
@@ -495,7 +496,6 @@ def updateadmin(ctx):
         pty=True,
     )
 
-
 @task
 def collectmetrics(ctx):
     print("************************collect metrics******************************")
@@ -505,12 +505,10 @@ def collectmetrics(ctx):
         pty=True,
     )
 
-
 @task
 def initialized(ctx):
     print("**************************init file********************************")
     ctx.run("date > /mnt/volumes/statics/geonode_init.lock")
-
 
 def _docker_host_ip():
     try:
@@ -569,7 +567,6 @@ def _container_exposed_port(component, instname):
         traceback.print_exc()
     return port
 
-
 def _update_db_connstring():
     connstr = os.getenv("DATABASE_URL", None)
     if not connstr:
@@ -580,7 +577,6 @@ def _update_db_connstring():
         dbport = os.getenv("DATABASE_PORT", 5432)
         connstr = f"postgis://{user}:{pwd}@{dbhost}:{dbport}/{dbname}"
     return connstr
-
 
 def _update_geodb_connstring():
     geoconnstr = os.getenv("GEODATABASE_URL", None)
@@ -593,11 +589,9 @@ def _update_geodb_connstring():
         geoconnstr = f"postgis://{geouser}:{geopwd}@{dbhost}:{dbport}/{geodbname}"
     return geoconnstr
 
-
 def _localsettings():
     settings = os.getenv("DJANGO_SETTINGS_MODULE", "s4m_catalogue.settings")
     return settings
-
 
 def _gs_service_availability(url):
     import requests
@@ -615,20 +609,17 @@ def _gs_service_availability(url):
         logger.info("GeoServer API are available!")
         return True
 
-
 def _geonode_public_host():
     gn_pub_hostip = os.getenv("GEONODE_LB_HOST_IP", None)
     if not gn_pub_hostip:
         gn_pub_hostip = _docker_host_ip()
     return gn_pub_hostip
 
-
 def _geonode_public_host_ip():
     gn_pub_hostip = os.getenv("GEONODE_LB_HOST_IP", None)
     if not gn_pub_hostip or not _is_valid_ip(gn_pub_hostip):
         gn_pub_hostip = _docker_host_ip()
     return gn_pub_hostip
-
 
 def _geonode_public_port():
     gn_pub_port = os.getenv("GEONODE_LB_PORT", "")
@@ -639,7 +630,6 @@ def _geonode_public_port():
     elif gn_pub_port in ("80", "443"):
         gn_pub_port = None
     return gn_pub_port
-
 
 def _prepare_oauth_fixture():
     upurl = urlparse(os.environ["SITEURL"])
@@ -665,7 +655,6 @@ def _prepare_oauth_fixture():
     with open("/tmp/default_oauth_apps_docker.json", "w") as fixturefile:
         json.dump(default_fixture, fixturefile)
 
-
 def _prepare_site_fixture():
     upurl = urlparse(os.environ["SITEURL"])
     default_fixture = [
@@ -677,7 +666,6 @@ def _prepare_site_fixture():
     ]
     with open("/tmp/default_site.json", "w") as fixturefile:
         json.dump(default_fixture, fixturefile)
-
 
 def _prepare_monitoring_fixture():
     # upurl = urlparse(os.environ['SITEURL'])
@@ -770,7 +758,6 @@ def _prepare_monitoring_fixture():
     ]
     with open("/tmp/default_monitoring_apps_docker.json", "w") as fixturefile:
         json.dump(default_fixture, fixturefile)
-
 
 def _prepare_admin_fixture(admin_password, admin_email):
     from django.contrib.auth.hashers import make_password
