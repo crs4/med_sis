@@ -11,43 +11,6 @@
     <string>features</string>
     <string>sodium_adsorption_ratio_sodicity</string>
   </keywords>
-  <metadataLinks>
-    <metadataLink>
-      <type>other</type>
-      <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=adee1434-30bc-4b46-b450-573f174f29d7&amp;outputschema=http%3A%2F%2Fgcmd.gsfc.nasa.gov%2FAboutus%2Fxml%2Fdif%2F&amp;elementsetname=full</content>
-    </metadataLink>
-    <metadataLink>
-      <type>other</type>
-      <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=adee1434-30bc-4b46-b450-573f174f29d7&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2F2.0.2&amp;elementsetname=full</content>
-    </metadataLink>
-    <metadataLink>
-      <type>other</type>
-      <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=adee1434-30bc-4b46-b450-573f174f29d7&amp;outputschema=http%3A%2F%2Fwww.w3.org%2F2005%2FAtom&amp;elementsetname=full</content>
-    </metadataLink>
-    <metadataLink>
-      <type>other</type>
-      <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=adee1434-30bc-4b46-b450-573f174f29d7&amp;outputschema=urn%3Aoasis%3Anames%3Atc%3Aebxml-regrep%3Axsd%3Arim%3A3.0&amp;elementsetname=full</content>
-    </metadataLink>
-    <metadataLink>
-      <type>text/xml</type>
-      <metadataType>FGDC</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=adee1434-30bc-4b46-b450-573f174f29d7&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2Fcsdgm&amp;elementsetname=full</content>
-    </metadataLink>
-    <metadataLink>
-      <type>other</type>
-      <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=adee1434-30bc-4b46-b450-573f174f29d7&amp;outputschema=http%3A%2F%2Fwww.isotc211.org%2F2005%2Fgmd&amp;elementsetname=full</content>
-    </metadataLink>
-    <metadataLink>
-      <type>other</type>
-      <metadataType>other</metadataType>
-      <content>http://localhost/showmetadata/xsl/35</content>
-    </metadataLink>
-  </metadataLinks>
   <srs>EPSG:4326</srs>
   <nativeBoundingBox>
     <minx>-20.0</minx>
