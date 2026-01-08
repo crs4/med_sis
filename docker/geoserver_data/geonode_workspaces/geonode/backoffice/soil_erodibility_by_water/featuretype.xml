@@ -1,0 +1,43 @@
+<featureType>
+  <id>FeatureTypeInfoImpl--3501644f:19b146de4f0:-a36</id>
+  <name>soil_erodibility_by_water</name>
+  <nativeName>soil_erodibility_by_water</nativeName>
+  <namespace>
+    <id>NamespaceInfoImpl-78ff667e:12476299803:-7ffe</id>
+  </namespace>
+  <title>Soil erodibility by water (SEW) indicator</title>
+  <abstract>Soil pysichal health: Indicator of the soil erosion potential based on texture, OM content, soil structure and permeability (Renard et al., 1977, p.74) FAO SoilSTAT domain: Soil erosion</abstract>
+  <keywords>
+    <string>features</string>
+    <string>soil_erodibility_by_water</string>
+  </keywords>
+  <srs>EPSG:4326</srs>
+  <nativeBoundingBox>
+    <minx>-20.0</minx>
+    <maxx>50.0</maxx>
+    <miny>10.0</miny>
+    <maxy>50.0</maxy>
+  </nativeBoundingBox>
+  <latLonBoundingBox>
+    <minx>-20.0</minx>
+    <maxx>50.0</maxx>
+    <miny>10.0</miny>
+    <maxy>50.0</maxy>
+  </latLonBoundingBox>
+  <projectionPolicy>FORCE_DECLARED</projectionPolicy>
+  <enabled>true</enabled>
+  <advertised>true</advertised>
+  <store class="dataStore">
+    <id>DataStoreInfoImpl-92bd292:1994dc6abb7:-7fed</id>
+  </store>
+  <serviceConfiguration>false</serviceConfiguration>
+  <simpleConversionEnabled>false</simpleConversionEnabled>
+  <maxFeatures>0</maxFeatures>
+  <numDecimals>0</numDecimals>
+  <padWithZeros>false</padWithZeros>
+  <forcedDecimal>false</forcedDecimal>
+  <overridingServiceSRS>false</overridingServiceSRS>
+  <skipNumberMatched>false</skipNumberMatched>
+  <circularArcPresent>false</circularArcPresent>
+  <encodeMeasures>false</encodeMeasures>
+</featureType>

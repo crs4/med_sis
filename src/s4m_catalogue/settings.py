@@ -151,6 +151,14 @@ LOGGING = {
     },
 }
 
+DEFAULT_ANONYMOUS_DOWNLOAD_PERMISSION = ast.literal_eval(
+    os.getenv("DEFAULT_ANONYMOUS_DOWNLOAD_PERMISSION" , "False")
+)
+
+DEFAULT_ANONYMOUS_VIEW_PERMISSION = ast.literal_eval(
+    os.getenv("DEFAULT_ANONYMOUS_VIEW_PERMISSION" , "False")
+)
+
 CENTRALIZED_DASHBOARD_ENABLED = ast.literal_eval(
     os.getenv("CENTRALIZED_DASHBOARD_ENABLED", "False")
 )

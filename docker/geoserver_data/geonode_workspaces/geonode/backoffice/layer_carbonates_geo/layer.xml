@@ -1,0 +1,17 @@
+<layer>
+  <name>layer_carbonates_geo</name>
+  <id>LayerInfoImpl-701670f8:19b0d9dac21:-7ff4</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-92bd292:1994dc6abb7:-7fe7</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-701670f8:19b0d9dac21:-7ff5</id>
+  </resource> 
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2025-12-11 13:38:24.261 UTC</dateCreated>
+  <dateModified>2025-12-12 18:55:16.257 UTC</dateModified>
+</layer>

@@ -1,0 +1,48 @@
+<featureType>
+  <id>FeatureTypeInfoImpl-701670f8:19b0d9dac21:-7ff2</id>
+  <name>layer_coarse_fragments_geo</name>
+  <nativeName>layer_coarse_fragments_geo</nativeName>
+  <namespace>
+    <id>NamespaceInfoImpl-78ff667e:12476299803:-7ffe</id>
+  </namespace>
+  <title>Point soil data: Layer Coarse Fragments</title>
+  <abstract>It contains the soil layer coarse fragments information</abstract>
+  <keywords>
+    <string>features</string>
+    <string>layer</string>
+    <string>point soil data</string>
+    <string>coarse fragments</string>
+  </keywords>
+  <srs>EPSG:4326</srs>
+  <nativeBoundingBox>
+    <minx>-20.0</minx>
+    <maxx>50.0</maxx>
+    <miny>10.0</miny>
+    <maxy>50.0</maxy>
+  </nativeBoundingBox>
+  <latLonBoundingBox>
+    <minx>-20.0</minx>
+    <maxx>50.0</maxx>
+    <miny>10.0</miny>
+    <maxy>50.0</maxy>
+  </latLonBoundingBox>
+  <projectionPolicy>FORCE_DECLARED</projectionPolicy>
+  <enabled>true</enabled>
+  <advertised>true</advertised>
+  <metadata>
+    <entry key="cachingEnabled">false</entry>
+  </metadata>
+  <store class="dataStore">
+    <id>DataStoreInfoImpl-92bd292:1994dc6abb7:-7fed</id>
+  </store>
+  <serviceConfiguration>false</serviceConfiguration>
+  <simpleConversionEnabled>false</simpleConversionEnabled>
+  <maxFeatures>0</maxFeatures>
+  <numDecimals>0</numDecimals>
+  <padWithZeros>false</padWithZeros>
+  <forcedDecimal>false</forcedDecimal>
+  <overridingServiceSRS>false</overridingServiceSRS>
+  <skipNumberMatched>false</skipNumberMatched>
+  <circularArcPresent>false</circularArcPresent>
+  <encodeMeasures>false</encodeMeasures>
+</featureType>

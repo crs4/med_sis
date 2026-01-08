@@ -20,10 +20,11 @@ export default function Page()  {
   },[user]);  // eslint-disable-line
 
   return (
-      <>
-        <ToDo />
-      </>
-    );
+    <>
+      <ToDo />
+      <Footer />
+    </>
+  );
 };
 
 export async function getStaticPaths() {
@@ -36,6 +37,7 @@ export async function getStaticPaths() {
 export async function getStaticProps(context) {
   return {
     props: { 
+      indicator: indicator,
       messages: (await import(`../../../translations/${context.locale}.json`)).default
      },
   }

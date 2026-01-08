@@ -7,7 +7,7 @@
   </defaultStyle>
   <resource class="featureType">
     <id>FeatureTypeInfoImpl--d81fc44:1994e223eb8:-739a</id>
-  </resource>
+  </resource> 
   <queryable>true</queryable>
   <opaque>false</opaque>
   <attribution>
@@ -15,5 +15,5 @@
     <logoHeight>0</logoHeight>
   </attribution>
   <dateCreated>2025-09-17 16:34:50.705 UTC</dateCreated>
-  <dateModified>2025-09-17 17:20:27.488 UTC</dateModified>
+  <dateModified>2025-12-22 21:48:06.206 UTC</dateModified>
 </layer>

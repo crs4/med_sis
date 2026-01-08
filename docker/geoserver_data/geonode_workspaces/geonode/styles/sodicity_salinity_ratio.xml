@@ -1,5 +1,5 @@
 <style>
-  <id>StyleInfoImpl--d81fc44:1994e223eb8:-5ae6</id>
+  <id>StyleInfoImpl-3083d003:19b48b877d0:-7fff</id>
   <name>sodicity_salinity_ratio</name>
   <workspace>
     <id>WorkspaceInfoImpl-78ff667e:12476299803:-7ffd</id>
@@ -8,12 +8,7 @@
   <languageVersion>
     <version>1.0.0</version>
   </languageVersion>
-  <filename>sodicity_salinity_ratio.sld</filename>
-  <metadata>
-    <entry key="msEditorType">textarea</entry>
-    <entry key="msStyleJSON"></entry>
-    <entry key="msMD5Hash">27fa9359ff4406c0b9443eeb330d4d95</entry>
-  </metadata>
-  <dateCreated>2025-09-17 17:20:52.880 UTC</dateCreated>
-  <dateModified>2025-09-25 15:27:53.785 UTC</dateModified>
+  <filename>sodicity_salinity_ratio1.sld</filename>
+  <dateCreated>2025-12-23 01:00:08.94 UTC</dateCreated>
+  <dateModified>2025-12-23 01:19:09.533 UTC</dateModified>
 </style>

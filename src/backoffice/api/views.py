@@ -5,14 +5,7 @@ from rest_framework import viewsets, permissions, status
 from rest_framework import serializers
 from rest_framework.response import Response
 from backoffice.models import *
-#PointGeneral, Taxonomy, Project, Genealogy, LandformTopography, ClimateAndWeather, Surface, LandUse, Cultivated
 from .serializers import *
-#PointGeneralSerializer, TaxonomySerializer, ProjectSerializer, GenealogySerializer, LandformTopographySerializer, ClimateAndWeatherSerializer, SurfaceSerializer, LandUseSerializer, CultivatedSerializer
-
-
-###########################
-## Uilities 
-###########################
 
 
 ###########################
@@ -26,8 +19,6 @@ class XLSxUploadViewSet(viewsets.ModelViewSet):
     queryset = XLSxUpload.objects.all()
     serializer_class = XLSxUploadSerializer
     permission_classes = [permissions.IsAdminUser ]
-            
-    
     
     def get_queryset(self):
         """
@@ -276,53 +267,6 @@ class ClimateAndWeatherViewSet(viewsets.ModelViewSet):
             
         return queryset
 
-class CultivatedViewSet(viewsets.ModelViewSet):
-    queryset = Cultivated.objects.all()
-    serializer_class = CultivatedSerializer
-    permission_classes = [permissions.IsAdminUser ]
-    
-    def get_queryset(self):
-        queryset = Cultivated.objects.all()
-        type = self.request.query_params.get('type', None)
-        actual = self.request.query_params.get('actual', None)
-        last = self.request.query_params.get('last', None)
-        area_min = self.request.query_params.get('area_min', None)
-        area_max = self.request.query_params.get('area_max', None)
-        prod_tech = self.request.query_params.get('prod_tech', None)
-        rotation = self.request.query_params.get('rotation', None)
-        _from = self.request.query_params.get('cessation_from', None)
-        _to = self.request.query_params.get('cessation_to', None)
-        id = self.request.query_params.get('id', None)
-        if id is not None:
-            queryset = queryset.filter(id=id)
-        if area_min:
-            queryset = queryset.filter(area__gte=area_min)
-        if area_max:
-            queryset = queryset.filter(area__lte=area_max)
-        if type:
-            queryset = queryset.filter(type=type)
-        if actual:
-            queryset = queryset.filter(actual1=actual) | \
-                      queryset.filter(actual2=actual) | \
-                      queryset.filter(actual3=actual)
-        if last:
-            queryset = queryset.filter(last1=last) | \
-                      queryset.filter(last2=last) | \
-                      queryset.filter(last3=last)
-        if rotation:
-            queryset = queryset.filter(rotation1=rotation) | \
-                      queryset.filter(rotation2=rotation) | \
-                      queryset.filter(rotation3=rotation)
-        if prod_tech:
-            queryset = queryset.filter(prod1_tech=prod_tech) | \
-                      queryset.filter(prod2_tech=prod_tech) | \
-                      queryset.filter(prod3_tech=prod_tech)
-        if _from:
-            queryset = queryset.filter(cessation__gte=_from)
-        if _to:
-            queryset = queryset.filter(cessation__lte=_to)    
-        return queryset
-
 class LandUseViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le informazioni sull'uso del suolo.
@@ -350,63 +294,6 @@ class LandUseViewSet(viewsets.ModelViewSet):
         if corine is not None:
             queryset = queryset.filter(corine=corine)
             
-        return queryset
-
-class NotCultivatedViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint che permette di visualizzare e modificare le genealogie.
-    """
-    queryset = NotCultivated.objects.all()
-    serializer_class = NotCultivatedSerializer
-    permission_classes = [permissions.IsAdminUser ]
-
-    def get_queryset(self):
-        """
-        Filtra le X in base ai parametri di query.
-        """
-        queryset = NotCultivated.objects.all()
-        landuse = self.request.query_params.get('landuse', None)
-        stratum = self.request.query_params.get('stratum', None)
-        veget1 = self.request.query_params.get('veget1', None)
-        veget2 = self.request.query_params.get('veget2', None)
-        veget3 = self.request.query_params.get('veget3', None)
-        avg_height_min = self.request.query_params.get('avg_height_min', None)
-        avg_height_max = self.request.query_params.get('avg_height_max', None)
-        max_height_min = self.request.query_params.get('max_height_min', None)
-        max_height_max = self.request.query_params.get('max_height_max', None)
-        area_min = self.request.query_params.get('area_min', None)
-        area_max = self.request.query_params.get('area_min', None)
-        specie = self.request.query_params.get('specie', None)
-        
-        id = self.request.query_params.get('id', None)
-        if id is not None:
-            queryset = queryset.filter(id=id)
-        if landuse is not None:
-            queryset = queryset.filter(landuse=landuse)   
-        if stratum is not None:
-            queryset = queryset.filter(stratum=stratum)   
-        if area_min:
-            queryset = queryset.filter(vegetation_area__gte=area_min)
-        if area_max:
-            queryset = queryset.filter(vegetation_area__lte=area_max)
-        if avg_height_min:
-            queryset = queryset.filter(avg_height__gte=avg_height_min)
-        if avg_height_max:
-            queryset = queryset.filter(avg_height__lte=avg_height_max)
-        if max_height_min:
-            queryset = queryset.filter(max_height__gte=max_height_min)
-        if max_height_max:
-            queryset = queryset.filter(max_height__lte=max_height_max)
-        if veget1:
-            queryset = queryset.filter(veget1=veget1)
-        if veget2:
-            queryset = queryset.filter(veget2=veget2)
-        if veget3:
-            queryset = queryset.filter(veget3=veget3)
-        if specie:
-            queryset = queryset.filter(species1=specie) | \
-                      queryset.filter(species2=specie) | \
-                      queryset.filter(species3=specie)
         return queryset
     
 class SurfaceViewSet(viewsets.ModelViewSet):
@@ -493,122 +380,6 @@ class SurfaceViewSet(viewsets.ModelViewSet):
         
         return queryset
 
-class SurfaceCracksViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint che permette di visualizzare e modificare le genealogie.
-    """
-    queryset = SurfaceCracks.objects.all()
-    serializer_class = SurfaceCracksSerializer
-    permission_classes = [permissions.IsAdminUser ]
-
-    def get_queryset(self):
-        """
-        Filtra le X in base ai parametri di query.
-        """
-        queryset = SurfaceCracks.objects.all()
-        
-        # Filtro per codice
-        id = self.request.query_params.get('id', None)
-        if id is not None:
-            queryset = queryset.filter(id=id)
-        width1 = self.request.query_params.get('width1', None)
-        if width1 is not None:
-            queryset = queryset.filter(width1=width1)
-        dist1 = self.request.query_params.get('dist1', None)
-        if dist1 is not None:
-            queryset = queryset.filter(dist1=dist1)
-        spat_arr1 = self.request.query_params.get('spat_arr1', None)
-        if spat_arr1 is not None:
-            queryset = queryset.filter(spat_arr1=spat_arr1)
-        persist1 = self.request.query_params.get('persist1', None)
-        if persist1 is not None:
-            queryset = queryset.filter(persist1=persist1)
-        width2 = self.request.query_params.get('width2', None)
-        if width2 is not None:
-            queryset = queryset.filter(width2=width2)
-        dist2 = self.request.query_params.get('dist2', None)
-        if dist2 is not None:
-            queryset = queryset.filter(dist2=dist2)
-        spat_arr2 = self.request.query_params.get('spat_arr2', None)
-        if spat_arr2 is not None:
-            queryset = queryset.filter(spat_arr2=spat_arr2)
-        persist2 = self.request.query_params.get('persist2', None)
-        if persist2 is not None:
-            queryset = queryset.filter(persist2=persist2)
-            
-            
-        return queryset
-
-class LitterLayerViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint che permette di visualizzare e modificare le genealogie.
-    """
-    queryset = LitterLayer.objects.all()
-    serializer_class = LitterLayerSerializer
-    permission_classes = [permissions.IsAdminUser ]
-
-    def get_queryset(self):
-        """
-        Filtra le X in base ai parametri di query.
-        """
-        queryset = LitterLayer.objects.all()
-        
-        # Filtro per codice
-        id = self.request.query_params.get('id', None)
-        if id is not None:
-            queryset = queryset.filter(id=id)
-        avg_thick_min = self.request.query_params.get('avg_thick_min', None)
-        avg_thick_max = self.request.query_params.get('avg_thick_max', None)
-        if avg_thick_min:
-            queryset = queryset.filter(avg_thick__gte=avg_thick_min)
-        if avg_thick_max:
-            queryset = queryset.filter(avg_thick__lte=avg_thick_max)
-        area_min = self.request.query_params.get('area_min', None)
-        area_max = self.request.query_params.get('area_max', None)
-        if area_min:
-            queryset = queryset.filter(area__gte=area_min)
-        if area_max:
-            queryset = queryset.filter(area__lte=area_max)
-        max_thick_min = self.request.query_params.get('max_thick_min', None)
-        max_thick_max = self.request.query_params.get('max_thick_max', None)
-        if max_thick_min:
-            queryset = queryset.filter(max_thick_min__gte=max_thick_min)
-        if max_thick_max:
-            queryset = queryset.filter(max_thick_min__lte=max_thick_max)
-        return queryset
-
-class CoarseFragmentsViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint che permette di visualizzare e modificare le genealogie.
-    """
-    queryset = CoarseFragments.objects.all()
-    serializer_class = CoarseFragmentsSerializer
-    permission_classes = [permissions.IsAdminUser ]
-
-    def get_queryset(self):
-        """
-        Filtra le X in base ai parametri di query.
-        """
-        queryset = CoarseFragments.objects.all()
-        
-        # Filtro per codice
-        id = self.request.query_params.get('id', None)
-        if id is not None:
-            queryset = queryset.filter(id=id)
-        total_area_min = self.request.query_params.get('total_area_min', None)
-        total_area_max = self.request.query_params.get('total_area_max', None)
-        if total_area_min:
-            queryset = queryset.filter(total_area__gte=total_area_min)
-        if total_area_max:
-            queryset = queryset.filter(total_area__lte=total_area_max)
-        classsize = self.request.query_params.get('classsize', None)
-        if classsize:
-            queryset = queryset.filter(class1size=classsize) | \
-                      queryset.filter(class2size=classsize) | \
-                      queryset.filter(class3size=classsize)
-        
-        return queryset
-    
 class SurfaceUnevennessViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
@@ -740,11 +511,10 @@ class PointLayerViewSet(viewsets.ModelViewSet):
         if design is not None:
             queryset = queryset.filter(design=design)
           
-        depth = self.request.query_params.get('depth', None)
-        if depth:
-            queryset = queryset.filter(upper__lte=depth)
-        if depth:
-            queryset = queryset.filter(lower__gte=depth)
+        # Filtro per codice
+        project = self.request.query_params.get('project', None)
+        if design is not None:
+            queryset = queryset.filter(project=project)
         
         return queryset
 
@@ -837,22 +607,7 @@ class LayerCarbonatesViewSet(viewsets.ModelViewSet):
         """
         queryset = LayerCarbonates.objects.all()
         return queryset
-
-class LayerRibbonlikeAccumulationsViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint che permette di visualizzare e modificare le genealogie.
-    """
-    queryset = LayerRibbonlikeAccumulations.objects.all()
-    serializer_class = LayerRibbonlikeAccumulationsSerializer
-    permission_classes = [permissions.IsAdminUser ]
-
-    def get_queryset(self):
-        """
-        Filtra le X in base ai parametri di query.
-        """
-        queryset = LayerRibbonlikeAccumulations.objects.all()
-        return queryset
-
+    
 class LayerCoatingsBridgesViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
@@ -868,34 +623,19 @@ class LayerCoatingsBridgesViewSet(viewsets.ModelViewSet):
         queryset = LayerCoatingsBridges.objects.all()
         return queryset
 
-class LayerRedoximorphicColourViewSet(viewsets.ModelViewSet):
+class LayerRedoximorphicViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = LayerRedoximorphicColour.objects.all()
-    serializer_class = LayerRedoximorphicColourSerializer
+    queryset = LayerRedoximorphic.objects.all()
+    serializer_class = LayerRedoximorphicSerializer
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le X in base ai parametri di query.
         """
-        queryset = LayerRedoximorphicColour.objects.all()
-        return queryset
-
-class LayerRedoximorphicFeaturesViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint che permette di visualizzare e modificare le genealogie.
-    """
-    queryset = LayerRedoximorphicFeatures.objects.all()
-    serializer_class = LayerRedoximorphicFeaturesSerializer
-    permission_classes = [permissions.IsAdminUser ]
-
-    def get_queryset(self):
-        """
-        Filtra le X in base ai parametri di query.
-        """
-        queryset = LayerRedoximorphicFeatures.objects.all()
+        queryset = LayerRedoximorphic.objects.all()
         return queryset
 
 class LayerLithogenicVariegatesViewSet(viewsets.ModelViewSet):
@@ -913,21 +653,6 @@ class LayerLithogenicVariegatesViewSet(viewsets.ModelViewSet):
         queryset = LayerLithogenicVariegates.objects.all()
         return queryset
 
-class LayerCoarserTexturedViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint che permette di visualizzare e modificare le genealogie.
-    """
-    queryset = LayerCoarserTextured.objects.all()
-    serializer_class = LayerCoarserTexturedSerializer
-    permission_classes = [permissions.IsAdminUser ]
-
-    def get_queryset(self):
-        """
-        Filtra le X in base ai parametri di query.
-        """
-        queryset = LayerCoarserTextured.objects.all()
-        return queryset
-
 class LayerMatrixColoursViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
@@ -941,21 +666,6 @@ class LayerMatrixColoursViewSet(viewsets.ModelViewSet):
         Filtra le X in base ai parametri di query.
         """
         queryset = LayerMatrixColours.objects.all()
-        return queryset
-
-class LayerStressFeaturesViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint che permette di visualizzare e modificare le genealogie.
-    """
-    queryset = LayerStressFeatures.objects.all()
-    serializer_class = LayerStressFeaturesSerializer
-    permission_classes = [permissions.IsAdminUser ]
-
-    def get_queryset(self):
-        """
-        Filtra le X in base ai parametri di query.
-        """
-        queryset = LayerStressFeatures.objects.all()
         return queryset
 
 class LayerCracksViewSet(viewsets.ModelViewSet):
@@ -1064,36 +774,20 @@ class LayerOrganicCarbonViewSet(viewsets.ModelViewSet):
         queryset = LayerOrganicCarbon.objects.all()
         return queryset
 
-class LayerPermafrostFeaturesViewSet(viewsets.ModelViewSet):
+class LayerPermafrostViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
     """
-    queryset = LayerPermafrostFeatures.objects.all()
-    serializer_class = LayerPermafrostFeaturesSerializer
+    queryset = LayerPermafrost.objects.all()
+    serializer_class = LayerPermafrostSerializer 
     permission_classes = [permissions.IsAdminUser ]
 
     def get_queryset(self):
         """
         Filtra le X in base ai parametri di query.
         """
-        queryset = LayerPermafrostFeatures.objects.all()
+        queryset = LayerPermafrost.objects.all()
         return queryset
-
-class LayerSurfaceCrustsViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint che permette di visualizzare e modificare le genealogie.
-    """
-    queryset = LayerSurfaceCrusts.objects.all()
-    serializer_class = LayerSurfaceCrustsSerializer
-    permission_classes = [permissions.IsAdminUser ]
-
-    def get_queryset(self):
-        """
-        Filtra le X in base ai parametri di query.
-        """
-        queryset = LayerSurfaceCrusts.objects.all()
-        return queryset
-
 class LayerConsistenceViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le genealogie.
@@ -1128,55 +822,10 @@ class LabDataViewSet(viewsets.ModelViewSet):
         queryset = LabData.objects.all()
         
         # Filtro per codice
-        id = self.request.query_params.get('pk', None)
+        id = self.request.query_params.get('id', None)
         if id is not None:
             queryset = queryset.filter(pk=id)
             
-        return queryset
-
-#########################################
-## Lab Data 
-#########################################
-
-class LabDataSamplingViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint che permette di visualizzare e modificare le genealogie.
-    """
-    queryset = LabDataSampling.objects.all()
-    serializer_class = LabDataSamplingSerializer 
-    permission_classes = [permissions.IsAdminUser ]
-
-    def get_queryset(self):
-        """
-        Filtra le X in base ai parametri di query.
-        """
-        queryset = LabDataSampling.objects.all()
-        
-        # Filtro per codice
-        id = self.request.query_params.get('pk', None)
-        if id is not None:
-            queryset = queryset.filter(pk=id)
-            
-        return queryset
-
-
-#########################################
-## Indicators
-#########################################
-
-class IndicatorViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint che permette di visualizzare e modificare le genealogie.
-    """
-    queryset = Indicator.objects.all()
-    serializer_class = IndicatorSerializer
-    permission_classes = [permissions.IsAdminUser ]
-
-    def get_queryset(self):
-        """
-        Filtra le X in base ai parametri di query.
-        """
-        queryset = Indicator.objects.all()
         return queryset
 
 #########################################
@@ -1196,10 +845,15 @@ class RequestViewSet(viewsets.ModelViewSet):
         Filtra le X in base ai parametri di query.
         """
         queryset = Request.objects.all()
+        # Filtro per codice
+        id = self.request.query_params.get('id', None)
+        if id is not None:
+            queryset = queryset.filter(pk=id)
+            
         return queryset
 
 #########################################
-## Requests 
+## Photos 
 #########################################
    
 class PhotoViewSet(viewsets.ModelViewSet):
@@ -1223,4 +877,52 @@ class PhotoViewSet(viewsets.ModelViewSet):
 
         return queryset
     
+#########################################
+## Mapping 
+#########################################
+   
+class TaxonomyValueViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint che permette di visualizzare e modificare le genealogie.
+    """
+    queryset = TaxonomyValue.objects.all() 
+    serializer_class = TaxonomyValueSerializer  
+    permission_classes = [permissions.IsAdminUser ]
+
+    def get_queryset(self):
+        """
+        Filtra le X in base ai parametri di query.
+        """
+        queryset = TaxonomyValue.objects.all()
+
+        # Filtro per codice
+        id = self.request.query_params.get('id', None)
+        if id is not None:
+            queryset = queryset.filter(id=id)
+        t = self.request.query_params.get('taxonomy', None)
+        if t is not None:
+            queryset = queryset.filter(taxonomy=t)
+
+        return queryset
+    
+class TaxonomyViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint che permette di visualizzare e modificare le genealogie.
+    """
+    queryset = Taxonomy.objects.all() 
+    serializer_class = TaxonomySerializer
+    permission_classes = [permissions.IsAdminUser ]
+
+    def get_queryset(self):
+        """
+        Filtra le X in base ai parametri di query.
+        """
+        queryset = Taxonomy.objects.all()
+
+        # Filtro per codice
+        id = self.request.query_params.get('id', None)
+        if id is not None:
+            queryset = queryset.filter(id=id)
+
+        return queryset
 

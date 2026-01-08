@@ -7,6 +7,19 @@ FROM geonode/geoserver_data:${BASE_IMAGE_VERSION}
 # geonode_workspaces/geonode/backoffice/...
 # geonode_workspaces/geonode/styles/...
 COPY geonode_workspaces/geonode /tmp/geonode
+##### Python replace metadata links - to do 
+## Read in the file
+#with open('featuretype.xml', 'r') as file:
+#  filedata = file.read()
+#to_write = ${NGINX_BASE_URL}
+## Replace the target string
+#filedata = filedata.replace('<content>http://localhost/', to_write)
+#
+## Write the file out again
+#with open('featuretype.xml', 'w') as file:
+#  file.write(filedata)
+
+
 
 RUN set -e \
     # mi assicuro che la directory del workspace geonode esista

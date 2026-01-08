@@ -1,78 +1,33 @@
 <featureType>
-  <id>FeatureTypeInfoImpl-7e26bd6:19a1f26a304:5e35</id>
+  <id>FeatureTypeInfoImpl-9a9970d:19b217b2ae3:-7ff2</id>
   <name>zinc_relative_content</name>
   <nativeName>zinc_relative_content</nativeName>
   <namespace>
     <id>NamespaceInfoImpl-78ff667e:12476299803:-7ffe</id>
   </namespace>
-  <title>Zinc Relative Content Indicator</title>
-  <abstract>Zinc Relative Content Indicator</abstract>
+  <title>Zinc Relative Content (ZnRC)  Indicator</title>
+  <abstract>Soil chemical health: Zinc relative content indicator (ZnRC) represents anthropic activity impact indicator based on Cu, Zn and Pb total concentrations (Weng et al., 2003). FAO SoilSTAT domain: contamination.</abstract>
   <keywords>
     <string>features</string>
     <string>zinc_relative_content</string>
-    <string>Soil Chemical Health</string>
   </keywords>
-  <metadataLinks>
-    <metadataLink>
-      <type>other</type>
-      <metadataType>other</metadataType>
-      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=eda54839-2290-49e0-be63-d7391b4e0a57&amp;outputschema=http%3A%2F%2Fwww.w3.org%2F2005%2FAtom&amp;elementsetname=full</content>
-    </metadataLink>
-    <metadataLink>
-      <type>other</type>
-      <metadataType>other</metadataType>
-      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=eda54839-2290-49e0-be63-d7391b4e0a57&amp;outputschema=http%3A%2F%2Fgcmd.gsfc.nasa.gov%2FAboutus%2Fxml%2Fdif%2F&amp;elementsetname=full</content>
-    </metadataLink>
-    <metadataLink>
-      <type>other</type>
-      <metadataType>other</metadataType>
-      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=eda54839-2290-49e0-be63-d7391b4e0a57&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2F2.0.2&amp;elementsetname=full</content>
-    </metadataLink>
-    <metadataLink>
-      <type>other</type>
-      <metadataType>other</metadataType>
-      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=eda54839-2290-49e0-be63-d7391b4e0a57&amp;outputschema=urn%3Aoasis%3Anames%3Atc%3Aebxml-regrep%3Axsd%3Arim%3A3.0&amp;elementsetname=full</content>
-    </metadataLink>
-    <metadataLink>
-      <type>text/xml</type>
-      <metadataType>FGDC</metadataType>
-      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=eda54839-2290-49e0-be63-d7391b4e0a57&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2Fcsdgm&amp;elementsetname=full</content>
-    </metadataLink>
-    <metadataLink>
-      <type>other</type>
-      <metadataType>other</metadataType>
-      <content>https://soils4med.crs4.it/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=eda54839-2290-49e0-be63-d7391b4e0a57&amp;outputschema=http%3A%2F%2Fwww.isotc211.org%2F2005%2Fgmd&amp;elementsetname=full</content>
-    </metadataLink>
-    <metadataLink>
-      <type>other</type>
-      <metadataType>other</metadataType>
-      <content>https://soils4med.crs4.it/showmetadata/xsl/241</content>
-    </metadataLink>
-  </metadataLinks>
   <srs>EPSG:4326</srs>
   <nativeBoundingBox>
-    <minx>-10.0</minx>
-    <maxx>40.0</maxx>
+    <minx>-20.0</minx>
+    <maxx>50.0</maxx>
     <miny>10.0</miny>
-    <maxy>60.0</maxy>
+    <maxy>50.0</maxy>
   </nativeBoundingBox>
   <latLonBoundingBox>
-    <minx>-10.0</minx>
-    <maxx>40.0</maxx>
+    <minx>-20.0</minx>
+    <maxx>50.0</maxx>
     <miny>10.0</miny>
-    <maxy>60.0</maxy>
+    <maxy>50.0</maxy>
   </latLonBoundingBox>
   <projectionPolicy>FORCE_DECLARED</projectionPolicy>
   <enabled>true</enabled>
   <advertised>true</advertised>
   <metadata>
-    <entry key="time">
-      <dimensionInfo>
-        <enabled>false</enabled>
-        <presentation>LIST</presentation>
-        <units>ISO8601</units>
-      </dimensionInfo>
-    </entry>
     <entry key="cachingEnabled">false</entry>
   </metadata>
   <store class="dataStore">

@@ -1,0 +1,60 @@
+<featureType>
+  <id>FeatureTypeInfoImpl--d81fc44:1994e223eb8:-73ba</id>
+  <name>land_use_geo</name>
+  <nativeName>land_use_geo</nativeName>
+  <namespace>
+    <id>NamespaceInfoImpl-78ff667e:12476299803:-7ffe</id>
+  </namespace>
+  <title>Point Soil Data: Land Use</title>
+  <abstract>Vegetation and land use table refers to plant cover but only the really soil-relevant characteristics are reported. This section refers to human made (cultivated) and natural (non-cultivated) land observed in an area (10 m x 10 m, if possible) with the profile at its centre.</abstract>
+  <keywords>
+    <string>point soil data</string>
+    <string>soil</string>
+    <string>point</string>
+    <string>features</string>
+    <string>land use</string>
+    <string>cultivated land</string>
+    <string>non cultivated land</string>
+  </keywords>
+  <srs>EPSG:4326</srs>
+  <nativeBoundingBox>
+    <minx>-20.0</minx>
+    <maxx>50.0</maxx>
+    <miny>10.0</miny>
+    <maxy>50.0</maxy>
+  </nativeBoundingBox>
+  <latLonBoundingBox>
+    <minx>-20.0</minx>
+    <maxx>50.0</maxx>
+    <miny>10.0</miny>
+    <maxy>50.0</maxy>
+  </latLonBoundingBox>
+  <projectionPolicy>FORCE_DECLARED</projectionPolicy>
+  <enabled>true</enabled>
+  <advertised>true</advertised>
+  <metadata>
+    <entry key="time">
+      <dimensionInfo>
+        <enabled>false</enabled>
+        <presentation>LIST</presentation>
+        <units>ISO8601</units>
+      </dimensionInfo>
+    </entry>
+    <entry key="cachingEnabled">false</entry>
+  </metadata>
+  <store class="dataStore">
+    <id>DataStoreInfoImpl-92bd292:1994dc6abb7:-7fed</id>
+  </store>
+  <serviceConfiguration>false</serviceConfiguration>
+  <simpleConversionEnabled>false</simpleConversionEnabled>
+  <internationalTitle/>
+  <internationalAbstract/>
+  <maxFeatures>0</maxFeatures>
+  <numDecimals>0</numDecimals>
+  <padWithZeros>false</padWithZeros>
+  <forcedDecimal>false</forcedDecimal>
+  <overridingServiceSRS>false</overridingServiceSRS>
+  <skipNumberMatched>false</skipNumberMatched>
+  <circularArcPresent>false</circularArcPresent>
+  <encodeMeasures>false</encodeMeasures>
+</featureType>

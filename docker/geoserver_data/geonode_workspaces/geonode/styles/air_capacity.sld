@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <NamedLayer>
-    <Name>air_capacity</Name>
+    <Name>Air Capacity</Name>
     <UserStyle>
-      <Name>circle_point</Name>
-      <Title>Point Red Symbol Border</Title>
+      <Name>Air Capacity</Name>
+      <Title>Air Capacity</Title>
       <FeatureTypeStyle>
         <Rule>
           <Name>Poor root zone aeration</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>ac</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>0</Literal>
               </PropertyIsGreaterThanOrEqualTo>
               <PropertyIsLessThan>
-                <PropertyName>ac</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>10</Literal>
               </PropertyIsLessThan>
             </And>
@@ -44,11 +44,11 @@
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>ac</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>10</Literal>
               </PropertyIsGreaterThanOrEqualTo>
               <PropertyIsLessThan>
-                <PropertyName>ac</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>14</Literal>
               </PropertyIsLessThan>
             </And>
@@ -77,7 +77,7 @@
           <Name>Good root zone aeration</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
              <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>ac</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>14</Literal>
               </PropertyIsGreaterThanOrEqualTo>
              </Filter>

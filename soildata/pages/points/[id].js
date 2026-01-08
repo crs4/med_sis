@@ -34,7 +34,7 @@ export default function Page()  {
   
   useEffect(() => {
     const fetchData = ( async(id) => {
-      let data = await ProfileService.getLegacy(document.cookie, id)
+      let data = null;//await ProfileService.getLegacy(document.cookie, id)
       if ( !data )
         toast.current.show({severity:'error', summary: 'Errors!', detail: 'Profile not found ' + id , life: 3000});
       else { 
@@ -44,7 +44,7 @@ export default function Page()  {
         if ( main.lat_wgs84 && main.lon_wgs84 )
           setPoint ( [main.lat_wgs84, main.lon_wgs84] )
       }
-      let _nodes = await ProfileService.generateLegacyTreeNode(profile);
+      let _nodes = null; //await ProfileService.generateLegacyTreeNode(profile);
       if (_nodes)
         setNodes(_nodes)
       setLoading(false); 

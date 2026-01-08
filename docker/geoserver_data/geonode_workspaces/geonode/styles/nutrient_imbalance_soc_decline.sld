@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <NamedLayer>
-    <Name>nutrient_imbalance_soc_decline</Name>
+    <Name>Nutrient imbalance soc decline (C/N)</Name>
     <UserStyle>
-      <Name>circle_point</Name>
-      <Title>Point Red Symbol Border</Title>
+      <Name>Nutrient imbalance soc decline (C/N)</Name>
+      <Title>Nutrient imbalance soc decline (C/N)</Title>
       <FeatureTypeStyle>
         <Rule>
-          <Name>Low biological activity potential</Name>
+          <Name>High SOC mineralization and microbial carbon accumulation potentials</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>c_n</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>0</Literal>
               </PropertyIsGreaterThanOrEqualTo>
               <PropertyIsLessThan>
-                <PropertyName>c_n</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>8</Literal>
               </PropertyIsLessThan>
             </And>
@@ -40,15 +40,15 @@
         </Rule>
 
         <Rule>
-          <Name>Good biological activity potential</Name>
+          <Name>Good SOC mineralisation potential</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>c_n</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>8</Literal>
               </PropertyIsGreaterThanOrEqualTo>
               <PropertyIsLessThan>
-                <PropertyName>c_n</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>12</Literal>
               </PropertyIsLessThan>
             </And>
@@ -73,15 +73,15 @@
         </Rule>
 
  <Rule>
-          <Name>Start of nitrogen starvation</Name>
+          <Name>Medium SOC mineralization potential due to nitrogen starvation and lower microbial carbon accumulation potentials</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>c_n</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>12</Literal>
               </PropertyIsGreaterThanOrEqualTo>
               <PropertyIsLessThan>
-                <PropertyName>c_n</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>15</Literal>
               </PropertyIsLessThan>
             </And>
@@ -106,10 +106,10 @@
         </Rule>
 
         <Rule>
-          <Name>Low biological activity potential</Name>
+          <Name>Low SOC mineralization potential due to nitrogen starvation and lower microbial carbon accumulation potentials</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
              <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>c_n</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>15</Literal>
               </PropertyIsGreaterThanOrEqualTo>
              </Filter>

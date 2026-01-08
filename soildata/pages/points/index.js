@@ -73,7 +73,7 @@ export default function Page()  {
     if ( user.userData && user.userData.forbidden1 !== null && user.userData.forbidden1 )
         router.push(`/401`);
     const fetchData = async  () => {
-      const data = await ProfileService.listLegacy();
+      const data = null; //await ProfileService.listLegacy();
       if ( data ) {
         setProfiles(mapProfiles(data));
         toast.current.show({severity:'success', summary: 'Done!', detail:'Legacy data has been loaded', life: 3000});
@@ -130,7 +130,7 @@ export default function Page()  {
     if ( !current )
       return;
     try {
-      const ok = await ProfileService.remove('ProfileGeneral',id);
+      const ok = null;//await ProfileService.remove('ProfileGeneral',id);
       if ( ok  ) 
         toast.current.show({severity:'success', summary: 'Done!', detail:'Profile:'+id+'has been deleted', life: 3000});
       else 
