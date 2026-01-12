@@ -1,16 +1,102 @@
 from django.shortcuts import render
 from django.http import Http404
 from django.forms.models import model_to_dict
+from django.core.management import call_command
 from rest_framework import viewsets, permissions, status
 from rest_framework import serializers
 from rest_framework.response import Response
 from backoffice.models import *
 from .serializers import *
+import logging
+import traceback
 
 
 ###########################
 ## XLSx Uploads
 ###########################
+
+logger = logging.getLogger(__name__)
+
+
+class UpdateLayersViewSet(viewsets.ViewSet):
+    """
+    API endpoint per eseguire il comando updatelayers su richiesta.
+    """
+    permission_classes = [permissions.IsAdminUser]
+
+    def create(self, request):
+        store = request.data.get("store") or "backoffice"
+        skip_flag = request.data.get("skip_geonode_registered", True)
+        skip_geonode_registered = str(skip_flag).lower() not in ["false", "0", "no"]
+
+        logger.info(
+            f"Chiamata API updatelayers - store: {store}, "
+            f"skip_geonode_registered: {skip_geonode_registered}"
+        )
+
+        try:
+            call_command(
+                "updatelayers",
+                store=store,
+                skip_geonode_registered=skip_geonode_registered,
+            )
+            logger.info(f"Comando updatelayers completato con successo per store '{store}'")
+            return Response(
+                {
+                    "detail": (
+                        f"Comando updatelayers completato con successo per lo store '{store}'. "
+                        f"skip_geonode_registered={skip_geonode_registered}"
+                    )
+                },
+                status=status.HTTP_200_OK,
+            )
+        except SystemExit as exc:
+            # Il comando updatelayers può sollevare SystemExit in caso di errori
+            error_msg = str(exc) if exc.code != 0 else "Comando terminato con errore"
+            logger.error(f"Errore durante updatelayers (SystemExit): {error_msg}")
+            logger.error(traceback.format_exc())
+            return Response(
+                {
+                    "detail": (
+                        f"Errore durante l'esecuzione di updatelayers: {error_msg}. "
+                        "Controlla i log per maggiori dettagli. "
+                        "Suggerimento: prova con skip_geonode_registered=true se il problema "
+                        "è legato alla registrazione in GeoNode."
+                    ),
+                    "error_type": "SystemExit",
+                    "store": store,
+                    "skip_geonode_registered": skip_geonode_registered,
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+        except Exception as exc:
+            error_traceback = traceback.format_exc()
+            logger.error(f"Errore durante updatelayers: {str(exc)}")
+            logger.error(error_traceback)
+            
+            # Estrai informazioni utili dall'errore
+            error_summary = str(exc)
+            if "No module named 'imp'" in error_traceback:
+                error_summary = (
+                    "Errore di compatibilità Python 3.12: il modulo 'imp' è stato rimosso. "
+                    "Questo è un problema noto con GeoNode/pycsw. "
+                    "Prova con skip_geonode_registered=true per evitare la registrazione in GeoNode."
+                )
+            elif "TypeError" in error_traceback and "NoneType" in error_traceback:
+                error_summary = (
+                    "Errore durante la registrazione in GeoNode: identificatore mancante o None. "
+                    "Prova con skip_geonode_registered=true per evitare la registrazione in GeoNode."
+                )
+            
+            return Response(
+                {
+                    "detail": error_summary,
+                    "error_type": type(exc).__name__,
+                    "store": store,
+                    "skip_geonode_registered": skip_geonode_registered,
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
 
 class XLSxUploadViewSet(viewsets.ModelViewSet):
     """
