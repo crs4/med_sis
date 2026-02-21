@@ -34,6 +34,18 @@ RUN chmod +x /usr/bin/celery-commands
 COPY src/celery-cmd /usr/bin/celery-cmd
 RUN chmod +x /usr/bin/celery-cmd
 
+RUN python -m pip install -U pip setuptools wheel
+RUN yes w | pip install --src /usr/src -r requirements.txt
+
+RUN apt-get autoremove --purge &&\
+    apt-get clean &&\
+    rm -rf /var/lib/apt/lists/*
+
+COPY src/ /usr/src/project/
+RUN yes w | pip install -e .
+
+EXPOSE 8000
+
 # Install "geonode-contribs" apps (commented out)
 # RUN cd /usr/src; git clone https://github.com/GeoNode/geonode-contribs.git -b master
 # Install logstash and centralized dashboard dependencies
@@ -41,40 +53,40 @@ RUN chmod +x /usr/bin/celery-cmd
 #     cd /usr/src/geonode-contribs/ldap; pip install --upgrade  -e .
 
 # Update pip and setuptools to latest versions for Python 3.12 compatibility
-RUN pip install --upgrade pip setuptools wheel
+#RUN pip install --upgrade pip setuptools wheel
 
 # Install Shapely 2.x which is compatible with Python 3.12
 # GeoNode 4.4.x requires Shapely==1.8.5.post1, but that version doesn't work with Python 3.12
 # Shapely 2.x is API-compatible with 1.x for most use cases and works with Python 3.12
-RUN pip install --no-cache-dir "Shapely>=2.0.0,<3.0.0"
+#RUN pip install --no-cache-dir "Shapely>=2.0.0,<3.0.0"
 
 # Note: The venv is already activated in the base image, no need to activate it manually
 # Install dependencies. Shapely 2.x is already installed.
 # Workaround for Shapely 1.8.5.post1 incompatibility with Python 3.12:
 # Install GeoNode packages with --no-deps, then install dependencies from setup.py
-RUN yes w | pip install --src /usr/src -e git+https://github.com/GeoNode/geonode-mapstore-client.git@4.4.x#egg=django_geonode_mapstore_client && \
-    yes w | pip install --src /usr/src -e git+https://github.com/GeoNode/geonode-importer.git@1.1.x#egg=geonode-importer && \
-    yes w | pip install --src /usr/src -e git+https://github.com/GeoNode/geonode.git@4.4.x#egg=GeoNode --no-deps && \
+#RUN yes w | pip install --src /usr/src -e git+https://github.com/GeoNode/geonode-mapstore-client.git@4.4.x#egg=django_geonode_mapstore_client && \
+    #yes w | pip install --src /usr/src -e git+https://github.com/GeoNode/geonode-importer.git@1.1.x#egg=geonode-importer && \
+    #yes w | pip install --src /usr/src -e git+https://github.com/GeoNode/geonode.git@4.4.x#egg=GeoNode --no-deps && \
     # Install GeoNode dependencies from its setup.py, excluding Shapely
-    cd /usr/src/geonode && \
-    python setup.py egg_info > /dev/null 2>&1 && \
-    pip install $(grep -v "^#" *.egg-info/requires.txt 2>/dev/null | grep -v "Shapely" | tr '\n' ' ' || echo "") && \
-    cd /usr/src/s4m_catalogue && \
+    #cd /usr/src/geonode && \
+    #python setup.py egg_info > /dev/null 2>&1 && \
+    #pip install $(grep -v "^#" *.egg-info/requires.txt 2>/dev/null | grep -v "Shapely" | tr '\n' ' ' || echo "") && \
+    #cd /usr/src/s4m_catalogue && \
     # Ensure Shapely 2.x is installed (skip incompatible 1.8.5.post1)
-    pip install --force-reinstall --no-deps "Shapely>=2.0.0,<3.0.0" && \
-    pip install django-extensions && \
+    #pip install --force-reinstall --no-deps "Shapely>=2.0.0,<3.0.0" && \
+    #pip install django-extensions && \
     # Install the project itself
-    yes w | pip install -e .
+    #yes w | pip install -e .
 
 # Cleanup apt update lists
-RUN apt-get autoremove --purge &&\
-    apt-get clean &&\
-    rm -rf /var/lib/apt/lists/*
+#RUN apt-get autoremove --purge &&\
+    #apt-get clean &&\
+    #rm -rf /var/lib/apt/lists/*
 
 # Export ports
 # Note: You can choose to keep 8088 or change to 8000
 # If changing to 8000, update all references in docker-compose.yml, settings.py, uwsgi.ini, env.txt
-EXPOSE 8088
+#EXPOSE 8088
 
 # We provide no command or entrypoint as this image can be used to serve the django project or run celery tasks
 # ENTRYPOINT /usr/src/s4m_catalogue/entrypoint.sh

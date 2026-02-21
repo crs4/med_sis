@@ -1,5 +1,8 @@
--e git+https://github.com/GeoNode/geonode-mapstore-client.git@4.4.x#egg=django_geonode_mapstore_client
--e git+https://github.com/GeoNode/geonode-importer.git@1.1.x#egg=geonode-importer
--e git+https://github.com/GeoNode/geonode.git@4.4.x#egg=GeoNode
-
+#git+https://github.com/GeoNode/geonode.git@5.0.0#egg=GeoNode
+#geonode-importer==1.1.2
+GeoNode @ git+https://github.com/GeoNode/geonode.git@5.0.0
+cachetools
+pymemcache
+#psycopg2-binary>=2.9,<3
 django-extensions
+

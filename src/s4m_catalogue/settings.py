@@ -206,6 +206,6 @@ DATABASES['backoffice'] = {
 DATABASE_ROUTERS = ['s4m_catalogue.database_router.BackofficeRouter']
 
 # In settings.py o nel tuo file di configurazione
-API_BASE_URL = "http://django:8088"
+API_BASE_URL = "http://django:8000"
 API_USERNAME = os.getenv("ADMIN_USERNAME", "admin")
 API_PASSWORD = os.getenv("ADMIN_PASSWORD", "admin")
