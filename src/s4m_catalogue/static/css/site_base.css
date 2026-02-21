@@ -1,6 +1,14 @@
-header.gn-main-header {
+/* ==========================================
+   1. HEADER AND NAVBAR (Adjusted for GeoNode 5)
+   ========================================== */
+   header.gn-main-header {
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
+}
+
+header .s4m-background {
+    position: relative;
+    width: 100%;
 }
 header .s4m-background img {
     width: 100%;
@@ -10,54 +18,27 @@ header .s4m-background.home img {
     height: 500px;
     clip-path: ellipse(95% 100% at 50% -4%);
 }
-
-
 header .s4m-background.general img {
-    height: 2rem;
+    height: 100px;
 }
 header .s4m-background.home {
     filter: drop-shadow(#000 0px 0px 0.75rem);
 }
+
 #gn-brand-navbar{
     position: absolute;
     top: 0;
     font-size: 1.2rem;
     background-color: transparent;
-    min-height: 100px;
     width: 100%;
-    --gn-button-primary-color: #ffffff;
-    --gn-button-primary-bg: #1c67b6;
-    --gn-button-primary-border-color: #1c67b6;
-    --gn-button-primary-focus-color: #ffffff;
-    --gn-button-primary-focus-bg: #154e8a;
-    --gn-button-primary-focus-border-color: #0b2848;
-    --gn-button-primary-hover-color: #ffffff;
-    --gn-button-primary-hover-bg: #154e8a;
-    --gn-button-primary-hover-border-color: #144981;
-    --gn-button-primary-active-color: #ffffff;
-    --gn-button-primary-active-bg: #154e8a;
-    --gn-button-primary-active-border-color: #144981;
-    --gn-button-primary-active-hover-color: #ffffff;
-    --gn-button-primary-active-hover-bg: #103c6b;
-    --gn-button-primary-active-hover-border-color: #0b2848;
-    --gn-button-primary-disabled-color: #ffffff;
-    --gn-button-primary-disabled-bg: #719bc7;
-    --gn-button-primary-disabled-border-color: #719bc7;
-    --gn-button-primary-badge-color: #1c67b6;
-    --gn-button-primary-badge-bg: #ffffff;
+    z-index: 100;
 }
-#gn-brand-navbar.gn-menu .gn-menu-content-left .gn-menu-list img {
-    /*height: 3.1em;*/
-}
+
 #gn-brand-navbar.home .gn-menu-content {
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
     gap: 10px;
     width: 100%;
-}
-#gn-brand-navbar .gn-menu-content-left .gn-menu-content-right{
-    padding: 0px;
-    top: 1rem;
 }
 
 #gn-brand-navbar .gn-menu-content-center {
@@ -67,95 +48,142 @@ header .s4m-background.home {
     align-items: center;
     width: 100%;
 }
-.gn-search-bar {
-    max-width: 600px;
-    margin: 0rem;
-    border-radius: 20px;
+
+/* ==========================================
+   2. FIX SEARCH BAR (STYLE EXACTLY LIKE GEONODE 4.4)
+   ========================================== */
+.s4m-search-container {
+    width: 100%;
+    max-width: 450px; /* Shorter as in 4.4 */
+    margin: 0.5rem auto; /* Reduced margin */
+    display: block !important;
 }
-#gn-search-bar-apply{
-    border-radius: 20px;
-}
-#gn-brand-navbar.home .s4m-menu-icon img {
-    transition: transform .2s;
-    max-height: 2rem;
-}
-#gn-brand-navbar .s4m-menu-icon img {
-    transition: transform .2s;
-}
-#gn-brand-navbar.home .s4m-menu-icon:hover img {
-    transform: scale(1.1);
-}
-#gn-brand-navbar .s4m-menu-icon:hover img {
-    transform: scale(1.1);
-}
-#gn-brand-navbar.home .gn-menu-content-center .gn-menu-list>li {
-    position: absolute;
-    right: 0;
-}
-.gn-menu .gn-menu-container {
-    align-items: center;
-    display: flex;
-    flex-direction: row;
-    margin: auto;
+
+#gn-search-bar {
+    display: block !important;
+    visibility: visible !important;
     width: 100%;
 }
+.gn-search-bar {
+    max-width: 600px;
+    margin: 0.2rem;
+    border-radius: 20px;
+}
+.msgapi .gn-search-bar {
+    max-width: 600px;
+}
+#gn-search-bar .input-group {
+    display: flex !important;
+    flex-wrap: nowrap;
+    align-items: center;
+    background-color: #ffffff;
+    border-radius: 25px;
+    padding: 0px 15px; /* Reduced padding to make it lower */
+    height: 35px; /* Fixed height identical to GN 4.4 */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+    width: 100%;
+}
+
+#gn-search-bar .input-group-prepend,
+#gn-search-bar .input-group-append {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+#gn-search-bar input.form-control {
+    flex: 1 1 auto;
+    width: 1%;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    font-size: 0.95rem; /* Slightly smaller text */
+    padding: 0 10px;
+    color: #333;
+}
+
+#gn-search-bar .btn {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #666 !important;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0;
+}
+
+#gn-search-bar .btn:hover {
+    color: #000 !important;
+}
+
+/* ==========================================
+   3. CUSTOM SOILS4MED ELEMENTS (Icons, Text)
+   ========================================== */
 .gn-menu-content-center h1.home{
     color: rgb(213, 149, 89);
     text-align: center;
     font-weight: 600;
     text-shadow: 2px 2px 4px darkblue;
+    margin-bottom: 0;
 }
+
+.gn-menu-content-center h1.home span, 
+.gn-menu-content-center p.home span {
+    color: rgb(46 155 81);
+}
+
 .gn-menu-content-center p.home{
     color: white;
     text-shadow: 2px 2px 4px darkgreen;
 }
-.msgapi .gn-legacy .home .jumbotron{
+
+.msgapi .gn-legacy .home .jumbotron,
+.msgapi .gn-menu-content-center div.jumbotron{
     background-color: transparent;
 }
+
 .gn-menu-content-center .jumbotron {
     margin-top: 0px;
     margin-bottom: 0px;
     padding-top: 0px;
     padding-bottom: 0px;
 }
-.msgapi .gn-menu-content-center div.jumbotron{
-    background-color: transparent;
+
+.s4m-icon-row {
+    margin: 0.2rem 0; /* Reduces vertical space between rows of icons */
 }
-ul.s4m-menu-ul{
-    margin: 20px;
-    list-style: none;
-}
+
 ul.s4m-menu {
     display: flex;
     align-items: center;
+    justify-content: center;
     padding: 0;
     margin: 0;
     list-style: none;
     color: #ffffff;
     font-size: 1.7em;
+    gap: 1rem;
 }
+
+/* ICON RESIZING TO FIT INTO THE WAVE */
 .home ul.s4m-menu {
-    font-size: 2.0em;
+    font-size: 1.7em; /* Reduced from 2.0em. Also scales down the circles */
+    gap: 0.5rem; /* Less space between circles */
 }
+
 .s4m-menu-item {
     --s4m-menu-icon-bg: #b0f40b;
 }
+
 .s4m-menu-label {
     color: var(--s4m-menu-icon-bg);
     font-size: 0.35em;
     text-align: center;
     text-transform: uppercase;
-    margin-top: -1em;
+    margin-top: 0.5em;
 }
-.home .s4m-menu-label .sub-text {
-    display: block;
-    color: #ffffff;
-    font-size: 0.7em;
-    margin-top: 10px;
-}
-.s4m-menu-label .sub-text {
-    display: none;
-}
+
 .s4m-menu-icon {
     position: relative;
     border-radius: 50%;
@@ -165,7 +193,7 @@ ul.s4m-menu {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 0.4em;
+    margin: 0 auto;
     border: 0.2em solid var(--s4m-menu-icon-bg);
     border-bottom-color: transparent;
     border-left-color: transparent;
@@ -173,6 +201,7 @@ ul.s4m-menu {
     padding: 1em;
     z-index: 1;
 }
+
 .s4m-menu-icon::before {
     transition: transform .2s;
     position: absolute;
@@ -183,9 +212,11 @@ ul.s4m-menu {
     content: '';
     z-index: -1;
 }
+
 .s4m-menu-icon:hover::before {
     transform: scale(1.1);
 }
+
 .s4m-menu-icon::after {
     position: absolute;
     width: 2em;
@@ -200,14 +231,11 @@ ul.s4m-menu {
     left: calc(100% - 0.4em);
     top: calc(-100% + 0.75em);
 }
-.s4m-menu-icon img {
-    width: 1.4em;
-    height: 1.4em;
-    object-fit: contain;
-}
+
 .s4m-menu-item:last-child .s4m-menu-icon::after {
     display: none;
 }
+
 .s4m-menu-item.active .s4m-menu-label,
 .s4m-menu-item:hover .s4m-menu-label {
     font-weight: bold;
@@ -215,44 +243,148 @@ ul.s4m-menu {
     text-decoration: underline;
     text-decoration-color: var(--s4m-menu-icon-bg);
 }
-.gn-content img{
-        width: 100%;
-    }
-.gn-content .gn-wave-divider.light img{
-        filter: opacity(0.4);
-    }
-.home-dataset-themes {
-        text-align: center;
-        padding: 16px 0;
-    }
-.home-dataset-themes h1 {
-        font-weight: bold;
-        font-size: 1.5rem;
-        color: var(--gn-title-primary)
-    }
-.home-dataset-themes ul {
-        display: flex;
-        flex-wrap: wrap;
-        padding: 0;
-        margin: 0;
-        justify-content: center;
-        list-style: none;
-        text-align: center;
-    }
-.home-dataset-themes li {
-        width: 128px;
-        margin: 16px 8px;
-    }
-.home-dataset-themes li img {
-        width: 85px;
-        height: auto;
-    }
+
+#gn-brand-navbar.home .s4m-menu-icon img,
+#gn-brand-navbar .s4m-menu-icon img {
+    transition: transform .2s;
+    width: 1.4em;
+    height: 1.4em;
+    object-fit: contain;
+}
+
+#gn-brand-navbar.home .s4m-menu-icon:hover img,
+#gn-brand-navbar .s4m-menu-icon:hover img {
+    transform: scale(1.1);
+}
+
+.gn-menu-content-left {
+    position: absolute;
+    left: 2rem;
+    top: 1rem;
+}
+
+.gn-menu-content-right {
+    position: absolute;
+    right: 2rem;
+    top: 1rem;
+    z-index: 1000;
+}
+
+/* ==========================================
+   4. BLUE BAR WITH DROPDOWNS (ALIGNED TO THE RIGHT)
+   ========================================== */
+.s4m-blue-navbar {
+    background-color: #3b749d;
+    display: flex !important;
+    justify-content: space-between !important; /* Pushes left section to the left and right section to the right */
+    align-items: center !important;
+    /*width: 100vw; */
+    margin-left: calc(-50vw + 50%);
+    height: 30px;
+    padding: 0 4rem;
+    box-sizing: border-box;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    z-index: 101; 
+}
+
+/* Fundamental rule: align everything in a horizontal row */
+.s4m-blue-left > ul,
+.s4m-blue-right > ul {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: 1.5rem;
+}
+.s4m-blue-right ul li {
+    display: inline-flex;
+    align-items: center;
+}
+
+.s4m-blue-navbar li {
+    margin: 0;
+    padding: 0;
+    position: relative; /* Necessary for dropdown menus */
+}
+
+.s4m-blue-navbar a, .s4m-blue-navbar button.dropdown-toggle {
+    color: #ffffff !important;
+    text-decoration: none !important;
+    font-weight: 400;
+    font-size: 14px;
+    font-family: inherit;
+    text-transform: none; 
+    background: transparent;
+    border: none;
+    padding: 10px 5px;
+    cursor: pointer;
+}
+
+.s4m-blue-navbar a:hover, .s4m-blue-navbar button.dropdown-toggle:hover {
+    text-decoration: underline !important;
+}
+
+/* Native Bootstrap dropdown styles in blue bar */
+.s4m-blue-navbar .dropdown-container {
+    position: relative;
+}
+
+/* Opens the menu on hover instead of click */
+.s4m-blue-navbar .dropdown:hover .dropdown-menu,
+.s4m-blue-navbar .gn-language-selector:hover .dropdown-menu {
+    display: block; 
+}
+
+.s4m-blue-navbar .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+    display: none;
+    min-width: 160px;
+    padding: 5px 0;
+    z-index: 1000;
+    list-style: none;
+}
+
+.s4m-blue-navbar .dropdown-menu li a {
+    color: #333 !important;
+    padding: 8px 20px;
+    display: block;
+    width: 100%;
+    text-align: left;
+}
+
+.s4m-blue-navbar .dropdown-menu li a:hover {
+    background-color: #f5f5f5 !important;
+    text-decoration: none !important;
+}
+
+/* Fix for GN5 language button */
+.s4m-blue-navbar .gn-language-selector .btn-primary {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #ffffff !important;
+    font-weight: 400;
+    font-size: 14px;
+    padding: 10px 5px;
+}
+
+/* Other inherited elements */
+.gn-content img { width: 100%; }
+.gn-content .gn-wave-divider.light img { filter: opacity(0.4); }
 
 .gn-content .section-text {
-        text-align: justify;
-        padding: 10px 4px;
-        color: var(--gn-primary)
-    }
+    text-align: justify;
+    padding: 10px 4px;
+    color: var(--gn-primary)
+}
+
 .gn-content .section-text h2{
     color: darkblue;
     font-weight: 500;
@@ -261,169 +393,35 @@ ul.s4m-menu {
     padding: 10px;
     padding-bottom: 20px;
 }
+
 .gn-content .section-text h3{
     font-size: 1.2rem;
     text-align: center;
     font-weight: 400;
     color: darkblue;
 }    
-.gn-content .section-text p {
-        line-height: 1.4rem;
-    }
 
-div.logos{
+div.logos {
     text-align: center;
-    padding: 50px;;
+    padding: 50px;
 }    
+
 .gn-content .footer .logos {
-        display: flex;
-        padding: 0 50px;
-        background-color: rgb(228, 245, 251);
-    }
+    display: flex;
+    padding: 0 50px;
+    background-color: rgb(228, 245, 251);
+}
+
 .gn-content .footer {
-        padding: 20px;
-        text-align: justify;
-    }
-.gn-content .footer .policy {
-        padding: 0;
-    }
-@media (max-width: 1440px) { 
-        .gn-content .section-text {
-            padding: 40px;
-        }
-    }
+    padding: 20px;
+    text-align: justify;
+}
 
 .policy {
     padding: 20px 0;
     position: sticky;
 }
+
 .policy .plink {
     text-align: center;
 }
-.home #sign-in{
-    position: absolute;
-    top: 2rem;
-}
-
-/*.gn-menu-list #sign-in{
-    background-color: rgb(27 99 229);
-}*/
-
-#sign-in {
-    border-top-left-radius: 1.5rem;
-    border-bottom-left-radius: 1.5rem;
-    position:relative;
-    width: 4rem;
-    right: -2rem;
-    text-align: left;
-    background-color: darkblue
-}
-#sign-in img {
-    width: 1.5rem;
-    height: 1.5rem;
-    object-fit: contain;
-}    
-
-#gn-hero {
-    /*background-image: url("../../../static/img/soils.jpg");*/
-    background-size: cover;
-    background-position: center;
-    background-repeat: repeat;
-    background-color: rgb(156, 156, 156);
-    width: 100%;
-    height: 500px;
-    /*clip-path: ellipse(95% 100% at 50% -4%);*/
-    object-fit: cover;
-    /*box-shadow: 0 10px 20px rgba(0,0,0,0.3);*/
-    position: relative;
-    /*filter: drop-shadow(#000 0px 0px 0.75rem);*/
-}
-
-h1.home span, p.home span{
-        color: rgb(46 155 81);
-}
-.gn-hero-search {
-    position: relative;
-    width: 80%;
-    max-width: 600px;
-    margin: 0 auto;
-}
-.gn-hero-search .search-bar {
-    width: 100%;
-    padding: 10px;
-    border-radius: 20px;
-    border: none;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-.gn-menu-content-left {
-    position: absolute;
-    left: 2rem;
-    
-}
-.gn-menu-content-right  {
-    position: absolute;
-    right: 2rem;
-
-}
-.image-container {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    max-width: 500px;
-    margin: 20px auto 0;
-    gap: 30px;
-}
-.image-container a {
-    text-align: center;
-    color: white;
-    text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 80px;
-    transition: transform 0.3s ease, filter 0.3s ease;
-}
-.image-container a:hover {
-    transform: translateY(-5px);
-    filter: brightness(1.2);
-}
-.image-container .icon-background {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 5px;
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
-.image-container a:hover .icon-background {
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    transform: scale(1.1);
-}
-.image-container img {
-    width: 30px;
-    height: 30px;
-    transition: transform 0.3s ease;
-}
-.image-container a:hover img {
-    transform: scale(1.1);
-}
-.image-container span {
-    display: block;
-    font-size: 11px;
-    line-height: 1.2;
-}
-.image-container .sub-text {
-    font-size: 11px;
-}
-.data-bg { background-color: rgb(255, 200, 47); }
-.maps-bg { background-color: #00a911; }
-.docs-bg { background-color: #e24529; }
-
-div#logout img#exit{
-    size: 80px;
-    clip-path: none;
-}
-
-
