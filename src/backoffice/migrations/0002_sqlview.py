@@ -1,6 +1,6 @@
 from django.db import migrations
   
-SQL_CREATE = f"""
+SQL_CREATE = """
 --- General and Surface ---
   CREATE OR REPLACE VIEW addendum_point_general  AS 
   SELECT point_id, count(point_id) as n_layer, concat(design) as horizon_designation
@@ -592,7 +592,7 @@ SQL_CREATE = f"""
 
 """
 
-SQL_DROP = f"""
+SQL_DROP = """
   DROP VIEW IF EXISTS points_geo CASCADE;
   DROP VIEW IF EXISTS point_general_geo CASCADE;
   DROP VIEW IF EXISTS surface_unevenness_geo CASCADE;
