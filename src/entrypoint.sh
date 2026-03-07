@@ -22,6 +22,9 @@ echo "-----------------------------------------------------"
 echo "STARTING DJANGO ENTRYPOINT $(date)"
 echo "-----------------------------------------------------"
 
+# Bug fix for GeoNode known bugs (if not already applied)
+python /usr/src/s4m_catalogue/patches/fix_br_utils.py 2>/dev/null || true
+
 invoke update
 
 source $HOME/.bashrc
@@ -49,14 +52,18 @@ then
     echo "Executing Celery server $cmd for Production"
 else
 
-    invoke migrations
-    invoke prepare
+    if [ "${SKIP_DJANGO_MIGRATIONS}" = "true" ] || [ "${SKIP_DJANGO_MIGRATIONS}" = "True" ]; then
+        echo "SKIP_DJANGO_MIGRATIONS=true: salto migrations/fixtures (modalità restore test)."
+    else
+        invoke migrations
+        invoke prepare
 
-    if [ ${FORCE_REINIT} = "true" ]  || [ ${FORCE_REINIT} = "True" ] || [ ! -e "/mnt/volumes/statics/geonode_init.lock" ]; then
-        invoke fixtures
-        invoke monitoringfixture
-        invoke initialized
-        invoke updateadmin
+        if [ ${FORCE_REINIT} = "true" ]  || [ ${FORCE_REINIT} = "True" ] || [ ! -e "/mnt/volumes/statics/geonode_init.lock" ]; then
+            invoke fixtures
+            invoke monitoringfixture
+            invoke initialized
+            invoke updateadmin
+        fi
     fi
 
     invoke statics

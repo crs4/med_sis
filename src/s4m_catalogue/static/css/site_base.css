@@ -31,7 +31,7 @@ header .s4m-background.home {
     font-size: 1.2rem;
     background-color: transparent;
     width: 100%;
-    z-index: 100;
+    z-index: 105;
 }
 
 #gn-brand-navbar.home .gn-menu-content {
@@ -284,7 +284,7 @@ ul.s4m-menu {
     padding: 0 4rem;
     box-sizing: border-box;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    z-index: 101; 
+    z-index: 50; 
 }
 
 /* Fundamental rule: align everything in a horizontal row */

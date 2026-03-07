@@ -61,6 +61,8 @@ target/
 # Downstream Project
 downloaded/
 uploaded/
+backups/*
+!backups/.gitkeep
 static_root/
 development.db
 development.db-journal

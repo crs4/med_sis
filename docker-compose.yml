@@ -12,6 +12,7 @@ x-common-django:
     - backup-restore:/backup_restore
     - data:/data
     - tmp:/tmp
+    - ./src/s4m_catalogue/static:/mnt/volumes/statics/static/s4m_catalogue/static
   depends_on:
     db:
       condition: service_healthy

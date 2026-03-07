@@ -1,0 +1,56 @@
+# docker-compose.override.yml
+# Riconfigura i servizi per l'ambiente di TEST isolato.
+#
+# Viene caricato insieme a docker-compose.yml dallo script restore_e_test.sh
+# che esporta COMPOSE_PROJECT_NAME=s4m_catalogue_test.
+# Grazie al project name diverso, questo stack è completamente separato
+# dalla produzione: container, volumi e rete hanno tutti nomi distinti.
+
+services:
+  django:
+    environment:
+      - GEONODE_DATABASE=test_my_geo
+      - GEONODE_GEODATABASE=test_my_geo_data
+      - DATABASE_URL=postgis://my_geo:my_geo@db:5432/test_my_geo
+      - GEODATABASE_URL=postgis://my_geo_data:my_geo_data@db:5432/test_my_geo_data
+      - BACKOFFICE_DATABASE=test_backoffice
+      - SITEURL=http://localhost:8081/
+      - NGINX_BASE_URL=http://localhost:8081/
+      - GEOSERVER_LOCATION=http://geoserver:8080/geoserver/
+      - GEOSERVER_WEB_UI_LOCATION=http://localhost:8081/geoserver/
+      - GEOSERVER_PUBLIC_LOCATION=http://localhost:8081/geoserver/
+      - SKIP_DJANGO_MIGRATIONS=true
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # Nginx: porta 8081 per non confliggere con la produzione (porta 80)
+  geonode:
+    ports:
+      - "8081:80"
+      - "8444:443"
+
+  geoserver:
+    # Porta 8090 invece di 8080 per non confliggere con la produzione.
+    # Docker Compose sostituisce (non concatena) le liste di "ports",
+    # quindi questo override rimpiazza completamente il "8080:8080" del base.
+    ports:
+      - "8090:8080"
+
+    # Manteniamo il volume geoserver-data-dir (separato tra produzione e test
+    # grazie al COMPOSE_PROJECT_NAME diverso), così il container data-dir-conf
+    # può inizializzarne la struttura di sicurezza/autenticazione.
+    volumes:
+      - statics:/mnt/volumes/statics
+      - geoserver-data-dir:/geoserver_data/data
+      - backup-restore:/backup_restore
+      - data:/data
+      - tmp:/tmp
+
+    environment:
+      - GEONODE_DATABASE=test_my_geo
+      - GEONODE_GEODATABASE=test_my_geo_data
+      - DATABASE_URL=postgis://my_geo:my_geo@db:5432/test_my_geo
+      - GEODATABASE_URL=postgis://my_geo_data:my_geo_data@db:5432/test_my_geo_data
+      - NGINX_BASE_URL=http://localhost:8081/
+      
