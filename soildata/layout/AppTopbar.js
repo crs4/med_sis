@@ -14,7 +14,7 @@ const AppTopbar = forwardRef((props, ref) => {
     const menubuttonRef = useRef(null);
     const { locale, locales, route } = useRouter();
     const { onMenuToggle, layoutConfig } = useContext(LayoutContext);
-    const user = useUser();
+    const { userData } = useUser();
     const otherLocale = locales?.find((cur) => cur !== locale);
     const otherlang = (otherLocale === 'fr'? 'French' : 'Anglais');
 
@@ -61,7 +61,7 @@ const AppTopbar = forwardRef((props, ref) => {
                         <StyleClass nodeRef={btnRef1} selector="@next" enterClassName="hidden" enterActiveClassName="scalein" leaveToClassName="hidden" leaveActiveClassName="fadeout" hideOnOutsideClick="true">
                             <a tabIndex={0} ref={btnRef1}>
                                 <img src='/soildata/img/user-default.png' alt="user" className="profile-image" />
-                                <span className="profile-name">{user.userData.preferred_username}</span>
+                                <span className="profile-name">{userData.preferred_username}</span>
                             </a>
                         </StyleClass>
                     </li>

@@ -76,14 +76,14 @@ export default function Page()  {
   }
          
   useEffect(() => {
-    if ( !user.userData || ( user.userData.forbidden !== null && user.userData.forbidden) )
+    if ( !user.userData || ( user.userData.forbidden !== null && user.userData.forbidden ))
         router.push(`/401`);
     const fetchData = async  () => {
       const _data = await ProfileService.list(document.cookie,'point-generals');
       if ( !_data || _data.error )
         toast.current.show({severity:'error', summary: 'Errors!', detail: 'Errors reading soil data points' , life: 3000});
       else if ( !_data.data || !Array.isArray(_data.data) || _data.data.length === 0 ) 
-        toast.current.show({severity:'warn', summary: 'No data!', detail: 'No Points Found' , life: 3000});
+        toast.current.show({severity:'warning', summary: 'No data!', detail: 'No Points Found' , life: 3000});
       else { 
         toast.current.show({severity:'success', summary: 'Success!', detail: 'The soil data data list has been loaded' , life: 3000});
       }

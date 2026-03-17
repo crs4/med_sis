@@ -9,15 +9,15 @@ const initialState = {
   given_name: null,
   family_name: null,
   email: null,
-  preferred_username: null,
+  preferred_username: '',
   groups: [],
-  forbidden1: null,
-  forbidden2: null,
+  forbidden: null
 };
 
 
 export const UserProvider = (props) => {
   const [userData, setUserData] =  useState(initialState);
+  
 
   useEffect(() => {
     const getUserProfile = async () => {
@@ -27,22 +27,17 @@ export const UserProvider = (props) => {
           let data = await res.json();
           if ( data.groups ){
             if ( data.groups.indexOf('admin') !== -1 ||  data.groups.indexOf('data-managers') !== -1 ) {
-              data.forbidden1 = false;
+              data.forbidden = false;
             }
-            else data.forbidden1 = true;
-            if ( data.groups.indexOf('registered-members') === -1 )
-              data.forbidden2 = false;
+            console.log('passed')
           } 
           else {
-            data.forbidden1 = true;
-            data.forbidden2 = true;
+            data.forbidden = true;
           }
-          
-          setUserData(data);
-          
+          setUserData( data );
         }
         else {
-          let state = {
+          setUserData( initialState = {
             access_token : null,
             sub: null,
             name: null,
@@ -51,13 +46,22 @@ export const UserProvider = (props) => {
             email: null,
             preferred_username: null,
             groups: [],
-            forbidden1: true,
-            forbidden2: true,
-          };
-          setUserData(state);
+            forbidden: true
+          });
         }  
       } catch (error) {
-        setUserData(initialState);
+        setUserData( {
+            access_token : null,
+            sub: null,
+            name: null,
+            given_name: null,
+            family_name: null,
+            email: null,
+            preferred_username: null,
+            groups: [],
+            forbidden: true
+          }
+        );
       }
     }
     getUserProfile();
@@ -65,7 +69,7 @@ export const UserProvider = (props) => {
 
 
   const exposed = {
-    userData,
+    userData
   };
 
   return <userContext.Provider value={exposed}>{props.children}</userContext.Provider>;

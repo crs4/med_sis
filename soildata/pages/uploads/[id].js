@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import dynamic from "next/dynamic"
 import { Toast } from 'primereact/toast';
+import { Button } from 'primereact/button';
 import { point, featureCollection } from '@turf/turf';
 import { useUser } from '../../context/user';
 import ReportTable from '../../components/XLSxResultTable';
@@ -26,6 +27,14 @@ export default function Page()  {
   const [operations, setOperations] = useState([]);
   const toast = useRef(null);
   const [map, setMap] = useState(null); 
+
+  const openList = () => {
+    router.push(`/uploads`);
+  };
+
+  const openCreate = () => {
+    router.push(`/uploads/create`);
+  };
 
   const createGeoJSON = ( ) => {
     if (!upload || !upload.data || typeof upload.data !== "string" ) 
@@ -59,7 +68,7 @@ export default function Page()  {
                         { id: obj.id } ) );
           }
         } catch (e) {
-          console.log(e);
+        
         }
       }
       if ( points.length > 0 ) {
@@ -70,8 +79,8 @@ export default function Page()  {
   }
 
   useEffect(() => {
-    if ( user.userData && user.userData.forbidden1 !== null && user.userData.forbidden1 )
-          router.push(`/401`);
+    if ( !user.userData || ( user.userData.forbidden !== null && user.userData.forbidden ))
+        router.push(`/401`);router.push(`/401`);
     
   },[user]);  // eslint-disable-line
 
@@ -119,26 +128,40 @@ export default function Page()  {
   return (
     <div className="layout-dashboard">
       <Toast ref={toast} />
+      <div className="flex flex-row-reverse p-mr-2 p-mb-2 m-1">
+        <Button 
+          icon="pi pi-list"
+          className="flex bg-primary font-bold border-round"
+          onClick={() => openList()}
+          label={t('UPLOADS_LIST')}
+        />
+        <Button 
+          icon="pi pi-download"
+          className="flex bg-primary font-bold border-round mr-3"
+          onClick={() => openCreate()}
+          label={t('CREATE_UPLOAD')}
+        />
+      </div>
       {(!upload && !loading ) && (
-        <h2>No Upload found</h2>
+        <h4>No Upload found</h4>
       )}
       {(loading) && (
-        <h2>Loading Upload Info...</h2>
+        <h4>Loading Upload Info...</h4>
       )}
       {(upload && !loading && ( upload.status === UploadService.STATUSES.IN_PROCESS || upload.status === UploadService.STATUSES.UPLOADED) ) && (
-        <h2>The Upload is being processed</h2>
+        <h4>The Upload is being processed</h4>
       )}
       
       {(upload && !loading  && upload.status !== UploadService.STATUSES.IN_PROCESS && upload.status !== UploadService.STATUSES.UPLOADED ) && (
-        <div className="card">
-          <span class="text-xl font-bold text-blue-600"> Upload:</span><span class="font-bold text-gray-600"> { upload.title } </span>
-          <span class="text-xl font-bold text-blue-600"> Date:</span><span class="font-bold text-gray-600"> { upload.date }</span>
-          <span class="text-xl font-bold text-blue-600"> Editor:</span><span class="font-bold text-gray-600"> { upload.editor }</span>
+        <div className="card text-xl font-bold ">
+          <span class="text-blue-600"> Upload:</span><span class="text-gray-600"> { upload.title } </span>
+          <span class="text-blue-600"> Date:</span><span class="text-gray-600"> { upload.date.toString() }</span>
+          <span class="text-blue-600"> Editor:</span><span class="text-gray-600"> { upload.editor }</span>
         </div>
       )} 
       {(map) && (    
         <div className="card">
-          <h5 class="font-bold text-green-500">{ map ? map.label : 'Geo points in upload' }</h5>
+          <h4 class="font-bold text-green-500">{ map ? map.label : 'Geo points in upload' }</h4>
           <MyMap data={map} />
         </div>
 

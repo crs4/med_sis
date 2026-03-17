@@ -10,24 +10,24 @@
 
 {% if request.path == '/' %}
     <div class="s4m-background home">
-        <img src="{% static 'img/soils-background6.jpg' %}">
+        <img src="{% static 'img/soils-background7.jpg' %}">
     </div>     
     <nav id="gn-brand-navbar" class="gn-menu gn-menu-symmetric home">
 {% else %}  
     <div class="s4m-background">
-        <img src="{% static 'img/soils-background6.jpg' %}" style="height:100px;">
+        <img src="{% static 'img/soils-background7.jpg' %}" style="height:130px;">
     </div>
     <nav id="gn-brand-navbar" class="gn-menu gn-menu-symmetric">
 {% endif %}
         <div class="gn-menu-container">
-            <div class="gn-menu-content">
-                
+            <div class="gn-menu-content">               
                 {% block left_menu %}
                 <div class="gn-menu-content-left">
                     <ul class="gn-menu-list s4m-menu">
                         <li>
                             <a href="/">
                                 <img src="{% static 'img/logo.png' %}">
+                                <span style="font-weight: bolder;">HOME</span>
                             </a>
                         </li>
                     </ul>                 
@@ -37,10 +37,7 @@
                 {% block right_menu %}
                 <div class="gn-menu-content-right">
                     <ul class="gn-menu-list s4m-menu-right" style="display: flex; align-items: center; gap: 15px; list-style: none; margin: 0; padding: 0;">
-                        {% if request.path == '/' %}
-                            {% include './language_selector.html' with variant='primary' align_right=True %}
-                        {% endif %}
-                        <li>    
+                       <li>    
                             {% if not request.user.is_authenticated %}
                             <a id="sign-in" href="/account/login/?next=%2F" class="nav-link btn btn-primary" style="border-radius: 1.5rem; background-color: #1c67b6; padding: 0.4rem 1rem; display: flex; align-items: center; border: none;">
                                 <img src="{% static 'img/login.svg' %}" style="width: 1.2rem; height: 1.2rem; object-fit: contain;">
@@ -142,8 +139,7 @@
             </div>
         </div>
     </nav>
-
-{% if request.path != '/' %}
+{% if request.path != '/' %}   
     <nav class="s4m-blue-navbar">
         <div class="s4m-blue-left">
             <ul>

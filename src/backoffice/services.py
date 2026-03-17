@@ -144,6 +144,10 @@ class XLSxUploadService:
                 "Project"    
             ]
 
+            processing_order_extra_measure = [
+                "Measure"    
+            ]
+
             processing_order_photos = [
                 "Photo"     
             ]
@@ -153,7 +157,10 @@ class XLSxUploadService:
 
             if xlsx_upload.type == 'XLS_PH':
                 processing_order = processing_order_photos 
-                
+
+            if xlsx_upload.type == 'XLS_EM':
+                processing_order = processing_order_extra_measure 
+
             # Processa ogni array nell'ordine specificato
             for model_name in processing_order:
                 if model_name in data:
@@ -178,6 +185,8 @@ class XLSxUploadService:
         # Utilizza il metodo per convertire il nome del modello
         endpoint_name = self._model_name_to_endpoint(model_name)
         if model_name == 'Photo' : endpoint_name = 'photos'
+        if model_name == 'LabDataExtraMeasure' : endpoint_name = 'lab-data-extra-measures'
+        if model_name == 'Project' : endpoint_name = 'projects'
         endpoint = f"{self.base_url}/api/backoffice/{endpoint_name}/"
         for item in array_data:
             _id = item["id"]

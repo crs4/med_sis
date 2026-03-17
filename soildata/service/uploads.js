@@ -15,7 +15,7 @@ export const UploadService = {
 
   ACTIONS : {
     POST :  {  name : "POST", label : 'CREATE IF NOT EXIST', info: 'For each item in the upload the SIS tries to write it in the database. If an item with same id already exists, it throws an error.'},
-    PUT :   {  name : "PUT", label : 'CREATE IF NOT EXIST OR REPLACE IF EXIST', info: 'For each item uploaded, the SIS attempts to replace it with the one in the database. If the item doesn\'t exist, it creates it.'},
+    PUT :   {  name : "PUT", label : 'REPLACE IF EXIST', info: 'For each item uploaded, the SIS attempts to replace it with the one in the database. If the item doesn\'t exist an error is generated.'},
     PATCH : { name : "PATCH", label : 'UPDATE IF EXIST', info: 'For each item uploaded, the SIS makes partial changes to the item\'s fields in the database. If an item with the same id doesn\'t exist, an error is generated.'},
   },
 
@@ -57,7 +57,6 @@ export const UploadService = {
         return { data: data, error: null }
       }
       catch( error )  {
-        console.log(error)
         return { data: null, error: error }
       }
     }

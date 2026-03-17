@@ -12,9 +12,13 @@ const Selection =  ({ selRef, element }) => {
     return
   if ( selRef.current )
     map.removeLayer(selRef.current)
-  let alt = "No Data" 
-  if (element.elev_m_asl)
-    alt = element.elev_m_asln.toFixed(0)
+  let alt = "No Data";
+  let lat;
+  let lon; 
+  if ( element.elev_m_asl && !Number.isNaN(Number(element.elev_m_asl)) )
+    alt = Number(element.elev_m_asl).toFixed(0)
+  lat = Number(element.lat_wgs84).toFixed(7)
+  lon = Number(element.lon_wgs84).toFixed(7)
 
   selRef.current = L.circleMarker([element.lat_wgs84, element.lon_wgs84], 
         { radius: 10, fillColor: '#f0f008ff', color: '#d18c1dff', weight: 3, opacity: 1, fillOpacity: 1}
@@ -22,8 +26,8 @@ const Selection =  ({ selRef, element }) => {
     "<div class='flex flex-wrap  font-bold justify-content-center'>" + 
     "<span class='text-cyan-500 align-items-center' >Identifier:</span><span>" + element.id + "</span></div>" +
     "<div><span class='text-green-500'> Location: </span><span>" + element.location + "</span></div>" +
-    "<div><span class='text-green-500'> Latitude: </span><span>" + element.lat_wgs84 + "</span></div>" +
-    "<div><span class='text-green-500'> Longitude: </span><span>" + element.lon_wgs84 + "</span></div>" +
+    "<div><span class='text-green-500'> Latitude: </span><span>" + lat + "</span></div>" +
+    "<div><span class='text-green-500'> Longitude: </span><span>" + lon + "</span></div>" +
     "<div><span class='text-green-500'> Altitude (ASL):</span><span>"+ alt + "</span></div>" ).addTo(map)
   map.flyTo([element.lat_wgs84, element.lon_wgs84]);
 }
@@ -45,11 +49,11 @@ const MapLegend = ({ legendRef }) => {
         position: 'bottomleft',
         legends: [
           {
-            name: 'Profiles Status',
+            name: 'Points soil data',
             JSONlayer,
             opacity: 1,
             elements: [{
-              label: 'Selected profile',
+              label: 'Selected Point soil data',
               html: '',
               style: {
                 'text-align': 'left',
@@ -61,11 +65,11 @@ const MapLegend = ({ legendRef }) => {
               },
             },
             {
-              label: 'Profile',
+              label: 'Point soil data',
               html: '',
               style: {
                 'text-align': 'left',
-                'background-color': '#8b6b9fff',
+                'background-color': '#3c9bb5ff',
                 'width': '20px',
                 'height': '20px',
                 'position': 'relative',
@@ -128,7 +132,7 @@ export default function S4Mmap ({data, selected}) {
         {points && (
           <>
           <GeoJSON
-            jsonRef={layerJSON} 
+            ref={layerJSON} 
             key='pointsGeoJSON'
             pointToLayer={pointToLayer}
             onEachFeature={onEachFeature}

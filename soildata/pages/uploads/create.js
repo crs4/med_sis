@@ -4,8 +4,7 @@ import { point, featureCollection } from '@turf/turf';
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from 'primereact/button';
 
-import { Badge } from 'primereact/badge';
-import { Tag } from 'primereact/tag';
+
 import { FileUpload } from 'primereact/fileupload';
 import { Panel } from 'primereact/panel';
 import { Message } from 'primereact/message';
@@ -13,7 +12,6 @@ import { Toast } from 'primereact/toast';
 import { Dropdown } from 'primereact/dropdown';
 import { Dialog } from 'primereact/dialog';
 import TaxonomyService from '../../service/taxonomies';
-import Mapping from '../../data/mapping';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { useUser } from '../../context/user';
@@ -46,7 +44,10 @@ export default function Page( )  {
   const t = useTranslations('default');
   const router = useRouter();
   
-  
+  const openList = () => {
+    router.push(`/uploads`);
+  };
+
   function createPopupContent (code, result) {
       let panel = '<div><span class="font-bold">No data</span></div>';
       if ( !result || !code )
@@ -76,7 +77,7 @@ export default function Page( )  {
           }
         });
       } catch (e) {
-        console.log(e);
+        
       }
       return panel;  
   }
@@ -111,7 +112,7 @@ export default function Page( )  {
                       { id: key } ) );
         }
       } catch (e) {
-        console.log(e);
+       
       }
     }
     if ( points.length > 0 ) {
@@ -146,7 +147,7 @@ export default function Page( )  {
           if ( upload.type === 'XLS_P' )
             createGeoJSON ( result['data'], result['report'] );
         } catch (e) {
-          console.log(e);
+          
           toast.current.show({severity:'error', summary: 'Errors generating points!', detail:'Map points not created!', life: 3000});
         }
       }
@@ -218,13 +219,12 @@ export default function Page( )  {
   
   useEffect(() => {
     const fetchData = ( async() => {
-      let t =  await TaxonomyService.listAllValues(document.cookie)
+      let t =  await TaxonomyService.listValues(document.cookie,null)
       if ( !t )
         toast.current.show({severity:'error', summary: 'Errors!', detail: 'Errors reading data' , life: 5000});
       else if ( !t.data || !Array.isArray(t.data) || t.data.length === 0 ) 
         toast.current.show({severity:'warning', summary: 'No data!', detail: 'No data found' , life: 5000});
-      else {
-        
+      else {        
         let data = t.data;
         let taxms = {}
         for ( let i=0; i<data.length; i+=1 )
@@ -242,9 +242,8 @@ export default function Page( )  {
       }
       setLoading(false); 
     })
-    if ( user.userData && user.userData.forbidden1 !== null && user.userData.forbidden1 ) {
-      router.push(`/401`);
-    }
+    if ( !user.userData || ( user.userData.forbidden !== null && user.userData.forbidden ))
+        router.push(`/401`);
     else {
       fetchData();
     }
@@ -388,7 +387,16 @@ export default function Page( )  {
       </Dialog>          
       <div className="card">
         <h4 class="font-bold">Soil Data XLS Upload</h4>
-        <Panel header="INFORMATION" toggleable>
+        <div className="flex flex-row-reverse p-mr-2 p-mb-2 m-1">
+          <Button 
+            icon="pi pi-download"
+            className="flex bg-primary font-bold border-round"
+            disabled={validating && uploading}
+            onClick={() => openList()}
+            label={t('UPLOADS_LIST')}
+          />
+        </div>
+        <Panel header={t('UPLOAD HELP')} toggleable>
           <div><Message className="p-inline-message p-component p-inline-message-info font-bold block" severity="info" text='This page permits to upload Soil Data using a XSLx SpreadSheet' /></div>
           <ol>
             <li><Message className="p-inline-message p-component p-inline-message-info font-bold block" severity="info" text='First choose the type of data' /></li>

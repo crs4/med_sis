@@ -233,7 +233,14 @@ class PointGeneralViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(cls_sys=cls_sys)
             
         return queryset
-    
+
+    def delete(self):
+        prj =self.request.query_params.get('prj')
+        if prj:
+            queryset = PointGeneral.objects.all().filter(project=prj)
+            queryset.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT) 
+       
 class LandformTopographyViewSet(viewsets.ModelViewSet):
     """
     API endpoint che permette di visualizzare e modificare le caratteristiche topografiche del terreno.
@@ -593,13 +600,13 @@ class PointLayerViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(number=number)
         
         # Filtro per codice
-        design = self.request.query_params.get('design', None)
-        if design is not None:
-            queryset = queryset.filter(design=design)
+        horizon = self.request.query_params.get('horizon', None)
+        if horizon is not None:
+            queryset = queryset.filter(horizon=horizon)
           
         # Filtro per codice
         project = self.request.query_params.get('project', None)
-        if design is not None:
+        if project is not None:
             queryset = queryset.filter(project=project)
         
         return queryset
@@ -782,7 +789,17 @@ class LayerStructureViewSet(viewsets.ModelViewSet):
         Filtra le X in base ai parametri di query.
         """
         queryset = LayerStructure.objects.all()
+
+        # Filtro per codice
+        id = self.request.query_params.get('id', None)
+        layer = self.request.query_params.get('layer', None)
+        if id is not None:
+            queryset = queryset.filter(id=id)
+        if layer is not None:
+            queryset = queryset.filter(layer=layer)
+            
         return queryset
+
 
 class LayerNonMatrixPoreViewSet(viewsets.ModelViewSet):
     """
@@ -909,8 +926,11 @@ class LabDataViewSet(viewsets.ModelViewSet):
         
         # Filtro per codice
         id = self.request.query_params.get('id', None)
+        pt = self.request.query_params.get('point', None)
         if id is not None:
-            queryset = queryset.filter(pk=id)
+            queryset = queryset.filter(id=id)
+        if pt is not None:
+            queryset = queryset.filter(point=pt)
             
         return queryset
 
@@ -934,7 +954,7 @@ class RequestViewSet(viewsets.ModelViewSet):
         # Filtro per codice
         id = self.request.query_params.get('id', None)
         if id is not None:
-            queryset = queryset.filter(pk=id)
+            queryset = queryset.filter(id=id)
             
         return queryset
 
@@ -959,12 +979,38 @@ class PhotoViewSet(viewsets.ModelViewSet):
         # Filtro per codice
         id = self.request.query_params.get('id', None)
         if id is not None:
-            queryset = queryset.filter(pk=id)
+            queryset = queryset.filter(id=id)
 
         return queryset
-    
+
 #########################################
-## Mapping 
+## LabDataExtraMeasure 
+#########################################
+class LabDataExtraMeasureViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint for laboratory extra measures.
+    """
+    queryset = LabDataExtraMeasure.objects.all() 
+    serializer_class = LabDataExtraMeasureSerializer  
+    permission_classes = [permissions.IsAdminUser ]
+
+    def get_queryset(self):
+        """
+        Filtra le X in base ai parametri di query.
+        """
+        queryset = LabDataExtraMeasure.objects.all()
+
+        # Filtro per codice
+        id = self.request.query_params.get('id', None)
+        if id is not None:
+            queryset = queryset.filter(id=id)
+        t = self.request.query_params.get('labdata', None)
+        if t is not None:
+            queryset = queryset.filter(labdata=t)
+
+        return queryset
+#########################################
+## Taxonomy 
 #########################################
    
 class TaxonomyValueViewSet(viewsets.ModelViewSet):
@@ -993,7 +1039,7 @@ class TaxonomyValueViewSet(viewsets.ModelViewSet):
     
 class TaxonomyViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di visualizzare e modificare le genealogie.
+    API endpoint che permette di visualizzare e modificare le tassonomie.
     """
     queryset = Taxonomy.objects.all() 
     serializer_class = TaxonomySerializer

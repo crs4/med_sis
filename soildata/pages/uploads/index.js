@@ -34,12 +34,16 @@ export default function Page()  {
   const actions = Object.keys(UploadService.ACTIONS);
 
   useEffect(() => {
-      if ( user.userData && user.userData.forbidden1 !== null && user.userData.forbidden1 )
-          router.push(`/401`);
+      if ( !user.userData || ( user.userData.forbidden !== null && user.userData.forbidden ))
+      router.push(`/401`);
     },[user]);  // eslint-disable-line
 
   const goToUpload = (id) => {
     router.push(`/uploads/${id}`);
+  };
+
+  const openCreate = () => {
+    router.push(`/uploads/create`);
   };
 
   const removeUpload = async (id) => {
@@ -101,7 +105,7 @@ export default function Page()  {
       if ( !_data || _data.error )
         toast.current.show({severity:'error', summary: 'Errors!', detail: 'Errors reading uploads' , life: 3000});
       else if ( !_data.data || !Array.isArray(_data.data) || _data.data.length === 0 ) 
-        toast.current.show({severity:'warning', summary: 'No data!', detail: 'No uploads Found' , life: 3000});
+        toast.current.show({severity:'warn', summary: 'No data!', detail: 'No uploads Found' , life: 3000});
       else { 
         toast.current.show({severity:'success', summary: 'Success!', detail: 'The upload list has been loaded' , life: 3000});
         setUploads(mapUploads(_data.data));
@@ -181,7 +185,6 @@ export default function Page()  {
   };
 
   const statusItemTemplate = (option) => {
-    console.log(option)
     if ( option === UploadService.STATUSES.IMPORT_SUCCESS )
       return ( <Tag severity="success" value="All saved"></Tag>)
     else if ( option === UploadService.STATUSES.IMPORT_WITH_ERROR )
@@ -267,14 +270,23 @@ export default function Page()  {
   return (
     <div className="layout-dashboard">
       <Toast ref={toast} />
-      { (uploads && !loading ) && ( 
       <div className="grid">
         <div className="col-12">
+      { (uploads && !loading ) && ( 
           <div className="card">
             <ConfirmDialog id="dlg_remove" group="declarative"  visible={visibleDlg1} onHide={() => setVisibleDlg1(false)} message="Are you sure you want to delete xlsx upload?" 
               header="Confirmation" icon="pi pi-exclamation-triangle" accept={performRemove} reject={rejectDlg1} />
-            <Toast ref={toast} />
-            <h5>Soil Data Uploads List</h5>
+            <h4>{t('UPLOADS_LIST')}</h4>
+            <div className="flex flex-row-reverse p-mr-2 p-mb-2 m-1">
+              <Button 
+                icon="pi pi-download"
+                className="flex bg-primary font-bold border-round"
+                disabled={isWorking}
+                onClick={() => openCreate()}
+                label={t('NEW_UPLOAD')}
+              />
+            </div>
+            
             <DataTable
                 value={uploads}
                 paginator
@@ -290,25 +302,30 @@ export default function Page()  {
                 emptyMessage="No uploads found."
                 header={header}
             >
-              <Column header="Identifier" field="id"  filter filterPlaceholder="Search by id" style={{ minWidth: '10rem' }} />
+              <Column header="Identifier" field="id"  filter filterPlaceholder="Search by id" style={{ minWidth: '8rem' }} />
               <Column header="Name" field="title"  filter filterPlaceholder="Search by name" style={{ minWidth: '14rem' }} />
-              <Column header="Editor" field="editor"  filter filterPlaceholder="Search by user" style={{ minWidth: '14rem' }} />
-              <Column header="Date"  filterField="date" dataType="date" style={{ minWidth: '10rem' }} body={dateBodyTemplate} filter filterElement={dateFilterTemplate} />
+              <Column header="Editor" field="editor"  filter filterPlaceholder="Search by user" style={{ minWidth: '12rem' }} />
+              <Column header="Date"  field="date" dataType="date" style={{ minWidth: '10rem' }} body={dateBodyTemplate} filter filterElement={dateFilterTemplate} />
               <Column header="Type"  field="type" filterMenuStyle={{ width: '10rem' }} style={{ minWidth: '10rem' }} body={typeBodyTemplate} filter filterElement={typeFilterTemplate} />
               <Column header="Operation"  field="operation" filterMenuStyle={{ width: '12rem' }} style={{ minWidth: '14rem' }} body={operationBodyTemplate} filter filterElement={operationFilterTemplate} />
-              <Column header="Status"  field="status" filterMenuStyle={{ width: '12rem' }} style={{ minWidth: '14rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
-              <Column header="Actions" body={actionsTemplate} />
+              <Column header="Status"  field="status" filterMenuStyle={{ width: '12rem' }} style={{ minWidth: '12rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
+              <Column header="Actions" body={actionsTemplate} style={{ minWidth: '10rem' }} />
             </DataTable>
           </div>
-        </div>
-      </div>
+        
       )}
       {(!uploads && !loading ) && (
-        <h5>No uploads found</h5>
+          <div className="card">
+            <h5>No uploads found</h5>
+          </div>
       )}
       {(loading ) && (
-        <h5>Loading Uploads info...</h5>
+          <div className="card">
+            <h5>Loading Uploads info...</h5>
+          </div>
       )}
+        </div>
+      </div>
     </div>
   );
 };

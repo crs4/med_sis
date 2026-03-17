@@ -403,3 +403,14 @@ Starts a vm for test on plain docker service with docker-compose:
 
 ---- initialize metadata
 ---- give access to user (should be admin or datamanager)
+
+https://pypi.org/project/geoserver-rest/
+pip install geoserver-rest
+#import and initialize library
+from geo.Geoserver import Geoserver
+geo = Geoserver('http://localhost:8080/geoserver', username='admin', password='geoserver')
+
+
+# create feature store and publish layer
+geo.create_featurestore(store_name='geo_data', workspace='demo', db='postgres', host='localhost', pg_user='postgres', pg_password='admin')
+geo.publish_featurestore(workspace='demo', store_name='geo_data', pg_table='geodata_table_name')

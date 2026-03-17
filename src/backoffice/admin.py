@@ -8,9 +8,9 @@ class XLSxUploadAdmin(admin.ModelAdmin):
     search_fields = ('id', 'type', 'title', 'editor', 'date', 'status',)
 @admin.register(PointLayer)
 class PointLayerAdmin(admin.ModelAdmin):
-    list_display = ('point', 'design', 'number', 'upper', 'lower', 'lower_bound', )
+    list_display = ('point', 'horizon', 'number', 'upper', 'lower', 'lower_bound', )
     list_filter = ('point',)
-    search_fields = ('point__id', 'design','number',)
+    search_fields = ('point__id', 'horizon','number',)
 @admin.register(PointGeneral)
 class PointGeneralAdmin(admin.ModelAdmin):
     list_display = ('id', 'date', 'surveyors', 'location', 'lat_wgs84', 'lon_wgs84', 'gps', 'elev_m_asl', 'elev_dem', 'survey_m', )
@@ -104,6 +104,9 @@ class LayerStructureAdmin(admin.ModelAdmin):
 @admin.register(Photo)
 class PhotoAdmin(admin.ModelAdmin):
     search_fields = ('id', )
+@admin.register(LabDataExtraMeasure)
+class LabDataExtraMeasureAdmin(admin.ModelAdmin):
+    search_fields = ('id', 'labdata__id'  )
 @admin.register(Taxonomy)
 class TaxonomyAdmin(admin.ModelAdmin):
     search_fields = ('id',  )

@@ -453,21 +453,20 @@ class  LayerStructureSerializer(serializers.ModelSerializer):
         """
         layer = data.get('layer')
         level = data.get('level')
-        type = data.get('type')
         # Controlla se esiste già una combinazione Point-layer-level (quando level non è None)
-        if level and type is not None:
+        if level is not None:
             # Esclude l'istanza corrente se stiamo aggiornando
-            queryset = LayerStructure.objects.filter(layer=layer, level=level, type=type)
+            queryset = LayerStructure.objects.filter(layer=layer, level=level)
             if self.instance:
                 queryset = queryset.exclude(pk=self.instance.pk)
             
             if queryset.exists():
                 raise serializers.ValidationError({
-                    'layer': f"There is already a structure at level '{level}' with type '{type}'  in layer '{layer}' "
+                    'layer': f"There is already a structure at level '{level}'   in layer '{layer}' "
                 })
         else:
             raise serializers.ValidationError({
-                'level': f"level and type are mandatory field"
+                'level': f"level is mandatory field"
             })        
         
         return data
@@ -515,7 +514,16 @@ class PhotoSerializer(serializers.ModelSerializer):
         fields = '__all__' 
 
 #########################################
-## Photos 
+## LabDataExtraMeasure 
+#########################################
+
+class LabDataExtraMeasureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LabDataExtraMeasure 
+        fields = '__all__' 
+
+#########################################
+## Taxonomies 
 #########################################
 
 class TaxonomyValueSerializer(serializers.ModelSerializer):

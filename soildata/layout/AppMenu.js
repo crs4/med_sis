@@ -1,9 +1,11 @@
 import AppSubMenu from './AppSubMenu';
 import { useUser } from '../context/user';
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
 const AppMenu = () => {
-    const user = useUser();
+    const { userData } = useUser();
+    const router = useRouter();
     const modelA = [
         {
             label: 'Home',
@@ -12,34 +14,7 @@ const AppMenu = () => {
                 {
                     label: 'Catalogue',
                     icon: 'pi pi-fw pi-home',
-                    to: 'https://soils4med.crs4.it/'
-                },
-                {
-                    label: 'Back Office',
-                    icon: 'pi pi-fw pi-image',
-                    to: '/'
-                }
-            ]
-        },
-        { separator: true },
-        {
-            label: 'Data Request',
-            icon: 'pi pi-fw pi-briefcase',
-            items: [
-                {
-                    label: 'List',
-                    icon: 'pi pi-fw pi-list',
-                    to: '/requests'
-                },
-                {
-                    label: 'New',
-                    icon: 'pi pi-fw pi-plus',
-                    to: '/requests/create'
-                },
-                {
-                    label: 'Elaborate',
-                    icon: 'pi pi-fw pi-cog',
-                    to: '/requests/elaborate'
+                    to: process.env.NEXT_PUBLIC_CATALOGUE_BASE_URL
                 }
             ]
         },
@@ -71,45 +46,27 @@ const AppMenu = () => {
                     to: '/points'
                 },
                 {
-                    label: 'Backup',
-                    icon: 'pi pi-fw pi-file',
-                    to: '/points/backup'
+                    label: 'Catalogue',
+                    icon: 'pi pi-fw pi-list',
+                    to: '/points/catalogue'
                 }
             ]
         },
         { separator: true },
         {
-            label: 'Photos',
+            label: 'Taxonomies',
             icon: 'pi pi-fw pi-image',
             items: [
                 {
                     label: 'List',
                     icon: 'pi pi-fw pi-list',
-                    to: '/photos'
-                }
-            ]
-        }
-    ];
-    const modelB = [
-        {
-            label: 'Home',
-            icon: 'pi pi-home',
-            items: [
-                {
-                    label: 'Catalogue',
-                    icon: 'pi pi-fw pi-home',
-                    to: 'https://soil4med.crs4.it/'
+                    to: '/taxonomy'
                 },
-                {
-                    label: 'Back Office',
-                    icon: 'pi pi-fw pi-image',
-                    to: '/'
-                }
             ]
         },
         { separator: true },
         {
-            label: 'Requests',
+            label: 'Data Creator',
             icon: 'pi pi-fw pi-briefcase',
             items: [
                 {
@@ -123,20 +80,63 @@ const AppMenu = () => {
                     to: '/requests/create'
                 }
             ]
+        },
+        { separator: true },
+        {
+            label: 'Pedo Transfer Functions',
+            icon: 'pi pi-fw pi-image',
+            items: [
+                {
+                    label: 'List',
+                    icon: 'pi pi-fw pi-list',
+                    to: '/ptf'
+                },
+                {
+                    label: 'Elaborate',
+                    icon: 'pi pi-fw pi-plus',
+                    to: '/ptf/elaborate'
+                }
+            ]
+        },
+        { separator: true },
+        {
+            label: 'Help',
+            icon: 'pi pi-fw pi-image',
+            items: [
+                {
+                    label: 'manuals',
+                    icon: 'pi pi-fw pi-list',
+                    to: '/help'
+                },
+                {
+                    label: 'videos',
+                    icon: 'pi pi-fw pi-list',
+                    to: '/help/videos'
+                }
+            ]
         }
-    ];
-    const [ model, setModel ] = useState(modelA);
-    
-    useEffect(() => {
-        if ( !user.userData || 
-             user.userData.forbidden1 === null ||  
-             user.userData.forbidden1 ){
-            setModel(modelB);
-        }
-        else setModel(modelA);
-        
-    }, [user]);
 
+    ];
+    const modelB = [
+        {
+            label: 'Home',
+            icon: 'pi pi-home',
+            items: [
+                {
+                    label: 'Catalogue',
+                    icon: 'pi pi-fw pi-home',
+                    to: process.env.NEXT_PUBLIC_CATALOGUE_BASE_URL
+                }
+            ]
+        }
+    ]
+    const [ model, setModel ] = useState(modelB);
+        
+    useEffect(() => {
+        if ( userData && userData.forbidden !== null && !userData.forbidden )
+            setModel(modelA);    
+    }, [userData]);
+    
     return <AppSubMenu model={model} />;
 };
 

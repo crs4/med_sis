@@ -411,9 +411,10 @@ export const createObjectsPoints = async (res) => {
               }
               if ( model === 'LayerStructure' ) {
                 fixtures['LayerStructure'][_id]['layer'] = l_id; 
+                if ( level && value)
+                  fixtures[model][_id][level] =  value;
+                console.log(level+':'+value)
               }
-              if ( level && value)
-                fixtures[model][_id][level] =  value;
             } catch (e) {
               console.log(e);
             } 
@@ -554,7 +555,7 @@ export const createObjectsPhotos = async (res, cookie) => {
   let field = null;
   let sheet_mapping = Mapping['XLS_PH:Photos'];
   let sheet = data['Photos'];
-  if ( sheet )
+  if ( sheet ) {
     for ( let i = 0; i < sheet.length; i+=1 ) {
       try {
         let row = sheet[i];
@@ -593,7 +594,7 @@ export const createObjectsPhotos = async (res, cookie) => {
         console.log(e);
       }
     }
-
+  }
 
   // re-organize data
   let result = {}
@@ -611,11 +612,3 @@ export const createObjectsPhotos = async (res, cookie) => {
   }  
   return result
 }
-
-
-
-
-
-
-
- 

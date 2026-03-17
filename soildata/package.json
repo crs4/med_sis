@@ -37,7 +37,8 @@
         "react-leaflet": "^4.2.1",
         "leaflet-providers": "^1.13.0",
         "wkt": "0.1.1",
-        "exceljs": "4.3.0"
+        "exceljs": "4.3.0",
+        "munsell" : "1.1.6" 
     },
     "devDependencies": {
         "eslint": "9.35.0",

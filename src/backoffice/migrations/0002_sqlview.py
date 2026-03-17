@@ -1,14 +1,13 @@
 from django.db import migrations
   
-SQL_CREATE = """
+SQL_CREATE = f"""
 --- General and Surface ---
   CREATE OR REPLACE VIEW addendum_point_general  AS 
-  SELECT point_id, count(point_id) as n_layer, concat(design) as horizon_designation
+  SELECT point_id, count(point_id) as n_layer, concat(horizon) as horizon_designation
   FROM point_layer
-  GROUP BY point_id, design;
+  GROUP BY point_id, horizon;
   
   ALTER VIEW IF EXISTS addendum_point_general OWNER TO backoffice_user;
-
 
   CREATE OR REPLACE VIEW points_geo AS
   SELECT 
@@ -97,12 +96,13 @@ SQL_CREATE = """
       l.hy_cond, l.met_hy_cond_id, l.satur, l.field_cap, l.wilting_p, l.awc, l.met_s_f_w_id, l.acidity,
       l.met_acidity, l.ph_h2o, l.met_ph_h20_id, l.ph_kcl, l.met_ph_kcl_id, l.ph_ccl, l.met_ph_ccl_id,
       l.org_car, l.met_org_car_id, l.org_mat, l.met_org_mat_id, l.caco3_content, l.met_content_caco3_id,
-      l.active_caco3, l.met_active_caco3_id, l.gypsum, l.met_gypsum_id, l.cec, l.met_cec_id, l.ca,
-      l.met_ca_id, l.mg, l.met_mg_id, l.na, l.met_na_id, l.k, l.met_k_id, l.n_tot, l.met_n_tot_id, l.p_cont, 
-      l.met_p_cont_id, l.nh4, l.met_nh4_id, l.no3, l.met_no3_id, l.roc, l.toc400, l.met_roc_toc400_id,
-      l.feox, l.fed, l.fep, l.fe_tot, l.met_fe_tot_id, l.mn, l.met_mn_id, l.zn, l.met_zn_id, l.cu, l.met_cu_id,
-      l.act_caco3, l.pb, l.met_pb_id, l.hg, l.met_hg_id, l.cd, l.met_cd_id, l.ni, l.met_ni_id, l.sb, l.met_sb_id,
-      l.cr, l.met_cr_id, l.as_value, l.met_as_id, l.co, l.met_co_id, l.v, l.met_v_id, l.notes,
+      l.active_caco3, l.met_active_caco3_id, l.gypsum, l.met_gypsum_id, l.cec, l.met_cec_id, l.ca, l.mg, l.na,
+      l.k, l.met_exc_id, base_saturation, esp, l.sol_ca, l.sol_mg, l.sol_na, l.met_sol_cations_id, l.sar, 
+      l.n_tot, l.met_n_tot_id, l.p_cont, l.met_p_cont_id, l.nh4, l.met_nh4_id, l.no3, l.met_no3_id, 
+      l.roc, l.toc400, l.met_roc_toc400_id, l.feox, l.fed, l.fep, l.fe_tot, l.met_fe_tot_id, l.mn, l.met_mn_id,
+      l.zn, l.met_zn_id, l.cu, l.met_cu_id, l.pb, l.met_pb_id, l.hg, l.met_hg_id, l.cd, l.met_cd_id, 
+      l.ni, l.met_ni_id, l.sb, l.met_sb_id, l.cr, l.met_cr_id, l.as_value, l.met_as_id, l.co, l.met_co_id, 
+      l.v, l.met_v_id, l.notes,
       st_setsrid(st_makepoint(t.lon_wgs84::double precision, t.lat_wgs84::double precision), 4326) AS geom
    FROM point_general t, point_layer pl, lab_data l
   WHERE l.l_number is not null AND t.id = pl.point_id AND pl.labdata_id = l.id;
@@ -117,11 +117,11 @@ SQL_CREATE = """
       l.hy_cond, l.met_hy_cond_id, l.satur, l.field_cap, l.wilting_p, l.awc, l.met_s_f_w_id, l.acidity,
       l.met_acidity, l.ph_h2o, l.met_ph_h20_id, l.ph_kcl, l.met_ph_kcl_id, l.ph_ccl, l.met_ph_ccl_id,
       l.org_car, l.met_org_car_id, l.org_mat, l.met_org_mat_id, l.caco3_content, l.met_content_caco3_id,
-      l.active_caco3, l.met_active_caco3_id, l.gypsum, l.met_gypsum_id, l.cec, l.met_cec_id, l.ca,
-      l.met_ca_id, l.mg, l.met_mg_id, l.na, l.met_na_id, l.k, l.met_k_id, l.n_tot, l.met_n_tot_id, l.p_cont, 
-      l.met_p_cont_id, l.nh4, l.met_nh4_id, l.no3, l.met_no3_id, l.roc, l.toc400, l.met_roc_toc400_id,
+      l.active_caco3, l.met_active_caco3_id, l.gypsum, l.met_gypsum_id, l.cec, l.met_cec_id, l.ca, l.mg, l.na,
+      l.k, l.met_exc_id, base_saturation, esp, l.sol_ca, l.sol_mg, l.sol_na, l.met_sol_cations_id, l.sar, 
+      l.n_tot, l.met_n_tot_id, l.p_cont, l.met_p_cont_id, l.nh4, l.met_nh4_id, l.no3, l.met_no3_id, l.roc, l.toc400, l.met_roc_toc400_id,
       l.feox, l.fed, l.fep, l.fe_tot, l.met_fe_tot_id, l.mn, l.met_mn_id, l.zn, l.met_zn_id, l.cu, l.met_cu_id,
-      l.act_caco3, l.pb, l.met_pb_id, l.hg, l.met_hg_id, l.cd, l.met_cd_id, l.ni, l.met_ni_id, l.sb, l.met_sb_id,
+      l.pb, l.met_pb_id, l.hg, l.met_hg_id, l.cd, l.met_cd_id, l.ni, l.met_ni_id, l.sb, l.met_sb_id,
       l.cr, l.met_cr_id, l.as_value, l.met_as_id, l.co, l.met_co_id, l.v, l.met_v_id, l.notes,
       st_setsrid(st_makepoint(t.lon_wgs84::double precision, t.lat_wgs84::double precision), 4326) AS geom
    FROM point_general t, lab_data l
@@ -133,6 +133,8 @@ SQL_CREATE = """
    UNION 
    SELECT * from labdata_no_layer;
   ALTER VIEW IF EXISTS labdata_geo OWNER TO backoffice_user;   
+
+  
 
 --- Layer descriptions ---
   CREATE OR REPLACE VIEW point_layer_geo AS
@@ -447,20 +449,20 @@ SQL_CREATE = """
   SELECT
     a.id as labdata_id,
     a.date, a.upper, a.lower, a.survey_m_id, a.project,
-    (a.na / SQRT(a.ca + a.mg)) AS value,
+    (a.sol_na / SQRT(a.sol_ca + a.sol_mg)) AS value,
     'dimensionless' as unit, a.geom  
   FROM public.labdata_geo a
-  WHERE a.na IS NOT NULL and a.ca IS NOT NULL AND a.mg IS NOT NULL AND (a.ca + a.mg) > 0 ;
-  ALTER VIEW IF EXISTS sodium_adsorption_ratio_waterlogging OWNER TO backoffice_user;
+  WHERE a.sol_na IS NOT NULL and a.sol_ca IS NOT NULL AND a.sol_mg IS NOT NULL AND (a.sol_ca + a.sol_mg) > 0 ;
+  ALTER VIEW IF EXISTS sodium_adsorption_ratio_sodicity OWNER TO backoffice_user;
 
   CREATE OR REPLACE VIEW sodium_adsorption_ratio_sodicity AS
   SELECT
     a.id as labdata_id,
     a.date, a.upper, a.lower, a.survey_m_id, a.project,
-    (a.na / SQRT(a.ca + a.mg)) AS value,
+    (a.sol_na / SQRT(a.sol_ca + a.sol_mg)) AS value,
     'dimensionless' as unit, a.geom  
   FROM public.labdata_geo a
-  WHERE a.na IS NOT NULL and a.ca IS NOT NULL AND a.mg IS NOT NULL AND (a.ca + a.mg) > 0 ;
+  WHERE a.sol_na IS NOT NULL and a.sol_ca IS NOT NULL AND a.sol_mg IS NOT NULL AND (a.sol_ca + a.sol_mg) > 0 ;
   ALTER VIEW IF EXISTS sodium_adsorption_ratio_sodicity OWNER TO backoffice_user;
 
   --4) Sodicity/salinity ratio
@@ -579,20 +581,23 @@ SQL_CREATE = """
     AND a.sand IS NOT NULL AND a.hy_cond IS NOT NULL;
   ALTER VIEW IF EXISTS soil_erodibility_by_water OWNER TO backoffice_user;
 
-  
+  CREATE OR REPLACE VIEW labdata_extra_geo AS
+   SELECT e.id, l.id as labdata_id, l.point_id, l.point_type, l.project, l.date, l.survey_m_id, l.l_number, 
+          l.horizon, l.upper, l.lower, e.measure_id, e.method_id, e.unit_id, e.value, e.value_text, l.geom
+   FROM labdata_geo l, labdata_extra_measure e
+   WHERE l.id = e.labdata_id; 
+  ALTER VIEW IF EXISTS labdata_extra_geo OWNER TO backoffice_user; 
 
---CREATE OR REPLACE VIEW data_monitor AS
---SELECT  
--- count points per tipo
--- count points without project
-    
--- count values indicator x
-
--- count layers
+  CREATE OR REPLACE VIEW photo_geo AS
+   SELECT p.id, p.title, p.caption, p.type_id, p.point_id, l.n_layer, 
+   l.horizon_designation, l.date, l.location, l.lat_wgs84, l.lon_wgs84, l.project, l.geom
+   FROM point_general_geo l, photos p
+   WHERE l.id = p.point_id; 
+  ALTER VIEW IF EXISTS photo_geo OWNER TO backoffice_user; 
 
 """
 
-SQL_DROP = """
+SQL_DROP = f"""
   DROP VIEW IF EXISTS points_geo CASCADE;
   DROP VIEW IF EXISTS point_general_geo CASCADE;
   DROP VIEW IF EXISTS surface_unevenness_geo CASCADE;
@@ -640,7 +645,12 @@ SQL_DROP = """
   DROP VIEW IF EXISTS nutrient_imbalance_soc_decline CASCADE;
   DROP VIEW IF EXISTS soil_erodibility_by_water CASCADE;
   DROP VIEW IF EXISTS data_monitor CASCADE;
+  DROP VIEW IF EXISTS labdata_extra_geo CASCADE;
+
+  DROP VIEW IF EXISTS photo_geo CASCADE;
+  
 """ 
+
 
 class Migration(migrations.Migration):
 

@@ -26,13 +26,16 @@ export const TaxonomyService = {
     }
   },
 
-  async listAllValues(ck) { 
+  async listValues(ck,name) { 
     let csrftoken = getMyCookie(ck,'csrftoken');
     if ( csrftoken )
     { 
-      try { 
-        let response = await fetch( `/api/backoffice/taxonomy_values`, { 
-          headers: {
+      try {
+        let url = '/api/backoffice/taxonomy_values';
+        if (name) 
+          url += `/?taxonomy=${name}`
+        let response = await fetch( url, { 
+            headers: {
             "Content-Type": "application/json",
             "X-CSRFToken" : csrftoken
           },

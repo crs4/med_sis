@@ -27,7 +27,7 @@ header .s4m-background.home {
 
 #gn-brand-navbar{
     position: absolute;
-    top: 0;
+    top: 25px;
     font-size: 1.2rem;
     background-color: transparent;
     width: 100%;
@@ -169,7 +169,7 @@ ul.s4m-menu {
 /* ICON RESIZING TO FIT INTO THE WAVE */
 .home ul.s4m-menu {
     font-size: 1.7em; /* Reduced from 2.0em. Also scales down the circles */
-    gap: 0.5rem; /* Less space between circles */
+    gap: 1.6rem; /* Less space between circles */
 }
 
 .s4m-menu-item {
@@ -181,7 +181,7 @@ ul.s4m-menu {
     font-size: 0.35em;
     text-align: center;
     text-transform: uppercase;
-    margin-top: 0.5em;
+    margin-top: 0;
 }
 
 .s4m-menu-icon {
@@ -279,13 +279,21 @@ ul.s4m-menu {
     justify-content: space-between !important; /* Pushes left section to the left and right section to the right */
     align-items: center !important;
     /*width: 100vw; */
-    margin-left: calc(-50vw + 50%);
+    /*margin-left: calc(-50vw + 50%);*/
     height: 30px;
     padding: 0 4rem;
     box-sizing: border-box;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    z-index: 50; 
 }
+
+.s4m-blue-navbar-top {
+    z-index: 180;
+    top: 0;
+    position: fixed;
+    z-index: 160;
+    width: 100%; 
+}
+
 
 /* Fundamental rule: align everything in a horizontal row */
 .s4m-blue-left > ul,

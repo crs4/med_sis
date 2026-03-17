@@ -13,6 +13,9 @@ const Home = () => {
   const t  = useTranslations('default');
   const user = useUser();
   const router = useRouter();
+  const [points, setPoints] = useState('');
+  const [labData, setLabData] = useState('');
+  const [indicators, setIndicators] = useState('');
   const headerP = (
     <Image alt="Points Data" src={profileIMG} />
   );
@@ -28,52 +31,69 @@ const Home = () => {
   const footerP = (
     
     <div className="flex flex-wrap justify-content-center gap-2">
-      <Link href="/points">
-        <i className="layout-menuitem-icon fad fa-columns"></i>
-        <span className="layout-menuitem-text p-m-2">{t('GO_TO_LEGACY')}</span>
-      </Link>
+      
     </div>
   );
 
   const footerS = (
     <div className="flex flex-wrap justify-content-center gap-2">
-      <Link href="/todo">
-        <i className="layout-menuitem-icon fad fa-columns"></i>
-        <span className="layout-menuitem-text p-m-2">{t('GO_TO_MONITORING')}</span>
-      </Link>
+      
     </div>
   );
 
   const footerI = (
     <div className="flex flex-wrap justify-content-center gap-2">
-      <Link href="/indicators">
-        <i className="layout-menuitem-icon fad fa-columns"></i>
-        <span className="layout-menuitem-text p-m-2">{t('GO_TO_INDICATORS')}</span>
-      </Link>  
+        
     </div>
   );
 
+  const readNumber = (xml) => {
+    if (!xml)
+      return
+    try {
+      let i = xml.indexOf('numberMatched="');
+      let number = xml.substring(i);
+      i = px.indexOf('"');
+      number = number.substring(0,i)
+      if ( parseInt(number) != NaN )
+        return px;
+      else return '';
+    }
+    catch (e){
+      console.log(e);
+    }  
+    return '';
+  }
 
   useEffect(() => {
-    if ( user.userData.forbidden2 !== null && user.userData.forbidden2 )
-        router.push(`/401`);
-    },[user]);  // eslint-disable-line
+    console.log('index')
+    console.log(user.userData)
+    if (  !user.userData || ( user.userData.forbidden !== null && user.userData.forbidden ) )
+      router.push(`/401`);
+    
+  },[user]);  // eslint-disable-line
 
   return (
       <div className="layout-dashboard">
-        <div className="grid grid-cols-12">
+        <div className="grid">
+          <div className="col text-center justify-content-center m-4 ">
+            <h1 className="text-brown-700">SIS Back Office</h1>
+            <div>SOIL POINT DATA MANAGING TOOLS</div>
+          </div>
+        </div>  
+        <div className="grid">
           <div className="col-4 flex justify-center">
-            <Card title={t('POINTS DATA')} subTitle="Some text and metrics" footer={footerP} header={headerP} className="col-25rem">
+            <Card title={t('POINTS DATA')} subTitle={points + " points"} footer={footerP} header={headerP} className="col-25rem">
                 
             </Card>
           </div>
           <div className="col-4 flex justify-center">
-            <Card  title={t('LABORATORY DATA')} subTitle="Some text and metrics"  footer={footerS} header={headerS} className="col-25rem">
+            <Card  title={t('LABORATORY DATA')} subTitle={labData + " records"}  footer={footerS} header={headerS} className="col-25rem">
                 
             </Card>
           </div>
           <div className="col-4 flex justify-center">
-            <Card  title={t('INDICATORS')} subTitle="Some text and metrics" footer={footerI} header={headerI} className="col-25rem">
+            <Card  title={t('INDICATORS')} subTitle={indicators + " Soil Indicators"} footer={footerI} header={headerI} className="col-25rem">
                    
             </Card>
           </div>
@@ -91,3 +111,4 @@ export async function getStaticProps(context) {
 }
 
 export default Home;
+

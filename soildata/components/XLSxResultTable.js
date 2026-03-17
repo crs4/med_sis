@@ -53,7 +53,27 @@ const XLSxTable = ({
   const valueTemplate2 = (rowData) => (
     <>
       <div className="p-d-flex p-jc-start p-ai-center">
-        <div>{rowData['msg']? rowData['msg']:''}</div>
+        <div>
+        {rowData && rowData['msg'].toString().startsWith("200") && (
+          <span className="text-green-500">Success: </span>
+        )}
+        {rowData && rowData['msg'].toString().startsWith("201") && (
+          <span className="text-green-500">Created: </span> 
+        )}
+        {rowData && rowData['msg'].toString().startsWith("400") && (
+          <span className="text-red-500">Bad request: </span> 
+        )}
+        {rowData && rowData['msg'].toString().startsWith("401") && (
+          <span className="text-red-500">Unauthorized: </span> 
+        )}
+        {rowData && rowData['msg'].toString().startsWith("404") && (
+          <span className="text-red-500">Not found: </span> 
+        )}
+        {rowData && rowData['msg'].toString().startsWith("500") && (
+          <span className="text-red-500">System error: </span> 
+        )}
+        {rowData['msg']? rowData['msg']:''}
+        </div>
       </div>
     </>
   );
@@ -80,8 +100,7 @@ const XLSxTable = ({
 
 export async function getStaticProps(context) {
   return {
-    props: { 
-      
+    props: {      
       messages: (await import(`../translations/${context.locale}.json`)).default
      },
   }

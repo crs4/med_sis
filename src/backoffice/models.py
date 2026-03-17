@@ -66,7 +66,8 @@ UPLOAD_RESULTS = [
 UPLOAD_TYPES = [
     ("XLS_P" , "XLSx Point Soil Data upload"),
     ("XLS_PJ" , "XLSx Profiles Genealogy upload"),
-    ("XLS_PH" , "XLSx Photo metadata upload")
+    ("XLS_PH" , "XLSx Photo metadata upload"),
+    ("XLS_EM", "XLSx Laboratory Extra data"),                    
 ]
 UPLOAD_OPERATION = [
     ("POST" , "Create new"),
@@ -140,8 +141,8 @@ class Project(models.Model):
 ### Point General - "General and Surface" sheet
 class LandformTopography(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')
-    grad_ups = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='Ground surface upslope inclination with respect to the horizontal plane. If the profile lies on a flat surface, the gradient is 0%%. ')
-    grad_downs = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='Ground surface downslope inclination with respect to the horizontal plane. If the profile lies on a flat surface, the gradient is 0%%. ')
+    grad_ups = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='Ground surface upslope inclination with respect to the horizontal plane. If the profile lies on a flat surface, the gradient is 0%. ')
+    grad_downs = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='Ground surface downslope inclination with respect to the horizontal plane. If the profile lies on a flat surface, the gradient is 0%. ')
     slope_asp = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_positive], blank=True, null=True, db_comment='If the profile lies on a slope, report the compass direction that the slope faces, viewed downslope; e.g., 225°')
     slope_shp = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='landformtopography_slope_shp_set',  blank=True, null=True, db_comment='If the profile lies on a slope, report the slope shape in 2 directions: up-/downslope (perpendicular to the elevation contour, i.e. the vertical curvature) and across slope (along the elevation contour, i.e. the horizontal curvature); e.g., Linear (L), Convex (V) or Concave (C).')
     position = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='landformtopography_position_set',  blank=True, null=True, db_comment='If the profile lies in an uneven terrain, report the profile position.')
@@ -333,10 +334,10 @@ class PointGeneral(models.Model):
     notes = models.TextField(blank=True, null=True)
     project = models.TextField(blank=True, null=True)
 
-    old_cls = models.TextField(blank=True, null=True, db_comment='Old classification of the point ')
-    new_cls = models.TextField(blank=True, null=True, db_comment='New classification of the point ')
-    cls_sys = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='pointgeneral_cls_sys_set',  blank=True, null=True, db_comment='value from p_classification_system ')
-    old_id = models.TextField(blank=True, null=True, db_comment='point original code')
+    cls_sys = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='pointgeneral_cls_sys_set',  blank=True, null=True, db_comment='Original classification system')
+    old_cls = models.TextField(blank=True, null=True, db_comment='Original classification of the point ')
+    old_id = models.TextField(blank=True, null=True, db_comment='Original point code')
+    new_cls = models.TextField(blank=True, null=True, db_comment='New classification of the point based on the WRB 4TH EDITION. ')
     
     landuse =  models.OneToOneField(LandUse, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, db_comment='Land Use ')
     surface =  models.OneToOneField(Surface, on_delete=models.SET_DEFAULT,default=None, blank=True, null=True, db_comment='Surface ')
@@ -358,7 +359,6 @@ class PointGeneral(models.Model):
             ('write', 'can write data'),
         )
 ### Lab Data - "Lab data" and "Lab data by sampling depth" sheets
-
 class LabData(models.Model):
     id = models.TextField(primary_key=True, db_comment='labdata identifier')
     point = models.ForeignKey(PointGeneral, on_delete=models.CASCADE, related_name='labdata_point_set', db_comment='Foreign Key field: point') 
@@ -366,7 +366,7 @@ class LabData(models.Model):
     lower = models.DecimalField(max_digits=40, decimal_places=6, validators=[validate_positive],  db_comment='Sampling lower boundary' , blank=True, null=True)
     horizon = models.TextField( db_comment='Horizon sequence code', blank=True, null=True)
     l_number = models.DecimalField(max_digits=40, decimal_places=6, validators=[validate_positive],  db_comment='Layer Number' , blank=True, null=True)
-    gravel = models.DecimalField(max_digits=40, decimal_places=6, validators=[validate_percentage],  db_comment='Gravel content (%%)' , blank=True, null=True)
+    gravel = models.DecimalField(max_digits=40, decimal_places=6, validators=[validate_percentage],  db_comment='Gravel content (%)' , blank=True, null=True)
     cls_sys =  models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdata_cls_sys_set',  db_comment='Classification system used for texture of fine earth', blank=True, null=True)
     texture = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdata_texture_set',  db_comment='texture class', blank=True, null=True)      
     sand = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], db_comment='Sand  (percentage of the fine earth)', blank=True, null=True)
@@ -416,13 +416,17 @@ class LabData(models.Model):
     cec = models.DecimalField( max_digits=30, decimal_places=10, db_comment='CEC (cmol/Kg)', blank=True, null=True)
     met_cec = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdata_met_cec_set',  db_comment='Method used for CEC',  blank=True, null=True)
     ca = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Ca++ (cmol/Kg)', blank=True, null=True)
-    met_ca = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdata_met_ca_set',  db_comment='Method used for Ca++', blank=True, null=True)
     mg = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Mg++ (cmol/Kg)', blank=True, null=True)
-    met_mg = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdata_met_mg_set',  db_comment='Method used for Mg++',  blank=True, null=True)
     na = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Na+ (cmol/Kg)', blank=True, null=True)
-    met_na = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdata_met_na_set',  db_comment='Method used for Na+',  blank=True, null=True)
     k = models.DecimalField( max_digits=30, decimal_places=10, db_comment='K+ (cmol/Kg)', blank=True, null=True)
-    met_k = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdata_met_k_set',  db_comment='Method used for K+',  blank=True, null=True)
+    met_exc = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdata_met_exc_set',  db_comment='EXCHANGEABLE CATIONS METHOD',  blank=True, null=True)
+    base_saturation = models.DecimalField( max_digits=30, decimal_places=10, db_comment='base saturation', blank=True, null=True)          
+    esp = models.DecimalField( max_digits=30, decimal_places=10, db_comment='ESP (ratio)', blank=True, null=True)  
+    sol_ca = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Sol. Ca++ (cmol/L)', blank=True, null=True)
+    sol_mg = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Sol. Mg++ (cmol/L)', blank=True, null=True)
+    sol_na = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Sol. Na++ (cmol/L)', blank=True, null=True)
+    met_sol_cations = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdata_met_sol_cations_set',  db_comment='Method used for soluble cations',  blank=True, null=True)
+    sar = models.DecimalField( max_digits=30, decimal_places=10, db_comment='SAR (ratio)', blank=True, null=True)
     n_tot = models.DecimalField( max_digits=30, decimal_places=10, db_comment='N tot content (g/Kg)', blank=True, null=True)
     met_n_tot = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdata_met_n_tot_set',  db_comment='Method used for N tot content',  blank=True, null=True)
     p_cont = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Available P content(mg/kg)', blank=True, null=True)
@@ -445,7 +449,6 @@ class LabData(models.Model):
     met_zn = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdata_met_zn_set',  db_comment='Method used for Zn', blank=True, null=True)
     cu = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Cu (mg/kg)', blank=True, null=True)
     met_cu = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdata_met_cu_set',  db_comment='Method used for Cu', blank=True, null=True) 
-    act_caco3 = models.DecimalField( max_digits=30, decimal_places=10, db_comment='Active CaCO3 (%%)', blank=True, null=True)
     pb = models.DecimalField( max_digits=30, decimal_places=10, db_comment='', blank=True, null=True)
     met_pb = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdata_met_pb_set', blank=True, null=True)
     hg = models.DecimalField( max_digits=30, decimal_places=10, db_comment='', blank=True, null=True)
@@ -524,8 +527,7 @@ class LayerCoarseFragments(models.Model):
         permissions = (
             ('view', 'can view data'),
             ('write', 'can write data'),
-        )
-       
+        )      
 class LayerArtefacts(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')
     abundance = models.DecimalField( max_digits=30, decimal_places=10, blank=True, null=True, validators=[validate_percentage])
@@ -629,7 +631,7 @@ class LayerRedoximorphic(models.Model):
     red_inner = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
     red_outer = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
     red_random = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True)
-    abund_oxi = models.DecimalField(max_digits=12, decimal_places=4, validators=[validate_percentage], db_comment='Abundance of cemented oximorphic features, by volume [%%]', blank=True, null=True)
+    abund_oxi = models.DecimalField(max_digits=12, decimal_places=4, validators=[validate_percentage], db_comment='Abundance of cemented oximorphic features, by volume [%]', blank=True, null=True)
     clr1_munsell_m = models.TextField(blank=True, null=True)
     clr1_munsell_d = models.TextField(blank=True, null=True)
     clr1_substance = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='layerredoximorphic_clr1_substance_set',   blank=True, null=True)
@@ -688,7 +690,7 @@ class LayerCoatingsBridges(models.Model):
     class Meta:
         managed = True
         db_table = 'layer_coatings_bridges'
-        db_table_comment = 'Report the abundance of clay coatings in %% of the surfaces of soil aggregates, coarse fragments and/or biopore walls clay bridges between sand grains in %% of involved sand grains.'
+        db_table_comment = 'Report the abundance of clay coatings in % of the surfaces of soil aggregates, coarse fragments and/or biopore walls clay bridges between sand grains in % of involved sand grains.'
         permissions = (
             ('view', 'can view data'),
             ('write', 'can write data'),
@@ -955,12 +957,12 @@ class LayerNonMatrixPore(models.Model):
 class PointLayer(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')
     point = models.ForeignKey(PointGeneral, on_delete=models.CASCADE, related_name='pointlayer_point_set', db_comment='Foreign Key field: point') 
-    design = models.TextField(db_comment='layer horizon designation', default='unknown', blank=True, null=True )
+    horizon = models.TextField(db_comment='layer horizon designation', default='?', blank=True, null=True )
     number = models.SmallIntegerField(validators=[validate_positive], db_comment='layer order in point')
     upper = models.DecimalField(max_digits=12, decimal_places=2, validators=[validate_positive], db_comment='upper depth in cm',blank=True, null=True)
     lower = models.DecimalField(max_digits=12, decimal_places=2, validators=[validate_positive], db_comment='lower depth in cm',blank=True, null=True)
     lower_bound = models.TextField(db_comment='layer lower boundary ', blank=True, null=True )
-    hom_part = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='Described parts, by exposed area [%%]')
+    hom_part = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='Described parts, by exposed area [%]')
     hom_alluvt = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='pointLayer_hom_alluvt_set',  blank=True, null=True, db_comment='Layer composed of several strata of alluvial sediments or of tephra')
     wat_satur = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='pointLayer_wat_satur_set',  blank=True, null=True, db_comment='Types of water saturation')
     wat_status = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='pointLayer_wat_status_set',  blank=True, null=True, db_comment='Soil water status')
@@ -970,7 +972,7 @@ class PointLayer(models.Model):
     wind = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='pointLayer_wind_set',  blank=True, null=True, db_comment='Wind deposition')
     tex_cls = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='pointLayer_tex_cls_set',  blank=True, null=True, db_comment='Texture class') 
     tex_subcls = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='pointLayer_tex_subcls_set',  blank=True, null=True, db_comment='Texture subclass')
-    struct_w_s = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='Structure Wedge-shaped aggregates tilted between ≥ 10° and ≤ 60° from the horizontal: abundance, by volume [%%]')
+    struct_w_s = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='Structure Wedge-shaped aggregates tilted between ≥ 10° and ≤ 60° from the horizontal: abundance, by volume [%]')
     rh_value = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='pointLayer_rh_value_set',  blank=True, null=True, db_comment='Rh Value')
     weathering = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='Initial weathering abundance')
     sol_salts = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='ECSE [dS m-1m-1]')
@@ -985,11 +987,11 @@ class PointLayer(models.Model):
     pack_dens = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='pointLayer_pack_dens_set',  blank=True, null=True, db_comment='Estimate the packing density using a knife with a blade approx. 10 cm long')
     parent_mat = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='pointLayer_parent_mat_set',  blank=True, null=True, db_comment='Report the parent material. Use the help of a geological map.')
     coars_text = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='the percentage (by exposed area) occupied by coarser-textured parts of any orientation (vertical, horizontal, inclined) having a width of ≥ 0.5 cm')
-    coars_text_v_tongues = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='the percentage (by exposed area) occupied by continuous vertical tongues of coarser-textured parts with a horizontal extension of ≥ 1 cm (if these tongues are absent, report 0%%)')
-    coars_text_depth = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='the depth range in cm, where these tongues cover ≥ 10%% of the exposed area (if they extend across several layers, the length is only reported in the description of that layer, where they start at the layer’s upper limit).')
+    coars_text_v_tongues = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='the percentage (by exposed area) occupied by continuous vertical tongues of coarser-textured parts with a horizontal extension of ≥ 1 cm (if these tongues are absent, report 0%)')
+    coars_text_depth = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='the depth range in cm, where these tongues cover ≥ 10% of the exposed area (if they extend across several layers, the length is only reported in the description of that layer, where they start at the layer’s upper limit).')
     coars_text_h_area = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='In the middle of the layer, prepare a horizontal surface, 50 cm x 50 cm, and report the percentage (by horizontal area covered) of the coarser-textured parts.')
-    stress_fts_pressfaces = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='Pressure faces in %% of the surfaces of soil aggregates')
-    stress_fts_slicksides = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='Slickensides in %% of the surfaces of soil aggregates.')
+    stress_fts_pressfaces = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='Pressure faces in % of the surfaces of soil aggregates')
+    stress_fts_slicksides = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_percentage], blank=True, null=True, db_comment='Slickensides in % of the surfaces of soil aggregates.')
     ribbonl_acc_substances = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='pointLayer_ribbonl_acc_substances_set', blank=True, null=True)
     ribbonl_acc_number = models.IntegerField(blank=True, null=True)
     ribbonl_acc_comb_thick = models.DecimalField( max_digits=30, decimal_places=10, validators=[validate_positive], blank=True, null=True, db_comment='If there are 2 or more ribbon-like accumulations in one layer, report the number of the accumulations and their combined thickness in cm')
@@ -1042,7 +1044,7 @@ class PointLayer(models.Model):
 class LayerStructure(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')  
     layer = models.ForeignKey(PointLayer, on_delete=models.CASCADE, related_name='layerstructure_layer_set', db_comment='point Layer' )
-    level = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='layerstructure_level_set',  blank=True, null=True)
+    level = models.ForeignKey(TaxonomyValue, on_delete=models.RESTRICT, related_name='layerstructure_level_set' )
     type = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='layerstructure_type_set',  blank=True, null=True)
     grade = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='layerstructure_grade_set',  blank=True, null=True)
     penetrab = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='layerstructure_penetrab_set',  blank=True, null=True)
@@ -1103,18 +1105,40 @@ class Request(models.Model):
         )
 
 ###########################
+# LabDataExtraMeasureData
+###########################
+
+class LabDataExtraMeasure(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    measure = models.ForeignKey(TaxonomyValue, on_delete=models.CASCADE, related_name='labdataextrameasure_measure_set' )
+    method = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdataextrameasure_method_set',  blank=True, null=True)
+    unit = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdataextrameasure_unit_set',  blank=True, null=True)
+    labdata = models.ForeignKey(LabData, on_delete=models.CASCADE, related_name='labdataextrameasure_labdata_set')
+    value = models.DecimalField( max_digits=30, decimal_places=10, db_comment='numeric value of measure', blank=True, null=True )
+    value_text = models.TextField( db_comment='textual value of measure', blank=True, null=True)
+    
+    objects = models.Manager().using('backoffice')
+    
+    class Meta:
+        managed = True
+        db_table = 'labdata_extra_measure'
+        db_table_comment = 'Laboratory data extra measures'
+        permissions = (
+            ('view', 'can view data'),
+            ('write', 'can write data'),
+        )
+
+###########################
 # Photos
 ###########################
 
 class Photo(models.Model):
-    id = models.TextField(primary_key=True, db_comment='Photo identifier')
-    name = models.TextField(db_comment='Photo name and extension')
+    id = models.TextField(primary_key=True, db_comment='Geonode document identifier (number)', serialize=False)
+    title = models.TextField(db_comment='Photo title')
     caption = models.TextField(blank=True, null=True, db_comment='Description')
-    point = models.ForeignKey(PointGeneral, on_delete=models.CASCADE, related_name='photo_point_set', db_comment='Foreign Key field: point') 
+    point = models.ForeignKey(PointGeneral, on_delete=models.CASCADE, related_name='photo_point_set', db_comment='Point soil data identifier') 
     type = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='photo_type_set',  blank=True, null=True)
-    gn_thumb = models.TextField(blank=True, null=True)
-    gn_link = models.TextField(blank=True, null=True)
-    gn_id = models.TextField(blank=True, null=True)
+    
     objects = models.Manager().using('backoffice')
     
     class Meta:

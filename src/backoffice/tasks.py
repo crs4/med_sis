@@ -74,10 +74,4 @@ def process_xlsx_upload(self, upload_id):
                 logger.error(f"It is not possible to save the status CRITICAL_ERROR in upload {upload_id}: {save_e}")
         return False
 
-    """     try:
-            upload.status = "CRITICAL_ERROR"
-            upload.report = {"error": str(e)}
-            upload.save()
-        except:
-            pass
-        return False """ 
+    
