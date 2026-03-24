@@ -955,7 +955,12 @@ class RequestViewSet(viewsets.ModelViewSet):
         id = self.request.query_params.get('id', None)
         if id is not None:
             queryset = queryset.filter(id=id)
-            
+        u = self.request.query_params.get('user', None)
+        if u is not None:
+            queryset = queryset.filter(user=u)
+        m = self.request.query_params.get('measure', None)
+        if m is not None:
+            queryset = queryset.filter(measure=m)    
         return queryset
 
 #########################################
@@ -1007,7 +1012,13 @@ class LabDataExtraMeasureViewSet(viewsets.ModelViewSet):
         t = self.request.query_params.get('labdata', None)
         if t is not None:
             queryset = queryset.filter(labdata=t)
-
+        m = self.request.query_params.get('measure', None)
+        if m is not None:
+            queryset = queryset.filter(measure=m)
+        p = self.request.query_params.get('point', None)
+        if p is not None:
+            queryset = queryset.filter(point=p)
+ 
         return queryset
 #########################################
 ## Taxonomy 

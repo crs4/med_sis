@@ -49,37 +49,37 @@ export default function Page( )  {
   };
 
   function createPopupContent (code, result) {
-      let panel = '<div><span class="font-bold">No data</span></div>';
-      if ( !result || !code )
-        return panel;
-      try {
-        panel = '<div class="flex flex-wrap  justify-content-center">';
-        panel += '<span class="text-cyan-500 align-items-center font-bold" >Identifier:</span><span> '+code+'</span></div>';
-        let keys = Object.keys(result);
-        let values;
-        let v;
-        keys.forEach( (key) => {
-          if ( result[key] ) {
-            panel += '<div><span class="text-blue-500 font-bold ">'+key+'</span>:';
-            if ( key != 'wrong' && result[key]) {
-              values = result[key].split(':');
-              if ( values.length === 2 && values[0] && values[1] ) {
-                v = Math.floor(values[0]);
-                panel += '<span class="font-bold"> Filled: </span>';
-                panel += '<span class="font-bold text-green-500"> ' + v + '%</span>';
-                panel += '<span class="font-bold"> Errors: </span>';
-                panel += '<span class="font-bold text-orange-600"> ' + values[1] + '</span>';
-              }  
-              else panel += '<span class="font-bold">' + result[key] + '</span>';
-              
-            } 
-            panel += '</div>'; 
-          }
-        });
-      } catch (e) {
-        
-      }
-      return panel;  
+    let panel = '<div><span class="font-bold">No data</span></div>';
+    if ( !result || !code )
+      return panel;
+    try {
+      panel = '<div class="flex flex-wrap  justify-content-center">';
+      panel += '<span class="text-cyan-500 align-items-center font-bold" >Identifier:</span><span> '+code+'</span></div>';
+      let keys = Object.keys(result);
+      let values;
+      let v;
+      keys.forEach( (key) => {
+        if ( result[key] ) {
+          panel += '<div><span class="text-blue-500 font-bold ">'+key+'</span>:';
+          if ( key != 'wrong' && result[key]) {
+            values = result[key].split(':');
+            if ( values.length === 2 && values[0] && values[1] ) {
+              v = Math.floor(values[0]);
+              panel += '<span class="font-bold"> Filled: </span>';
+              panel += '<span class="font-bold text-green-500"> ' + v + '%</span>';
+              panel += '<span class="font-bold"> Errors: </span>';
+              panel += '<span class="font-bold text-orange-600"> ' + values[1] + '</span>';
+            }  
+            else panel += '<span class="font-bold">' + result[key] + '</span>';
+            
+          } 
+          panel += '</div>'; 
+        }
+      });
+    } catch (e) {
+      
+    }
+    return panel;  
   }
 
   const createGeoJSON = ( data_sheets, data_report ) => {
@@ -171,22 +171,17 @@ export default function Page( )  {
           return;
       upload.report = {}
       upload.editor = user.userData.preferred_username
-      const data = await UploadService.save(document.cookie,upload);
-      if (data && data.ok ) { 
+      const response = await UploadService.save(document.cookie, upload);
+      if (response && response.ok ) { 
         toast.current.show({severity:'success', summary: 'Success!', detail: 'Data has been sent' , life: 3000});
         setTimeout(() => {
           router.push('/uploads') 
         }, 3000);
       } 
-      else { 
-        let msg = 'Errors saving data'
-        if ( data && data.msg )
-          msg = data.msg
-        toast.current.show({severity:'error', summary: 'Errors!', detail: msg , life: 3000});
-      } 
+      else toast.current.show({severity:'error', summary: 'Errors!', detail: 'Errors saving data' , life: 3000});
 
     } catch (error) {
-      toast.current.show({severity:'error', summary: 'Errors!', detail: 'Errors sending data' , life: 3000}); 
+      toast.current.show({severity:'error', summary: 'Errors!', detail: 'Errors saving data' , life: 3000}); 
     } finally {
       setUploaded(true);
       setUploading(false);
@@ -237,7 +232,6 @@ export default function Page( )  {
             taxms[v.taxonomy][v.value] = v.descr;
           } 
         }
-
         setTaxonomies(taxms);
       }
       setLoading(false); 
@@ -301,28 +295,38 @@ export default function Page( )  {
     fetchMap();
   }, [pointsGeoJSON]);   
 
+  const headerTemplate1 = () => {
+    return  <h4 className="font-bold shadow-1 p-3 bg-cyan-900 text-white" style={{ width: '90%' }}>HELP ON  UPLOAD TYPES </h4>
+  };
+
+  const headerTemplate2 = () => {
+    return  <h4 className="font-bold shadow-1 p-3 bg-cyan-900 text-white" style={{ width: '90%' }} >HELP ON UPLOAD ACTIONS</h4>
+  };
+
   return (
     <div className="layout-dashboard">
       <Toast ref={toast} /> 
       <Dialog 
-        header="Help on upload type selection" 
+        header={headerTemplate1} 
         visible={visibleDlg1} style={{ width: '50vw' }} 
         onHide={() => {if (!visibleDlg1) return; setVisibleDlg1(false);     
       }}>
       {(!uploadType) && (
-        <p className="m-4">
-          <h4 className="font-bold">You must choose the type of data you want to upload:</h4>
-          <ul className="font-bold">
-            <li>New Point Soil Data</li>
-            <li>Point Soil Data Genealogies</li>
-            <li>Photos</li>
+        <div className="m-4 font-bold text-cyan-800">
+          <h4>You must choose the type of data you want to upload</h4>
+          <h4>Types:</h4>
+          <ul className="text-lg">
+            <li>Point&apos;s Soil Data</li>
+            <li>Project&apos;s info</li>
+            <li>Photo&apos;s info </li>
+            <li>Extra Laboratory data</li>
           </ul>
-        </p>
+        </div>
       )}
       {(uploadType && uploadType === UploadService.TYPES.XLS_P) && ( 
         <>
-        <div>
-          <h4 className="font-bold m-4">Selected: Soil Point Data upload </h4>   
+        <div className="m-4 font-bold text-cyan-800">
+          <h4>Selected: Point&apos;s Soil Data </h4>   
           <div class="flex flex-row justify-content-center ">
             <a href="/soildata/doc/xlsx_profiles_template.xlsx" target="_blank" rel="noopener noreferrer" className="p-button font-bold mr-8">
               Download the XLSx template
@@ -336,8 +340,8 @@ export default function Page( )  {
       )}
       {(uploadType && uploadType === UploadService.TYPES.XLS_PJ) && ( 
         <>
-        <div>
-          <h4 className="font-bold m-4">Selected: Genealogies of Data upload </h4>       
+        <div className="m-4 font-bold text-cyan-800">
+          <h4>Selected: Project&apos;s info </h4>       
           <div class="flex flex-row justify-content-center ">
             <a href="/soildata/doc/xlsx_genealogy_template.xlsx" target="_blank" rel="noopener noreferrer" className="p-button font-bold  m-4">
               Download the XLSx template
@@ -351,8 +355,8 @@ export default function Page( )  {
       )}
       {(uploadType && uploadType === UploadService.TYPES.XLS_PH) && ( 
         <>
-        <div>
-          <h4 className="font-bold m-4">Selected: Metadata of Photos upload </h4>       
+        <div className="m-4 font-bold text-cyan-800">
+          <h4>Selected: Photo&apos;s info </h4>       
           <div class="flex flex-row justify-content-center ">
             <a href="/soildata/doc/xlsx_genealogy_template.xlsx" target="_blank" rel="noopener noreferrer" className="p-button font-bold  m-4">
               Download the XLSx template
@@ -364,30 +368,45 @@ export default function Page( )  {
         </div>
         </>
       )}
+      {(uploadType && uploadType === UploadService.TYPES.XLS_EL) && ( 
+        <>
+        <div className="m-4 font-bold text-cyan-800">
+          <h4>Selected: Extra Laboratory data </h4>       
+          <div class="flex flex-row justify-content-center ">
+            <a href="/soildata/doc/xlsx_extra_lab_data_template.xlsx" target="_blank" rel="noopener noreferrer" className="p-button font-bold  m-4">
+              Download the XLSx template
+            </a>
+            <a href="/soildata/doc/upload_instructions_extra_lab_data.pdf" target="_blank" rel="noopener noreferrer" className="p-button font-bold m-4">
+              Download the instructions for filling in the data
+            </a>
+          </div>    
+        </div>
+        </>
+      )}
       </Dialog>
-      <Dialog header="Help on database action selection" visible={visibleDlg2} style={{ width: '50vw' }} onHide={() => {if (!visibleDlg2) return; setVisibleDlg2(false); }}>
+      <Dialog header={headerTemplate2} visible={visibleDlg2} style={{ width: '50vw' }} onHide={() => {if (!visibleDlg2) return; setVisibleDlg2(false); }}>
       {(!uploadAction) && (
-        <p className="m-4">
-          <h4 className="font-bold">You need to choose the action used to write items in the database:</h4>
-          <ul className="font-bold">
+        <div className="m-4 font-bold text-cyan-800">
+          <h4>You need to choose the action used to write items in the database:</h4>
+          <ul className="text-lg">
             <li>{UploadService.ACTIONS['POST'].label}: {UploadService.ACTIONS['POST'].info}.</li>
             <li>{UploadService.ACTIONS['PUT'].label}: {UploadService.ACTIONS['PUT'].info}</li>
             <li>{UploadService.ACTIONS['PATCH'].label}: {UploadService.ACTIONS['PATCH'].info}</li>
           </ul>
-        </p>
+        </div>
       )}
       {(uploadAction) && ( 
-        <div>
-          <h4 className="font-bold m-4">{uploadAction.label} </h4>  
-          <p className="m-4 font-bold">
+        <div className="m-4 font-bold text-cyan-800">
+          <h4>{uploadAction.label}</h4>  
+          <p>
             {uploadAction.info}        
           </p> 
         </div>    
       )}
       </Dialog>          
-      <div className="card">
-        <h4 class="font-bold">Soil Data XLS Upload</h4>
-        <div className="flex flex-row-reverse p-mr-2 p-mb-2 m-1">
+      <h4 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">Soil Data XLS Upload</h4>
+      <div className="card text-cyan-800 w-full shadow-2">
+        <div className="flex flex-row-reverse w-full p-2">
           <Button 
             icon="pi pi-download"
             className="flex bg-primary font-bold border-round"
@@ -396,7 +415,7 @@ export default function Page( )  {
             label={t('UPLOADS_LIST')}
           />
         </div>
-        <Panel header={t('UPLOAD HELP')} toggleable>
+        <Panel header={t('UPLOAD_HELP')} toggleable>
           <div><Message className="p-inline-message p-component p-inline-message-info font-bold block" severity="info" text='This page permits to upload Soil Data using a XSLx SpreadSheet' /></div>
           <ol>
             <li><Message className="p-inline-message p-component p-inline-message-info font-bold block" severity="info" text='First choose the type of data' /></li>
@@ -485,10 +504,8 @@ export default function Page( )  {
       <MyMap data={map} />
       </div>
       )}
-      { (taxonomies) && (
-      <div className="card"> 
-      {( upload && upload.report && upload.report['errors'] && uploadType  && uploadType.sheets && upload.report['errors'][uploadType.sheets[0]].constructor == Array && (
-        <>
+      {( taxonomies && upload && upload.report && upload.report['errors'] && uploadType  && uploadType.sheets && upload.report['errors'][uploadType.sheets[0]].constructor == Array && (
+        <div className="card">
         {( upload.report['total_errors'] > 0 ) && (
           <Message severity="danger" content={"Found " + upload.report.total_errors + " errors in sheets" } />
         )}
@@ -558,10 +575,8 @@ export default function Page( )  {
           )}
           </>
         ))}
-        </>
+        </div>
       ))}
-      </div>
-      )}
       {(loading) && (
         <h2>Loading Data...</h2>
       )}  

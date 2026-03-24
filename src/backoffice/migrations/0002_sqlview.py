@@ -34,6 +34,7 @@ SQL_CREATE = f"""
   CREATE OR REPLACE VIEW surface_unevenness_geo AS
   SELECT
     s.*,
+    t.id as point_id,
     ST_SetSRID(
       ST_MakePoint(t.lon_wgs84, t.lat_wgs84),
       4326
@@ -45,6 +46,7 @@ SQL_CREATE = f"""
   CREATE OR REPLACE VIEW surface_geo AS
   SELECT
     s.*,
+    t.id as point_id,
     ST_SetSRID(
       ST_MakePoint(t.lon_wgs84, t.lat_wgs84),
       4326
@@ -56,6 +58,7 @@ SQL_CREATE = f"""
   CREATE OR REPLACE VIEW land_use_geo AS
   SELECT
     l.*,
+    t.id as point_id,
     ST_SetSRID(
       ST_MakePoint(t.lon_wgs84, t.lat_wgs84),
       4326
@@ -67,6 +70,7 @@ SQL_CREATE = f"""
   CREATE OR REPLACE VIEW climate_weather_geo AS
     SELECT
       c.*,
+      t.id as point_id,
       ST_SetSRID(
         ST_MakePoint(t.lon_wgs84, t.lat_wgs84),
         4326
@@ -78,6 +82,7 @@ SQL_CREATE = f"""
   CREATE OR REPLACE VIEW landform_topography_geo AS
     SELECT
       c.*,
+      t.id as point_id,
       ST_SetSRID(
         ST_MakePoint(t.lon_wgs84, t.lat_wgs84),
         4326
@@ -89,7 +94,8 @@ SQL_CREATE = f"""
 --- Laboratory data ---
   CREATE OR REPLACE VIEW labdata_layer AS
     SELECT 
-      l.id, l.point_id, t.type_id as point_type, t.project, t.date, t.survey_m_id, l.l_number, l.horizon, pl.upper, pl.lower,
+      l.id, l.point_id, t.type_id as point_type, t.project, t.date, t.survey_m_id, 
+      l.l_number::numeric(4,0), l.horizon, pl.upper::numeric(4,0), pl.lower::numeric(4,0),
       l.gravel, l.cls_sys_id, l.texture_id, l.sand, l.v_c_sand, l.c_sand, l.m_sand, l.f_sand,
       l.v_f_sand, l.met_sand_id, l.silt, l.c_silt, l.f_silt, l.met_silt_id, l.clay, l.met_clay_id,
       l.bulk_dens, l.met_bulk_dens, l.slake_test, l.met_slake_test, l.el_cond, l.met_el_cond_id,
@@ -110,7 +116,8 @@ SQL_CREATE = f"""
 
   CREATE OR REPLACE VIEW labdata_no_layer AS
     SELECT 
-      l.id, l.point_id, t.type_id as point_type, t.project, t.date, t.survey_m_id, NULL::numeric(40,6) as l_number, NULL as horizon, l.upper, l.lower,
+      l.id, l.point_id, t.type_id as point_type, t.project, t.date, t.survey_m_id, 
+      NULL::numeric(4,0) as l_number, NULL as horizon, l.upper::numeric(5,0), l.lower::numeric(5,0),
       l.gravel, l.cls_sys_id, l.texture_id, l.sand, l.v_c_sand, l.c_sand, l.m_sand, l.f_sand,
       l.v_f_sand, l.met_sand_id, l.silt, l.c_silt, l.f_silt, l.met_silt_id, l.clay, l.met_clay_id,
       l.bulk_dens, l.met_bulk_dens, l.slake_test, l.met_slake_test, l.el_cond, l.met_el_cond_id,
@@ -132,9 +139,360 @@ SQL_CREATE = f"""
    SELECT * from labdata_layer
    UNION 
    SELECT * from labdata_no_layer;
-  ALTER VIEW IF EXISTS labdata_geo OWNER TO backoffice_user;   
+  ALTER VIEW IF EXISTS labdata_geo OWNER TO backoffice_user; 
 
+  CREATE OR REPLACE VIEW labdata_hy_cond_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.hy_cond, l.met_hy_cond_id as method, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_hy_cond_geo OWNER TO backoffice_user; 
+
+  CREATE OR REPLACE VIEW labdata_acidity_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.acidity, l.met_acidity as method, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_acidity_geo OWNER TO backoffice_user; 
+
+  CREATE OR REPLACE VIEW labdata_ph_h2o_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.ph_h2o, l.met_ph_h20_id as method, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_ph_h2o_geo OWNER TO backoffice_user; 
+
+  CREATE OR REPLACE VIEW labdata_ph_kcl_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.ph_kcl, l.met_ph_kcl_id as method, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_ph_kcl_geo OWNER TO backoffice_user; 
+
+  CREATE OR REPLACE VIEW labdata_ph_ccl_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.ph_ccl, l.met_ph_ccl_id as method, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_ph_ccl_geo OWNER TO backoffice_user; 
+
+  CREATE OR REPLACE VIEW labdata_org_car_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.org_car, l.met_org_car_id as method, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_org_car_geo OWNER TO backoffice_user; 
+
+  CREATE OR REPLACE VIEW labdata_org_mat_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.org_mat, l.met_org_mat_id as method, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_org_mat_geo OWNER TO backoffice_user; 
+
+  CREATE OR REPLACE VIEW labdata_caco3_content_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.caco3_content, l.met_content_caco3_id as method, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_caco3_content_geo OWNER TO backoffice_user; 
+
+  CREATE OR REPLACE VIEW labdata_active_caco3_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.active_caco3, l.met_active_caco3_id as method, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_active_caco3_geo OWNER TO backoffice_user; 
+
+  CREATE OR REPLACE VIEW labdata_gypsum_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.gypsum, l.met_gypsum_id as method, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_gypsum_geo OWNER TO backoffice_user; 
+
+  CREATE OR REPLACE VIEW labdata_cec_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.cec, l.met_cec_id, l.ca, l.mg, l.na, l.k, l.met_exc_id as method, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_cec_geo OWNER TO backoffice_user; 
+
+  CREATE OR REPLACE VIEW labdata_base_saturation_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.base_saturation, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_base_saturation_geo OWNER TO backoffice_user;
+
+  CREATE OR REPLACE VIEW labdata_esp_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.esp, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_esp_geo OWNER TO backoffice_user;
+
+  CREATE OR REPLACE VIEW labdata_soluble_cations_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.sol_ca, l.sol_mg, l.sol_na, l.met_sol_cations_id as method, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_soluble_cations_geo OWNER TO backoffice_user; 
+
+  CREATE OR REPLACE VIEW labdata_sar_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.sar, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_sar_geo OWNER TO backoffice_user;
+
+  CREATE OR REPLACE VIEW labdata_n_tot_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.n_tot, l.met_n_tot_id as method, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_n_tot_geo OWNER TO backoffice_user; 
+
+  CREATE OR REPLACE VIEW labdata_p_cont_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.p_cont, l.met_p_cont_id as method, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_p_cont_geo OWNER TO backoffice_user; 
+
+  CREATE OR REPLACE VIEW labdata_nh4_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.nh4, l.met_nh4_id as method, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_nh4_geo OWNER TO backoffice_user; 
+
+  CREATE OR REPLACE VIEW labdata_no3_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.no3, l.met_no3_id as method, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_no3_geo OWNER TO backoffice_user; 
+
+  CREATE OR REPLACE VIEW labdata_roc_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.roc, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_roc_geo OWNER TO backoffice_user;
+
+  CREATE OR REPLACE VIEW labdata_toc400_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.toc400, l.met_roc_toc400_id as method, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_toc400_geo OWNER TO backoffice_user; 
+
+  CREATE OR REPLACE VIEW labdata_fe_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.feox, l.fed, l.fep, l.fe_tot, l.met_fe_tot_id as method, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_fe_geo OWNER TO backoffice_user; 
+
+  CREATE OR REPLACE VIEW labdata_mn_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.mn, l.met_mn_id as method, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_mn_geo OWNER TO backoffice_user; 
+
+  CREATE OR REPLACE VIEW labdata_zn_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.zn, l.met_zn_id as method, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_zn_geo OWNER TO backoffice_user; 
+
+  CREATE OR REPLACE VIEW labdata_cu_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.cu, l.met_cu_id as method, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_cu_geo OWNER TO backoffice_user; 
+
+  CREATE OR REPLACE VIEW labdata_pb_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.pb, l.met_pb_id as method, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_pb_geo OWNER TO backoffice_user; 
+
+  CREATE OR REPLACE VIEW labdata_hg_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.hg, l.met_hg_id as method, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_hg_geo OWNER TO backoffice_user; 
+
+  CREATE OR REPLACE VIEW labdata_cd_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.cd, l.met_cd_id as method, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_cd_geo OWNER TO backoffice_user; 
+
+  CREATE OR REPLACE VIEW labdata_ni_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.ni, l.met_ni_id as method, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_ni_geo OWNER TO backoffice_user; 
+
+  CREATE OR REPLACE VIEW labdata_sb_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.sb, l.met_sb_id as method, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_sb_geo OWNER TO backoffice_user; 
+
+  CREATE OR REPLACE VIEW labdata_cr_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.cr, l.met_cr_id as method, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_cr_geo OWNER TO backoffice_user; 
+
+  CREATE OR REPLACE VIEW labdata_as_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.as_value, l.met_as_id as method, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_as_geo OWNER TO backoffice_user; 
+
+  CREATE OR REPLACE VIEW labdata_co_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.co, l.met_co_id as method, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_co_geo OWNER TO backoffice_user; 
+
+  CREATE OR REPLACE VIEW labdata_v_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.v, l.met_v_id as method, l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_v_geo OWNER TO backoffice_user;
+
+  CREATE OR REPLACE VIEW labdata_bulk_dens_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.bulk_dens, l.met_bulk_dens as method,
+      l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_bulk_dens_geo OWNER TO backoffice_user;
+
+  CREATE OR REPLACE VIEW labdata_slake_test_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.slake_test, l.met_slake_test as method,
+      l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_slake_test_geo OWNER TO backoffice_user;
+
+  CREATE OR REPLACE VIEW labdata_el_cond_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.el_cond, l.met_el_cond_id as method,
+      l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_el_cond_geo OWNER TO backoffice_user;
+
+  CREATE OR REPLACE VIEW labdata_hy_cond_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.hy_cond, l.met_hy_cond_id as method,
+      l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_hy_cond_geo OWNER TO backoffice_user;
+
+  CREATE OR REPLACE VIEW labdata_s_fc_w_geo AS
+    SELECT 
+      l.id, l.point_id, l.point_type, l.project, l.date, 
+      l.survey_m_id, l.l_number, l.horizon, l.upper, l.lower,
+      l.satur, l.field_cap, l.wilting_p, l.awc, l.met_s_f_w_id as method,
+      l.geom
+    FROM labdata_geo l;
+  ALTER VIEW IF EXISTS labdata_s_fc_w_geo OWNER TO backoffice_user;
   
+  CREATE OR REPLACE VIEW labdata_clay_geo AS
+    SELECT 
+      a.id, a.point_id, a.point_type, a.project, a.date, 
+      a.survey_m_id, a.l_number, a.horizon, a.upper, a.lower,
+      a.clay, a.met_clay_id as method,
+      a.geom
+    FROM labdata_geo a;
+  ALTER VIEW IF EXISTS labdata_clay_geo OWNER TO backoffice_user;
+
+  CREATE OR REPLACE VIEW labdata_silt_geo AS
+    SELECT 
+      a.id, a.point_id, a.point_type, a.project, a.date, 
+      a.survey_m_id, a.l_number, a.horizon, a.upper, a.lower,
+      a.c_silt, a.f_silt, a.met_silt_id as method,
+      a.geom
+   FROM labdata_geo a;
+  ALTER VIEW IF EXISTS labdata_silt_geo OWNER TO backoffice_user;
+  
+  CREATE OR REPLACE VIEW labdata_gravel_geo AS
+    SELECT 
+      a.id, a.point_id, a.point_type, a.project, a.date, 
+      a.survey_m_id, a.l_number, a.horizon, a.upper, a.lower,
+      a.gravel, NULL as method,
+      a.geom
+   FROM labdata_geo a;
+  ALTER VIEW IF EXISTS labdata_gravel_geo OWNER TO backoffice_user;
+
+  CREATE OR REPLACE VIEW labdata_sand_geo AS
+    SELECT 
+      a.id, a.point_id, a.point_type, a.project, a.date, 
+      a.survey_m_id, a.l_number, a.horizon, a.upper, a.lower,
+      a.sand, a.v_c_sand, a.c_sand, a.m_sand, a.f_sand, a.v_f_sand, a.met_sand_id as method,
+      a.geom
+   FROM labdata_geo a;
+  ALTER VIEW IF EXISTS labdata_sand_geo OWNER TO backoffice_user;
 
 --- Layer descriptions ---
   CREATE OR REPLACE VIEW point_layer_geo AS
@@ -412,14 +770,17 @@ SQL_CREATE = f"""
   -- Soil Indicators:
 
   --1) Nutrient imbalance SOC Decline
-  CREATE OR REPLACE VIEW nutrient_imbalance_soc_decline AS
-  SELECT
-    a.id as labdata_id, a.point_id, a.point_type,
-    a.date, a.upper, a.lower, a.survey_m_id, a.project,
-    (a.org_car / a.n_tot) as value, 
-    'dimensionless' as unit, a.geom   
-  FROM public.labdata_geo a
-  WHERE a.n_tot is not null and a.org_car is not null and a.n_tot > 0;
+  SELECT     
+    a.id as labdata_id, a.point_id, a.point_type, a.date, a.upper, a.lower, a.survey_m_id, a.project,
+    (a.org_car / a.n_tot) as value,'dimensionless' as unit, a.geom,
+    CASE
+    WHEN b.corine_id IS NOT NULL AND (b.corine_id LIKE 'CORINE:31%' OR b.corine_id LIKE 'CORINE:32%' OR b.corine_id LIKE 'CORINE:23%' OR b.corine_id LIKE 'CORINE:33%' ) THEN TRUE
+    WHEN b.nc_gs_species1 IS NOT NULL AND (b.use_id ILIKE 'USE:A%' OR b.use_id ILIKE 'USE:F%') THEN TRUE
+    WHEN b.use_id ILIKE 'USE:F%' THEN TRUE
+    ELSE FALSE
+  END as use_type_fg
+  FROM public.labdata_geo a, public.land_use_geo b
+  WHERE a.point_id = b.id AND n_tot is not null AND a.org_car is not null AND a.n_tot > 0;
   ALTER VIEW IF EXISTS nutrient_imbalance_soc_decline OWNER TO backoffice_user;
 
   --2) Sodium exchangeable percentage - waterlogging
@@ -477,8 +838,8 @@ SQL_CREATE = f"""
   (a.ca + a.mg) > 0 AND a.el_cond IS NOT NULL AND a.el_cond > 0; 
   ALTER VIEW IF EXISTS sodicity_salinity_ratio OWNER TO backoffice_user;
 
-  --5) Cupper relative content indicator 
-  CREATE OR REPLACE VIEW cupper_relative_content AS
+  --5) Copper relative content indicator 
+  CREATE OR REPLACE VIEW copper_relative_content AS
   SELECT
     a.id as labdata_id,
     a.date, a.upper, a.lower, a.survey_m_id, a.project,
@@ -486,7 +847,7 @@ SQL_CREATE = f"""
     '%' as unit, a.geom  
   FROM public.labdata_geo a
   WHERE a.cu is not null and a.zn is not null and a.pb is not null and (a.cu + a.zn + a.pb) > 0;
-  ALTER VIEW IF EXISTS cupper_relative_content OWNER TO backoffice_user;
+  ALTER VIEW IF EXISTS copper_relative_content OWNER TO backoffice_user;
 
   --6) Lead relative content indicator
   CREATE OR REPLACE VIEW lead_relative_content AS
@@ -583,7 +944,7 @@ SQL_CREATE = f"""
 
   CREATE OR REPLACE VIEW labdata_extra_geo AS
    SELECT e.id, l.id as labdata_id, l.point_id, l.point_type, l.project, l.date, l.survey_m_id, l.l_number, 
-          l.horizon, l.upper, l.lower, e.measure_id, e.method_id, e.unit_id, e.value, e.value_text, l.geom
+          l.horizon, l.upper, l.lower, e.measure_id, e.method_id, e.unit_id, e.value, l.geom
    FROM labdata_geo l, labdata_extra_measure e
    WHERE l.id = e.labdata_id; 
   ALTER VIEW IF EXISTS labdata_extra_geo OWNER TO backoffice_user; 
@@ -636,7 +997,7 @@ SQL_DROP = f"""
   DROP VIEW IF EXISTS plant_available_water_capacity CASCADE;
   DROP VIEW IF EXISTS air_capacity CASCADE;
   DROP VIEW IF EXISTS cec_clay_ratio CASCADE;
-  DROP VIEW IF EXISTS cupper_relative_content CASCADE;
+  DROP VIEW IF EXISTS copper_relative_content CASCADE;
   DROP VIEW IF EXISTS lead_relative_content CASCADE;
   DROP VIEW IF EXISTS zinc_relative_content CASCADE;
   DROP VIEW IF EXISTS sodicity_salinity_ratio CASCADE;

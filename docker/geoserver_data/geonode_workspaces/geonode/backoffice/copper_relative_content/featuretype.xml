@@ -1,16 +1,16 @@
 <featureType>
   <id>FeatureTypeInfoImpl--d81fc44:1994e223eb8:-7389</id>
-  <name>cupper_relative_content</name>
-  <nativeName>cupper_relative_content</nativeName>
+  <name>copper_relative_content</name>
+  <nativeName>copper_relative_content</nativeName>
   <namespace>
     <id>NamespaceInfoImpl-78ff667e:12476299803:-7ffe</id>
   </namespace>
-  <title>Cupper relative content (CuRC) indicator</title>
-  <abstract>Soil chemical health: Cupper relative content indicator (CuRC) represents anthropic activity impact indicator based on Cu, Zn and Pb total concentrations (Weng et al., 2003). FAO SoilSTAT domain: contamination</abstract>
+  <title>Copper relative content (CuRC) indicator</title>
+  <abstract>Soil chemical health: Copper relative content indicator (CuRC) represents anthropic activity impact indicator based on Cu, Zn and Pb total concentrations (Weng et al., 2003). FAO SoilSTAT domain: contamination</abstract>
   <keywords>
     <string>features</string>
     <string>chemical indicator</string>
-    <string>cupper_relative_content</string>
+    <string>copper_relative_content</string>
     <string>Soil Chemical Health</string>
   </keywords>
   <srs>EPSG:4326</srs>
@@ -44,6 +44,8 @@
   </store>
   <serviceConfiguration>false</serviceConfiguration>
   <simpleConversionEnabled>false</simpleConversionEnabled>
+  <internationalTitle/>
+  <internationalAbstract/>
   <maxFeatures>0</maxFeatures>
   <numDecimals>0</numDecimals>
   <padWithZeros>false</padWithZeros>

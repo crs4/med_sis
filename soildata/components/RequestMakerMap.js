@@ -17,7 +17,6 @@ function SelectArea({setArea, data}) {
           const response = await fetch (url);
           const aoi = await response.json();
           let p = points([ [lng, lat], ])
-          console.log(aoi);
           if ( aoi && aoi.features )
             for ( let x = 0; x < aoi.features.length; x++ ){
               let ok = pointsWithinPolygon(p, aoi.features[x]);
@@ -36,7 +35,6 @@ const MapLegend = ({ legendRef }) => {
   useEffect(() => {
     if (!map || legendRef.current ) 
       return;
-    console.log (map);
     let layer = null;
     if (layer) {
       legendRef.current = L.control.htmllegend({
@@ -139,7 +137,6 @@ export default function S4Mmap ({toast, setAoi, data}) {
             const feature = geojson.features[0];
             geojson.features = [feature];
             geojson.bbox = bbox(geojson);
-            console.log(geojson)
             resolve(geojson);
           };
           readFile.onerror = (error) => {
@@ -157,7 +154,6 @@ export default function S4Mmap ({toast, setAoi, data}) {
           toast.current.show({severity:'info', summary: 'Success', detail:'AOI set!', life: 3000});
           setAoi(_aoi)
           setArea(_aoi)
-          console.log(_aoi)
         }
       }
       

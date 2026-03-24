@@ -12,13 +12,11 @@ const AppBreadcrumb = () => {
         const filteredBreadcrumbs = breadcrumbs?.find((crumb) => {
             const lastPathSegment = crumb.to.split('/').pop();
             const lastRouterSegment = router.pathname.split('/').pop();
-
             if (lastRouterSegment?.startsWith('[') && !isNaN(Number(lastPathSegment))) {
                 return router.pathname.split('/').slice(0, -1).join('/') === crumb.to?.split('/').slice(0, -1).join('/');
             }
             return crumb.to === router.pathname;
         });
-
         setBreadcrumb(filteredBreadcrumbs);
     }, [router, breadcrumbs]);
 

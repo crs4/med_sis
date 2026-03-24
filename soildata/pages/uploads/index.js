@@ -34,9 +34,23 @@ export default function Page()  {
   const actions = Object.keys(UploadService.ACTIONS);
 
   useEffect(() => {
-      if ( !user.userData || ( user.userData.forbidden !== null && user.userData.forbidden ))
+    if ( !user.userData || ( user.userData.forbidden !== null && user.userData.forbidden ))
       router.push(`/401`);
-    },[user]);  // eslint-disable-line
+    const fetchData = ( async() => {
+      let _data = await UploadService.list(document.cookie)
+      if ( !_data || _data.error )
+        toast.current.show({severity:'error', summary: 'Errors!', detail: 'Errors reading uploads' , life: 3000});
+      else if ( !_data.data || !Array.isArray(_data.data) || _data.data.length === 0 ) 
+        toast.current.show({severity:'warn', summary: 'No data!', detail: 'No uploads Found' , life: 3000});
+      else { 
+        toast.current.show({severity:'success', summary: 'Success!', detail: 'The upload list has been loaded' , life: 3000});
+        setUploads(mapUploads(_data.data));
+        initFilters();
+      }
+      setLoading(false); 
+    })
+    fetchData();
+  },[user]);  // eslint-disable-line
 
   const goToUpload = (id) => {
     router.push(`/uploads/${id}`);
@@ -99,23 +113,6 @@ export default function Page()  {
     setIsWorking(false);
   };
 
-  useEffect(() => {
-    const fetchData = ( async() => {
-      let _data = await UploadService.list(document.cookie)
-      if ( !_data || _data.error )
-        toast.current.show({severity:'error', summary: 'Errors!', detail: 'Errors reading uploads' , life: 3000});
-      else if ( !_data.data || !Array.isArray(_data.data) || _data.data.length === 0 ) 
-        toast.current.show({severity:'warn', summary: 'No data!', detail: 'No uploads Found' , life: 3000});
-      else { 
-        toast.current.show({severity:'success', summary: 'Success!', detail: 'The upload list has been loaded' , life: 3000});
-        setUploads(mapUploads(_data.data));
-        initFilters();
-      }
-      setLoading(false); 
-    })
-    fetchData();
-  }, []);
-
   const formatDate = (value) => {
     return value.toLocaleDateString('en-US', {
         day: '2-digit',
@@ -176,7 +173,7 @@ export default function Page()  {
       return ( <Tag icon="pi pi-spin pi-cog" severity="info" value="Elaborating"></Tag>)
     else if ( rowData.status === UploadService.STATUSES.UPLOADED )
       return ( <Tag icon="pi pi-spin pi-cog" severity="info" value="Waiting"></Tag>)
-    else 
+    else if ( rowData.status === UploadService.STATUSES.CRITICAL_ERROR )
       return ( <Tag icon="pi pi-exclamation-triangle" severity="danger" value="Critical error"></Tag>)
   };
 
@@ -230,6 +227,9 @@ export default function Page()  {
   const mapUploads = (data) => {
     return [...(data || [])].map((d) => {
         d.date = new Date(d.date);
+        const delayMS = Date.now() - d.date;
+        if ( d.status === UploadService.STATUSES.IN_PROCESS && delayMS > 5*60*1000 ) // delay > 5h -> Error
+          d.status = UploadService.STATUSES.CRITICAL_ERROR
         return d;
     });
   };
@@ -270,61 +270,53 @@ export default function Page()  {
   return (
     <div className="layout-dashboard">
       <Toast ref={toast} />
-      <div className="grid">
-        <div className="col-12">
-      { (uploads && !loading ) && ( 
-          <div className="card">
-            <ConfirmDialog id="dlg_remove" group="declarative"  visible={visibleDlg1} onHide={() => setVisibleDlg1(false)} message="Are you sure you want to delete xlsx upload?" 
-              header="Confirmation" icon="pi pi-exclamation-triangle" accept={performRemove} reject={rejectDlg1} />
-            <h4>{t('UPLOADS_LIST')}</h4>
-            <div className="flex flex-row-reverse p-mr-2 p-mb-2 m-1">
-              <Button 
-                icon="pi pi-download"
-                className="flex bg-primary font-bold border-round"
-                disabled={isWorking}
-                onClick={() => openCreate()}
-                label={t('NEW_UPLOAD')}
-              />
-            </div>
-            
-            <DataTable
-                value={uploads}
-                paginator
-                dataKey="id"
-                className="p-datatable-gridlines"
-                globalFilterFields={['id', 'title', 'editor', 'type', 'status']}
-                showGridlines
-                rows={20}
-                filters={filters}
-                filterDisplay="menu"
-                loading={loading}
-                responsiveLayout="scroll"
-                emptyMessage="No uploads found."
-                header={header}
-            >
-              <Column header="Identifier" field="id"  filter filterPlaceholder="Search by id" style={{ minWidth: '8rem' }} />
-              <Column header="Name" field="title"  filter filterPlaceholder="Search by name" style={{ minWidth: '14rem' }} />
-              <Column header="Editor" field="editor"  filter filterPlaceholder="Search by user" style={{ minWidth: '12rem' }} />
-              <Column header="Date"  field="date" dataType="date" style={{ minWidth: '10rem' }} body={dateBodyTemplate} filter filterElement={dateFilterTemplate} />
-              <Column header="Type"  field="type" filterMenuStyle={{ width: '10rem' }} style={{ minWidth: '10rem' }} body={typeBodyTemplate} filter filterElement={typeFilterTemplate} />
-              <Column header="Operation"  field="operation" filterMenuStyle={{ width: '12rem' }} style={{ minWidth: '14rem' }} body={operationBodyTemplate} filter filterElement={operationFilterTemplate} />
-              <Column header="Status"  field="status" filterMenuStyle={{ width: '12rem' }} style={{ minWidth: '12rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
-              <Column header="Actions" body={actionsTemplate} style={{ minWidth: '10rem' }} />
-            </DataTable>
-          </div>
-        
+      <h4 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">{t('UPLOADS_LIST')}</h4>
+      <div className="card text-cyan-800 shadow-2">
+      { uploads && !loading && ( 
+        <>
+        <ConfirmDialog id="dlg_remove" group="declarative"  visible={visibleDlg1} onHide={() => setVisibleDlg1(false)} message="Are you sure you want to delete xlsx upload?" 
+          header="Confirmation" icon="pi pi-exclamation-triangle" accept={performRemove} reject={rejectDlg1} />
+        <div className="flex flex-row-reverse w-full p-2">
+          <Button 
+            icon="pi pi-download"
+            className="flex bg-primary font-bold border-round"
+            disabled={isWorking}
+            onClick={() => openCreate()}
+            label={t('NEW_UPLOAD')}
+          />
+        </div>
+        <DataTable
+          value={uploads}
+          paginator
+          dataKey="id"
+          className="p-datatable-gridlines"
+          globalFilterFields={['id', 'title', 'editor', 'type', 'status']}
+          showGridlines
+          rows={20}
+          filters={filters}
+          filterDisplay="menu"
+          loading={loading}
+          responsiveLayout="scroll"
+          emptyMessage="No uploads found."
+          header={header}
+        >
+          <Column header="Identifier" field="id"  filter filterPlaceholder="Search by id" style={{ minWidth: '8rem' }} />
+          <Column header="Name" field="title"  filter filterPlaceholder="Search by name" style={{ minWidth: '14rem' }} />
+          <Column header="Editor" field="editor"  filter filterPlaceholder="Search by user" style={{ minWidth: '12rem' }} />
+          <Column header="Date"  field="date" dataType="date" style={{ minWidth: '10rem' }} body={dateBodyTemplate} filter filterElement={dateFilterTemplate} />
+          <Column header="Type"  field="type" filterMenuStyle={{ width: '10rem' }} style={{ minWidth: '10rem' }} body={typeBodyTemplate} filter filterElement={typeFilterTemplate} />
+          <Column header="Operation"  field="operation" filterMenuStyle={{ width: '12rem' }} style={{ minWidth: '14rem' }} body={operationBodyTemplate} filter filterElement={operationFilterTemplate} />
+          <Column header="Status"  field="status" filterMenuStyle={{ width: '12rem' }} style={{ minWidth: '12rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
+          <Column header="Actions" body={actionsTemplate} style={{ minWidth: '10rem' }} />
+        </DataTable>
+        </>
       )}
       {(!uploads && !loading ) && (
-          <div className="card">
-            <h5>No uploads found</h5>
-          </div>
+          <h5 className="font-bold text-cyan-800">No uploads found</h5>
       )}
       {(loading ) && (
-          <div className="card">
-            <h5>Loading Uploads info...</h5>
-          </div>
+          <h5 className="font-bold text-cyan-800">Loading Uploads info...</h5>
       )}
-        </div>
       </div>
     </div>
   );
@@ -334,7 +326,7 @@ export async function getStaticProps(context) {
   return {
     props: { 
       messages: (await import(`../../translations/${context.locale}.json`)).default
-     },
+    },
   }
 }
 

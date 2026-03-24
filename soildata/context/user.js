@@ -29,7 +29,6 @@ export const UserProvider = (props) => {
             if ( data.groups.indexOf('admin') !== -1 ||  data.groups.indexOf('data-managers') !== -1 ) {
               data.forbidden = false;
             }
-            console.log('passed')
           } 
           else {
             data.forbidden = true;

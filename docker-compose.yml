@@ -175,7 +175,7 @@ services:
   redis:
     image: redis:7-alpine
     container_name: redis4${COMPOSE_PROJECT_NAME}
-    #command: redis-server --requirepass ${REDIS_PASSWORD}
+    command: redis-server --requirepass ${REDIS_PASSWORD}
     volumes:
       - redisdata:/data
     restart: unless-stopped

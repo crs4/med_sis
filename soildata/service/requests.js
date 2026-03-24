@@ -1,21 +1,42 @@
+import doFetch  from '../utilities/api-client';
+
 export const RequestService = {
     STATUSES : {
         CREATED : "CREATED",
         IN_PROCESS : "IN_PROCESS",
-        ASSIGNED : "ASSIGNED",
+        UPDATED : "UPDATED",
         IMPORT_WITH_ERROR : "ELABORATED",
         ERRORS: "ERRORS",
     },
-  
-  
+
+    async list(ck) { 
+        if ( ck ) 
+            return await doFetch ( 'requests', null, 'GET', null, ck );
+        else 
+            return { ok: false }
+    },
+    
+    async create(ck, payload) {
+        if ( ck ) 
+            return await doFetch ( 'requests', null, 'GET', payload, ck );
+        else 
+            return { ok: false }
+    },
+    
+    async update(ck, id, payload) { 
+        if ( ck ) 
+            return await doFetch ( 'requests', id, 'PATCH', payload, ck );
+        else 
+            return { ok: false }
+    },
+    
+    async delete(ck, id) { 
+        if ( ck ) 
+            return await doFetch ( 'requests', id, 'DELETE', null, ck );
+        else 
+            return { ok: false }
+    },  
 }
-
-export const getMyCookie = (cookie, name) => {
-  const cookieValue = cookie.split('; ')
-      .find((row) => row.startsWith(`${name}=`))?.split('=')[1];  
-  return cookieValue;
-};
-
 
 export default RequestService
 

@@ -22,11 +22,7 @@ export default function Page()  {
   const user = useUser();
   const [loading, setLoading] = useState(true);
   const [upload, setUpload] = useState(null);
-  const [pointsGeoJSON, setPointsGeoJSON] = useState(null);
-  const [errors, setErrors] = useState([]);
-  const [operations, setOperations] = useState([]);
-  const toast = useRef(null);
-  const [map, setMap] = useState(null); 
+  const toast = useRef(null); 
 
   const openList = () => {
     router.push(`/uploads`);
@@ -36,135 +32,60 @@ export default function Page()  {
     router.push(`/uploads/create`);
   };
 
-  const createGeoJSON = ( ) => {
-    if (!upload || !upload.data || typeof upload.data !== "string" ) 
-      return; 
-    let points = [];
-    const data = JSON.parse(upload.data);
-    const errors = upload.report['errors'];
-    if ( !data || (
-         ( !data['ProfileGeneral'] || !Array.isArray(data['ProfileGeneral']) ) &&
-         ( !data['SampleGeneral'] || !Array.isArray(data['SampleGeneral']) ) 
-    ))
-      return;
-    let map_err = []
-    if ( errors && Array.isArray(errors) )
-      for ( let e=1; e<errors.length; e+=1 ){
-        if ( errors[e] )
-          map_err.push( errors[e]['element'] )
-    }
-    let main = data['ProfileGeneral']? data['ProfileGeneral'] : data['SampleGeneral']
-    if ( main ) {
-      for ( let j=1; j<main.length; j+=1 ){
-  /// skip row with null or errors in lat,lon or key
-        try {
-          let status = 'ok';
-          let obj = main[j]
-          if ( obj && obj.id && obj.lat_wgs84 && obj.lon_wgs84 ) {
-            if ( map_err.indexOf(obj.id) !== -1)
-              status = 'ko'
-            points.push( point( [obj.lon_wgs84 , obj.lat_wgs84], 
-                        { key: obj.id, status: status, popupContent : obj.id  },
-                        { id: obj.id } ) );
-          }
-        } catch (e) {
-        
-        }
-      }
-      if ( points.length > 0 ) {
-        setPointsGeoJSON( featureCollection(points) );
-        toast.current.show({severity:'success', summary: 'GeoJSON created!', detail:'GeoJSON for elements created', life: 3000});
-      }
-    }    
-  }
-
-  useEffect(() => {
-    if ( !user.userData || ( user.userData.forbidden !== null && user.userData.forbidden ))
-        router.push(`/401`);router.push(`/401`);
-    
-  },[user]);  // eslint-disable-line
-
-  useEffect(() => {
-    createGeoJSON ( );
-  },[upload]);  // eslint-disable-line
-
   useEffect(() => {
     const fetchData = ( async(id) => {
-      let _data = await UploadService.get(document.cookie,id)
-      if ( !_data && !_data.data )
+      if ( !id )
+        return;
+      let response = await UploadService.get(document.cookie,id)
+      if ( !response && !response.data )
         toast.current.show({severity:'error', summary: 'Errors!', detail: 'Errors reading upload ' + id , life: 3000});
       else { 
         toast.current.show({severity:'success', summary: 'Success!', detail: 'The upload ' + id + ' has been loaded' , life: 3000});
-        setUpload(_data.data);
+        setUpload(response.data);
       }
       setLoading(false); 
     })
-    if ( id )
-      fetchData(id);
-  }, [id]);
-  
-  useEffect(() => {
-    const fetchMap = async () => {
-      if ( pointsGeoJSON ) {
-        const uploadMap = {
-          layer : {
-            points: pointsGeoJSON,
-            styles: {
-              'ok' : { radius: 8, fillColor: '#2f2', color: '#0d0', weight: 2, opacity: 1, fillOpacity: 0.8, },
-              'ko' : { radius: 8, fillColor: '#f22', color: '#d22', weight: 2, opacity: 1, fillOpacity: 0.8, },
-              'warn' : { radius: 8, fillColor: '#f80', color: '#d60', weight: 2, opacity: 1, fillOpacity: 0.8, },
-            },
-          },
-          label: 'elements points',
-        };
-        setMap(uploadMap);
-      }  
-    }
-    fetchMap();
-  }, [pointsGeoJSON]);   
+    if ( !user.userData || ( user.userData.forbidden !== null && user.userData.forbidden ))
+        router.push(`/401`);
+    fetchData(id);
+  },[user]);  // eslint-disable-line   
 
   let reportHeaders = ['Element', 'Section', 'Message'];
   
   return (
     <div className="layout-dashboard">
       <Toast ref={toast} />
-      <div className="flex flex-row-reverse p-mr-2 p-mb-2 m-1">
-        <Button 
-          icon="pi pi-list"
-          className="flex bg-primary font-bold border-round"
-          onClick={() => openList()}
-          label={t('UPLOADS_LIST')}
-        />
-        <Button 
-          icon="pi pi-download"
-          className="flex bg-primary font-bold border-round mr-3"
-          onClick={() => openCreate()}
-          label={t('CREATE_UPLOAD')}
-        />
-      </div>
+      <h4 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">{t('UPLOADS_LIST')}</h4>
+      <div className="card text-cyan-800 shadow-2">
+        <div className="flex flex-row-reverse  w-full gap-2 m-2">
+          <Button 
+            icon="pi pi-list"
+            className="flex bg-primary font-bold border-round"
+            onClick={() => openList()}
+            label={t('UPLOADS_LIST')}
+          />
+          <Button 
+            icon="pi pi-download"
+            className="flex bg-primary font-bold border-round mr-3"
+            onClick={() => openCreate()}
+            label={t('CREATE_UPLOAD')}
+          />
+        </div>
       {(!upload && !loading ) && (
-        <h4>No Upload found</h4>
+        <h5 className="font-bold text-cyan-800">No Upload found</h5>
       )}
       {(loading) && (
-        <h4>Loading Upload Info...</h4>
+        <h5 className="font-bold text-cyan-800">Loading Upload Info...</h5>
       )}
       {(upload && !loading && ( upload.status === UploadService.STATUSES.IN_PROCESS || upload.status === UploadService.STATUSES.UPLOADED) ) && (
-        <h4>The Upload is being processed</h4>
+        <h5 className="font-bold text-cyan-800">The Upload is being processed</h5>
       )}
-      
       {(upload && !loading  && upload.status !== UploadService.STATUSES.IN_PROCESS && upload.status !== UploadService.STATUSES.UPLOADED ) && (
-        <div className="card text-xl font-bold ">
-          <span class="text-blue-600"> Upload:</span><span class="text-gray-600"> { upload.title } </span>
-          <span class="text-blue-600"> Date:</span><span class="text-gray-600"> { upload.date.toString() }</span>
-          <span class="text-blue-600"> Editor:</span><span class="text-gray-600"> { upload.editor }</span>
+        <div className="card text-xl  w-full font-bold text-cyan-800 m-2">
+          <h6> Upload:<span class="text-gray-600"> { upload.title } </span></h6>
+          <h6> Date:<span class="text-gray-600"> { upload.date.toString() }</span></h6>
+          <h6> Editor:<span class="text-gray-600"> { upload.editor }</span></h6>
         </div>
-      )} 
-      {(map) && (    
-        <div className="card">
-          <h4 class="font-bold text-green-500">{ map ? map.label : 'Geo points in upload' }</h4>
-          <MyMap data={map} />
-        </div>
-
       )} 
       {(upload && upload.report && upload.report['errors'] && 
         Array.isArray(upload.report['errors']) && upload.report['errors'].length > 0 ) && ( 
@@ -182,6 +103,7 @@ export default function Page()  {
             title={'Table of the ' + upload.report['operations'].length + ' operations in upload ' + upload.title  }
             className='p-mt-4 p-mb-4' />  
       )}
+      </div>
     </div>
   );
 };

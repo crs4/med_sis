@@ -1,5 +1,7 @@
 {
   "default": {
+    "UPLOAD_HELP" : "Upload data how to",
+    "NEW_VALUE" : "Value",
     "UPLOADS_LIST" : "List of uploads",
     "VALUES" : "Values", 
     "DESCR" : "Description", 

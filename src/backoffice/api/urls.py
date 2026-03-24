@@ -39,7 +39,7 @@ router.register(r'lab-data-extra-measures', LabDataExtraMeasureViewSet )
 router.register(r'requests', RequestViewSet)
 router.register(r'photos', PhotoViewSet)
 router.register(r'taxonomies', TaxonomyViewSet)
-router.register(r'taxonomy_values', TaxonomyValueViewSet)
+router.register(r'taxonomy-values', TaxonomyValueViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

@@ -265,8 +265,7 @@ export const validatePointSheet = (taxonomies, sheet_name, sheet_mapping, result
                   ))) 
               {
                   results['report']['errors'][sheet_name].push(['?',j,1,'-k']);  /// wrong key or duplicate key
-                  results['report']['total_errors'] += 1; 
-                  console.log(' no res' + j );   
+                  results['report']['total_errors'] += 1;    
               }
               else {
                 let key = row[1];
@@ -413,7 +412,6 @@ export const createObjectsPoints = async (res) => {
                 fixtures['LayerStructure'][_id]['layer'] = l_id; 
                 if ( level && value)
                   fixtures[model][_id][level] =  value;
-                console.log(level+':'+value)
               }
             } catch (e) {
               console.log(e);
@@ -454,10 +452,11 @@ export const createObjectsPoints = async (res) => {
   // labdata mapping 
   sheet_mapping = Mapping['XLS_P:'+sheets[3]];
   sheet = data[sheets[3]];
-  fixtures['LabDataSampling'] = { };
+  fixtures['LabData'] = { };
   
   if ( sheet )
   for ( let i = 0; i < sheet.length; i+=1 ) {
+    if (sheet[i])
     try {
       let row = sheet[i];
       let id =  row[1];

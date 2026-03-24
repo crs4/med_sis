@@ -1,5 +1,8 @@
 {
   "default": {
+    "UPLOAD_HELP" : "Upload data how to",
+    "NEW_VALUE" : "Value", 
+    "UPLOADS_LIST" : "List of uploads",
     "VALUES" : "Values", 
     "DESCR" : "Description", 
     "FILLED_FIELD" : "Filled fields", 
@@ -41,7 +44,6 @@
     "LEGACY" : "Soil Legacy Data",
     "MONITORING" : "Soil Monitoring Data",
     "INDICATORS" : "Soil Indicators",
-    "UPLOADS_LIST" : "List of uploads",
     "XSLxUPLOADS" : "XSLx Uploads",
     "NEW_PROFILE": "New Profile",
     "CREATE_PROFILE": "Create Profile",

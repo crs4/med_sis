@@ -1,93 +1,58 @@
+import doFetch from "../utilities/api-client";
+
 export const TaxonomyService = {
 
   async list(ck) { 
-    let csrftoken = getMyCookie(ck,'csrftoken');
-    if ( csrftoken )
-    { 
-      try { 
-        let response = await fetch( `/api/backoffice/taxonomies`, { 
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken" : csrftoken
-          },
-        })
-        if ( !response || !response.ok) {
-          // get error message from body or default to response status
-          return { data: null, error: true }
-        }
-        const isJson = response.headers.get('content-type')?.includes('application/json');
-        const data = isJson && await response.json();
-        return { data: data, error: null }
-      }
-      catch( error )  {
-        console.log(error)
-        return { data: null, error: error }
-      }
-    }
+    if ( ck )
+      return await doFetch( 'taxonomies' , null, 'GET', null, ck );
+    else return { data: null, ok: false, status: null }
   },
 
-  async listValues(ck,name) { 
-    let csrftoken = getMyCookie(ck,'csrftoken');
-    if ( csrftoken )
-    { 
-      try {
-        let url = '/api/backoffice/taxonomy_values';
-        if (name) 
-          url += `/?taxonomy=${name}`
-        let response = await fetch( url, { 
-            headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken" : csrftoken
-          },
-        })
-        if ( !response || !response.ok) {
-          // get error message from body or default to response status
-          return { data: null, error: true }
-        }
-        const isJson = response.headers.get('content-type')?.includes('application/json');
-        const data = isJson && await response.json();
-        return { data: data, error: null }
-      }
-      catch( error )  {
-        console.log(error)
-        return { data: null, error: error }
-      }
-    }
+  async listValues(ck, id) { 
+    if ( ck )
+      if ( id )
+        return await doFetch( 'taxonomy-values/?taxonomy='+id, null, 'GET', null, ck );
+      else return await doFetch( 'taxonomy-values/', null, 'GET', null, ck );
+    else return { data: null, ok: false, status: null }
   },
 
-  async getTaxonomy(ck, id) { 
-    let csrftoken = getMyCookie(ck,'csrftoken');
-    if ( csrftoken )
-    { 
-      try { 
-        let response = await fetch( `/api/backoffice/taxonomies/${id}`, { 
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken" : csrftoken
-          },
-        })
-        if ( !response || !response.ok) {
-          // get error message from body or default to response status
-          return { data: null, error: true }
-        }
-        const isJson = response.headers.get('content-type')?.includes('application/json');
-        const data = isJson && await response.json();
-        return { data: data, error: null }
-      }
-      catch( error )  {
-        console.log(error)
-        return { data: null, error: error }
-      }
-    }
-  }
+  async createTaxonomy(ck, payload) { 
+    if ( ck && payload )
+      return await doFetch( 'taxonomies', null, 'POST', payload, ck );
+    else return { data: null, ok: false, status: null }
+  },
+
+  async createClassification(ck, payload) { 
+    if ( ck && payload )
+      return await doFetch( 'taxonomy-values', null, 'POST', payload, ck );
+    else return { data: null, ok: false, status: null }
+  },
+
+  async updateClassification(ck, id, payload) {
+    if ( ck && payload )
+      return await doFetch( 'taxonomy-values', id, 'PUT', payload, ck );
+    else return { data: null, ok: false, status: null }
+  },
+
+  async updateTaxonomy(ck, id, payload) {
+    if ( ck && payload )
+      return await doFetch( 'taxonomies', id, 'PUT', payload, ck );
+    else return { data: null, ok: false, status: null }
+  },
+
+  async deleteTaxonomy(ck, id) { 
+    if ( ck && id )
+      return await doFetch( 'taxonomies', id, 'DELETE', null, ck );
+    else return { data: null, ok: false, status: null }
+  },
+
+  async deleteClassification(ck, id) { 
+    if ( ck && id )
+      return await doFetch( 'taxonomy-values', id, 'DELETE', null, ck );
+    else return { data: null, ok: false, status: null }
+  },
+
 }
-
-export const getMyCookie = (cookie, name) => {
-  const cookieValue = cookie.split('; ')
-      .find((row) => row.startsWith(`${name}=`))?.split('=')[1];  
-  return cookieValue;
-};
-
 
 export default TaxonomyService
 

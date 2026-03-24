@@ -6,31 +6,25 @@ import { useRouter } from 'next/router';
 const AppMenu = () => {
     const { userData } = useUser();
     const router = useRouter();
-    const modelA = [
+    const _model = [
         {
             label: 'Home',
             icon: 'pi pi-home',
-            items: [
-                {
-                    label: 'Catalogue',
-                    icon: 'pi pi-fw pi-home',
-                    to: process.env.NEXT_PUBLIC_CATALOGUE_BASE_URL
-                }
-            ]
+            to: '/'
         },
         { separator: true },
         {
             label: 'XLS Uploads',
-            icon: 'pi pi-fw pi-download',
+            icon: 'pi pi-download',
             items: [
                 {
                     label: 'List',
-                    icon: 'pi pi-fw pi-list',
+                    icon: 'pi pi-list',
                     to: '/uploads'
                 },
                 {
                     label: 'New',
-                    icon: 'pi pi-fw pi-plus',
+                    icon: 'pi pi-plus',
                     to: '/uploads/create'
                 }
             ]
@@ -38,45 +32,45 @@ const AppMenu = () => {
         { separator: true },
         {
             label: 'Points Soil Data',
-            icon: 'pi pi-fw pi-image',
+            icon: 'pi pi-image',
             items: [
                 {
                     label: 'List',
-                    icon: 'pi pi-fw pi-list',
+                    icon: 'pi pi-list',
                     to: '/points'
-                },
-                {
-                    label: 'Catalogue',
-                    icon: 'pi pi-fw pi-list',
-                    to: '/points/catalogue'
                 }
             ]
         },
         { separator: true },
         {
             label: 'Taxonomies',
-            icon: 'pi pi-fw pi-image',
+            icon: 'pi pi-book',
             items: [
                 {
                     label: 'List',
-                    icon: 'pi pi-fw pi-list',
+                    icon: 'pi pi-list',
                     to: '/taxonomy'
                 },
+                {
+                    label: 'Create',
+                    icon: 'pi pi-plus',
+                    to: '/taxonomy/create'
+                }
             ]
         },
         { separator: true },
         {
             label: 'Data Creator',
-            icon: 'pi pi-fw pi-briefcase',
+            icon: 'pi pi-briefcase',
             items: [
                 {
                     label: 'List',
-                    icon: 'pi pi-fw pi-list',
+                    icon: 'pi pi-list',
                     to: '/requests'
                 },
                 {
                     label: 'New',
-                    icon: 'pi pi-fw pi-plus',
+                    icon: 'pi pi-plus',
                     to: '/requests/create'
                 }
             ]
@@ -84,58 +78,40 @@ const AppMenu = () => {
         { separator: true },
         {
             label: 'Pedo Transfer Functions',
-            icon: 'pi pi-fw pi-image',
+            icon: 'pi pi-calculator',
             items: [
                 {
-                    label: 'List',
-                    icon: 'pi pi-fw pi-list',
+                    label: 'Training',
+                    icon: 'pi pi-wrench',
                     to: '/ptf'
                 },
                 {
-                    label: 'Elaborate',
-                    icon: 'pi pi-fw pi-plus',
-                    to: '/ptf/elaborate'
+                    label: 'Executing',
+                    icon: 'pi pi-play-circle',
+                    to: '/ptf'
                 }
             ]
         },
         { separator: true },
         {
             label: 'Help',
-            icon: 'pi pi-fw pi-image',
+            icon: 'pi pi-question-circle',
             items: [
                 {
                     label: 'manuals',
-                    icon: 'pi pi-fw pi-list',
+                    icon: 'pi pi-list',
                     to: '/help'
                 },
                 {
                     label: 'videos',
-                    icon: 'pi pi-fw pi-list',
+                    icon: 'pi pi-list',
                     to: '/help/videos'
                 }
             ]
         }
 
     ];
-    const modelB = [
-        {
-            label: 'Home',
-            icon: 'pi pi-home',
-            items: [
-                {
-                    label: 'Catalogue',
-                    icon: 'pi pi-fw pi-home',
-                    to: process.env.NEXT_PUBLIC_CATALOGUE_BASE_URL
-                }
-            ]
-        }
-    ]
-    const [ model, setModel ] = useState(modelB);
-        
-    useEffect(() => {
-        if ( userData && userData.forbidden !== null && !userData.forbidden )
-            setModel(modelA);    
-    }, [userData]);
+    const [ model, setModel ] = useState(_model);
     
     return <AppSubMenu model={model} />;
 };

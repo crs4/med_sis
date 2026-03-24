@@ -145,7 +145,7 @@ class XLSxUploadService:
             ]
 
             processing_order_extra_measure = [
-                "Measure"    
+                "LabDataExtraMeasure"    
             ]
 
             processing_order_photos = [

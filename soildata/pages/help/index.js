@@ -149,7 +149,6 @@ export default function Page( )  {
         else if ( !Array.isArray(response.data) || response.data.length === 0 ) 
           toast.current.show({severity:'warning', summary: 'No data!', detail: 'No data found' , life: 3000});
         else {  
-          console.log(response.data)      
           setTaxonomies(response.data);
         }
       } catch (error) {

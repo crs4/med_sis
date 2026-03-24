@@ -18,7 +18,8 @@ import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
-import { ConfirmDialog } from 'primereact/confirmdialog'; 
+import { ConfirmDialog } from 'primereact/confirmdialog';
+import { Card } from 'primereact/card'; 
 import { Toast } from 'primereact/toast'; 
 
 import { point, featureCollection } from '@turf/turf';
@@ -53,14 +54,11 @@ export default function Page()  {
         let obj = profiles[j]
         if ( obj && obj.id && obj.lat_wgs84 && obj.lon_wgs84 ) {
           let panel = '<div class="flex flex-wrap  justify-content-center">';
-          panel += '<span class="text-cyan-500 align-items-center font-bold" >Identifier:</span><span> '+obj.id+'</span></div>';
-          panel += '<div><span class="font-bold text-green-500"> Latitude: </span><span class="font-bold"> ' + obj.lat_wgs84  + '</span>';
-          panel += '<span class="font-bold text-green-500"> Longitude: </span><span class="font-bold"> ' + obj.lon_wgs84  + '</span>';
-          if (obj.elev_m_asl) {
-            panel += '<span class="font-bold"> Altitude (ASL):  </span>'
-            panel += '<span class="font-bold"> ' + obj.elev_m_asl  + '</span>';
-          }
-          panel +='</div>'
+          panel += '<span class="text-cyan-800 font-bold" >Identifier:</span><span> '+obj.id+'</span></div>';
+          panel += '<div><span class="font-bold text-green-800"> Latitude: </span><span class="font-bold"> ' + obj.lat_wgs84  + '</span></div>';
+          panel += '<div><span class="font-bold text-green-800"> Longitude: </span><span class="font-bold"> ' + obj.lon_wgs84  + '</span></div>';
+          if (obj.elev_m_asl) 
+            panel += '<div><span class="font-bold"> Altitude (ASL):  </span><span class="font-bold"> ' + obj.elev_m_asl  + '</span></div>';
           points.push( point( [obj.lon_wgs84 , obj.lat_wgs84], 
                         { key: obj.id, popupContent : panel  },
                         { id: obj.id } ) );
@@ -80,7 +78,7 @@ export default function Page()  {
         router.push(`/401`);
     const fetchData = async  () => {
       const _data = await ProfileService.list(document.cookie,'point-generals');
-      if ( !_data || _data.error )
+      if ( !_data || !_data.ok )
         toast.current.show({severity:'error', summary: 'Errors!', detail: 'Errors reading soil data points' , life: 3000});
       else if ( !_data.data || !Array.isArray(_data.data) || _data.data.length === 0 ) 
         toast.current.show({severity:'warn', summary: 'No data!', detail: 'No Points Found' , life: 3000});
@@ -88,7 +86,7 @@ export default function Page()  {
         toast.current.show({severity:'success', summary: 'Success!', detail: 'The soil data data list has been loaded' , life: 3000});
       }
       const _tdata = await TaxonomyService.listValues(document.cookie,'POINT_DATA_TYPES');
-      if ( !_tdata || _tdata.error ) { 
+      if ( !_tdata || !_tdata.ok ) { 
         toast.current.show({severity:'error', summary: 'Errors!', detail: 'Errors reading soil data types' , life: 3000});
         setTypes([])
       }
@@ -98,7 +96,7 @@ export default function Page()  {
         setTypes(_ts)
       }   
       const _cls_sys = await TaxonomyService.listValues(document.cookie,'CLASSIFICATION_SYSTEMS');
-      if ( !_cls_sys || _cls_sys.error ) { 
+      if ( !_cls_sys || !_cls_sys.ok ) { 
         toast.current.show({severity:'error', summary: 'Errors!', detail: 'Errors reading soil classifications systems info' , life: 3000});
         setCls_systems([])  
       }
@@ -307,9 +305,7 @@ export default function Page()  {
   };
 
   const cls_sysBodyTemplate = (rowData) => {
-    if (rowData.cls_sys)
-      return <span >{cls_systems[rowData.cls_sys]?.descr}</span>;
-    else return '';
+    return <span >{cls_systems[rowData.cls_sys]?.descr}</span>;
   };
 
   const cls_sysFilterTemplate = (options) => {
@@ -361,61 +357,54 @@ export default function Page()  {
   
   return (
   <div className="layout-dashboard">
-      <div className="grid">
-        <div className="col-12">
-          <div className="card">
-            <Toast ref={toast} />  
+    <Toast ref={toast} />
+    <h5 className="w-full font-bold text-cyan-800 p-3 mb-3 shadow-2">POINTS SOIL DATA LIST</h5>
+    <Card className="flex w-full" >      
     {(loading) && (
-            <Loading  title="Loading points soil data" />
+      <Loading  title="Loading points" />
     )}
     {(!loading && !profiles) && (
-            <div className="card">
-                <h5 class="font-bold text-green-500">Points soil data not found</h5>
-            </div>
+      <span class="font-bold cyan-800">data not found</span>
     )} 
     {(profiles) && (
-          <>
-            <ConfirmDialog id="dlg_remove" group="declarative"  visible={visibleDlg} onHide={() => setVisibleDlg(false)} message="Are you sure you want to delete the point soil data?" 
-              header="Confirmation" icon="pi pi-exclamation-triangle" accept={performRemove} reject={rejectDlg} />
-            {(mapData) && ( 
-              <div id="mymap" className="card">
-                  
-                <h5 class="font-bold text-green-500">{ mapData ? mapData.label : 'Points soil data locations' }</h5>
-                <MyMap data={mapData} selected={selected} />
-              </div>
-            )}
-            <h5>Points Soil Data Table</h5>
-            <DataTable
-                value={profiles}
-                paginator
-                dataKey="code"
-                className="p-datatable-gridlines"
-                globalFilterFields={['id','date','type','location','old_cls','cls_sys','new_cls','project']}
-                showGridlines
-                rows={20}
-                filters={filters}
-                filterDisplay="menu"
-                loading={loading}
-                responsiveLayout="scroll"
-                emptyMessage="No points soil data found."
-                header={header}
-            >
-              <Column header="Actions" frozen body={actionsTemplate} style={{ minWidth: '12rem' }} />
-              <Column header="Code" sortable field="id" filter filterPlaceholder="Search by id" style={{ minWidth: '8rem' }} />
-              <Column header="Type" sortable field="type" filter filterPlaceholder="Search by type" style={{ minWidth: '8rem' }} body={typeBodyTemplate} filterElement={typeFilterTemplate} />
-              <Column header="Date" sortable field="date" dataType="date" style={{ minWidth: '8rem' }} body={dateBodyTemplate} filter filterElement={dateFilterTemplate} />
-              <Column header="Altitude(asl)" sortable field="elev_m_asl" dataType="numeric" style={{ minWidth: '5rem' }} />
-              <Column header="Project" sortable field="project" filter filterPlaceholder="Search by project" style={{ minWidth: '8rem' }} />
-              <Column header="Original Cls system" sortable field="cls_sys" filter filterPlaceholder="Search by original cls system" style={{ minWidth: '8rem' }} body={cls_sysBodyTemplate} filterElement={cls_sysFilterTemplate} />
-              <Column header="Original code" sortable field="old_code" filter filterPlaceholder="Search by old code" style={{ minWidth: '10rem' }}  />
-              <Column header="Original classification" sortable field="old_cls" filter filterPlaceholder="Search by old classification" style={{ minWidth: '8rem' }}  />
-              <Column header="New classification" sortable field="new_cls" filter filterPlaceholder="Search by new classification" style={{ minWidth: '8rem' }}  />             
-            </DataTable>
-          </>
-    )}
-        </div>
+      <>
+      <ConfirmDialog id="dlg_remove" group="declarative"  visible={visibleDlg} onHide={() => setVisibleDlg(false)} message="Are you sure you want to delete the point soil data?" 
+          header="Confirmation" icon="pi pi-exclamation-triangle" accept={performRemove} reject={rejectDlg} />
+      {(mapData) && ( 
+      <div id="mymap" className="card">
+        <h6 class="font-bold text-green-500">{ mapData ? mapData.label : 'Points soil data locations' }</h6>
+        <MyMap data={mapData} selected={selected} />
       </div>
-    </div>
+      )}
+      <DataTable
+        value={profiles}
+        paginator
+        dataKey="code"
+        className="p-datatable-gridlines"
+        globalFilterFields={['id','date','type','location','old_cls','cls_sys','new_cls','project']}
+        showGridlines
+        rows={20}
+        filters={filters}
+        filterDisplay="menu"
+        loading={loading}
+        responsiveLayout="scroll"
+        emptyMessage="No points soil data found."
+        header={header}
+      >
+        <Column header="Actions" frozen body={actionsTemplate} style={{ minWidth: '12rem' }} />
+        <Column header="Code" sortable field="id" filter filterPlaceholder="Search by id" style={{ minWidth: '8rem' }} />
+        <Column header="Type" sortable field="type" filter filterPlaceholder="Search by type" style={{ minWidth: '8rem' }} body={typeBodyTemplate} filterElement={typeFilterTemplate} />
+        <Column header="Date" sortable field="date" dataType="date" style={{ minWidth: '8rem' }} body={dateBodyTemplate} filter filterElement={dateFilterTemplate} />
+        <Column header="Altitude(asl)" sortable field="elev_m_asl" dataType="numeric" style={{ minWidth: '5rem' }} />
+        <Column header="Project" sortable field="project" filter filterPlaceholder="Search by project" style={{ minWidth: '8rem' }} />
+        <Column header="Original Cls system" sortable field="cls_sys" filter filterPlaceholder="Search by original cls system" style={{ minWidth: '8rem' }} body={cls_sysBodyTemplate} filterElement={cls_sysFilterTemplate} />
+        <Column header="Original code" sortable field="old_code" filter filterPlaceholder="Search by old code" style={{ minWidth: '10rem' }}  />
+        <Column header="Original classification" sortable field="old_cls" filter filterPlaceholder="Search by old classification" style={{ minWidth: '8rem' }}  />
+        <Column header="New classification" sortable field="new_cls" filter filterPlaceholder="Search by new classification" style={{ minWidth: '8rem' }}  />             
+      </DataTable>
+      </>
+    )}
+    </Card>
   </div>
   );
 };

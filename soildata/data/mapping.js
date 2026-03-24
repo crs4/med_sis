@@ -1,27 +1,6 @@
 ﻿
 /* 
-   "point-layers": "http://localhost/api/backoffice/point-layers/",
-    "layer-remnants": "http://localhost/api/backoffice/layer-remnants/",
-    "layer-coarse-fragments": "http://localhost/api/backoffice/layer-coarse-fragments/",
-    "layer-artefacts": "http://localhost/api/backoffice/layer-artefacts/",
-    "layer-cracks": "http://localhost/api/backoffice/layer-cracks/",
-    "layer-matrix-colours": "http://localhost/api/backoffice/layer-matrix-colours/",
-    "layer-lithogenic-variegates": "http://localhost/api/backoffice/layer-lithogenic-variegates/",
-    "layer-redoximorphic": "http://localhost/api/backoffice/layer-redoximorphic/",
-    "layer-coatings-bridges": "http://localhost/api/backoffice/layer-coatings-bridges/",
-    "layer-carbonates": "http://localhost/api/backoffice/layer-carbonates/",
-    "layer-gypsum": "http://localhost/api/backoffice/layer-gypsum/",
-    "layer-secondary-silica": "http://localhost/api/backoffice/layer-secondary-silica/",
-    "layer-consistences": "http://localhost/api/backoffice/layer-consistences/",
-    "layer-permafrost": "http://localhost/api/backoffice/layer-permafrost/",
-    "layer-organic-carbon": "http://localhost/api/backoffice/layer-organic-carbon/",
-    "layer-roots": "http://localhost/api/backoffice/layer-roots/",
-    "layer-animal-activities": "http://localhost/api/backoffice/layer-animal-activities/",
-    "layer-human-alterations": "http://localhost/api/backoffice/layer-human-alterations/",
-    "layer-degree-decomposition": "http://localhost/api/backoffice/layer-degree-decomposition/",
-    "layer-non-matrix-pores": "http://localhost/api/backoffice/layer-non-matrix-pores/",
-    "layer-structures": "http://localhost/api/backoffice/layer-structures/",
-    "lab-data": "http://localhost/api/backoffice/lab-data/",
+   XLS to ORM Mapping release 03/2026
 */
 
 const Mapping =  {

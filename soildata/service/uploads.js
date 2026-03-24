@@ -1,3 +1,5 @@
+import doFetch  from '../utilities/api-client';
+
 export const UploadService = {
   STATUSES : { 
     UPLOADED : "UPLOADED",
@@ -8,10 +10,11 @@ export const UploadService = {
   },
 
   TYPES : {
-    XLS_P :  {  name : "XLS_P", label : 'Point Soil Data', sheets: ['General and Surface','Layer descriptions','Lab data','Lab data by sampling depth'],},
-    XLS_PJ :   {  name : "XLS_PJ", label : 'Data Genealogy', sheets: ['Project'],},
-    XLS_PH :   {  name : "XLS_PH", label : 'Photos', sheets: ['Photos'],},
-  },
+    XLS_P :  {  name : "XLS_P", label : 'Point Soil Data XLSx upload', sheets: ['General and Surface','Layer descriptions','Lab data','Lab data by sampling depth'],},
+    XLS_EM :   {  name : "XLS_EM", label : 'Laboratory Extra Measure XLSx upload', sheets: ['Measures'],},
+    XLS_PJ :   {  name : "XLS_PJ", label : 'Projet metadata XLSx upload', sheets: ['Projects'],},
+    XLS_PH :   {  name : "XLS_PH", label : 'Photo metadata XLSx upload', sheets: ['Photos'],},
+  }, 
 
   ACTIONS : {
     POST :  {  name : "POST", label : 'CREATE IF NOT EXIST', info: 'For each item in the upload the SIS tries to write it in the database. If an item with same id already exists, it throws an error.'},
@@ -38,111 +41,33 @@ export const UploadService = {
   },
   
   async get(ck, id) { 
-    let csrftoken = getMyCookie(ck,'csrftoken');
-    if ( csrftoken )
-    { 
-      try { 
-        let response = await fetch( `/api/backoffice/xlsx-uploads/${id}`, { 
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken" : csrftoken
-          },
-        })
-        if ( !response || !response.ok) {
-          // get error message from body or default to response status
-          return { data: null, error: true }
-        }
-        const isJson = response.headers.get('content-type')?.includes('application/json');
-        const data = isJson && await response.json();
-        return { data: data, error: null }
-      }
-      catch( error )  {
-        return { data: null, error: error }
-      }
-    }
+    if ( ck ) 
+      return await doFetch ( 'xlsx-uploads', id, 'GET', null, ck );
+    else 
+      return { ok: false }
   },
 
-  async list(ck) {  
-    let csrftoken = getMyCookie(ck,'csrftoken');
-    if ( csrftoken )
-    try { 
-      let response = await fetch( '/api/backoffice/xlsx-uploads/', { 
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken" : csrftoken
-        },
-      })
-      const isJson = response.headers.get('content-type')?.includes('application/json');
-      const data = isJson && await response.json();
-      if ( !response || !response.ok) {
-            // get error message from body or default to response status
-          const error = (data && data.message) || response.status;
-          return { data: null, error: error }
-      }
-      return { data: data, error: null }
-    }
-    catch( error ) {
-      return { data: null, error: `Error: ${error}` }
-    }
-    else return { data: null, error: 'Error: wrong token' }
+  async list(ck) {
+    if ( ck ) 
+      return await doFetch ( 'xlsx-uploads', null, 'GET', null, ck );
+    else 
+      return { ok: false }
   },  
 
-// formData: 
-  async save (ck, upload) {
-    let csrftoken = getMyCookie(ck,'csrftoken');
-    if ( csrftoken )
-      try { 
-        let response = await fetch(`/api/backoffice/xlsx-uploads/`, { 
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken" : csrftoken
-          },
-          body: JSON.stringify(upload),
-        })
-        const isJson = response.headers.get('content-type')?.includes('application/json');
-        const data = isJson && await response.json();
-        if ( !response || !response.ok) {
-            return { ok: false, msg: 'Errors sending data' }
-        }
-        return { ok: true, msg: 'Data has been sent' }
-      }
-      catch( error ) {
-          return { ok: false, msg: `Error: ${error}` }
-      }  
-    else return { ok: false, msg: 'Error: Bad token' }
+  async save (ck, payload) {
+    if ( ck ) 
+      return await doFetch ( 'xlsx-uploads', null, 'POST', payload, ck );
+    else 
+      return { ok: false }
   },
 
   async remove(ck, id) {
-    let csrftoken = getMyCookie(ck,'csrftoken');
-    if ( csrftoken )
-      try { 
-        let response = await fetch(`/api/backoffice/xlsx-uploads/${id}`, { 
-          method: "DELETE", 
-          headers: {
-            "X-CSRFToken" : csrftoken
-        }})
-        const isJson = response.headers.get('content-type')?.includes('application/json');
-        const data = isJson && await response.json();
-        if ( !response || !response.ok) {
-          const error = (data && data.message) || response.status;
-          return { status: response.status, message: error }
-        }
-        return { status: response.status, message: 'Delete successful' }
-      }
-      catch(error) {
-        return { status: null, message: error }
-      }
-    return { status: null, message: 'Bad Token' }
+    if ( ck ) 
+      return await doFetch ( 'xlsx-uploads', id, 'DELETE', null, ck );
+    else 
+      return { ok: false }
   }
 }
-
-export const getMyCookie = (cookie, name) => {
-  const cookieValue = cookie.split('; ')
-      .find((row) => row.startsWith(`${name}=`))?.split('=')[1];  
-  return cookieValue;
-};
-
 
 export default UploadService
 

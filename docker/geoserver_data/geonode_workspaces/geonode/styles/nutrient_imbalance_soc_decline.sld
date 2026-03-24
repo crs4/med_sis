@@ -1,23 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <NamedLayer>
-    <Name>Nutrient imbalance soc decline (C/N)</Name>
+    <Name>C/N ratio</Name>
     <UserStyle>
-      <Name>Nutrient imbalance soc decline (C/N)</Name>
-      <Title>Nutrient imbalance soc decline (C/N)</Title>
+      <Name>circle_square</Name>
+      <Title>Example of different symbol</Title>
       <FeatureTypeStyle>
         <Rule>
-          <Name>High SOC mineralization and microbial carbon accumulation potentials</Name>
+          <Name>High SOC mineralization potential due to biological activity</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
-              <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>value</PropertyName>
+             <ogc:PropertyIsEqualTo>
+              <ogc:PropertyName>use_type_fg</ogc:PropertyName>
+              <ogc:Literal>false</ogc:Literal>
+             </ogc:PropertyIsEqualTo>
+	      
+	         <ogc:PropertyIsGreaterThanOrEqualTo>
+                <ogc:PropertyName>value</ogc:PropertyName>
                 <Literal>0</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
-                <PropertyName>value</PropertyName>
+             </ogc:PropertyIsGreaterThanOrEqualTo>
+             <ogc:PropertyIsLessThan>
+                <ogc:PropertyName>value</ogc:PropertyName>
                 <Literal>8</Literal>
-              </PropertyIsLessThan>
+             </ogc:PropertyIsLessThan>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -40,17 +45,23 @@
         </Rule>
 
         <Rule>
-          <Name>Good SOC mineralisation potential</Name>
+          <Name>Good biological activity potential</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
-              <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>value</PropertyName>
+	     <ogc:PropertyIsEqualTo>
+              <ogc:PropertyName>use_type_fg</ogc:PropertyName>
+              <ogc:Literal>false</ogc:Literal>
+             </ogc:PropertyIsEqualTo>
+             
+	     <ogc:PropertyIsGreaterThanOrEqualTo>
+                <ogc:PropertyName>value</ogc:PropertyName>
                 <Literal>8</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
-                <PropertyName>value</PropertyName>
+              </ogc:PropertyIsGreaterThanOrEqualTo>
+              
+	      <ogc:PropertyIsLessThan>
+                <ogc:PropertyName>value</ogc:PropertyName>
                 <Literal>12</Literal>
-              </PropertyIsLessThan>
+              </ogc:PropertyIsLessThan>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -72,18 +83,24 @@
           </PointSymbolizer>
         </Rule>
 
- <Rule>
-          <Name>Medium SOC mineralization potential due to nitrogen starvation and lower microbial carbon accumulation potentials</Name>
+ 	<Rule>
+          <Name>Beginning of nitrogen starvation for biological activity</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
-              <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>value</PropertyName>
+             <ogc:PropertyIsEqualTo>
+              <ogc:PropertyName>use_type_fg</ogc:PropertyName>
+              <ogc:Literal>false</ogc:Literal>
+             </ogc:PropertyIsEqualTo>
+
+	     <ogc:PropertyIsGreaterThanOrEqualTo>
+                <ogc:PropertyName>value</ogc:PropertyName>
                 <Literal>12</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
-                <PropertyName>value</PropertyName>
+             </ogc:PropertyIsGreaterThanOrEqualTo>
+
+             <ogc:PropertyIsLessThan>
+                <ogc:PropertyName>value</ogc:PropertyName>
                 <Literal>15</Literal>
-              </PropertyIsLessThan>
+             </ogc:PropertyIsLessThan>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -91,7 +108,7 @@
               <Mark>
                 <WellKnownName>circle</WellKnownName>
                 <Fill>
-                  <CssParameter name="fill">#F37844</CssParameter>
+                  <CssParameter name="fill">#2649F7</CssParameter>
                   <CssParameter name="fill-opacity">1</CssParameter>
                 </Fill>
                 <Stroke>
@@ -106,19 +123,26 @@
         </Rule>
 
         <Rule>
-          <Name>Low SOC mineralization potential due to nitrogen starvation and lower microbial carbon accumulation potentials</Name>
+          <Name>Low biological activity potential</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-             <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>value</PropertyName>
+            <And>
+             <ogc:PropertyIsEqualTo>
+              <ogc:PropertyName>use_type_fg</ogc:PropertyName>
+              <ogc:Literal>false</ogc:Literal>
+             </ogc:PropertyIsEqualTo>
+  
+	     <ogc:PropertyIsGreaterThanOrEqualTo>
+                <ogc:PropertyName>value</ogc:PropertyName>
                 <Literal>15</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
-             </Filter>
-          <PointSymbolizer>
+             </ogc:PropertyIsGreaterThanOrEqualTo>
+          </And> 
+          </Filter>
+         <PointSymbolizer>
             <Graphic>
               <Mark>
                 <WellKnownName>circle</WellKnownName>
                 <Fill>
-                  <CssParameter name="fill">#F72626</CssParameter>
+                  <CssParameter name="fill">#919399</CssParameter>
                   <CssParameter name="fill-opacity">1</CssParameter>
                 </Fill>
                 <Stroke>
@@ -132,6 +156,80 @@
           </PointSymbolizer>
         </Rule>
        
+	<Rule>
+          <Name>Higher microbial carbon accumulation activity</Name>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <And>
+	    <ogc:PropertyIsEqualTo>
+              <ogc:PropertyName>use_type_fg</ogc:PropertyName>
+              <ogc:Literal>true</ogc:Literal>
+             </ogc:PropertyIsEqualTo>
+              <ogc:PropertyIsGreaterThanOrEqualTo>
+                <ogc:PropertyName>value</ogc:PropertyName>
+                <Literal>0</Literal>
+              </ogc:PropertyIsGreaterThanOrEqualTo>
+              <ogc:PropertyIsLessThan>
+                <ogc:PropertyName>value</ogc:PropertyName>
+                <Literal>9.6</Literal>
+              </ogc:PropertyIsLessThan>
+            </And>
+          </Filter>
+          <PointSymbolizer>
+            <Graphic>
+              <Mark>
+                <WellKnownName>square</WellKnownName>
+                <Fill>
+                  <CssParameter name="fill">#41ED31</CssParameter>
+                  <CssParameter name="fill-opacity">1</CssParameter>
+                </Fill>
+                <Stroke>
+                  <CssParameter name="stroke">#777777</CssParameter>
+                  <CssParameter name="stroke-width">2</CssParameter>
+                  <CssParameter name="stroke-opacity">1</CssParameter>
+                </Stroke>
+              </Mark>
+              <Size>14</Size>
+            </Graphic>
+          </PointSymbolizer>
+        </Rule>
+
+       
+
+        <Rule>
+          <Name>Lower microbial carbon accumulation activity</Name>
+          <Filter xmlns="http://www.opengis.net/ogc">
+	   <And>
+	    <ogc:PropertyIsEqualTo>
+              <ogc:PropertyName>use_type_fg</ogc:PropertyName>
+              <ogc:Literal>true</ogc:Literal>
+             </ogc:PropertyIsEqualTo>
+
+             <ogc:PropertyIsGreaterThanOrEqualTo>
+                <ogc:PropertyName>value</ogc:PropertyName>
+                <Literal>9.6</Literal>
+              </ogc:PropertyIsGreaterThanOrEqualTo>
+	     </And>
+            </Filter>
+          <PointSymbolizer>
+            <Graphic>
+              <Mark>
+                <WellKnownName>square</WellKnownName>
+                <Fill>
+                  <CssParameter name="fill">#919399</CssParameter>
+                  <CssParameter name="fill-opacity">1</CssParameter>
+                </Fill>
+                <Stroke>
+                  <CssParameter name="stroke">#777777</CssParameter>
+                  <CssParameter name="stroke-width">2</CssParameter>
+                  <CssParameter name="stroke-opacity">1</CssParameter>
+                </Stroke>
+              </Mark>
+              <Size>14</Size>
+            </Graphic>
+          </PointSymbolizer>
+        </Rule>
+
+
       </FeatureTypeStyle>
     </UserStyle>
   </NamedLayer>

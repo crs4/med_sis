@@ -115,6 +115,6 @@ class TaxonomyValueAdmin(admin.ModelAdmin):
     search_fields = ('id', 'taxonomy', 'value',  )
 @admin.register(Request)
 class RequestsAdmin(admin.ModelAdmin):
-    list_display = ( 'creation', 'who_id', 'who_name', 'who_email', 'mgr_id', 'mgr_name','mgr_email', 'mgr_msg',
-                     'what_section', 'what_measure', 'when_from', 'when_to', 'status', 'where_anchor', )
-    search_fields = ( 'creation', 'who_id', 'mgr_id', 'what_section', 'what_measure', 'status', )   
+    list_display = ( 'creation', 'user', 'date_from','date_to', 'measure',
+                     'depth_upper', 'depth_lower', 'status', 'purpose' )
+    search_fields = ( 'creation', 'user', 'measure', 'status' )   

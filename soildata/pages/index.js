@@ -66,8 +66,6 @@ const Home = () => {
   }
 
   useEffect(() => {
-    console.log('index')
-    console.log(user.userData)
     if (  !user.userData || ( user.userData.forbidden !== null && user.userData.forbidden ) )
       router.push(`/401`);
     

@@ -329,14 +329,14 @@ def update(ctx):
     )
     ctx.run(
         "echo export LOGIN_URL=\
-{siteurl}account/login/ >> {override_fn}".format(
+{siteurl}/account/login/ >> {override_fn}".format(
             **envs
         ),
         pty=True,
     )
     ctx.run(
         "echo export LOGOUT_URL=\
-{siteurl}account/logout/ >> {override_fn}".format(
+{siteurl}/account/logout/ >> {override_fn}".format(
             **envs
         ),
         pty=True,
@@ -486,9 +486,11 @@ def updategeoip(ctx):
 def updateadmin(ctx):
     print("***********************update admin details**************************")
     ctx.run("rm -rf /tmp/django_admin_docker.json", pty=True)
-    _prepare_admin_fixture(
+    _prepare_admin_datamanager_fixture(
         os.environ.get("ADMIN_PASSWORD", "admin"),
         os.environ.get("ADMIN_EMAIL", "admin@example.org"),
+        os.environ.get("CHIEFDATA_PASSWORD", "chiefdata"),
+        os.environ.get("CHIEFDATA_EMAIL", "chiefdata@example.org"),
     )
     ctx.run(
         f"django-admin loaddata /tmp/django_admin_docker.json \
@@ -759,7 +761,7 @@ def _prepare_monitoring_fixture():
     with open("/tmp/default_monitoring_apps_docker.json", "w") as fixturefile:
         json.dump(default_fixture, fixturefile)
 
-def _prepare_admin_fixture(admin_password, admin_email):
+def _prepare_admin_datamanager_fixture(admin_password, admin_email, datamanager_password, datamanager_email):
     from django.contrib.auth.hashers import make_password
 
     d = datetime.datetime.now()
@@ -782,7 +784,60 @@ def _prepare_admin_fixture(admin_password, admin_email):
             },
             "model": "people.Profile",
             "pk": 1000,
-        }
+        },
+        { 
+            "fields": {
+                "name": "data-managers", 
+                "permissions": [2]
+            },
+            "model": "auth.group", 
+            "pk": 4,
+        },
+        {   
+            "fields": {
+                "group": 4, 
+                "title": "Data Managers", 
+                "title_en": "Data Managers", 
+                "slug": "data-managers", 
+                "description": "Soil data managers", 
+                "description_en": "Soil data managers", 
+                "access": "private", 
+                "created": mdext_date, 
+                "last_modified": mdext_date, 
+                "categories": []
+            },
+            "model": "groups.groupprofile", 
+            "pk": 4, 
+        },
+        {
+            "fields": {
+                "date_joined": mdext_date,
+                "email": datamanager_email,
+                "first_name": "",
+                "groups": [1,2,3,4],
+                "is_active": True,
+                "is_staff": True,
+                "is_superuser": True,
+                "last_login": mdext_date,
+                "last_name": "",
+                "password": make_password(datamanager_password),
+                "user_permissions": [],
+                "username": "chiefdata",
+            },
+            "model": "people.Profile",
+            "pk": 1001,
+        },
+        {
+            "fields": {
+                "group": 4, 
+                "user": 1001, 
+                "role": "manager", 
+                "joined": mdext_date
+            }, 
+            "model": "groups.groupmember", 
+            "pk": 1,
+        } 
     ]
     with open("/tmp/django_admin_docker.json", "w") as fixturefile:
         json.dump(default_fixture, fixturefile)
+
