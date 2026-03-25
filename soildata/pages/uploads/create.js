@@ -168,10 +168,11 @@ export default function Page( )  {
   const saveData = async () => {
     try {
       if ( !upload || !uploading )
-          return;
-      upload.report = {}
-      upload.editor = user.userData.preferred_username
-      const response = await UploadService.save(document.cookie, upload);
+        return;
+      let nu = { ...upload }
+      nu.report = {}
+      nu.editor = user.userData.preferred_username
+      const response = await UploadService.save(document.cookie, nu);
       if (response && response.ok ) { 
         toast.current.show({severity:'success', summary: 'Success!', detail: 'Data has been sent' , life: 3000});
         setTimeout(() => {

@@ -23,6 +23,7 @@ def validate_longitude(value):
 class Taxonomy(models.Model):
     id = models.TextField(primary_key=True, db_comment='Taxonomy name')
     descr = models.TextField( db_comment='Taxonomy\'s description', null=True, blank=True)
+    custom = models.BooleanField( db_comment='It identifies Default or Custom Taxonomy\'s ', default=False )
     
     objects = models.Manager().using('backoffice')
 

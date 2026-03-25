@@ -8,12 +8,12 @@ export const doFetch = async (endpoint, id, method, payload, cookie) =>
     let headers = {
       "Content-Type": "application/json",
       "X-CSRFToken" : csrftoken,
-      Accept: 'application/json'
+      Accept: "application/json"
     };
-    let url = process.env.NEXT_PUBLIC_URL_BACKOFFICE_API_BASE_URL + '/' + endpoint ;
+    let url = process.env.NEXT_PUBLIC_URL_BACKOFFICE_API_BASE_URL + '/' + endpoint + '/';
     let body = null
     if ( id )
-      url += '/' + id  ;
+      url += id ;
     if ( payload )
       body = JSON.stringify(payload)
     response = await fetch( url, { method: method, headers: headers, body: body } )

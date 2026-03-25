@@ -358,7 +358,7 @@ export default function Page()  {
   return (
   <div className="layout-dashboard">
     <Toast ref={toast} />
-    <h5 className="w-full font-bold text-cyan-800 p-3 mb-3 shadow-2">POINTS SOIL DATA LIST</h5>
+    <h5 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">Points Soil Data List</h5>
     <Card className="flex w-full" >      
     {(loading) && (
       <Loading  title="Loading points" />

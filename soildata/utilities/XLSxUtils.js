@@ -427,6 +427,7 @@ export const createObjectsPoints = async (res) => {
   fixtures['LabData'] = { };
   if ( sheet )
     for ( let i = 0; i < sheet.length; i+=1 ) {
+      if (sheet[i])
       try {
         let row = sheet[i];
         let id =  row[1] + '@' + row[3];
@@ -455,26 +456,26 @@ export const createObjectsPoints = async (res) => {
   fixtures['LabData'] = { };
   
   if ( sheet )
-  for ( let i = 0; i < sheet.length; i+=1 ) {
-    if (sheet[i])
-    try {
-      let row = sheet[i];
-      let id =  row[1];
-      if ( row[3] )
-        id += '@' + row[2] + '@' + row[3];
-      else id += '@' + row[2] + '@+'; 
-      if ( !fixtures['LabData'][id] ) 
-        fixtures['LabData'][id] = {};
-      fixtures['LabData'][id]['id'] = id;
-      for ( let j = 1; j < sheet_mapping.size+1; j+=1 ) 
-        if ( typeof row[j] !== "undefined" && row[j].toString().trim() != '' ){  
-          field = sheet_mapping[j].f;
-          fixtures['LabData'][id][field] = row[j];
-        } 
-    } catch (e) {
-      console.log(e);
-    }  
-  }
+    for ( let i = 0; i < sheet.length; i+=1 ) {
+      if (sheet[i])
+      try {
+        let row = sheet[i];
+        let id =  row[1];
+        if ( row[3] )
+          id += '@' + row[2] + '@' + row[3];
+        else id += '@' + row[2] + '@+'; 
+        if ( !fixtures['LabData'][id] ) 
+          fixtures['LabData'][id] = {};
+        fixtures['LabData'][id]['id'] = id;
+        for ( let j = 1; j < sheet_mapping.size+1; j+=1 ) 
+          if ( typeof row[j] !== "undefined" && row[j].toString().trim() != '' ){  
+            field = sheet_mapping[j].f;
+            fixtures['LabData'][id][field] = row[j];
+          } 
+      } catch (e) {
+        console.log(e);
+      }  
+    }
   else console.log ('No sheet 4')
   
   // re-organize data

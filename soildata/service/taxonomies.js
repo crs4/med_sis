@@ -11,8 +11,8 @@ export const TaxonomyService = {
   async listValues(ck, id) { 
     if ( ck )
       if ( id )
-        return await doFetch( 'taxonomy-values/?taxonomy='+id, null, 'GET', null, ck );
-      else return await doFetch( 'taxonomy-values/', null, 'GET', null, ck );
+        return await doFetch( 'taxonomy-values', '?taxonomy='+id, 'GET', null, ck );
+      else return await doFetch( 'taxonomy-values', null, 'GET', null, ck );
     else return { data: null, ok: false, status: null }
   },
 

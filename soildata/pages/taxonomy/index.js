@@ -122,15 +122,15 @@ export default function Page( )  {
     initFilters();   
   };
 
-  const loadTx = async () => {
+  const loadTx = async (tax) => {
     try {
       setTaxonomy(null);
-      if ( !currentTx || !currentTx.id || working )
+      if ( !tax || !tax.id || working )
         return;
       setWorking(true);
-      const res = await TaxonomyService.listValues(document.cookie, currentTx.id);
+      const res = await TaxonomyService.listValues(document.cookie, tax.id);
       if ( res.ok  ) {
-        toast.current.show({severity:'success', summary: 'Done!', detail:'Taxonomy '+ currentTx.id +' has been loaded', life: 3000});
+        toast.current.show({severity:'success', summary: 'Done!', detail:'Taxonomy '+ tax.id +' has been loaded', life: 3000});
         setTaxonomy(res.data)
       } 
       else 
@@ -167,11 +167,6 @@ export default function Page( )  {
     fetchData();
   }, [user]); // eslint-disable-line   
 
-  useEffect(() => {
-    if ( currentTx )
-      loadTx();
-  }, [currentTx]); // eslint-disable-line 
-
   const headerTemplate1 = () => {
     return  <h4 className="font-bold shadow-1 p-3 bg-cyan-900 text-white" style={{ width: '90%' }}> CREATE TAXONOMY</h4>
   };
@@ -185,8 +180,8 @@ export default function Page( )  {
         <>
         {( rowData ) && (
           <div className="flex flex-wrap gap-2">
-            <Button type="button" icon="pi pi-pencil" onClick={(e) => { }} severity="success" rounded></Button>
-            <Button type="button" icon="pi pi-trash" onClick={(e) => { }} severity="danger" rounded></Button>
+            <Button type="button" icon="pi pi-pencil" onClick={(e) => { setVisCAdd(true);}} severity="success" rounded></Button>
+            <Button type="button" icon="pi pi-trash" onClick={(e) => { setVisCRemove(true);}} severity="danger" rounded></Button>
           </div>
         )}
         </>
@@ -216,11 +211,13 @@ export default function Page( )  {
       </Dialog> 
       <h4 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">Taxonomies </h4>
       <div className="card text-cyan-800 flex w-full shadow-2 gap-2 flex-row justify-content-center m-2">         
-        <Dropdown value={currentTx} onChange={(e) => {setCurrentTx(e.value);}} options={taxonomies} optionLabel="id" 
+        <Dropdown value={currentTx} onChange={(e) => {setCurrentTx(e.value);loadTx(e.value);}} options={taxonomies} optionLabel="id" 
                   placeholder="Choose the taxonomy" className="w-full mr-2 md:w-18rem" virtualScrollerOptions={{ itemSize: 38 }} 
                   loading={loading}
         />
-        <Button type="button" icon="pi pi-trash" onClick={(e) => { removeTx(); }} severity="danger" rounded></Button>
+        { currentTx.custom && ( 
+          <Button type="button" icon="pi pi-trash" onClick={(e) => { setVisTRemove(true); }} severity="danger" rounded></Button>
+        )}
         <Button type="button" icon="pi pi-plus" onClick={(e) => { setVisTAdd(true); }} severity="success" rounded></Button>
       </div>
       <ConfirmDialog id="dlg_remove" group="declarative"  visible={visTRemove} onHide={() => setVisTRemove(false)} message="Are you sure you want to delete the taxonomy?" 

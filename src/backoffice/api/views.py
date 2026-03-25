@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 class UpdateLayersViewSet(viewsets.ViewSet):
     """
-    API endpoint per eseguire il comando updatelayers su richiesta.
+    API endpoint to run the updatelayers command on demand.
     """
     permission_classes = [permissions.IsAdminUser]
 
@@ -30,7 +30,7 @@ class UpdateLayersViewSet(viewsets.ViewSet):
         skip_geonode_registered = str(skip_flag).lower() not in ["false", "0", "no"]
 
         logger.info(
-            f"Chiamata API updatelayers - store: {store}, "
+            f"API for updatelayers - store: {store}, "
             f"skip_geonode_registered: {skip_geonode_registered}"
         )
 
@@ -40,11 +40,11 @@ class UpdateLayersViewSet(viewsets.ViewSet):
                 store=store,
                 skip_geonode_registered=skip_geonode_registered,
             )
-            logger.info(f"Comando updatelayers completato con successo per store '{store}'")
+            logger.info(f" updatelayers success for store '{store}'")
             return Response(
                 {
                     "detail": (
-                        f"Comando updatelayers completato con successo per lo store '{store}'. "
+                        f"updatelayers success for store '{store}'. "
                         f"skip_geonode_registered={skip_geonode_registered}"
                     )
                 },
@@ -52,16 +52,13 @@ class UpdateLayersViewSet(viewsets.ViewSet):
             )
         except SystemExit as exc:
             # Il comando updatelayers può sollevare SystemExit in caso di errori
-            error_msg = str(exc) if exc.code != 0 else "Comando terminato con errore"
-            logger.error(f"Errore durante updatelayers (SystemExit): {error_msg}")
+            error_msg = str(exc) if exc.code != 0 else "Errors executing in updatelayers"
+            logger.error(f"Errors in updatelayers (SystemExit): {error_msg}")
             logger.error(traceback.format_exc())
             return Response(
                 {
                     "detail": (
-                        f"Errore durante l'esecuzione di updatelayers: {error_msg}. "
-                        "Controlla i log per maggiori dettagli. "
-                        "Suggerimento: prova con skip_geonode_registered=true se il problema "
-                        "è legato alla registrazione in GeoNode."
+                        f"Errors: {error_msg}. Open the log for further details. "
                     ),
                     "error_type": "SystemExit",
                     "store": store,
@@ -100,7 +97,7 @@ class UpdateLayersViewSet(viewsets.ViewSet):
 
 class XLSxUploadViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di gestire gli upload.
+    API endpoint that allows you to view and edit XLSxUpload.
     """
     queryset = XLSxUpload.objects.all()
     serializer_class = XLSxUploadSerializer
@@ -151,7 +148,7 @@ class XLSxUploadViewSet(viewsets.ModelViewSet):
 
 class ProjectViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di visualizzare e modificare i progetti.
+    API endpoint that allows you to view and edit Projects metadata.
     """
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
@@ -185,7 +182,9 @@ class ProjectViewSet(viewsets.ModelViewSet):
 ###########################
 
 class PointGeneralViewSet(viewsets.ModelViewSet):
-   
+    """
+    API endpoint that allows you to view and edit Project Soil Point Data General Info.
+    """
     queryset = PointGeneral.objects.all()
     serializer_class = PointGeneralSerializer
     permission_classes = [permissions.IsAdminUser ]
@@ -243,7 +242,7 @@ class PointGeneralViewSet(viewsets.ModelViewSet):
        
 class LandformTopographyViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di visualizzare e modificare le caratteristiche topografiche del terreno.
+    API endpoint that allows you to view and edit Land form and topography.
     """
     queryset = LandformTopography.objects.all()
     serializer_class = LandformTopographySerializer
@@ -308,7 +307,7 @@ class LandformTopographyViewSet(viewsets.ModelViewSet):
  
 class ClimateAndWeatherViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di visualizzare e modificare le informazioni climatiche e meteorologiche.
+    API endpoint that allows you to view and edit Climate And Weather data.
     """
     queryset = ClimateAndWeather.objects.all()
     serializer_class = ClimateAndWeatherSerializer
@@ -362,7 +361,7 @@ class ClimateAndWeatherViewSet(viewsets.ModelViewSet):
 
 class LandUseViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di visualizzare e modificare le informazioni sull'uso del suolo.
+    API endpoint that allows you to view and edit Land Use data.
     """
     queryset = LandUse.objects.all()
     serializer_class = LandUseSerializer
@@ -391,7 +390,7 @@ class LandUseViewSet(viewsets.ModelViewSet):
     
 class SurfaceViewSet(viewsets.ModelViewSet):
     """ 
-    API endpoint che permette di visualizzare e modificare le caratteristiche della superficie.
+    API endpoint that allows you to view and edit Surface data.
     """
     queryset = Surface.objects.all()
     serializer_class = SurfaceSerializer
@@ -475,7 +474,7 @@ class SurfaceViewSet(viewsets.ModelViewSet):
 
 class SurfaceUnevennessViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di visualizzare e modificare le genealogie.
+    API endpoint that allows you to view and edit Surface Unevenness data.
     """
     queryset = SurfaceUnevenness.objects.all()
     serializer_class = SurfaceUnevennessSerializer
@@ -572,7 +571,7 @@ class SurfaceUnevennessViewSet(viewsets.ModelViewSet):
 
 class PointLayerViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di visualizzare e modificare le genealogie.
+    API endpoint that allows you to view and edit Layer descriptions data.
     """
     queryset = PointLayer.objects.all()
     serializer_class = PointLayerSerializer
@@ -613,7 +612,7 @@ class PointLayerViewSet(viewsets.ModelViewSet):
 
 class LayerRemnantsViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di visualizzare e modificare le genealogie.
+    API endpoint that allows you to view and edit Layer Remnants data.
     """
     queryset = LayerRemnants.objects.all()
     serializer_class = LayerRemnantsSerializer 
@@ -628,7 +627,7 @@ class LayerRemnantsViewSet(viewsets.ModelViewSet):
     
 class LayerCoarseFragmentsViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di visualizzare e modificare le genealogie.
+    API endpoint that allows you to view and edit Layer Coarse Fragments data.
     """
     queryset = LayerCoarseFragments.objects.all()
     serializer_class = LayerCoarseFragmentsSerializer
@@ -643,7 +642,7 @@ class LayerCoarseFragmentsViewSet(viewsets.ModelViewSet):
 
 class LayerArtefactsViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di visualizzare e modificare le genealogie.
+    API endpoint that allows you to view and edit Layer Artefacts data.
     """
     queryset = LayerArtefacts.objects.all()
     serializer_class = LayerArtefactsSerializer
@@ -658,7 +657,7 @@ class LayerArtefactsViewSet(viewsets.ModelViewSet):
 
 class LayerSecondarySilicaViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di visualizzare e modificare le genealogie.
+    API endpoint that allows you to view and edit Layer Secondary Silica data.
     """
     queryset = LayerSecondarySilica.objects.all()
     serializer_class = LayerSecondarySilicaSerializer
@@ -673,7 +672,7 @@ class LayerSecondarySilicaViewSet(viewsets.ModelViewSet):
 
 class LayerGypsumViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di visualizzare e modificare le genealogie.
+    API endpoint that allows you to view and edit Layer Gypsum data.
     """
     queryset = LayerGypsum.objects.all()
     serializer_class = LayerGypsumSerializer
@@ -688,7 +687,7 @@ class LayerGypsumViewSet(viewsets.ModelViewSet):
 
 class LayerCarbonatesViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di visualizzare e modificare le genealogie.
+    API endpoint that allows you to view and edit Layer Carbonates data.
     """
     queryset = LayerCarbonates.objects.all()
     serializer_class = LayerCarbonatesSerializer
@@ -703,7 +702,7 @@ class LayerCarbonatesViewSet(viewsets.ModelViewSet):
     
 class LayerCoatingsBridgesViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di visualizzare e modificare le genealogie.
+    API endpoint that allows you to view and edit Layer Coatings Bridges  data.
     """
     queryset = LayerCoatingsBridges.objects.all()
     serializer_class = LayerCoatingsBridgesSerializer
@@ -718,7 +717,7 @@ class LayerCoatingsBridgesViewSet(viewsets.ModelViewSet):
 
 class LayerRedoximorphicViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di visualizzare e modificare le genealogie.
+    API endpoint that allows you to view and edit Layer Redoximorphic data.
     """
     queryset = LayerRedoximorphic.objects.all()
     serializer_class = LayerRedoximorphicSerializer
@@ -733,7 +732,7 @@ class LayerRedoximorphicViewSet(viewsets.ModelViewSet):
 
 class LayerLithogenicVariegatesViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di visualizzare e modificare le genealogie.
+    API endpoint that allows you to view and edit Layer Lithogenic Variegates data.
     """
     queryset = LayerLithogenicVariegates.objects.all()
     serializer_class = LayerLithogenicVariegatesSerializer
@@ -748,7 +747,7 @@ class LayerLithogenicVariegatesViewSet(viewsets.ModelViewSet):
 
 class LayerMatrixColoursViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di visualizzare e modificare le genealogie.
+    API endpoint that allows you to view and edit Layer Matrix Colours data.
     """
     queryset = LayerMatrixColours.objects.all()
     serializer_class = LayerMatrixColoursSerializer
@@ -763,7 +762,7 @@ class LayerMatrixColoursViewSet(viewsets.ModelViewSet):
 
 class LayerCracksViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di visualizzare e modificare le genealogie.
+    API endpoint that allows you to view and edit Layer Cracks data.
     """
     queryset = LayerCracks.objects.all()
     serializer_class = LayerCracksSerializer
@@ -778,7 +777,7 @@ class LayerCracksViewSet(viewsets.ModelViewSet):
 
 class LayerStructureViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di visualizzare e modificare le genealogie.
+    API endpoint that allows you to view and edit Layer Structure data.
     """
     queryset = LayerStructure.objects.all()
     serializer_class = LayerStructureSerializer
@@ -800,10 +799,9 @@ class LayerStructureViewSet(viewsets.ModelViewSet):
             
         return queryset
 
-
 class LayerNonMatrixPoreViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di visualizzare e modificare le genealogie.
+    API endpoint that allows you to view and edit Layer NonMatrix Pore data.
     """
     queryset = LayerNonMatrixPore.objects.all()
     serializer_class = LayerNonMatrixPoreSerializer
@@ -811,7 +809,7 @@ class LayerNonMatrixPoreViewSet(viewsets.ModelViewSet):
 
 class LayerDegreeDecompositionViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di visualizzare e modificare le genealogie.
+    API endpoint that allows you to view and edit Layer Degree Decomposition data.
     """
     queryset = LayerDegreeDecomposition.objects.all()
     serializer_class = LayerDegreeDecompositionSerializer
@@ -819,7 +817,7 @@ class LayerDegreeDecompositionViewSet(viewsets.ModelViewSet):
 
 class LayerHumanAlterationsViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di visualizzare e modificare le genealogie.
+    API endpoint that allows you to view and edit Layer Human Alterations data.
     """
     queryset = LayerHumanAlterations.objects.all()
     serializer_class = LayerHumanAlterationsSerializer
@@ -834,7 +832,7 @@ class LayerHumanAlterationsViewSet(viewsets.ModelViewSet):
 
 class LayerAnimalActivityViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di visualizzare e modificare le genealogie.
+    API endpoint that allows you to view and edit Layer Animal Activity data.
     """
     queryset = LayerAnimalActivity.objects.all()
     serializer_class = LayerAnimalActivitySerializer
@@ -849,7 +847,7 @@ class LayerAnimalActivityViewSet(viewsets.ModelViewSet):
 
 class LayerRootsViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di visualizzare e modificare le genealogie.
+    API endpoint that allows you to view and edit Layer Roots data.
     """
     queryset = LayerRoots.objects.all()
     serializer_class = LayerRootsSerializer
@@ -864,7 +862,7 @@ class LayerRootsViewSet(viewsets.ModelViewSet):
 
 class LayerOrganicCarbonViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di visualizzare e modificare le genealogie.
+    API endpoint that allows you to view and edit Layer Organic Carbon.
     """
     queryset = LayerOrganicCarbon.objects.all()
     serializer_class = LayerOrganicCarbonSerializer
@@ -879,7 +877,7 @@ class LayerOrganicCarbonViewSet(viewsets.ModelViewSet):
 
 class LayerPermafrostViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di visualizzare e modificare le genealogie.
+    API endpoint that allows you to view and edit Layer Permafrost.
     """
     queryset = LayerPermafrost.objects.all()
     serializer_class = LayerPermafrostSerializer 
@@ -891,9 +889,10 @@ class LayerPermafrostViewSet(viewsets.ModelViewSet):
         """
         queryset = LayerPermafrost.objects.all()
         return queryset
+
 class LayerConsistenceViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di visualizzare e modificare le genealogie.
+    API endpoint that allows you to view and edit Layer Consistence.
     """
     queryset = LayerConsistence.objects.all()
     serializer_class = LayerConsistenceSerializer
@@ -912,7 +911,7 @@ class LayerConsistenceViewSet(viewsets.ModelViewSet):
 
 class LabDataViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di visualizzare e modificare le genealogie.
+    API endpoint that allows you to view and edit Laboratory data.
     """
     queryset = LabData.objects.all()
     serializer_class = LabDataSerializer
@@ -940,7 +939,7 @@ class LabDataViewSet(viewsets.ModelViewSet):
    
 class RequestViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di visualizzare e modificare le genealogie.
+    API endpoint that allows you to view and edit Request for data creation.
     """
     queryset = Request.objects.all() 
     serializer_class = RequestSerializer
@@ -969,7 +968,7 @@ class RequestViewSet(viewsets.ModelViewSet):
    
 class PhotoViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di visualizzare e modificare le genealogie.
+    API endpoint that allows you to view and edit photos metadata.
     """
     queryset = Photo.objects.all() 
     serializer_class = PhotoSerializer
@@ -993,7 +992,7 @@ class PhotoViewSet(viewsets.ModelViewSet):
 #########################################
 class LabDataExtraMeasureViewSet(viewsets.ModelViewSet):
     """
-    API endpoint for laboratory extra measures.
+    API endpoint that allows you to view and edit laboratory extra measures data.
     """
     queryset = LabDataExtraMeasure.objects.all() 
     serializer_class = LabDataExtraMeasureSerializer  
@@ -1026,7 +1025,7 @@ class LabDataExtraMeasureViewSet(viewsets.ModelViewSet):
    
 class TaxonomyValueViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di visualizzare e modificare le genealogie.
+    API endpoint that allows you to view and edit classes of taxonomies .
     """
     queryset = TaxonomyValue.objects.all() 
     serializer_class = TaxonomyValueSerializer  
@@ -1050,7 +1049,7 @@ class TaxonomyValueViewSet(viewsets.ModelViewSet):
     
 class TaxonomyViewSet(viewsets.ModelViewSet):
     """
-    API endpoint che permette di visualizzare e modificare le tassonomie.
+    API endpoint that allows you to view and edit taxonomies.
     """
     queryset = Taxonomy.objects.all() 
     serializer_class = TaxonomySerializer
