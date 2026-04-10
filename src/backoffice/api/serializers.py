@@ -213,9 +213,10 @@ class XLSxUploadSerializer(serializers.ModelSerializer):
                 instance.save(using='backoffice')
 
         return instance
-# Point\Monitorings Genealogy
-###########################
 
+###########################
+# Projects
+###########################
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
@@ -502,7 +503,40 @@ class RequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = Request 
         fields = '__all__'
-        read_only_fields = ('id',)  
+        read_only_fields = ('id',)   
+    
+    def update(self, instance, validated_data):
+        """
+        Override to start elaboration if status or fields are changed
+        """
+        # standard update
+        instance = super().update(instance, validated_data)
+        
+        # 
+        # (es. 'data' o 'operation'). Se modifico il titolo non deve riprocessare.
+        # L'if il task solo se vengono modificati i campi che richiedono un ri-processamento.
+        if 'status' in validated_data and 'kriging' in validated_data:
+            # start_processing in models.py controlla: 
+            # if self.status == "VALIDATED" and self.kriging == true --> interpolate and publish
+            # if self.status == "VALIDATED" and self.kriging == false --> publish
+            # if self.status == "CREATED" and self.kriging == true --> preprocess
+            instance.save(using='backoffice')
+            
+            # Avvia il processo
+            started = instance.start_processing()
+            
+            # Opzionale: Loggare se il processo non è partito per qualche motivo
+            if not started:
+                logger.error(
+                    f"Impossible to restart processing for Request ID {instance.id}. "
+                    f"Current status: {instance.status}. "
+                    "Check Celery configuration or model constraints."
+                )
+                # Opzionale: Aggiungere un warning nel report dell'oggetto
+                instance.status="ERRORS"
+                instance.save(using='backoffice')
+
+        return instance
 
 #########################################
 ## Photos 

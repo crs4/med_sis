@@ -1,7 +1,7 @@
 /* ==========================================
    1. HEADER AND NAVBAR (Adjusted for GeoNode 5)
    ========================================== */
-   header.gn-main-header {
+header.gn-main-header {
     display: flex;
     flex-direction: column;
 }
@@ -290,7 +290,6 @@ ul.s4m-menu {
     z-index: 180;
     top: 0;
     position: fixed;
-    z-index: 160;
     width: 100%; 
 }
 

@@ -20,8 +20,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { ConfirmDialog } from 'primereact/confirmdialog';
 import { Card } from 'primereact/card'; 
-import { Toast } from 'primereact/toast'; 
-
+import { Toast } from 'primereact/toast';   
 import { point, featureCollection } from '@turf/turf';
 
 const MyMap = dynamic(() => import("../../components/PointsMap"), { ssr:false })
@@ -36,7 +35,7 @@ export default function Page()  {
   const [globalFilterValue, setGlobalFilterValue] = useState('');   
   const [isWorking, setIsWorking] = useState(false);
   const [current, setCurrent] = useState(null);
-  const [profiles, setProfiles] = useState([]);
+  const [points, setPoints] = useState([]);
   const [visibleDlg, setVisibleDlg] = useState(false);
   const [loading, setLoading] = useState(true);
   const [mapData, setMapData] = useState(null);
@@ -45,13 +44,13 @@ export default function Page()  {
   const [cls_systems, setCls_systems] = useState([]);
   
   const createGeoJSON = ( ) => {
-    if (!profiles || pointsGeoJSON ) 
+    if (!points || pointsGeoJSON ) 
       return; 
-    let points = [];
-    for ( let j=1; j<profiles.length; j+=1 ){
+    let _points = [];
+    for ( let j=1; j<points.length; j+=1 ){
   /// skip row with null or errors in lat,lon or key
       try {
-        let obj = profiles[j]
+        let obj = points[j]
         if ( obj && obj.id && obj.lat_wgs84 && obj.lon_wgs84 ) {
           let panel = '<div class="flex flex-wrap  justify-content-center">';
           panel += '<span class="text-cyan-800 font-bold" >Identifier:</span><span> '+obj.id+'</span></div>';
@@ -59,7 +58,7 @@ export default function Page()  {
           panel += '<div><span class="font-bold text-green-800"> Longitude: </span><span class="font-bold"> ' + obj.lon_wgs84  + '</span></div>';
           if (obj.elev_m_asl) 
             panel += '<div><span class="font-bold"> Altitude (ASL):  </span><span class="font-bold"> ' + obj.elev_m_asl  + '</span></div>';
-          points.push( point( [obj.lon_wgs84 , obj.lat_wgs84], 
+          _points.push( point( [obj.lon_wgs84 , obj.lat_wgs84], 
                         { key: obj.id, popupContent : panel  },
                         { id: obj.id } ) );
         }
@@ -67,8 +66,8 @@ export default function Page()  {
         console.log(e);
       }
     }
-    if ( points.length > 0 ) {
-      setPointsGeoJSON( featureCollection(points) );
+    if ( _points.length > 0 ) {
+      setPointsGeoJSON( featureCollection(_points) );
       toast.current.show({severity:'success', summary: 'GeoJSON created!', detail:'GeoJSON for elements created', life: 3000});
     }    
   }
@@ -87,7 +86,7 @@ export default function Page()  {
       }
       const _tdata = await TaxonomyService.listValues(document.cookie,'POINT_DATA_TYPES');
       if ( !_tdata || !_tdata.ok ) { 
-        toast.current.show({severity:'error', summary: 'Errors!', detail: 'Errors reading soil data types' , life: 3000});
+        toast.current.show({severity:'error', summary: 'Errors!', detail: 'Errors reading taxonomies' , life: 3000});
         setTypes([])
       }
       else {
@@ -105,7 +104,7 @@ export default function Page()  {
         _cls_sys.data.forEach( function (t) { _cs[t.id] = t });
         setCls_systems(_cs)  
       }  
-      setProfiles(mapProfiles(_data.data));
+      setPoints(setDate(_data.data));
       initFilters();
     }
     fetchData();
@@ -114,7 +113,7 @@ export default function Page()  {
   
   useEffect(() => {
       createGeoJSON ( );
-  },[profiles]);  // eslint-disable-line
+  },[points]);  // eslint-disable-line
 
   useEffect(() => {
     const fetchMap = async () => {
@@ -201,7 +200,7 @@ export default function Page()  {
     setIsWorking(false);
   };
   
-  const mapProfiles = (data) => {
+  const setDate = (data) => {
     return [...(data || [])].map((d) => {
         d.date = new Date(d.date);
         return d;
@@ -363,10 +362,10 @@ export default function Page()  {
     {(loading) && (
       <Loading  title="Loading points" />
     )}
-    {(!loading && !profiles) && (
+    {(!loading && !points) && (
       <span class="font-bold cyan-800">data not found</span>
     )} 
-    {(profiles) && (
+    {(points) && (
       <>
       <ConfirmDialog id="dlg_remove" group="declarative"  visible={visibleDlg} onHide={() => setVisibleDlg(false)} message="Are you sure you want to delete the point soil data?" 
           header="Confirmation" icon="pi pi-exclamation-triangle" accept={performRemove} reject={rejectDlg} />
@@ -377,7 +376,7 @@ export default function Page()  {
       </div>
       )}
       <DataTable
-        value={profiles}
+        value={points}
         paginator
         dataKey="code"
         className="p-datatable-gridlines"

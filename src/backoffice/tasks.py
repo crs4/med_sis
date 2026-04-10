@@ -1,6 +1,6 @@
 from celery import shared_task
-from .services import XLSxUploadService
-from .models import XLSxUpload
+from .services import XLSxUploadService, RequestService
+from .models import XLSxUpload, Request
 import logging
 from django.core.management import call_command
 
@@ -73,5 +73,62 @@ def process_xlsx_upload(self, upload_id):
             except Exception as save_e:
                 logger.error(f"It is not possible to save the status CRITICAL_ERROR in upload {upload_id}: {save_e}")
         return False
+
+@shared_task(bind=True, name='backoffice.tasks.process_request', queue='default')
+def process_request(self, request_id):
+    """
+    Task to elaborate dataset data in a Request object
+    """
+    request = None
+    try:
+        logger.info(f"Starting processing request {request_id}")
+        # Recupera l'oggetto Request
+        request = Request.objects.using('backoffice').get(id=request_id)
+        
+        # Verifica che lo stato sia IN_PROCESS
+        if request.status != "IN_PROCESS" and request.status != "IN_PREPROCESS":
+            logger.warning(f"Request {request_id} is not in IN_PROCESS or IN_PREPROCESS status  (current state: {request.status})")
+            return False
+
+        logger.info(f"Processing request {request_id} data...")
+        service = RequestService()
+        result = False
+        if request.status == "IN_PROCESS":
+            result = service.process_request_data(request_id)
+            if result:
+                request.status = "PUBLISHED"
+                logger.info(f"Request {request_id} published successfully")
+            else:
+                request.status = "ERRORS"
+                logger.warning(f"Upload {request_id} completed with errors")
+        else :
+            result = service.preprocess_request_data(request_id)
+            if result:
+                request.status = "PREPROCESSED"
+                logger.info(f"Request {request_id} completed preprocess successfully")
+            else:
+                request.status = "ERRORS"
+                logger.warning(f"Upload {request_id} completed with errors")
+            
+        request.save(using='backoffice')
+        # ---------------------------------------------------------------------------------------------
+        # NUOVO BLOCCO: Trigger updatelayers se l'import è un successo
+        # -----------------------------------------------------------
+        return True
+        
+    except Request.DoesNotExist:
+        logger.error(f"Request {request_id} not found")
+        return False
+    except Exception as e:
+        logger.error(f"Errors elaborating request {request_id}: {str(e)}")
+        # Aggiorna lo stato in caso di errore critico
+        if request:
+            try:
+                request.status = "ERRORS"
+                request.save(using='backoffice')
+            except Exception as save_e:
+                logger.error(f"It is not possible to save the status ERRORS in request {request_id}: {save_e}")
+        return False
+
 
     

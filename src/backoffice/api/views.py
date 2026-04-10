@@ -11,9 +11,7 @@ import logging
 import traceback
 
 
-###########################
-## XLSx Uploads
-###########################
+
 
 logger = logging.getLogger(__name__)
 
@@ -935,33 +933,61 @@ class LabDataViewSet(viewsets.ModelViewSet):
 
 #########################################
 ## Requests 
-#########################################
-   
+#########################################   
 class RequestViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows you to view and edit Request for data creation.
+    API endpoint that allows you to view and edit XLSxUpload.
     """
     queryset = Request.objects.all() 
     serializer_class = RequestSerializer
     permission_classes = [permissions.IsAdminUser ]
-
+    
     def get_queryset(self):
         """
-        Filtra le X in base ai parametri di query.
+        Filtra 
         """
-        queryset = Request.objects.all()
-        # Filtro per codice
-        id = self.request.query_params.get('id', None)
-        if id is not None:
-            queryset = queryset.filter(id=id)
-        u = self.request.query_params.get('user', None)
-        if u is not None:
-            queryset = queryset.filter(user=u)
-        m = self.request.query_params.get('measure', None)
-        if m is not None:
-            queryset = queryset.filter(measure=m)    
-        return queryset
+        queryset = XLSxUpload.objects.all()
+        
+        # Name Filter 
+        name = self.request.query_params.get('name', None)
+        if name is not None:
+            queryset = queryset.filter(name=name)
+            
+        # Date Filter
+        _from = self.request.query_params.get('from', None)
+        _to = self.request.query_params.get('to', None)
+        if _from is not None:
+            queryset = queryset.filter(date__gte=_from)
+        if _to is not None:
+            queryset = queryset.filter(date__lte=_to)
+        
+        # User name Filter
+        user_name = self.request.query_params.get('user', None)
+        if user_name is not None:
+            queryset = queryset.filter(user_name=user_name)
 
+        # User email Filter
+        user_email = self.request.query_params.get('email', None)
+        if user_email is not None:
+            queryset = queryset.filter(user_email=user_email)
+
+        # Status Filter
+        status = self.request.query_params.get('status', None)
+        if status is not None:
+            queryset = queryset.filter(status=status)
+
+        return queryset
+    
+    def list(self, request):
+        queryset = Request.objects.all()
+        serializer = RequestSerializer(queryset, many=True)
+        for item in serializer.data:
+            item.pop('f_aoi')
+            item.pop('f_data')
+            item.pop('k_variogram')
+            item.pop('k_data')
+        return Response(serializer.data)
+    
 #########################################
 ## Photos 
 #########################################

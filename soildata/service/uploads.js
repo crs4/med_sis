@@ -1,4 +1,6 @@
-import doFetch  from '../utilities/api-client';
+import doFetch, { doFetchBackOffice, doFetchCatalogue, doFetchGeoserver }  from '../utilities/api-client';
+
+
 
 export const UploadService = {
   STATUSES : { 
@@ -42,28 +44,28 @@ export const UploadService = {
   
   async get(ck, id) { 
     if ( ck ) 
-      return await doFetch ( 'xlsx-uploads', id, 'GET', null, ck );
+      return await doFetchBackOffice ( 'xlsx-uploads', id, 'GET', null, ck );
     else 
       return { ok: false }
   },
 
   async list(ck) {
     if ( ck ) 
-      return await doFetch ( 'xlsx-uploads', null, 'GET', null, ck );
+      return await doFetchBackOffice ( 'xlsx-uploads', null, 'GET', null, ck );
     else 
       return { ok: false }
   },  
 
   async save (ck, payload) {
     if ( ck ) 
-      return await doFetch ( 'xlsx-uploads', null, 'POST', payload, ck );
+      return await doFetchBackOffice ( 'xlsx-uploads', null, 'POST', payload, ck );
     else 
       return { ok: false }
   },
 
   async remove(ck, id) {
     if ( ck ) 
-      return await doFetch ( 'xlsx-uploads', id, 'DELETE', null, ck );
+      return await doFetchBackOffice ( 'xlsx-uploads', id, 'DELETE', null, ck );
     else 
       return { ok: false }
   }

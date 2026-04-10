@@ -53,10 +53,10 @@ class TaxonomyValue(models.Model):
 ###########################
 UPLOAD_RESULTS = [
     ("UPLOADED" , "UPLOADED"),
-    ("IN_PROCESS" , "IN_PROCESS"),
-    ("IMPORT_SUCCESS" , "IMPORT_SUCCESS"),
-    ("IMPORT_WITH_ERROR" , "IMPORT_WITH_ERROR"),
-    ("CRITICAL_ERROR" , "CRITICAL_ERROR"),
+    ("IN_PROCESS" , "IN PROCESS"),
+    ("IMPORT_SUCCESS" , "IMPORT WITH SUCCESS"),
+    ("IMPORT_WITH_ERROR" , "IMPORT WITH ERRORS"),
+    ("CRITICAL_ERROR" , "CRITICAL ERROR"),
 ]  
 UPLOAD_TYPES = [
     ("XLS_P" , "Point Soil Data XLSx upload"),
@@ -515,7 +515,6 @@ class LayerArtefacts(models.Model):
         db_table = 'layer_artefacts'
         db_table_comment = 'Artefacts are solid or liquid substances that are: created or substantially modified by humans as part of an industrial or artisanal manufacturing process, or brought to the surface by human activity from a depth, where they were not influenced by surface processes, and deposited in an environment, where they do not commonly occur.'
            
-
 class LayerCracks(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')
     persistenc = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='layercracks_persistenc_set',  blank=True, null=True)
@@ -529,8 +528,7 @@ class LayerCracks(models.Model):
         managed = True
         db_table = 'layer_cracks'
         db_table_comment = 'Report persistence and continuity'
-        
-   
+          
 class LayerMatrixColours(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')
     munsell_m1 = models.TextField(blank=True, null=True)
@@ -550,7 +548,6 @@ class LayerMatrixColours(models.Model):
         db_table = 'layer_matrix_colours'
         db_table_comment = 'Report the colour of the soil matrix. If there is more than one matrix colour, report up to three, the dominant one first, and give the percentage of the exposed area'
         
-
 class LayerLithogenicVariegates(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier') 
     munsell_m1 = models.TextField(blank=True, null=True)
@@ -570,7 +567,6 @@ class LayerLithogenicVariegates(models.Model):
         db_table = 'layer_lithogenic_variegates'
         db_table_comment = 'Report colour, size class, and abundance. If more than one colour occurs, report up to three, the dominant one first, and give size class and abundance for each colour separately.'
                 
-
 class LayerRedoximorphic(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')
     oxi_inner = models.FloatField( validators=[validate_percentage], blank=True, null=True)
@@ -618,7 +614,6 @@ class LayerRedoximorphic(models.Model):
         db_table = 'layer_redoximorphic'
         db_table_comment = ''
          
-
 class LayerCoatingsBridges(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')
     clay_coat = models.FloatField( validators=[validate_percentage], blank=True, null=True, db_comment='Abundance of clay coatings in percentage')
@@ -636,8 +631,7 @@ class LayerCoatingsBridges(models.Model):
         managed = True
         db_table = 'layer_coatings_bridges'
         db_table_comment = 'Report the abundance of clay coatings in % of the surfaces of soil aggregates, coarse fragments and/or biopore walls clay bridges between sand grains in % of involved sand grains.'
-        
-           
+                  
 class LayerCarbonates(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')
     matr_c = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='layercarbonates_matr_c_set',   blank=True, null=True)
@@ -666,7 +660,6 @@ class LayerCarbonates(models.Model):
         db_table = 'layer_carbonates'
         db_table_comment = 'Layer Carbonates'
         
-
 class LayerGypsum(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')
     content = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='layergypsum_content_set',  blank=True, null=True)
@@ -685,7 +678,6 @@ class LayerGypsum(models.Model):
         db_table = 'layer_gypsum'
         db_table_comment = 'Report the gypsum content in the soil matrix. If readily soluble salts are absent or present in small amounts only, gypsum can be estimated by measuring the electrical conductivity in soil suspensions of different soil-water relations after 30 minutes (in the case of fine-grained gypsum). This method detects primary and secondary gypsum. Note: Higher gypsum contents may be differentiated by abundance of H2O-soluble pseudomycelia/crystals and a soil colour with high value and low chroma'
         
-
 class LayerSecondarySilica(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')
     type1 = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='layersecondarysilica_type1_set',  blank=True, null=True, db_comment='Report the type of secondary silica, type1 is dominant')
@@ -702,7 +694,6 @@ class LayerSecondarySilica(models.Model):
         db_table = 'layer_secondary_silica'
         db_table_comment = 'Secondary silica (SiO2) is off-white and predominantly consisting of opal and microcrystalline forms. It occurs as laminar caps, lenses, (partly) filled interstices, bridges between sand grains, and as coatings at surfaces of soil aggregates, biopore walls, coarse fragments, and remnants of broken-up cemented layers. Report the type of secondary silica. If more than one type occurs, report up to two, the dominant one first.'
         
-
 class LayerConsistence(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')
     cement = models.FloatField( validators=[validate_percentage], blank=True, null=True, db_comment='Report the percentage (by volume, related to the whole soil) of the layer that is cemented.')
@@ -725,7 +716,6 @@ class LayerConsistence(models.Model):
         db_table = 'layer_consistence'
         db_table_comment = 'Consistence is the degree and kind of cohesion and adhesion that soil exhibits. Consistence is reported separately for cemented and non-cemented (parts of) layers. If a specimen of soil does not fall into pieces by applying low forces, one has to check, whether it is cemented'
         
-
 class LayerPermafrost(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')
     cry_alter1 = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='layerpermafrost_cry_alter1_set',  blank=True, null=True)
@@ -743,7 +733,6 @@ class LayerPermafrost(models.Model):
         db_table = 'layer_permafrost'
         db_table_comment = 'Estimate the total percentage (by exposed area, related to the whole soil) affected by cryogenic alteration. Report up to three features, the dominant one first, and report the percentage for each feature separately.'
         
-
 class LayerOrganicCarbon(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')
     contentmin = models.FloatField( blank=True, null=True)
@@ -763,7 +752,6 @@ class LayerOrganicCarbon(models.Model):
         db_table = 'layer_organic_carbon'
         db_table_comment = 'Report the estimated organic carbon content. It is based on the Munsell value, moist, and the texture'
         
- 
 class LayerRoots(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')
     a_lt2mm = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='layerroots_a_lt2mm_set',  blank=True, null=True, db_comment='diameter <= 2mm')
@@ -780,7 +768,6 @@ class LayerRoots(models.Model):
         db_table = 'layer_roots'
         db_table_comment = 'Count the number of roots per dm2, separately for the six diameter classes, and report the abundance classes'
         
-
 class LayerAnimalActivity(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')
     type1 = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='layeranimalactivity_type1_set',  blank=True, null=True)
@@ -801,7 +788,6 @@ class LayerAnimalActivity(models.Model):
         db_table = 'layer_animal_activity'
         db_table_comment = 'Report the animal activity that has visibly changed the features of the layer. If applicable, report up to 5 types, the dominant one first. Report the percentage (by exposed area), separately for mammal activity, bird activity, worm activity, insect activity and unspecified activity'
         
-
 class LayerHumanAlterations(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')
     nat_mat1 =models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='layerhumanalterations_nat_mat1_set',  blank=True, null=True)
@@ -944,8 +930,7 @@ class PointLayer(models.Model):
     
     class Meta:
         managed = True
-        db_table = 'point_layer'
-        
+        db_table = 'point_layer'       
 
 class LayerStructure(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')  
@@ -967,31 +952,76 @@ class LayerStructure(models.Model):
         db_table = 'layer_structure'
         unique_together = (('layer', 'level'),)
         
-
-###########################
+############################################################
 # REQUEST
-###########################
-
-    
+# Statuses:
+# if status == CREATED and kriging == false 
+#   --> do nothing 
+# if status == VALIDATED and kriging == false 
+#   --> publication in REACT ( -> IN_PROCESS -> PUBLISHED, ERRORS)
+# if status == CREATED and kriging == true  -> IN_PROCESS
+#   -->  build VARIOGRAM in GN (IN_PROCESS -> PREPROCESSED, ERRORS)
+# if status == PREPROCESSED and kriging == true  
+#   --> do nothing
+# if status == VALIDATED and kriging == true 
+#   --> Interpolation in GN (IN_PROCESS -> PUBLISHED, ERRORS) 
+# No changes if PUBLISHED ---> need to be cloned 
+############################################################
+REQUEST_STATUSES = [
+    ("CREATED" , "CREATED"),
+    ("IN_PREPROCESS" , "IN PROCESS"),
+    ("PREPROCESSED" , "PROCESSED"),
+    ("VALIDATED" , "VALIDATED"),
+    ("INTERPOLATED" , "INTERPOLATED"),
+    ("VALIDATED" , "VALIDATED"),
+    ("IN_PROCESS" , "IN PROCESS"),
+    ("PUBLISHED" , "PUBLISHED"),
+    ("ERRORS" , "ERRORS"),
+]     
 class Request(models.Model):
-    creation = models.DateField( db_comment='Creation date')
-    interpolation = models.BooleanField(blank=True, null=True, db_comment='Requested Interpolation')
-    measure = models.ForeignKey(TaxonomyValue, on_delete=models.CASCADE, related_name='request_measure_set' )
-    purpose = models.TextField( db_comment='Purpose')
-    aoi = models.JSONField( db_comment='AOI in geoJSON format') 
-    date_from = models.DateField( db_comment='Period start', blank=True, null=True)
-    date_to = models.DateField( db_comment='Period End', blank=True, null=True)
-    depth_upper = models.PositiveIntegerField( db_comment='Depth upper in cm' )
-    depth_lower = models.PositiveIntegerField( db_comment='Depth lower in cm' )
-    status = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='request_status_set',  db_comment='status of Request', blank=True, null=True)
-    user = models.TextField( db_comment='SIS Staff member Id', blank=True, null=True)
-    variogram = models.JSONField( db_comment='Variogram - interpolation preliminary result if done and what_interpolation is true', blank=True, null=True) 
-    points = models.JSONField( db_comment='Points - Filtered and aggregate soil points data with measure, can be empty', blank=True, null=True) 
-    parameters = models.JSONField( db_comment='interpolation parameters', blank=True, null=True)
-    raster = models.TextField( db_comment='Geonode Id of the raster', blank=True, null=True)
-    
+    name = models.TextField( db_comment='Name')
+    user_name = models.TextField( db_comment='SIS Staff member name')
+    user_email = models.TextField( db_comment='SIS Staff member email')
+    date = models.DateField( db_comment='Creation date')
+    src_name = models.TextField( db_comment='Name of the source', blank=True, null=True)
+    src_typename = models.TextField( db_comment='Geoserver typename of the source', blank=True, null=True)
+    src_count = models.PositiveIntegerField( db_comment='Number of soil points date in the source', blank=True, null=True)
+    src_data = models.JSONField( db_comment='Source soil points data', blank=True, null=True) 
+    f_aoi = models.JSONField( db_comment='Area of Interest for the spatial filter') 
+    f_from = models.DateField( db_comment='Filter for date of points soil data using a period', blank=True, null=True)
+    f_to = models.DateField( db_comment='Filter for date of points soil data using a period ', blank=True, null=True)
+    f_upper = models.PositiveIntegerField( db_comment='Filter for upper depth in cm', blank=True, null=True)
+    f_lower = models.PositiveIntegerField( db_comment='Filter for lower depth in cm', blank=True, null=True )
+    f_project = models.TextField( db_comment='Filter for project of the points soil data', blank=True, null=True)
+    f_type = models.TextField( db_comment='Filter for type of points soil data', blank=True, null=True)
+    f_method = models.TextField( db_comment='field name of the interpolate measure ', blank=True, null=True)
+    f_data = models.JSONField( db_comment='Filtered soil points data', blank=True, null=True) 
+    kriging = models.BooleanField(blank=True, null=True, db_comment='It Needs Interpolation')
+    k_measure = models.TextField( db_comment='field name of the interpolate measure ', blank=True, null=True)
+    k_variogram = models.JSONField( db_comment='Variogram - interpolation preliminary result if done and what_interpolation is true', blank=True, null=True) 
+    k_params = models.JSONField( db_comment='interpolation parameters', blank=True, null=True)
+    k_data = models.JSONField( db_comment='Points with aggregate measure, can be empty', blank=True, null=True) 
+    k_gn_raster = models.TextField( db_comment='Geonode Id of the raster', blank=True, null=True)
+    gn_result = models.TextField( db_comment='Geonode Id of the points', blank=True, null=True)
+    status = models.TextField( choices=REQUEST_STATUSES, db_comment='Status of the request' )
+     
     objects = models.Manager().using('backoffice')
-
+    
+    def start_processing(self):
+        """Avvia il processo di elaborazione dei dati"""
+        from .tasks import process_request
+        if self.kriging:
+            if self.status == "VALIDATED":
+                self.status = "IN_PROCESS"
+            if self.status == "CREATED":
+                self.status = "IN_PREPROCESS"
+            self.save(using='backoffice')
+            # Questo garantisce che il task parta SOLO quando il dato è realmente scritto su DB.
+            transaction.on_commit(
+                lambda: process_request.delay(self.id),
+                using='backoffice')
+            return True
+        return False
     class Meta:
         managed = True
         db_table = 'requests'

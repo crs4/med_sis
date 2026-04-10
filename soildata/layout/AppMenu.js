@@ -10,7 +10,7 @@ const AppMenu = () => {
         {
             label: 'Home',
             icon: 'pi pi-home',
-            to: '/'
+            to: process.env.NEXT_PUBLIC_CATALOGUE_BASE_URL
         },
         { separator: true },
         {
@@ -38,7 +38,7 @@ const AppMenu = () => {
                     label: 'List',
                     icon: 'pi pi-list',
                     to: '/points'
-                }
+                },
             ]
         },
         { separator: true },
@@ -51,44 +51,34 @@ const AppMenu = () => {
                     icon: 'pi pi-list',
                     to: '/taxonomy'
                 },
-                {
-                    label: 'Create',
-                    icon: 'pi pi-plus',
-                    to: '/taxonomy/create'
-                }
             ]
         },
         { separator: true },
         {
-            label: 'Data Creator',
+            label: 'Elaboration',
             icon: 'pi pi-briefcase',
             items: [
                 {
                     label: 'List',
                     icon: 'pi pi-list',
-                    to: '/requests'
+                    to: '/request'
                 },
-                {
-                    label: 'New',
-                    icon: 'pi pi-plus',
-                    to: '/requests/create'
-                }
             ]
         },
         { separator: true },
         {
-            label: 'Pedo Transfer Functions',
+            label: 'PTF',
             icon: 'pi pi-calculator',
             items: [
                 {
-                    label: 'Training',
-                    icon: 'pi pi-wrench',
+                    label: 'List',
+                    icon: 'pi pi-list',
                     to: '/ptf'
                 },
                 {
-                    label: 'Executing',
-                    icon: 'pi pi-play-circle',
-                    to: '/ptf'
+                    label: 'New',
+                    icon: 'pi pi-wrench',
+                    to: '/ptf/create'
                 }
             ]
         },

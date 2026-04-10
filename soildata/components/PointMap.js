@@ -6,7 +6,7 @@ export default function S4Mmap ({point}) {
   
   return (
     <>
-      <div className="card" style={{ width: '100%' }}>
+      <div className="card w-full">
         <h4 class="font-bold text-green-500">Geo Location</h4>
         <MapContainer
           doubleClickZoom={false}

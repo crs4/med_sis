@@ -26,8 +26,8 @@
                     <ul class="gn-menu-list s4m-menu">
                         <li>
                             <a href="/">
+                                <img src="{% static 'img/home.png' %}">
                                 <img src="{% static 'img/logo.png' %}">
-                                <span style="font-weight: bolder; font-size: 0.5em;">HOME</span>
                             </a>
                         </li>
                     </ul>                 
@@ -67,15 +67,15 @@
                     <div class="s4m-icon-row">
                         <ul class="gn-menu-list">
                             <ul class="s4m-menu" style="list-style: none;">
-                                <li class="s4m-menu-item" style="--s4m-menu-icon-bg: #ae5d08;">
+                                <li class="s4m-menu-item" style="--s4m-menu-icon-bg: rgb(180, 120, 69);">
                                     <a href="/catalogue/#/?f=dataset&f=map&filter%7Bkeywords.slug.in%7D=soil_map">
-                                        <div class="s4m-menu-icon"><img src="{% static 'img/pedology_white.png' %}"></div>
+                                        <div class="s4m-menu-icon"><img src="{% static 'img/maps.svg' %}"></div>
                                         <div class="s4m-menu-label" style="font-weight: 600;">
                                         {% if LANGUAGE == 'fr-fr' %} Carte <br/>de sols {% elif LANGUAGE == 'it-it' %} Carta <br/>del suolo {% elif LANGUAGE == 'es-es' %} Mapa <br/>de suelos {% else %} Soil <br/>Maps {% endif %}
                                         </div>
                                     </a>
                                 </li>
-                                <li class="s4m-menu-item" style="--s4m-menu-icon-bg: #057005;">
+                                <li class="s4m-menu-item" style="--s4m-menu-icon-bg: rgb(46 155 81);">
                                     <a href="/catalogue/#/?f=dataset&f=map&filter%7Bkeywords.slug.in%7D=other_map">
                                         <div class="s4m-menu-icon"><img src="{% static 'img/maps.svg' %}"></div>
                                         <div class="s4m-menu-label" style="font-weight: 600;">
@@ -83,7 +83,7 @@
                                         </div>
                                     </a>
                                 </li>
-                                <li class="s4m-menu-item" style="--s4m-menu-icon-bg: #ae5d08;">
+                                <li class="s4m-menu-item" style="--s4m-menu-icon-bg: rgb(180, 120, 69);">
                                     <a href="/catalogue/#/?f=dataset&f=map&filter%7Bkeywords.slug.in%7D=soil_point_data">
                                         <div class="s4m-menu-icon"><img src="{% static 'img/pedology_white.png' %}"></div>
                                         <div class="s4m-menu-label" style="font-weight: 600;">
@@ -91,7 +91,7 @@
                                         </div>
                                     </a>
                                 </li>
-                                <li class="s4m-menu-item" style="--s4m-menu-icon-bg: #057005;">
+                                <li class="s4m-menu-item" style="--s4m-menu-icon-bg: rgb(46 155 81);">
                                     <a href="/catalogue/#/?f=document&filter%7Bkeywords.slug.in%7D=manual">
                                         <div class="s4m-menu-icon"><img src="{% static 'img/help.svg' %}"></div>
                                         <div class="s4m-menu-label" style="font-weight: 600;">
@@ -106,7 +106,7 @@
                     <div class="s4m-icon-row">
                         <ul class="gn-menu-list">
                             <ul class="s4m-menu" style="list-style: none;">
-                                <li class="s4m-menu-item" style="--s4m-menu-icon-bg: #ae5d08;">
+                                <li class="s4m-menu-item" style="--s4m-menu-icon-bg: rgb(180, 120, 69);">
                                     <a href="/catalogue/#/?f=dataset&f=map&filter%7Bkeywords.slug.in%7D=soil_chemical_health">
                                         <div class="s4m-menu-icon"><img src="{% static 'img/chemical.png' %}"></div>
                                         <div class="s4m-menu-label" style="font-weight: 600;">
@@ -114,7 +114,7 @@
                                         </div>
                                     </a>
                                 </li>
-                                <li class="s4m-menu-item" style="--s4m-menu-icon-bg: #057005;">
+                                <li class="s4m-menu-item" style="--s4m-menu-icon-bg: rgb(46 155 81);">
                                     <a href="/catalogue/#/?f=dataset&f=map&filter%7Bkeywords.slug.in%7D=soil_physical_health">
                                         <div class="s4m-menu-icon"><img src="{% static 'img/physical.png' %}"></div>
                                         <div class="s4m-menu-label" style="font-weight: 600;">
@@ -122,7 +122,7 @@
                                         </div>
                                     </a>
                                 </li>
-                                <li class="s4m-menu-item" style="--s4m-menu-icon-bg: #ae5d08;">
+                                <li class="s4m-menu-item" style="--s4m-menu-icon-bg: rgb(180, 120, 69);">
                                     <a href="/catalogue/#/?f=dataset&f=map&filter%7Bkeywords.slug.in%7D=soil_biological_health">
                                         <div class="s4m-menu-icon"><img src="{% static 'img/biological.png' %}"></div>
                                         <div class="s4m-menu-label" style="font-weight: 600;">
@@ -139,7 +139,7 @@
             </div>
         </div>
     </nav>
-{% if request.path != '/' %}   
+{% if request.path != '/' %} 
     <nav class="s4m-blue-navbar">
         <div class="s4m-blue-left">
             <ul>

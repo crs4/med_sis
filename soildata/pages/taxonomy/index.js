@@ -215,7 +215,7 @@ export default function Page( )  {
                   placeholder="Choose the taxonomy" className="w-full mr-2 md:w-18rem" virtualScrollerOptions={{ itemSize: 38 }} 
                   loading={loading}
         />
-        { currentTx.custom && ( 
+        { currentTx?.custom && ( 
           <Button type="button" icon="pi pi-trash" onClick={(e) => { setVisTRemove(true); }} severity="danger" rounded></Button>
         )}
         <Button type="button" icon="pi pi-plus" onClick={(e) => { setVisTAdd(true); }} severity="success" rounded></Button>

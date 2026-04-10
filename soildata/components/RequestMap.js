@@ -67,7 +67,7 @@ export default function S4Mmap ({data}) {
   function pointToLayer (feature, latlng) {
     let style = pointStyle;
     if ( !style )
-      style = defaultstyles['point'];
+      style = { radius: 8, fillColor: '#7f7', color: '#2b2', weight: 2, opacity: 1, fillOpacity: 0.6 };
     return L.circleMarker(latlng, style);
   }
 

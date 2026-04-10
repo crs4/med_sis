@@ -1,8 +1,9 @@
 import json
 import requests
+import subprocess
 from datetime import datetime
 from django.conf import settings
-from .models import XLSxUpload
+from .models import XLSxUpload, Request
 import re
 import base64
 
@@ -241,3 +242,99 @@ class XLSxUploadService:
                 }
                 self.report["errors"].append(error)
                 self.report["success"] = False 
+
+
+class RequestService:
+    def __init__(self):
+        self.base_url = settings.API_BASE_URL
+        # Configurazione dell'autenticazione basic
+        self.auth_username = settings.API_USERNAME
+        self.auth_password = settings.API_PASSWORD
+        self.auth_header = self._get_basic_auth_header()
+
+    def _get_basic_auth_header(self):
+        """
+        Genera l'header di autenticazione basic
+        """
+        credentials = f"{self.auth_username}:{self.auth_password}"
+        encoded_credentials = base64.b64encode(credentials.encode()).decode()
+        return {'Authorization': f'Basic {encoded_credentials}'}
+
+        
+    def process_request_data(self, request_id):
+        try:
+            # get Request object
+            request = Request.objects.using('backoffice').get(id=request_id)
+            
+            if not request.kriging :
+                return 
+            
+            if request.status != "IN_PROCESS" or request.status != "IN_PREPROCESS" :
+                raise ValueError("Request is not IN_PROCESS or IN_PREPROCESS status")
+
+            # read src_data for geoJSON points (EPSG:4326)    
+            data = request.src_data
+            if not isinstance(data, dict):
+                data = json.loads(data)
+
+            parameters = request.parameters
+            if not isinstance(parameters, dict):
+                parameters = json.loads(parameters)
+            
+            # clon = str(( lon_degree + 180 ) / 6 + 1) 
+            # clat > 0 ? "6" : "7"  
+            # make CMD
+            # CMD1. gdal vector reproject -s "EPSG:4326" -r "32"+clat+clon  /tmp/requestid/src_points.geojson /tmp/requestid/src_points_utm.geojson
+            # CMD2. gdal vector convert --if "geoJSON" --of "ESRI Shapefile" --overwrite  /tmp/requestid/src_points_UTM.geojson /tmp/requestid/src_points_UTM.shp
+            # (-----------)
+            # x = subprocess.call([CMD1 and CMD2])
+            # if x == 0 : OK
+            # else : KO
+            
+            # if in_preprocess 
+            # SAGA_CMD  
+            # model = parameters['VAR_MODEL']
+            # attribute = parameters['ATTRIBUTE']
+            # log = parameters['LOG']
+            # max_dist = parameters['VAR_MAXDIST'] default: -1.000000
+            # saga_cmd statistics_kriging 4 -POINTS /tmp/requestid/src_points_utm.geojson -ATTRIBUTE [attribute] -VAR_NCLASSES [ncls] -VAR_MODEL [model] -LOG [log] -VARIOGRAM /tmp/requestid/variogram.csv  
+            # variogramma da csv a json
+            # salvare in request
+            # request.status = preprocessed 
+            # END
+             
+            # if in_process 
+            # SAGA_CMD  
+            # model = parameters['VAR_MODEL']
+            # attribute = parameters['ATTRIBUTE']
+            # log = parameters['LOG']
+            # max_dist = parameters['VAR_MAXDIST'] default: -1.000000
+            # classes = parameters['VAR_NCLASSES'] default: 100 , min 1
+            # BBOX: east, west, north, south
+            # saga_cmd statistics_kriging 0 -TARGET_DEFINITION 0 
+            #   -POINTS /tmp/requestid/points_utm.shp -FIELD [attribute] -VAR_MODEL [model] -LOG [log] -VAR_NCLASSES [ncls]
+            #   -TARGET_USER_XMIN [minX] -TARGET_USER_XMAX [maxX] -TARGET_USER_YMIN [minY] -TARGET_USER_YMAX [maxY] 
+            #   -TARGET_USER_SIZE 10.0 -TARGET_USER_FITS 0 -TQUALITY 1 -VAR_MAXDIST 0.0  -VAR_NSKIP 1  -BLOCK false -DBLOCK 100.0 
+            #   -CV_METHOD 1 -CV_SAMPLES 10 -SEARCH_RANGE 1 -SEARCH_RADIUS 60.0 -SEARCH_POINTS_ALL 1 -SEARCH_POINTS_MIN 16 -SEARCH_POINTS_MAX 20 
+            #   -PREDICTION  /tmp/requestid/prediction -VARIANCE  /tmp/requestid/variance
+            #
+            # GDAL sdat to geotiff
+            # publish to GN (metadata )
+            
+            
+            # saga_cmd statistics_kriging 4 -POINTS /tmp/requestid/src_points_utm.geojson -ATTRIBUTE [attribute] -VAR_MODEL [model] -LOG [log] -VARIOGRAM /tmp/requestid/variogram.csv  
+            # variogramma da csv a json
+            # salvare in request
+            # request.status = preprocessed 
+            # END
+
+            
+            
+            return True
+            
+        except Exception as e:
+            request.status = "ERRORS"
+            request.save(using='backoffice')
+            return False
+    
+    

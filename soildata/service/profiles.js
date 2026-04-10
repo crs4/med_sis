@@ -1,10 +1,43 @@
-import doFetch  from '../utilities/api-client';
+import { doFetchBackOffice, doFetchCatalogue, doFetchGeoserver }  from '../utilities/api-client';
 
 export const ProfileService = {
 
+  REQUEST_STATUSES : {
+    CREATED : "CREATED",
+    IN_PROCESS : "IN PROCESS",
+    PREPROCESSED : "PROCESSED",
+    VALIDATED : "VALIDATED",
+    INTERPOLATED : "INTERPOLATED",
+    VALIDATED : "VALIDATED",
+    PUBLISHED : "PUBLISHED",
+    ERRORS : "ERRORS"
+  },
+  
+  async getDataset(dataset, ck) { 
+    
+    if ( ck ) 
+      return await doFetchGeoserver ( dataset, ck );
+    else 
+      return { ok: false }
+  },
+
+  async getDatasetsByCategory(category, ck) { 
+    if ( ck ) 
+      return await doFetchCatalogue( 'datasets?filter{category.identifier}='+category, ck );
+    else 
+      return { ok: false }
+  },
+
+  async getDatasetsByKeyword( keyword, ck) { 
+    if ( ck ) 
+      return await doFetchCatalogue( 'datasets?filter{keywords.name}='+keyword, ck );
+    else 
+      return { ok: false }
+  },
+
   async get(ck, id, endpoint) { 
     if ( ck ) 
-      return await doFetch ( endpoint, id, 'GET', null, ck );
+      return await doFetchBackOffice ( endpoint, id, 'GET', null, ck );
     else 
       return { ok: false }
   },
@@ -31,7 +64,7 @@ export const ProfileService = {
 
   async list(ck, endpoint) {
     if ( ck ) 
-      return await doFetch ( endpoint, null, 'GET', null, ck );
+      return await doFetchBackOffice ( endpoint, null, 'GET', null, ck );
     else 
       return { ok: false }
   },  
@@ -39,16 +72,23 @@ export const ProfileService = {
   async update (ck, id, payload, endpoint) {
     if ( ck ) 
     { 
-      let response = await doFetch ( endpoint, null, 'PATCH', payload, ck );
+      let response = await doFetchBackOffice ( endpoint, null, 'PATCH', payload, ck );
       return response;
     }
     else return { ok: false }
+  },
+  
+  async save (endpoint, ck, payload) {
+    if ( ck ) 
+      return await doFetchBackOffice ( endpoint, null, 'POST', payload, ck );
+    else 
+      return { ok: false }
   },
 
   async remove(ck, id, endpoint) {
     if ( ck ) 
     { 
-      let response = await doFetch ( endpoint, id, 'DELETE', null, ck );
+      let response = await doFetchBackOffice ( endpoint, id, 'DELETE', null, ck );
       return response;
     }
     else return { ok: false }
