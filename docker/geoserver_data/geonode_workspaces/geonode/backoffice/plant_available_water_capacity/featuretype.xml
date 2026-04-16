@@ -1,25 +1,25 @@
 <featureType>
-  <id>FeatureTypeInfoImpl-9a9970d:19b217b2ae3:-7ffe</id>
+  <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7e53</id>
   <name>plant_available_water_capacity</name>
   <nativeName>plant_available_water_capacity</nativeName>
   <namespace>
     <id>NamespaceInfoImpl-78ff667e:12476299803:-7ffe</id>
   </namespace>
-  <title>Plant available water capacity (AWC) indicator</title>
-  <abstract>Soil pysichal health: Indicator of plant absorbable water potential per porosity unit  (%)  FAO SoilSTAT domain: Waterlogging</abstract>
+  <title>plant_available_water_capacity</title>
+  <abstract>No abstract provided</abstract>
   <keywords>
     <string>features</string>
     <string>plant_available_water_capacity</string>
   </keywords>
   <srs>EPSG:4326</srs>
   <nativeBoundingBox>
-    <minx>-20.0</minx>
+    <minx>-10.0</minx>
     <maxx>50.0</maxx>
     <miny>10.0</miny>
     <maxy>50.0</maxy>
   </nativeBoundingBox>
   <latLonBoundingBox>
-    <minx>-20.0</minx>
+    <minx>-10.0</minx>
     <maxx>50.0</maxx>
     <miny>10.0</miny>
     <maxy>50.0</maxy>
@@ -35,6 +35,8 @@
   </store>
   <serviceConfiguration>false</serviceConfiguration>
   <simpleConversionEnabled>false</simpleConversionEnabled>
+  <internationalTitle/>
+  <internationalAbstract/>
   <maxFeatures>0</maxFeatures>
   <numDecimals>0</numDecimals>
   <padWithZeros>false</padWithZeros>

@@ -1,0 +1,16 @@
+<layer>
+  <name>labdata_hy_cond</name>
+  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7f43</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7fdb</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7f44</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-04-13 06:22:19.678 UTC</dateCreated>
+</layer>

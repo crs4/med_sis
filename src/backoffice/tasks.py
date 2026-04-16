@@ -1,6 +1,6 @@
 from celery import shared_task
-from .services import XLSxUploadService, RequestService
-from .models import XLSxUpload, Request
+from .services import XLSxUploadService, DatasetService
+from .models import XLSxUpload, Dataset
 import logging
 from django.core.management import call_command
 
@@ -74,60 +74,59 @@ def process_xlsx_upload(self, upload_id):
                 logger.error(f"It is not possible to save the status CRITICAL_ERROR in upload {upload_id}: {save_e}")
         return False
 
-@shared_task(bind=True, name='backoffice.tasks.process_request', queue='default')
-def process_request(self, request_id):
+@shared_task(bind=True, name='backoffice.tasks.process_dataset', queue='default')
+def process_dataset(self, dataset_id):
     """
-    Task to elaborate dataset data in a Request object
+    Task to elaborate soil data and finalize a Dataset object
     """
-    request = None
+    dataset = None
     try:
-        logger.info(f"Starting processing request {request_id}")
-        # Recupera l'oggetto Request
-        request = Request.objects.using('backoffice').get(id=request_id)
+        logger.info(f"Starting processing dataset {dataset_id}")
+        # Recupera l'oggetto Dataset
+        dataset = Dataset.objects.using('backoffice').get(id=dataset_id)
         
         # Verifica che lo stato sia IN_PROCESS
-        if request.status != "IN_PROCESS" and request.status != "IN_PREPROCESS":
-            logger.warning(f"Request {request_id} is not in IN_PROCESS or IN_PREPROCESS status  (current state: {request.status})")
+        if dataset.status != "IN_PROCESS" and dataset.status != "IN_PREPROCESS":
+            logger.warning(f"Dataset {dataset_id} is not in IN_PROCESS or IN_PREPROCESS status  (current state: {dataset.status})")
             return False
-
-        logger.info(f"Processing request {request_id} data...")
-        service = RequestService()
+        logger.info(f"Processing dataset {dataset_id} data...")
+        service = DatasetService()
         result = False
-        if request.status == "IN_PROCESS":
-            result = service.process_request_data(request_id)
+        if dataset.status == "IN_PROCESS":
+            result = service.process_dataset_data(dataset_id)
             if result:
-                request.status = "PUBLISHED"
-                logger.info(f"Request {request_id} published successfully")
+                dataset.status = "PUBLISHED"
+                logger.info(f"Dataset {dataset_id} published successfully")
             else:
-                request.status = "ERRORS"
-                logger.warning(f"Upload {request_id} completed with errors")
+                dataset.status = "ERRORS"
+                logger.warning(f"Dataset {dataset_id} not published")
         else :
-            result = service.preprocess_request_data(request_id)
+            result = service.preprocess_dataset_data(dataset_id)
             if result:
-                request.status = "PREPROCESSED"
-                logger.info(f"Request {request_id} completed preprocess successfully")
+                dataset.status = "PREPROCESSED"
+                logger.info(f"Dataset {dataset_id} completed preprocess successfully")
             else:
-                request.status = "ERRORS"
-                logger.warning(f"Upload {request_id} completed with errors")
+                dataset.status = "ERRORS"
+                logger.warning(f"dataset {dataset_id} preprocess with errors")
             
-        request.save(using='backoffice')
+        dataset.save(using='backoffice')
         # ---------------------------------------------------------------------------------------------
         # NUOVO BLOCCO: Trigger updatelayers se l'import è un successo
         # -----------------------------------------------------------
         return True
         
-    except Request.DoesNotExist:
-        logger.error(f"Request {request_id} not found")
+    except Dataset.DoesNotExist:
+        logger.error(f"Dataset {dataset_id} not found")
         return False
     except Exception as e:
-        logger.error(f"Errors elaborating request {request_id}: {str(e)}")
+        logger.error(f"Errors elaborating dataset {dataset_id}: {str(e)}")
         # Aggiorna lo stato in caso di errore critico
-        if request:
+        if dataset:
             try:
-                request.status = "ERRORS"
-                request.save(using='backoffice')
+                dataset.status = "ERRORS"
+                dataset.save(using='backoffice')
             except Exception as save_e:
-                logger.error(f"It is not possible to save the status ERRORS in request {request_id}: {save_e}")
+                logger.error(f"It is not possible to save the status ERRORS in dataset {dataset_id}: {save_e}")
         return False
 
 

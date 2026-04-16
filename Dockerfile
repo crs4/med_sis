@@ -27,6 +27,7 @@ COPY src/wait-for-databases.sh /usr/bin/wait-for-databases
 RUN chmod +x /usr/bin/wait-for-databases
 RUN chmod +x /usr/src/s4m_catalogue/tasks.py &&\
     chmod +x /usr/src/s4m_catalogue/entrypoint.sh
+RUN chmod +x /usr/src/s4m_catalogue/cron-backoffice-updatelayers.sh
 
 COPY src/celery.sh /usr/bin/celery-commands
 RUN chmod +x /usr/bin/celery-commands

@@ -37,6 +37,8 @@ services:
     entrypoint: ["/usr/src/s4m_catalogue/entrypoint.sh"]
     #command: "uwsgi --ini /usr/src/s4m_catalogue/uwsgi.ini"
     command: "python manage.py runserver 0.0.0.0:8000"
+    networks:
+      - soils4med
   # Celery worker that executes celery tasks created by Django.
   celery:
     << : *default-common-django
@@ -48,6 +50,8 @@ services:
       - IS_CELERY=True
     entrypoint: ["/usr/src/s4m_catalogue/entrypoint.sh"]
     command: "celery-cmd"
+    networks:
+      - soils4med
 
   # Nginx is serving django static and media files and proxies to django and geonode
   geonode:
@@ -70,8 +74,9 @@ services:
       - nginx-certificates:/geonode-certificates
       - statics:/mnt/volumes/statics
       - ./src/s4m_catalogue/static:/mnt/volumes/statics/static/s4m_catalogue/static
-    
     restart: unless-stopped
+    networks:
+      - soils4med
 
   # memcached service
   memcached:
@@ -85,6 +90,8 @@ services:
       timeout: 30s
       retries: 5
       start_period: 30s
+    networks:
+      - soils4med
 
   # Gets and installs letsencrypt certificates
   letsencrypt:
@@ -100,6 +107,8 @@ services:
     volumes:
       - nginx-certificates:/geonode-certificates
     restart: unless-stopped
+    networks:
+      - soils4med
 
   # Geoserver backend
   geoserver:
@@ -132,6 +141,8 @@ services:
         condition: service_healthy
       django:
         condition: service_healthy
+    networks:
+      - soils4med
 
   data-dir-conf:
     image: ${COMPOSE_PROJECT_NAME}/geoserver_data:${GEOSERVER_DATA_BASE_IMAGE_VERSION}
@@ -147,7 +158,8 @@ services:
     restart: unless-stopped
     healthcheck:
       test: "ls -A '/geoserver_data/data' | wc -l"
-
+    networks:
+      - soils4med
   # PostGIS database.
   db:
     image: ${COMPOSE_PROJECT_NAME}/postgis:${POSTGRES_BASE_IMAGE_VERSION}
@@ -169,7 +181,8 @@ services:
     # uncomment to enable remote connections to postgres
     #ports:
     #  - "5432:5432"
-
+    networks:
+      - soils4med
    # Vanilla Redis service. This is needed by celery
   
   redis:
@@ -179,7 +192,8 @@ services:
     volumes:
       - redisdata:/data
     restart: unless-stopped
-
+    networks:
+      - soils4med
   soildata:
     image: ${COMPOSE_PROJECT_NAME}/react:22-alpine3.21
     container_name: react4${COMPOSE_PROJECT_NAME}
@@ -189,7 +203,12 @@ services:
     restart: unless-stopped
     ports:
       - "3000:3000"
-  
+    networks:
+      - soils4med    
+# LUP4LDN netwok
+networks:
+  soils4med:
+    driver: bridge
 
 volumes:
   statics:

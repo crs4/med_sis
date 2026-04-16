@@ -10,11 +10,7 @@ from .serializers import *
 import logging
 import traceback
 
-
-
-
 logger = logging.getLogger(__name__)
-
 
 class UpdateLayersViewSet(viewsets.ViewSet):
     """
@@ -143,7 +139,6 @@ class XLSxUploadViewSet(viewsets.ModelViewSet):
 ###########################
 # Projects for Genealogy
 ###########################
-
 class ProjectViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows you to view and edit Projects metadata.
@@ -178,7 +173,6 @@ class ProjectViewSet(viewsets.ModelViewSet):
 ###########################
 # Point General
 ###########################
-
 class PointGeneralViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows you to view and edit Project Soil Point Data General Info.
@@ -932,14 +926,14 @@ class LabDataViewSet(viewsets.ModelViewSet):
         return queryset
 
 #########################################
-## Requests 
+## Datasets 
 #########################################   
-class RequestViewSet(viewsets.ModelViewSet):
+class DatasetViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows you to view and edit XLSxUpload.
     """
-    queryset = Request.objects.all() 
-    serializer_class = RequestSerializer
+    queryset = Dataset.objects.all() 
+    serializer_class = DatasetSerializer
     permission_classes = [permissions.IsAdminUser ]
     
     def get_queryset(self):
@@ -953,18 +947,10 @@ class RequestViewSet(viewsets.ModelViewSet):
         if name is not None:
             queryset = queryset.filter(name=name)
             
-        # Date Filter
-        _from = self.request.query_params.get('from', None)
-        _to = self.request.query_params.get('to', None)
-        if _from is not None:
-            queryset = queryset.filter(date__gte=_from)
-        if _to is not None:
-            queryset = queryset.filter(date__lte=_to)
-        
         # User name Filter
-        user_name = self.request.query_params.get('user', None)
-        if user_name is not None:
-            queryset = queryset.filter(user_name=user_name)
+        user = self.request.query_params.get('user', None)
+        if user is not None:
+            queryset = queryset.filter(user=user)
 
         # User email Filter
         user_email = self.request.query_params.get('email', None)
@@ -979,11 +965,11 @@ class RequestViewSet(viewsets.ModelViewSet):
         return queryset
     
     def list(self, request):
-        queryset = Request.objects.all()
-        serializer = RequestSerializer(queryset, many=True)
+        queryset = Dataset.objects.all()
+        serializer = DatasetSerializer(queryset, many=True)
         for item in serializer.data:
-            item.pop('f_aoi')
-            item.pop('f_data')
+            item.pop('filter')
+            item.pop('points')
             item.pop('k_variogram')
             item.pop('k_data')
         return Response(serializer.data)

@@ -1,0 +1,16 @@
+<layer>
+  <name>labdata_gypsum</name>
+  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7f52</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7fdd</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7f53</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-04-13 06:19:59.267 UTC</dateCreated>
+</layer>

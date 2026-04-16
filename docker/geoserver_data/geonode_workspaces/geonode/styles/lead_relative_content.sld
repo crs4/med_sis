@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <NamedLayer>
-    <Name>Lead relative content (%)</Name>
+    <Name>Lead Relative Content (%)</Name>
     <UserStyle>
-      <Name>Lead relative content (%)</Name>
-      <Title>Lead relative content (%)</Title>
+      <Name>lead_relative_content</Name>
+      <Title>Lead Relative Content (%)</Title>
       <FeatureTypeStyle>
         <Rule>
-          <Name>Lead under content</Name>
+          <Name>Lead below natural geochemical relative range</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
@@ -16,7 +16,7 @@
               </PropertyIsGreaterThanOrEqualTo>
               <PropertyIsLessThan>
                 <PropertyName>value</PropertyName>
-                <Literal>3.2</Literal>
+                <Literal>3.02</Literal>
               </PropertyIsLessThan>
             </And>
           </Filter>
@@ -25,7 +25,7 @@
               <Mark>
                 <WellKnownName>circle</WellKnownName>
                 <Fill>
-                  <CssParameter name="fill">#F37844</CssParameter>
+                  <CssParameter name="fill">#F72626</CssParameter>
                   <CssParameter name="fill-opacity">1</CssParameter>
                 </Fill>
                 <Stroke>
@@ -40,17 +40,17 @@
         </Rule>
 
         <Rule>
-          <Name>Lead natural content</Name>
+          <Name>Lead natural geochemical relative range</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
-                <Literal>3.2</Literal>
+                <Literal>3.02</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>39.5</Literal>
-              </PropertyIsLessThan>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -71,22 +71,26 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
-
         <Rule>
-          <Name>Lead over enrichment</Name>
+          <Name>Lead above natural geochemical relative range</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-             <PropertyIsGreaterThanOrEqualTo>
+            <And>
+	      <PropertyIsGreaterThan>
                 <PropertyName>value</PropertyName>
                 <Literal>39.5</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
+              </PropertyIsGreaterThan>
+	      <PropertyIsLessThanOrEqualTo>
+                <PropertyName>value</PropertyName>
+                <Literal>100</Literal>
+              </PropertyIsLessThanOrEqualTo>
+	    </And>
              </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>
                 <WellKnownName>circle</WellKnownName>
                 <Fill>
-                  <CssParameter name="fill">#F72626</CssParameter>
+                  <CssParameter name="fill">#919399</CssParameter>
                   <CssParameter name="fill-opacity">1</CssParameter>
                 </Fill>
                 <Stroke>
@@ -99,7 +103,6 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-       
       </FeatureTypeStyle>
     </UserStyle>
   </NamedLayer>

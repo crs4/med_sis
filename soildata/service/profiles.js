@@ -2,8 +2,9 @@ import { doFetchBackOffice, doFetchCatalogue, doFetchGeoserver }  from '../utili
 
 export const ProfileService = {
 
-  REQUEST_STATUSES : {
+  DATASET_STATUSES : {
     CREATED : "CREATED",
+    CONFIGURED : "CONFIGURED",
     IN_PROCESS : "IN PROCESS",
     PREPROCESSED : "PROCESSED",
     VALIDATED : "VALIDATED",
@@ -49,7 +50,7 @@ export const ProfileService = {
   
   async getLayers(ck, id) { 
     const ep = `point-layers?point=${id}`
-    return await get(ck, null, ep);
+    return doFetchBackOffice ( ep, null, 'GET', null, ck );
   },
 
   async getPhotos(ck, id) { 
@@ -78,7 +79,7 @@ export const ProfileService = {
     else return { ok: false }
   },
   
-  async save (endpoint, ck, payload) {
+  async save (ck, payload, endpoint ) {
     if ( ck ) 
       return await doFetchBackOffice ( endpoint, null, 'POST', payload, ck );
     else 

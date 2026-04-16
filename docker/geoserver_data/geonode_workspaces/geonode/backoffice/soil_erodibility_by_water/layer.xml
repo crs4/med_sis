@@ -1,19 +1,16 @@
 <layer>
   <name>soil_erodibility_by_water</name>
-  <id>LayerInfoImpl--3501644f:19b146de4f0:-a35</id>
+  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7e6c</id>
   <type>VECTOR</type>
   <defaultStyle>
-    <id>StyleInfoImpl--3501644f:19b146de4f0:17a3</id>
+    <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7fbc</id>
   </defaultStyle>
   <resource class="featureType">
-    <id>FeatureTypeInfoImpl--3501644f:19b146de4f0:-a36</id>
+    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7e6d</id>
   </resource>
-  <queryable>true</queryable>
-  <opaque>false</opaque>
-  <attribution> 
+  <attribution>
     <logoWidth>0</logoWidth>
     <logoHeight>0</logoHeight>
   </attribution>
-  <dateCreated>2025-12-12 21:34:33.142 UTC</dateCreated>
-  <dateModified>2025-12-22 22:10:23.826 UTC</dateModified>
+  <dateCreated>2026-04-13 08:18:35.453 UTC</dateCreated>
 </layer>

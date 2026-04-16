@@ -1,27 +1,25 @@
 <featureType>
-  <id>FeatureTypeInfoImpl--d81fc44:1994e223eb8:-73a6</id>
+  <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7e44</id>
   <name>point_layer_geo</name>
   <nativeName>point_layer_geo</nativeName>
   <namespace>
     <id>NamespaceInfoImpl-78ff667e:12476299803:-7ffe</id>
   </namespace>
-  <title>Point soil data: Layer main descriptions</title>
-  <abstract>It contains the point soil data layer main description by certain observable characteristics. The other parts of the layer data are in the Gis data: &quot;Point soil data: Matrix colour&quot;; &quot;Point soil data: Redoximorphic&quot;; &quot;Point soil data: Layer Coarse fragments&quot;; &quot;Point soil data: Layer Artefacts&quot;; &quot;Point soil data: Layer Structure&quot;; &quot;Point soil data: Layer Coatings and bridges&quot;; &quot;Point soil data: Cracks&quot;; &quot;Point soil data: Layer Carbonates&quot;; &quot;Point soil data: Layer Secondary carbonates&quot;; &quot;Point soil data: Layer Gypsum&quot;; &quot;Point soil data:Layer Secondary silica&quot;; &quot;Point soil data:Layer Human alterations&quot;.  It is associated/linked to &quot;Point soil data: General&quot;</abstract>
+  <title>point_layer_geo</title>
+  <abstract>No abstract provided</abstract>
   <keywords>
     <string>features</string>
-    <string>Soil Data Points</string>
     <string>point_layer_geo</string>
-    <string>Points Soil Data</string>
   </keywords>
   <srs>EPSG:4326</srs>
   <nativeBoundingBox>
-    <minx>-20.0</minx>
+    <minx>-10.0</minx>
     <maxx>50.0</maxx>
     <miny>10.0</miny>
     <maxy>50.0</maxy>
   </nativeBoundingBox>
   <latLonBoundingBox>
-    <minx>-20.0</minx>
+    <minx>-10.0</minx>
     <maxx>50.0</maxx>
     <miny>10.0</miny>
     <maxy>50.0</maxy>
@@ -30,13 +28,6 @@
   <enabled>true</enabled>
   <advertised>true</advertised>
   <metadata>
-    <entry key="time">
-      <dimensionInfo>
-        <enabled>false</enabled>
-        <presentation>LIST</presentation>
-        <units>ISO8601</units>
-      </dimensionInfo>
-    </entry>
     <entry key="cachingEnabled">false</entry>
   </metadata>
   <store class="dataStore">

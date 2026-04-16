@@ -1,17 +1,16 @@
 <layer>
   <name>layer_human_alterations_geo</name>
-  <id>LayerInfoImpl-701670f8:19b0d9dac21:-7fe2</id>
+  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7e9e</id>
   <type>VECTOR</type>
   <defaultStyle>
-    <id>StyleInfoImpl-92bd292:1994dc6abb7:-7fe7</id>
+    <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7ffb</id>
   </defaultStyle>
   <resource class="featureType">
-    <id>FeatureTypeInfoImpl-701670f8:19b0d9dac21:-7fe3</id>
-  </resource> 
+    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7e9f</id>
+  </resource>
   <attribution>
     <logoWidth>0</logoWidth>
     <logoHeight>0</logoHeight>
   </attribution>
-  <dateCreated>2025-12-11 13:46:35.23 UTC</dateCreated>
-  <dateModified>2025-12-12 18:58:30.280 UTC</dateModified>
+  <dateCreated>2026-04-13 08:00:33.657 UTC</dateCreated>
 </layer>

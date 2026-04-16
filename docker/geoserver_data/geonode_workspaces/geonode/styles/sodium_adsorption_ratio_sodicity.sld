@@ -3,7 +3,7 @@
   <NamedLayer>
     <Name>Sodium adsorption ratio (SAR) - sodicity</Name>
     <UserStyle>
-      <Name>Sodium adsorption ratio (SAR) - sodicity</Name>
+      <Name>sodium_adsorption_ratio_sodicity</Name>
       <Title>Sodium adsorption ratio (SAR) - sodicity</Title>
       <FeatureTypeStyle>
         <Rule>
@@ -38,7 +38,6 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
         <Rule>
           <Name>Sodium impacted soil</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
@@ -52,7 +51,7 @@
               <Mark>
                 <WellKnownName>circle</WellKnownName>
                 <Fill>
-                  <CssParameter name="fill">#F72626</CssParameter>
+                  <CssParameter name="fill">#919399</CssParameter>
                   <CssParameter name="fill-opacity">1</CssParameter>
                 </Fill>
                 <Stroke>
@@ -64,8 +63,7 @@
               <Size>14</Size>
             </Graphic>
           </PointSymbolizer>
-        </Rule>
-       
+        </Rule>       
       </FeatureTypeStyle>
     </UserStyle>
   </NamedLayer>

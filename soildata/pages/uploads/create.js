@@ -183,10 +183,9 @@ export default function Page( )  {
 
     } catch (error) {
       toast.current.show({severity:'error', summary: 'Errors!', detail: 'Errors saving data' , life: 3000}); 
-    } finally {
-      setUploaded(true);
-      setUploading(false);
-    }
+    } 
+    setUploaded(true);
+    setUploading(false);
   } 
   
   let reportHeaders = ['Element', 'Row', 'Column', 'Error'];

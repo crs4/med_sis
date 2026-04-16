@@ -3,11 +3,11 @@
   <NamedLayer>
     <Name>CEC/Clay ratio</Name>
     <UserStyle>
-      <Name>CEC/Clay ratio</Name>
-      <Title>CEC/Clay ratio</Title>
+      <Name>cec_clay_ratio</Name>
+      <Title>Point Red Symbol Border</Title>
       <FeatureTypeStyle>
         <Rule>
-          <Name>No reactive clay</Name>
+          <Name>Potential presence of low charge density clay</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
@@ -16,7 +16,7 @@
               </PropertyIsGreaterThanOrEqualTo>
               <PropertyIsLessThan>
                 <PropertyName>value</PropertyName>
-                <Literal>1</Literal>
+                <Literal>0.24</Literal>
               </PropertyIsLessThan>
             </And>
           </Filter>
@@ -38,20 +38,26 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-        <Rule>
-          <Name>Potentially reactive clay</Name>
+	<Rule>
+          <Name>Potential presence of high charge density clay</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-             <PropertyIsGreaterThanOrEqualTo>
+            <And>
+              <PropertyIsGreaterThanOrEqualTo>
+                <PropertyName>value</PropertyName>
+                <Literal>0.24</Literal>
+              </PropertyIsGreaterThanOrEqualTo>
+              <PropertyIsLessThan>
                 <PropertyName>value</PropertyName>
                 <Literal>1</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
-             </Filter>
+              </PropertyIsLessThan>
+            </And>
+          </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>
                 <WellKnownName>circle</WellKnownName>
                 <Fill>
-                  <CssParameter name="fill">#F72626</CssParameter>
+                  <CssParameter name="fill">#2649F7</CssParameter>
                   <CssParameter name="fill-opacity">1</CssParameter>
                 </Fill>
                 <Stroke>
@@ -64,7 +70,32 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-       
+        <Rule>
+          <Name>Potential presence of lignite, high charge density smectite or vermiculite</Name>
+          <Filter xmlns="http://www.opengis.net/ogc">
+             <PropertyIsGreaterThanOrEqualTo>
+                <PropertyName>value</PropertyName>
+                <Literal>1</Literal>
+              </PropertyIsGreaterThanOrEqualTo>
+             </Filter>
+          <PointSymbolizer>
+            <Graphic>
+              <Mark>
+                <WellKnownName>circle</WellKnownName>
+                <Fill>
+                  <CssParameter name="fill">#919399</CssParameter>
+                  <CssParameter name="fill-opacity">1</CssParameter>
+                </Fill>
+                <Stroke>
+                  <CssParameter name="stroke">#777777</CssParameter>
+                  <CssParameter name="stroke-width">2</CssParameter>
+                  <CssParameter name="stroke-opacity">1</CssParameter>
+                </Stroke>
+              </Mark>
+              <Size>14</Size>
+            </Graphic>
+          </PointSymbolizer>
+        </Rule>       
       </FeatureTypeStyle>
     </UserStyle>
   </NamedLayer>

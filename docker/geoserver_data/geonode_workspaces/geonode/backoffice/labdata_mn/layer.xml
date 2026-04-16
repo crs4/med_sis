@@ -1,0 +1,16 @@
+<layer>
+  <name>labdata_mn</name>
+  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7f32</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7fd8</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7f33</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-04-13 07:02:13.244 UTC</dateCreated>
+</layer>

@@ -1,17 +1,16 @@
 <layer>
   <name>layer_lithogenic_variegates_geo</name>
-  <id>LayerInfoImpl-701670f8:19b0d9dac21:-7fdc</id>
+  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7e9b</id>
   <type>VECTOR</type>
   <defaultStyle>
-    <id>StyleInfoImpl-92bd292:1994dc6abb7:-7fe7</id>
-  </defaultStyle> 
+    <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7ffb</id>
+  </defaultStyle>
   <resource class="featureType">
-    <id>FeatureTypeInfoImpl-701670f8:19b0d9dac21:-7fdd</id>
+    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7e9c</id>
   </resource>
   <attribution>
     <logoWidth>0</logoWidth>
     <logoHeight>0</logoHeight>
   </attribution>
-  <dateCreated>2025-12-11 13:50:54.457 UTC</dateCreated>
-  <dateModified>2025-12-12 18:58:56.76 UTC</dateModified>
+  <dateCreated>2026-04-13 08:01:36.149 UTC</dateCreated>
 </layer>

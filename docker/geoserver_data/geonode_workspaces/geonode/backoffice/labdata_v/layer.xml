@@ -1,0 +1,16 @@
+<layer>
+  <name>labdata_v</name>
+  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7eda</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7fb9</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7edb</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-04-13 07:42:39.108 UTC</dateCreated>
+</layer>

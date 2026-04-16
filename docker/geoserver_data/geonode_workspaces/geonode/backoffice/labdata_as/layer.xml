@@ -1,0 +1,19 @@
+<layer>
+  <name>labdata_as</name>
+  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7ff0</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7fef</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7ff1</id>
+  </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-04-13 04:40:46.234 UTC</dateCreated>
+  <dateModified>2026-04-13 06:56:25.687 UTC</dateModified>
+</layer>

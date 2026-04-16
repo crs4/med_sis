@@ -1,0 +1,16 @@
+<layer>
+  <name>labdata_silt</name>
+  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7eeb</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7ffb</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7eec</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-04-13 07:30:27.750 UTC</dateCreated>
+</layer>

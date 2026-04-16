@@ -1,25 +1,25 @@
 <featureType>
-  <id>FeatureTypeInfoImpl-9a9970d:19b217b2ae3:-7ffb</id>
+  <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7e4c</id>
   <name>sodicity_salinity_ratio</name>
   <nativeName>sodicity_salinity_ratio</nativeName>
   <namespace>
     <id>NamespaceInfoImpl-78ff667e:12476299803:-7ffe</id>
   </namespace>
-  <title>Sodicity salinity ratio (SSR) indicator</title>
-  <abstract>Soil chemical health: Indicator of potential salinity and sodification remediation by gypsum input, without permeability, pH or EC being unbalance (Rhoades et al., 1999) FAO SoilSTAT domain: Sodification</abstract>
+  <title>sodicity_salinity_ratio</title>
+  <abstract>No abstract provided</abstract>
   <keywords>
     <string>features</string>
     <string>sodicity_salinity_ratio</string>
   </keywords>
   <srs>EPSG:4326</srs>
   <nativeBoundingBox>
-    <minx>-20.0</minx>
+    <minx>-10.0</minx>
     <maxx>50.0</maxx>
     <miny>10.0</miny>
     <maxy>50.0</maxy>
   </nativeBoundingBox>
   <latLonBoundingBox>
-    <minx>-20.0</minx>
+    <minx>-10.0</minx>
     <maxx>50.0</maxx>
     <miny>10.0</miny>
     <maxy>50.0</maxy>

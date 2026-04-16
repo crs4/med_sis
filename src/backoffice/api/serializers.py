@@ -496,12 +496,12 @@ class  LayerStructureSerializer(serializers.ModelSerializer):
  
 
 #########################################
-## Requests 
+## Datasets 
 #########################################
 
-class RequestSerializer(serializers.ModelSerializer):
+class DatasetSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Request 
+        model = Dataset 
         fields = '__all__'
         read_only_fields = ('id',)   
     
@@ -515,11 +515,11 @@ class RequestSerializer(serializers.ModelSerializer):
         # 
         # (es. 'data' o 'operation'). Se modifico il titolo non deve riprocessare.
         # L'if il task solo se vengono modificati i campi che richiedono un ri-processamento.
-        if 'status' in validated_data and 'kriging' in validated_data:
+        if 'status' in validated_data:
             # start_processing in models.py controlla: 
-            # if self.status == "VALIDATED" and self.kriging == true --> interpolate and publish
-            # if self.status == "VALIDATED" and self.kriging == false --> publish
-            # if self.status == "CREATED" and self.kriging == true --> preprocess
+            # if self.status == "VALIDATED" and self.kriging == true --> interpolate and publish --> "PUBLISHED"
+            # if self.status == "VALIDATED" and self.kriging == false --> publish --> "PUBLISHED"
+            # if self.status == "CONFIGURED" and self.kriging == true --> preprocess --> "PREPROCESSED"
             instance.save(using='backoffice')
             
             # Avvia il processo
@@ -528,7 +528,7 @@ class RequestSerializer(serializers.ModelSerializer):
             # Opzionale: Loggare se il processo non è partito per qualche motivo
             if not started:
                 logger.error(
-                    f"Impossible to restart processing for Request ID {instance.id}. "
+                    f"Impossible to restart processing for Dataset ID {instance.id}. "
                     f"Current status: {instance.status}. "
                     "Check Celery configuration or model constraints."
                 )

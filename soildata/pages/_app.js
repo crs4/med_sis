@@ -7,6 +7,8 @@ import 'primeicons/primeicons.css';
 import 'primereact/resources/primereact.css';
 import '../styles/layout/layout.scss';
 import '../styles/htmllegend/L.Control.HtmlLegend.css';
+import '../styles/mygeoman.css'
+
 import {useRouter} from 'next/router';
 
 export default function MyApp({ Component, pageProps }) {

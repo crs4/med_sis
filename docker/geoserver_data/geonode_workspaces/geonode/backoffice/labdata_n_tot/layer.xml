@@ -1,0 +1,16 @@
+<layer>
+  <name>labdata_n_tot</name>
+  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7f2f</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7fd7</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7f30</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-04-13 07:03:27.529 UTC</dateCreated>
+</layer>

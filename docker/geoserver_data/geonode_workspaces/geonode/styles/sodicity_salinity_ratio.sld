@@ -1,34 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <NamedLayer>
-    <Name>sodicity_salinity_ratio</Name>
+    <Name>Sodicity salinity ratio - SSR</Name>
     <UserStyle>
-<<<<<<< HEAD
-      <Name>sodicity salinity ratio</Name>
-      <Title>sodicity salinity ratio</Title>
-=======
-      <Name>circle_point</Name>
-      <Title>Point Red Symbol Border</Title>
->>>>>>> 58dcde557d1da9070628851a32775b2507519611
+      <Name>sodicity_salinity_ratio</Name>
+      <Title>Sodicity salinity ratio - SSR</Title>
       <FeatureTypeStyle>
         <Rule>
           <Name>Unbeneficial impact of gypsum input</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
-<<<<<<< HEAD
-                <PropertyName>value</PropertyName>
-                <Literal>0</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
-                <PropertyName>value</PropertyName>
-=======
                 <PropertyName>sar_elcond</PropertyName>
                 <Literal>0</Literal>
               </PropertyIsGreaterThanOrEqualTo>
               <PropertyIsLessThan>
                 <PropertyName>sar_elcond</PropertyName>
->>>>>>> 58dcde557d1da9070628851a32775b2507519611
                 <Literal>5</Literal>
               </PropertyIsLessThan>
             </And>
@@ -50,18 +37,12 @@
               <Size>14</Size>
             </Graphic>
           </PointSymbolizer>
-        </Rule>
-
-       
+        </Rule>       
         <Rule>
           <Name>Beneficial impact of gypsum input</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
              <PropertyIsGreaterThanOrEqualTo>
-<<<<<<< HEAD
-                <PropertyName>value</PropertyName>
-=======
                 <PropertyName>sar_elcond</PropertyName>
->>>>>>> 58dcde557d1da9070628851a32775b2507519611
                 <Literal>5</Literal>
               </PropertyIsGreaterThanOrEqualTo>
              </Filter>
@@ -82,8 +63,7 @@
               <Size>14</Size>
             </Graphic>
           </PointSymbolizer>
-        </Rule>
-       
+        </Rule>       
       </FeatureTypeStyle>
     </UserStyle>
   </NamedLayer>

@@ -1,26 +1,25 @@
 <featureType>
-  <id>FeatureTypeInfoImpl--d81fc44:1994e223eb8:-7614</id>
+  <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7f5c</id>
   <name>labdata_geo</name>
   <nativeName>labdata_geo</nativeName>
   <namespace>
     <id>NamespaceInfoImpl-78ff667e:12476299803:-7ffe</id>
   </namespace>
-  <title>Point soil data: Laboratory data</title>
-  <abstract>Laboratory data of Legacy Point Soil Data. It refers to analytical procedures for soil characterization and WRB Annex 2 provides summaries of recommended analytical procedures to be used. Full descriptions can be found in Procedures for soil analysis (Van Reeuwijk, 2002) and the USDA Kellogg Soil Survey Laboratory Methods Manual (Soil Survey Staff, 2014).</abstract>
+  <title>labdata_geo</title>
+  <abstract>No abstract provided</abstract>
   <keywords>
-    <string>Points Soil Data</string>
     <string>labdata_geo</string>
     <string>features</string>
   </keywords>
   <srs>EPSG:4326</srs>
   <nativeBoundingBox>
-    <minx>-20.0</minx>
+    <minx>-10.0</minx>
     <maxx>50.0</maxx>
     <miny>10.0</miny>
     <maxy>50.0</maxy>
   </nativeBoundingBox>
   <latLonBoundingBox>
-    <minx>-20.0</minx>
+    <minx>-10.0</minx>
     <maxx>50.0</maxx>
     <miny>10.0</miny>
     <maxy>50.0</maxy>
@@ -29,13 +28,6 @@
   <enabled>true</enabled>
   <advertised>true</advertised>
   <metadata>
-    <entry key="time">
-      <dimensionInfo>
-        <enabled>false</enabled>
-        <presentation>LIST</presentation>
-        <units>ISO8601</units>
-      </dimensionInfo>
-    </entry>
     <entry key="cachingEnabled">false</entry>
   </metadata>
   <store class="dataStore">

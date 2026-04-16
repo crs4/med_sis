@@ -113,7 +113,7 @@ class TaxonomyAdmin(admin.ModelAdmin):
 @admin.register(TaxonomyValue)
 class TaxonomyValueAdmin(admin.ModelAdmin):
     search_fields = ('id', 'taxonomy', 'value',  )
-@admin.register(Request)
-class RequestsAdmin(admin.ModelAdmin):
-    list_display = ( 'name', 'user_name', 'user_email', 'date', 'src_name', 'src_typename', 'status' )
-    search_fields = ( 'name', 'user_name', 'user_email', 'src_typename', 'date', 'status' )   
+@admin.register(Dataset)
+class DatasetAdmin(admin.ModelAdmin):
+    list_display = ( 'name', 'user', 'user_email', 'date', 'source', 'src_typename', 'status' )
+    search_fields = ( 'name', 'user', 'user_email', 'src_typename', 'date', 'status' )   

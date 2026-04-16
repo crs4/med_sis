@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <NamedLayer>
-    <Name>Air Capacity</Name>
+    <Name>Air Capacity (%)</Name>
     <UserStyle>
-      <Name>Air Capacity</Name>
-      <Title>Air Capacity</Title>
+      <Name>air_capacity</Name>
+      <Title>Air Capacity (%)</Title>
       <FeatureTypeStyle>
         <Rule>
           <Name>Poor root zone aeration</Name>
@@ -58,7 +58,7 @@
               <Mark>
                 <WellKnownName>circle</WellKnownName>
                 <Fill>
-                  <CssParameter name="fill">#2649F7</CssParameter>
+                  <CssParameter name="fill">#7551e0</CssParameter>
                   <CssParameter name="fill-opacity">1</CssParameter>
                 </Fill>
                 <Stroke>

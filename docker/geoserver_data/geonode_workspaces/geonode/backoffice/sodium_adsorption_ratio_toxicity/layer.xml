@@ -1,0 +1,16 @@
+<layer>
+  <name>sodium_adsorption_ratio_toxicity</name>
+  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7e3d</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7fbe</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7e3e</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-04-13 08:43:22.537 UTC</dateCreated>
+</layer>

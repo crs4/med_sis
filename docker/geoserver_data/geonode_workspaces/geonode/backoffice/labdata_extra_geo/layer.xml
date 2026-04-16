@@ -1,0 +1,16 @@
+<layer>
+  <name>labdata_extra_geo</name>
+  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7f6c</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7ffb</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7f6d</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-04-13 06:09:57.592 UTC</dateCreated>
+</layer>

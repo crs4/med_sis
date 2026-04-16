@@ -1,0 +1,16 @@
+<layer>
+  <name>labdata_slake_test</name>
+  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7ee8</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7fbb</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7ee9</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-04-13 07:31:59.103 UTC</dateCreated>
+</layer>

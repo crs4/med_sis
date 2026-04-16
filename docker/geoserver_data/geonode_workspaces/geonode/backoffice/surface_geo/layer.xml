@@ -1,19 +1,16 @@
 <layer>
   <name>surface_geo</name>
-  <id>LayerInfoImpl--d81fc44:1994e223eb8:-73a8</id>
+  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7eb9</id>
   <type>VECTOR</type>
   <defaultStyle>
-    <id>StyleInfoImpl--d81fc44:1994e223eb8:-6762</id>
+    <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7ffb</id>
   </defaultStyle>
   <resource class="featureType">
-    <id>FeatureTypeInfoImpl--d81fc44:1994e223eb8:-73a9</id>
+    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7eba</id>
   </resource>
-  <queryable>true</queryable>
-  <opaque>false</opaque>
   <attribution>
     <logoWidth>0</logoWidth>
     <logoHeight>0</logoHeight>
   </attribution>
-  <dateCreated>2025-09-17 08:57:43.997 UTC</dateCreated>
-  <dateModified>2025-12-23 01:24:30.778 UTC</dateModified>
+  <dateCreated>2026-04-13 07:52:13.110 UTC</dateCreated>
 </layer>

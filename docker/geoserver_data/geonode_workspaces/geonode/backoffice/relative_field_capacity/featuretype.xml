@@ -1,25 +1,25 @@
 <featureType>
-  <id>FeatureTypeInfoImpl-172bd526:19b0f8487ed:-7ffa</id>
+  <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7e56</id>
   <name>relative_field_capacity</name>
   <nativeName>relative_field_capacity</nativeName>
   <namespace>
     <id>NamespaceInfoImpl-78ff667e:12476299803:-7ffe</id>
   </namespace>
-  <title>Relative field capacity (RFC) indicator</title>
-  <abstract>Soil pysichal health: the relative field capacity (RFC) indicator, represents soil&apos;s ability to store and provide water available to plant roots (Di Prima et al., 2024) FAO SoilSTAT domain: Waterlogging</abstract>
+  <title>relative_field_capacity</title>
+  <abstract>No abstract provided</abstract>
   <keywords>
     <string>features</string>
     <string>relative_field_capacity</string>
   </keywords>
   <srs>EPSG:4326</srs>
   <nativeBoundingBox>
-    <minx>-20.0</minx>
+    <minx>-10.0</minx>
     <maxx>50.0</maxx>
     <miny>10.0</miny>
     <maxy>50.0</maxy>
   </nativeBoundingBox>
   <latLonBoundingBox>
-    <minx>-20.0</minx>
+    <minx>-10.0</minx>
     <maxx>50.0</maxx>
     <miny>10.0</miny>
     <maxy>50.0</maxy>
@@ -35,6 +35,8 @@
   </store>
   <serviceConfiguration>false</serviceConfiguration>
   <simpleConversionEnabled>false</simpleConversionEnabled>
+  <internationalTitle/>
+  <internationalAbstract/>
   <maxFeatures>0</maxFeatures>
   <numDecimals>0</numDecimals>
   <padWithZeros>false</padWithZeros>

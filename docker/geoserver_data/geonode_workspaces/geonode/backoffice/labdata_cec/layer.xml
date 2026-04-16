@@ -1,0 +1,16 @@
+<layer>
+  <name>labdata_cec</name>
+  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7f87</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7fea</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7f88</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-04-13 06:02:11.77 UTC</dateCreated>
+</layer>

@@ -22,6 +22,7 @@ export const doFetch = async ( base_url, endpoint, id, method, payload, cookie) 
     }
     const isJson = response.headers.get('content-type')?.includes('application/json');
     const data = isJson && await response.json();
+    console.log(data)
     return { data: data, ok: true, status: response.status }   
   }
   catch( error )  {
@@ -45,7 +46,7 @@ export const doFetchGeoserver = async (dataset, cookie) =>
     let csrftoken = getMyCookie(cookie, 'csrftoken');
     let url = process.env.NEXT_PUBLIC_GEOSERVER_BASE_URL 
     url += '/ows?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetFeature&outputFormat=application%2Fjson&'
-    url += 'typename=' + dataset + '&access_token=' + csrftoken;
+    url += 'typename=' + dataset + '&maxFeatures=50000&access_token=' + csrftoken;
     let headers = {
       Accept: "application/json"
     };
@@ -54,6 +55,7 @@ export const doFetchGeoserver = async (dataset, cookie) =>
       return { data: null, ok: false, status: response.status }
     }
     const data = await response.json();
+    console.log(data)
     return { data: data, ok: true, status: response.status }   
   }
   catch( error )  {

@@ -953,83 +953,71 @@ class LayerStructure(models.Model):
         unique_together = (('layer', 'level'),)
         
 ############################################################
-# REQUEST
+# DATASET
 # Statuses:
-# if status == CREATED and kriging == false 
+# if status == CREATED  
 #   --> do nothing 
-# if status == VALIDATED and kriging == false 
-#   --> publication in REACT ( -> IN_PROCESS -> PUBLISHED, ERRORS)
-# if status == CREATED and kriging == true  -> IN_PROCESS
-#   -->  build VARIOGRAM in GN (IN_PROCESS -> PREPROCESSED, ERRORS)
-# if status == PREPROCESSED and kriging == true  
+# if status == CONFIGURED and kriging == true  -> IN_PREPROCESS
+#   -->  build VARIOGRAM in GN (IN_PREPROCESS -> PREPROCESSED, ERRORS)
+# if status == PREPROCESSED   
 #   --> do nothing
-# if status == VALIDATED and kriging == true 
+# if status == VALIDATED and kriging == true  -> IN_PROCESS 
+#   --> Interpolation in GN (IN_PROCESS -> PUBLISHED, ERRORS)
+# if status == VALIDATED and kriging == false  -> IN_PROCESS 
 #   --> Interpolation in GN (IN_PROCESS -> PUBLISHED, ERRORS) 
-# No changes if PUBLISHED ---> need to be cloned 
+#  
 ############################################################
-REQUEST_STATUSES = [
+DATASET_STATUSES = [
     ("CREATED" , "CREATED"),
-    ("IN_PREPROCESS" , "IN PROCESS"),
-    ("PREPROCESSED" , "PROCESSED"),
-    ("VALIDATED" , "VALIDATED"),
-    ("INTERPOLATED" , "INTERPOLATED"),
+    ("CONFIGURED" , "CONFIGURED"),
+    ("IN_PREPROCESS" , "IN PREPROCESS"),
+    ("PREPROCESSED" , "PREPROCESSED"),
     ("VALIDATED" , "VALIDATED"),
     ("IN_PROCESS" , "IN PROCESS"),
     ("PUBLISHED" , "PUBLISHED"),
     ("ERRORS" , "ERRORS"),
-]     
-class Request(models.Model):
+]
+class Dataset(models.Model):
     name = models.TextField( db_comment='Name')
-    user_name = models.TextField( db_comment='SIS Staff member name')
+    user = models.TextField( db_comment='SIS Staff member id')
     user_email = models.TextField( db_comment='SIS Staff member email')
     date = models.DateField( db_comment='Creation date')
-    src_name = models.TextField( db_comment='Name of the source', blank=True, null=True)
+    source = models.TextField( db_comment='Name of the source', blank=True, null=True)
     src_typename = models.TextField( db_comment='Geoserver typename of the source', blank=True, null=True)
-    src_count = models.PositiveIntegerField( db_comment='Number of soil points date in the source', blank=True, null=True)
-    src_data = models.JSONField( db_comment='Source soil points data', blank=True, null=True) 
-    f_aoi = models.JSONField( db_comment='Area of Interest for the spatial filter') 
-    f_from = models.DateField( db_comment='Filter for date of points soil data using a period', blank=True, null=True)
-    f_to = models.DateField( db_comment='Filter for date of points soil data using a period ', blank=True, null=True)
-    f_upper = models.PositiveIntegerField( db_comment='Filter for upper depth in cm', blank=True, null=True)
-    f_lower = models.PositiveIntegerField( db_comment='Filter for lower depth in cm', blank=True, null=True )
-    f_project = models.TextField( db_comment='Filter for project of the points soil data', blank=True, null=True)
-    f_type = models.TextField( db_comment='Filter for type of points soil data', blank=True, null=True)
-    f_method = models.TextField( db_comment='field name of the interpolate measure ', blank=True, null=True)
-    f_data = models.JSONField( db_comment='Filtered soil points data', blank=True, null=True) 
+    typename = models.TextField( db_comment='Geoserver typename of the result', blank=True, null=True)
+    points = models.JSONField( db_comment='Source soil points data', blank=True, null=True) 
+    filter = models.JSONField( db_comment='Filter parameters', blank=True, null=True) 
     kriging = models.BooleanField(blank=True, null=True, db_comment='It Needs Interpolation')
-    k_measure = models.TextField( db_comment='field name of the interpolate measure ', blank=True, null=True)
     k_variogram = models.JSONField( db_comment='Variogram - interpolation preliminary result if done and what_interpolation is true', blank=True, null=True) 
     k_params = models.JSONField( db_comment='interpolation parameters', blank=True, null=True)
     k_data = models.JSONField( db_comment='Points with aggregate measure, can be empty', blank=True, null=True) 
     k_gn_raster = models.TextField( db_comment='Geonode Id of the raster', blank=True, null=True)
-    gn_result = models.TextField( db_comment='Geonode Id of the points', blank=True, null=True)
-    status = models.TextField( choices=REQUEST_STATUSES, db_comment='Status of the request' )
+    catalogue_id = models.TextField( db_comment='Geonode Id of the dataset', blank=True, null=True)
+    status = models.TextField( choices=DATASET_STATUSES, db_comment='Status of the dataset' )
      
     objects = models.Manager().using('backoffice')
     
     def start_processing(self):
-        """Avvia il processo di elaborazione dei dati"""
-        from .tasks import process_request
-        if self.kriging:
-            if self.status == "VALIDATED":
-                self.status = "IN_PROCESS"
-            if self.status == "CREATED":
-                self.status = "IN_PREPROCESS"
-            self.save(using='backoffice')
-            # Questo garantisce che il task parta SOLO quando il dato è realmente scritto su DB.
-            transaction.on_commit(
-                lambda: process_request.delay(self.id),
-                using='backoffice')
-            return True
-        return False
+        """Start dataset creation"""
+        from .tasks import process_dataset
+        if self.status == "VALIDATED":
+            self.status = "IN_PROCESS"
+        if self.status == "CONFIGURED":
+            self.status = "IN_PREPROCESS"
+        self.save(using='backoffice')
+        # This ensures that the task starts ONLY when the data is actually written to DB.
+        transaction.on_commit(
+            lambda: process_dataset.delay(self.id),
+            using='backoffice')    
+        return True
     class Meta:
         managed = True
-        db_table = 'requests'
+        db_table = 'datasets'
+
 
 ###########################
 # LabDataExtraMeasureData
 ###########################
-
 class LabDataExtraMeasure(models.Model):
     id = models.BigAutoField(primary_key=True)
     point = models.ForeignKey(PointGeneral, on_delete=models.CASCADE, related_name='labdataextrameasure_point_set',  blank=True, null=True)

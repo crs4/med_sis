@@ -1,0 +1,16 @@
+<layer>
+  <name>labdata_awc</name>
+  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7fa4</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7fee</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7fa5</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-04-13 05:52:30.218 UTC</dateCreated>
+</layer>

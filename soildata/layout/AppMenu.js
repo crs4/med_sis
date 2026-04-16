@@ -39,6 +39,11 @@ const AppMenu = () => {
                     icon: 'pi pi-list',
                     to: '/points'
                 },
+                {
+                    label: 'Publisher',
+                    icon: 'pi pi-list',
+                    to: '/dataset'
+                },
             ]
         },
         { separator: true },
@@ -55,31 +60,14 @@ const AppMenu = () => {
         },
         { separator: true },
         {
-            label: 'Elaboration',
+            label: 'Tools',
             icon: 'pi pi-briefcase',
             items: [
                 {
-                    label: 'List',
+                    label: 'Hydro PTF',
                     icon: 'pi pi-list',
-                    to: '/request'
+                    to: '/hydroptf'
                 },
-            ]
-        },
-        { separator: true },
-        {
-            label: 'PTF',
-            icon: 'pi pi-calculator',
-            items: [
-                {
-                    label: 'List',
-                    icon: 'pi pi-list',
-                    to: '/ptf'
-                },
-                {
-                    label: 'New',
-                    icon: 'pi pi-wrench',
-                    to: '/ptf/create'
-                }
             ]
         },
         { separator: true },

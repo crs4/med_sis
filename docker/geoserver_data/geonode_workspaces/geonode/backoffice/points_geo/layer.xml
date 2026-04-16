@@ -1,19 +1,17 @@
 <layer>
   <name>points_geo</name>
-  <id>LayerInfoImpl-92bd292:1994dc6abb7:-7fea</id>
+  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7e30</id>
   <type>VECTOR</type>
   <defaultStyle>
-    <id>StyleInfoImpl-92bd292:1994dc6abb7:-7fe7</id>
+    <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7ffb</id>
   </defaultStyle>
   <resource class="featureType">
-    <id>FeatureTypeInfoImpl-92bd292:1994dc6abb7:-7feb</id>
+    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7e31</id>
   </resource>
-  <queryable>true</queryable>
-  <opaque>false</opaque>
   <attribution>
     <logoWidth>0</logoWidth>
     <logoHeight>0</logoHeight>
   </attribution>
-  <dateCreated>2025-09-15 15:04:45.617 UTC</dateCreated>
-  <dateModified>2025-12-12 19:11:08.892 UTC</dateModified>
+  <dateCreated>2026-04-13 08:47:18.896 UTC</dateCreated>
+  <dateModified>2026-04-13 08:49:30.278 UTC</dateModified>
 </layer>

@@ -1,19 +1,16 @@
 <layer>
   <name>cec_clay_ratio</name>
-  <id>LayerInfoImpl--d81fc44:1994e223eb8:-739c</id>
+  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7fb1</id>
   <type>VECTOR</type>
   <defaultStyle>
-    <id>StyleInfoImpl--d81fc44:1994e223eb8:-68e8</id>
+    <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7fe9</id>
   </defaultStyle>
   <resource class="featureType">
-    <id>FeatureTypeInfoImpl--d81fc44:1994e223eb8:-739d</id>
-  </resource> 
-  <queryable>true</queryable>
-  <opaque>false</opaque>
+    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7fb2</id>
+  </resource>
   <attribution>
     <logoWidth>0</logoWidth>
     <logoHeight>0</logoHeight>
   </attribution>
-  <dateCreated>2025-09-17 16:33:33.785 UTC</dateCreated>
-  <dateModified>2025-12-22 22:14:39.354 UTC</dateModified>
+  <dateCreated>2026-04-13 05:48:26.372 UTC</dateCreated>
 </layer>

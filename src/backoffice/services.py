@@ -3,17 +3,11 @@ import requests
 import subprocess
 from datetime import datetime
 from django.conf import settings
-from .models import XLSxUpload, Request
+from .models import XLSxUpload, Dataset
 import re
 import base64
 
-# Quick Tests ##
-file_data = None
-#with open('/usr/src/backoffice/files/mini-data.json', 'r') as f:
-#    file_data = json.load(f)
-
-######
-
+###### XLSs Upload
 class XLSxUploadService:
     def __init__(self):
         self.base_url = settings.API_BASE_URL
@@ -243,8 +237,8 @@ class XLSxUploadService:
                 self.report["errors"].append(error)
                 self.report["success"] = False 
 
-
-class RequestService:
+###### Dataset Publishing
+class DatasetService:
     def __init__(self):
         self.base_url = settings.API_BASE_URL
         # Configurazione dell'autenticazione basic
@@ -259,28 +253,27 @@ class RequestService:
         credentials = f"{self.auth_username}:{self.auth_password}"
         encoded_credentials = base64.b64encode(credentials.encode()).decode()
         return {'Authorization': f'Basic {encoded_credentials}'}
-
-        
-    def process_request_data(self, request_id):
+   
+    def process_dataset_data(self, dataset_id):
         try:
-            # get Request object
-            request = Request.objects.using('backoffice').get(id=request_id)
+            # get Dataset object
+            dataset = Dataset.objects.using('backoffice').get(id=dataset_id)
             
-            if not request.kriging :
-                return 
-            
-            if request.status != "IN_PROCESS" or request.status != "IN_PREPROCESS" :
-                raise ValueError("Request is not IN_PROCESS or IN_PREPROCESS status")
+            if dataset is not None:
+                if dataset.status == "IN_PROCESS" or dataset.status == "IN_PREPROCESS" :
+                    # read geoJSON points (EPSG:4326)    
+                    data = dataset.points_data
+                    if not isinstance(data, dict):
+                        data = json.loads(data)
 
-            # read src_data for geoJSON points (EPSG:4326)    
-            data = request.src_data
-            if not isinstance(data, dict):
-                data = json.loads(data)
-
-            parameters = request.parameters
-            if not isinstance(parameters, dict):
-                parameters = json.loads(parameters)
-            
+                    parameters = dataset.parameters
+                    if not isinstance(parameters, dict):
+                        parameters = json.loads(parameters)
+                else  :
+                    raise ValueError("Dataset is not IN_PROCESS or IN_PREPROCESS status")
+            else  :
+                raise ValueError("Dataset not found")
+    
             # clon = str(( lon_degree + 180 ) / 6 + 1) 
             # clat > 0 ? "6" : "7"  
             # make CMD
@@ -327,14 +320,10 @@ class RequestService:
             # salvare in request
             # request.status = preprocessed 
             # END
-
-            
-            
-            return True
-            
+                    
         except Exception as e:
-            request.status = "ERRORS"
-            request.save(using='backoffice')
+            dataset.status = "ERRORS"
+            dataset.save(using='backoffice')
             return False
     
     

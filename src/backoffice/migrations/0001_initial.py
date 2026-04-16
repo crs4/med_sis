@@ -1054,7 +1054,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="Request",
+            name="Dataset",
             fields=[
                 (
                     "id",
@@ -1066,11 +1066,11 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 ("name", models.TextField(db_comment="Name")),
-                ("user_name", models.TextField(db_comment="SIS Staff member name")),
+                ("user", models.TextField(db_comment="SIS Staff member name")),
                 ("user_email", models.TextField(db_comment="SIS Staff member email")),
                 ("date", models.DateField(db_comment="Creation date")),
                 (
-                    "src_name",
+                    "source",
                     models.TextField(
                         blank=True, db_comment="Name of the source", null=True
                     ),
@@ -1084,79 +1084,13 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
-                    "src_count",
-                    models.PositiveIntegerField(
-                        blank=True,
-                        db_comment="Number of soil points date in the source",
-                        null=True,
-                    ),
-                ),
-                (
-                    "src_data",
+                    "filter",
                     models.JSONField(
-                        blank=True, db_comment="Source soil points data", null=True
+                        db_comment="filters"
                     ),
                 ),
                 (
-                    "f_aoi",
-                    models.JSONField(
-                        db_comment="Area of Interest for the spatial filter"
-                    ),
-                ),
-                (
-                    "f_from",
-                    models.DateField(
-                        blank=True,
-                        db_comment="Filter for date of points soil data using a period",
-                        null=True,
-                    ),
-                ),
-                (
-                    "f_to",
-                    models.DateField(
-                        blank=True,
-                        db_comment="Filter for date of points soil data using a period ",
-                        null=True,
-                    ),
-                ),
-                (
-                    "f_upper",
-                    models.PositiveIntegerField(
-                        blank=True, db_comment="Filter for upper depth in cm", null=True
-                    ),
-                ),
-                (
-                    "f_lower",
-                    models.PositiveIntegerField(
-                        blank=True, db_comment="Filter for lower depth in cm", null=True
-                    ),
-                ),
-                (
-                    "f_project",
-                    models.TextField(
-                        blank=True,
-                        db_comment="Filter for project of the points soil data",
-                        null=True,
-                    ),
-                ),
-                (
-                    "f_type",
-                    models.TextField(
-                        blank=True,
-                        db_comment="Filter for type of points soil data",
-                        null=True,
-                    ),
-                ),
-                (
-                    "f_method",
-                    models.TextField(
-                        blank=True,
-                        db_comment="field name of the interpolate measure ",
-                        null=True,
-                    ),
-                ),
-                (
-                    "f_data",
+                    "points",
                     models.JSONField(
                         blank=True, db_comment="Filtered soil points data", null=True
                     ),
@@ -1204,7 +1138,7 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
-                    "gn_result",
+                    "geonode_id",
                     models.TextField(
                         blank=True, db_comment="Geonode Id of the points", null=True
                     ),
@@ -1214,10 +1148,10 @@ class Migration(migrations.Migration):
                     models.TextField(
                         choices=[
                             ("CREATED", "CREATED"),
-                            ("IN_PREPROCESS", "IN PROCESS"),
+                            ("IN_PREPROCESS", "IN PREPROCESS"),
                             ("PREPROCESSED", "PROCESSED"),
                             ("VALIDATED", "VALIDATED"),
-                            ("INTERPOLATED", "INTERPOLATED"),
+                            ("CONFIGURED", "CONFIGURED"),
                             ("VALIDATED", "VALIDATED"),
                             ("IN_PROCESS", "IN PROCESS"),
                             ("PUBLISHED", "PUBLISHED"),
@@ -1228,7 +1162,7 @@ class Migration(migrations.Migration):
                 ),
             ],
             options={
-                "db_table": "requests",
+                "db_table": "datasets",
                 "managed": True,
             },
         ),

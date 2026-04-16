@@ -165,6 +165,8 @@ export default function Page()  {
   };
 
   const statusBodyTemplate = (rowData) => {
+    console.log('statusBodyTemplate')
+    console.log(rowData)
     if ( rowData.status === UploadService.STATUSES.IMPORT_SUCCESS )
       return ( <Tag icon="pi pi-check" severity="success" value="All saved"></Tag>)
     else if ( rowData.status === UploadService.STATUSES.IMPORT_WITH_ERROR )
@@ -227,9 +229,6 @@ export default function Page()  {
   const mapUploads = (data) => {
     return [...(data || [])].map((d) => {
         d.date = new Date(d.date);
-        const delayMS = Date.now() - d.date;
-        if ( d.status === UploadService.STATUSES.IN_PROCESS && delayMS > 5*60*1000 ) // delay > 5h -> Error
-          d.status = UploadService.STATUSES.CRITICAL_ERROR
         return d;
     });
   };

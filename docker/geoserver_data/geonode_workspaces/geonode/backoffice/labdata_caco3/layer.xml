@@ -1,0 +1,16 @@
+<layer>
+  <name>labdata_caco3</name>
+  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7f94</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7fec</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7f95</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-04-13 05:59:33.165 UTC</dateCreated>
+</layer>

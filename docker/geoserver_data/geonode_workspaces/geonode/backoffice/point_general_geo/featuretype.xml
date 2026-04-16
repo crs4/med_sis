@@ -1,27 +1,25 @@
 <featureType>
-  <id>FeatureTypeInfoImpl--d81fc44:1994e223eb8:-73b2</id>
+  <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7e49</id>
   <name>point_general_geo</name>
   <nativeName>point_general_geo</nativeName>
   <namespace>
     <id>NamespaceInfoImpl-78ff667e:12476299803:-7ffe</id>
   </namespace>
-  <title>Point soil data: General description</title>
-  <abstract>General description of the point soil data</abstract>
+  <title>point_general_geo</title>
+  <abstract>No abstract provided</abstract>
   <keywords>
-    <string>point_general_geo</string>
     <string>features</string>
-    <string>Soil Data Points</string>
-    <string>Points Soil Data</string>
+    <string>point_general_geo</string>
   </keywords>
   <srs>EPSG:4326</srs>
   <nativeBoundingBox>
-    <minx>-20.0</minx>
+    <minx>-10.0</minx>
     <maxx>50.0</maxx>
     <miny>10.0</miny>
     <maxy>50.0</maxy>
   </nativeBoundingBox>
   <latLonBoundingBox>
-    <minx>-20.0</minx>
+    <minx>-10.0</minx>
     <maxx>50.0</maxx>
     <miny>10.0</miny>
     <maxy>50.0</maxy>
@@ -30,13 +28,6 @@
   <enabled>true</enabled>
   <advertised>true</advertised>
   <metadata>
-    <entry key="time">
-      <dimensionInfo>
-        <enabled>false</enabled>
-        <presentation>LIST</presentation>
-        <units>ISO8601</units>
-      </dimensionInfo>
-    </entry>
     <entry key="cachingEnabled">false</entry>
   </metadata>
   <store class="dataStore">

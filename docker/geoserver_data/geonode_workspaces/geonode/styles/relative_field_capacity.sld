@@ -3,7 +3,7 @@
   <NamedLayer>
     <Name>Relative Field Capacity</Name>
     <UserStyle>
-      <Name>Relative Field Capacity</Name>
+      <Name>relative_field_capacity</Name>
       <Title>Relative Field Capacity</Title>
       <FeatureTypeStyle>
         <Rule>
@@ -71,9 +71,7 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
-
-        <Rule>
+	<Rule>
           <Name>Air limited soil</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
              <PropertyIsGreaterThanOrEqualTo>
@@ -86,7 +84,7 @@
               <Mark>
                 <WellKnownName>circle</WellKnownName>
                 <Fill>
-                  <CssParameter name="fill">#F72626</CssParameter>
+                  <CssParameter name="fill">#919399</CssParameter>
                   <CssParameter name="fill-opacity">1</CssParameter>
                 </Fill>
                 <Stroke>
@@ -99,7 +97,6 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-       
       </FeatureTypeStyle>
     </UserStyle>
   </NamedLayer>
