@@ -7,6 +7,8 @@ One of the objectives of the SOILS4MED project (SOIL health monitoring and infor
 This network aims to improve the interoperability, management, governance, and utilization of soil data across the Mediterranean region by establishing a federated architecture of SISs, starting with the development of a harmonized data model aligned with the World Reference Base for Soil Resources (WRB 2022), alongside the implementation of core functionalities for the ingestion, integration, and management of both legacy and newly acquired soil data.</p>
 The Med-SIS was designed and implemented by <a href="https://www.crs4.it/projects/soils4med/">CRS4</a> (Roberto Demontis, Eva Lorrai, Laura Muscas, Piergiorgio Palla) with the support of all project partners.
 
+!!!!Warning: The software is still under development
+
 ## Table of Contents
 
 -  [Quick Docker Start](#quick-docker-start)
