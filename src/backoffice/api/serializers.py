@@ -517,9 +517,9 @@ class DatasetSerializer(serializers.ModelSerializer):
         # L'if il task solo se vengono modificati i campi che richiedono un ri-processamento.
         if 'status' in validated_data:
             # start_processing in models.py controlla: 
-            # if self.status == "VALIDATED" and self.kriging == true --> interpolate and publish --> "PUBLISHED"
+            # if self.status == "VALIDATED" and self.kriging == true --> process(interpolate) and publish --> "PUBLISHED"
             # if self.status == "VALIDATED" and self.kriging == false --> publish --> "PUBLISHED"
-            # if self.status == "CONFIGURED" and self.kriging == true --> preprocess --> "PREPROCESSED"
+            # if self.status == "CONFIGURED" and self.kriging == true --> process(variogram) --> "PROCESSED"
             instance.save(using='backoffice')
             
             # Avvia il processo

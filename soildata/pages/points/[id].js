@@ -101,7 +101,7 @@ export default function Page()  {
         const textColor = documentStyle.getPropertyValue('--text-color');
         const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
         const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
-        
+        const datasets = [];
         for ( let d = 1; d < _depths.length; d += 1 ) {
           let _v = _depths[d]
           if ( d > 1 ) 
@@ -632,6 +632,10 @@ export default function Page()  {
     return <img src={item.image} alt={item.alt} style={{ width: '100%' }} />
   }
 
+  const noDataTemplate = () => {
+    return <h6> No data found </h6>
+  }
+
   const headerTemplate1 = () => {
     return  <h4 className="font-bold shadow-1 p-3 bg-cyan-900 text-white" style={{ width: '90%' }} >FIELD EDITING</h4>
   };
@@ -803,7 +807,7 @@ export default function Page()  {
           </TabPanel>
           <TabPanel header={(<span><i className="pi pi-book mr-2" />LABORATORY DATA</span>)}>
             <div className="card">
-              <DataTable value={labData} className="mt-4" tableStyle={{ minWidth: '50rem' }} emptyMessage="No laboratory data.">
+              <DataTable value={labData} className="mt-4" tableStyle={{ minWidth: '50rem' }} emptyMessage={noDataTemplate}>
                 <Column field="name" header={(<span className='text-xl font-bold'>{t('NAME')}</span>)}></Column>
                 <Column field="type" header={(<span className='text-xl font-bold'>{t('TYPE')}</span>)}></Column>
                 {labDataColumns.map((col) => (
@@ -816,7 +820,7 @@ export default function Page()  {
           <TabPanel header={(<span><i className="pi pi-book mr-2" />EXTRA LABORATORY DATA</span>)}>
             <div className="card">
               <DataTable value={labExtData} paginator dataKey="id" className="mt-4" tableStyle={{ minWidth: '50rem' }}
-                   rows={20} responsiveLayout="scroll" emptyMessage="No laboratory extra measures data.">
+                   rows={20} responsiveLayout="scroll" emptyMessage={noDataTemplate}>
                 <Column header="Id" sortable field="id" style={{ minWidth: '8rem' }} />
                 <Column header="Point" sortable field="point" style={{ minWidth: '8rem' }} />
                 <Column header="LabData" sortable field="labdata" style={{ minWidth: '8rem' }} />
@@ -834,7 +838,7 @@ export default function Page()  {
                 <Galleria value={images} style={{ maxWidth: '640px' }} showThumbnails={false} showIndicators item={imageTemplate} />
               )}
               {(!images || images.length === 0) && (
-                <h2>No photos</h2>
+                <h6> No data found </h6>
               )}   
             </div>
           </TabPanel>

@@ -32,17 +32,24 @@ const AppMenu = () => {
         { separator: true },
         {
             label: 'Points Soil Data',
-            icon: 'pi pi-image',
+            icon: 'pi pi-map-marker',
             items: [
                 {
                     label: 'List',
                     icon: 'pi pi-list',
                     to: '/points'
-                },
+                }
+            ]
+        },
+        { separator: true },
+        {
+            label: 'Publisher',
+            icon: 'pi pi-briefcase',
+            items: [
                 {
-                    label: 'Publisher',
+                    label: 'List',
                     icon: 'pi pi-list',
-                    to: '/dataset'
+                    to: '/datasets'
                 },
             ]
         },

@@ -970,31 +970,34 @@ class LayerStructure(models.Model):
 DATASET_STATUSES = [
     ("CREATED" , "CREATED"),
     ("CONFIGURED" , "CONFIGURED"),
-    ("IN_PREPROCESS" , "IN PREPROCESS"),
-    ("PREPROCESSED" , "PREPROCESSED"),
+    ("PROCESSED" , "PROCESSED"),
     ("VALIDATED" , "VALIDATED"),
     ("IN_PROCESS" , "IN PROCESS"),
     ("PUBLISHED" , "PUBLISHED"),
     ("ERRORS" , "ERRORS"),
 ]
+DATASET_CONTEXT = [
+    ("POINTS_SOIL_DATA", "POINTS_SOIL_DATA"),
+    ("SOIL_INDICATOR", "SOIL_INDICATOR"),
+]
 class Dataset(models.Model):
     name = models.TextField( db_comment='Name')
-    user = models.TextField( db_comment='SIS Staff member id')
+    user_name = models.TextField( db_comment='SIS Staff member id')
     user_email = models.TextField( db_comment='SIS Staff member email')
     date = models.DateField( db_comment='Creation date')
     source = models.TextField( db_comment='Name of the source', blank=True, null=True)
     src_typename = models.TextField( db_comment='Geoserver typename of the source', blank=True, null=True)
-    typename = models.TextField( db_comment='Geoserver typename of the result', blank=True, null=True)
     points = models.JSONField( db_comment='Source soil points data', blank=True, null=True) 
     filter = models.JSONField( db_comment='Filter parameters', blank=True, null=True) 
     kriging = models.BooleanField(blank=True, null=True, db_comment='It Needs Interpolation')
-    k_variogram = models.JSONField( db_comment='Variogram - interpolation preliminary result if done and what_interpolation is true', blank=True, null=True) 
+    k_variogram = models.JSONField( db_comment='Variogram - interpolation preliminary result', blank=True, null=True) 
     k_params = models.JSONField( db_comment='interpolation parameters', blank=True, null=True)
     k_data = models.JSONField( db_comment='Points with aggregate measure, can be empty', blank=True, null=True) 
-    k_gn_raster = models.TextField( db_comment='Geonode Id of the raster', blank=True, null=True)
-    catalogue_id = models.TextField( db_comment='Geonode Id of the dataset', blank=True, null=True)
+    k_gn_raster = models.TextField( db_comment='Geonode Id of the raster dataset', blank=True, null=True)
+    catalogue_id = models.TextField( db_comment='Geonode Id of the points dataset', blank=True, null=True)
     status = models.TextField( choices=DATASET_STATUSES, db_comment='Status of the dataset' )
-     
+    context = models.TextField( choices=DATASET_CONTEXT, db_comment="Dataset Context: Points or Indicators") 
+    
     objects = models.Manager().using('backoffice')
     
     def start_processing(self):
@@ -1003,7 +1006,7 @@ class Dataset(models.Model):
         if self.status == "VALIDATED":
             self.status = "IN_PROCESS"
         if self.status == "CONFIGURED":
-            self.status = "IN_PREPROCESS"
+            self.status = "IN_PROCESS"
         self.save(using='backoffice')
         # This ensures that the task starts ONLY when the data is actually written to DB.
         transaction.on_commit(

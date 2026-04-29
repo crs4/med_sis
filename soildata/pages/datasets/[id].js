@@ -3,8 +3,8 @@
 import React, { useEffect, useState, useRef  } from 'react';
 import { ProfileService } from '../../service/profiles';
 import { userContext, useUser } from '../../context/user';
-//import DatasetFilter from '../../components/DatasetFilter';
-import Datasets from '../../data/datasets';
+import ConfigureDataset from '../../components/ConfigureDataset';
+import ValidateDataset from '../../components/ValidateDataset';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { Toast } from 'primereact/toast';
@@ -30,23 +30,11 @@ export default function Page()  {
   
   const id = router.query.id
   
-  const loadSrcPoints = async () => {
-    if ( !dataset || !dataset.src_typename )
-      return
-    try {
-      const response = await ProfileService.getDataset( dataset.src_typename, document.cookie )
-      if ( response && response.ok && response.data && response.data.features ){
-        dataset.points = response.data;
-        setDataset(dataset)
-        setSrcPoints(dataset.points)
-        setFilteredPoints(dataset.points)
-      }
-      toast.current.show({ severity: 'success', summary: 'Done!', detail: 'Source data has been loaded.'});
-    } catch (e) {
-      console.log(e);
-      toast.current.show({ severity: 'error', summary: 'Errors!', detail: 'Data not available.'});
-    }
-    setLoading(false)     
+ 
+
+  const updateDataset = async (updated) => {
+    if ( updated )
+      setDataset(updated)
   }
 
   const validate = () => {
@@ -67,40 +55,42 @@ export default function Page()  {
       }
   }
 
-  useEffect(() => {
-    if ( !user.userData || ( user.userData.forbidden !== null && user.userData.forbidden) )
-        router.push(`/401`);
+  const fetchDataset = async (id) => {
     setLoading(true)
     try {
-      const response = ProfileService.getDataset( document.cookie, id, 'datasets'  );
+      const response = await ProfileService.get( document.cookie, id, 'datasets'  );
       if ( response && response.ok && response.data )
         setDataset (response.data);    
     } catch (error) {
       console.log(error);
     }
     setLoading(false) 
-  },[user]);  // eslint-disable-line
+  }
 
   useEffect(() => {
-    loadSrcPoints()
-  },[dataset]);  // eslint-disable-line
+    if ( !user.userData || ( user.userData.forbidden !== null && user.userData.forbidden) )
+        router.push(`/401`);
+    if (id)
+      fetchDataset(id)
+  },[user]);  // eslint-disable-line
+
 
   useEffect(() => {
     const fetchMap = async () => {
       if ( dataset ) {
         const _mapData = {
+          areas : null,
           points: dataset.points,
           label: 'Filtered ' + dataset.source,
         };
         if ( dataset.filter && dataset.filter.aoi )
-          _mapData.aoi = dataset.filter.aoi;
+          _mapData.area = dataset.filter.aoi;
         setMapData(_mapData);
       }  
     }
-    if ( dataset.points )
+    if ( dataset && dataset.points && dataset.points !== {}  )
       fetchMap();
   }, [dataset]); // eslint-disable-line
-//<DatasetFilter dataset={dataset} setDataset={setDataset} />
   
 
 return (
@@ -108,19 +98,22 @@ return (
     <Toast ref={toast} />
     { dataset && dataset.status === ProfileService.DATASET_STATUSES.CREATED && (
       <>
-      <h5 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">Configuring New Points Soil Dataset</h5>      
+      <h5 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">Configuring Dataset</h5>
+      <ConfigureDataset dataset={dataset} setDataset={updateDataset} />     
       </>
     )}
-    { dataset && dataset.status === ProfileService.DATASET_STATUSES.PREPROCESSED && (
+    { dataset && dataset.status === ProfileService.DATASET_STATUSES.PROCESSED && (
       <>
-      <h5 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">Validating Points Soil Dataset</h5>
+      <h5 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">Validating Dataset</h5>
+      <ValidateDataset dataset={dataset} /> 
       </>
     )}  
     { dataset && dataset.status === ProfileService.DATASET_STATUSES.PUBLISHED && (
       <>
-      <h5 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">Published Points Soil Dataset</h5>
+      <h5 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">Published Dataset</h5>
+       
       </>
-    )}  
+    )}   
   </div>
   );
 };

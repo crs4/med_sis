@@ -4,6 +4,7 @@
 header.gn-main-header {
     display: flex;
     flex-direction: column;
+    border-bottom: 0px;
 }
 
 header .s4m-background {
@@ -64,14 +65,17 @@ header .s4m-background.home {
     visibility: visible !important;
     width: 100%;
 }
+
 .gn-search-bar {
     max-width: 600px;
     margin: 0.2rem;
     border-radius: 20px;
 }
+
 .msgapi .gn-search-bar {
     max-width: 600px;
 }
+
 #gn-search-bar .input-group {
     display: flex !important;
     flex-wrap: nowrap;

@@ -940,7 +940,7 @@ class DatasetViewSet(viewsets.ModelViewSet):
         """
         Filtra 
         """
-        queryset = XLSxUpload.objects.all()
+        queryset = Dataset.objects.all()
         
         # Name Filter 
         name = self.request.query_params.get('name', None)
@@ -950,7 +950,7 @@ class DatasetViewSet(viewsets.ModelViewSet):
         # User name Filter
         user = self.request.query_params.get('user', None)
         if user is not None:
-            queryset = queryset.filter(user=user)
+            queryset = queryset.filter(user_name=user)
 
         # User email Filter
         user_email = self.request.query_params.get('email', None)
@@ -962,9 +962,13 @@ class DatasetViewSet(viewsets.ModelViewSet):
         if status is not None:
             queryset = queryset.filter(status=status)
 
+        context = self.request.query_params.get('context', None)
+        if context is not None:
+            queryset = queryset.filter(context=context)
+
         return queryset
     
-    def list(self, request):
+    def list(self, dataset):
         queryset = Dataset.objects.all()
         serializer = DatasetSerializer(queryset, many=True)
         for item in serializer.data:

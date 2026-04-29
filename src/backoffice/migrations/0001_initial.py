@@ -1066,7 +1066,7 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 ("name", models.TextField(db_comment="Name")),
-                ("user", models.TextField(db_comment="SIS Staff member name")),
+                ("user_name", models.TextField(db_comment="SIS Staff member name")),
                 ("user_email", models.TextField(db_comment="SIS Staff member email")),
                 ("date", models.DateField(db_comment="Creation date")),
                 (
@@ -1084,9 +1084,17 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
+                    "typename",
+                    models.TextField(
+                        blank=True,
+                        db_comment="Geoserver typename of the dataset",
+                        null=True,
+                    ),
+                ),
+                (
                     "filter",
                     models.JSONField(
-                        db_comment="filters"
+                        blank=True, db_comment="filters", null=True
                     ),
                 ),
                 (
@@ -1099,14 +1107,6 @@ class Migration(migrations.Migration):
                     "kriging",
                     models.BooleanField(
                         blank=True, db_comment="It Needs Interpolation", null=True
-                    ),
-                ),
-                (
-                    "k_measure",
-                    models.TextField(
-                        blank=True,
-                        db_comment="field name of the interpolate measure ",
-                        null=True,
                     ),
                 ),
                 (
@@ -1138,9 +1138,18 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
-                    "geonode_id",
+                    "catalogue_id",
                     models.TextField(
                         blank=True, db_comment="Geonode Id of the points", null=True
+                    ),
+                ),
+                (
+                    "context",models.TextField(
+                        choices=[
+                            ("POINTS_SOIL_DATA", "POINTS_SOIL_DATA"),
+                            ("SOIL_INDICATOR", "SOIL_INDICATOR"),
+                        ],
+                        db_comment="Dataset Context: Points or Indicators",
                     ),
                 ),
                 (
@@ -1148,16 +1157,14 @@ class Migration(migrations.Migration):
                     models.TextField(
                         choices=[
                             ("CREATED", "CREATED"),
-                            ("IN_PREPROCESS", "IN PREPROCESS"),
-                            ("PREPROCESSED", "PROCESSED"),
-                            ("VALIDATED", "VALIDATED"),
                             ("CONFIGURED", "CONFIGURED"),
+                            ("IN_PROCESS", "IN_PROCESS"),
+                            ("PROCESSED", "PROCESSED"),
                             ("VALIDATED", "VALIDATED"),
-                            ("IN_PROCESS", "IN PROCESS"),
                             ("PUBLISHED", "PUBLISHED"),
                             ("ERRORS", "ERRORS"),
                         ],
-                        db_comment="Status of the request",
+                        db_comment="Status",
                     ),
                 ),
             ],

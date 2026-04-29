@@ -2,13 +2,16 @@ import { doFetchBackOffice, doFetchCatalogue, doFetchGeoserver }  from '../utili
 
 export const ProfileService = {
 
+  DATASET_CONTEXT : {
+    POINTS_SOIL_DATA: "POINTS_SOIL_DATA",
+    SOIL_INDICATOR: "SOIL_INDICATOR"
+  },
+
   DATASET_STATUSES : {
     CREATED : "CREATED",
     CONFIGURED : "CONFIGURED",
-    IN_PROCESS : "IN PROCESS",
-    PREPROCESSED : "PROCESSED",
-    VALIDATED : "VALIDATED",
-    INTERPOLATED : "INTERPOLATED",
+    IN_PROCESS : "IN_PROCESS",
+    PROCESSED : "PROCESSED",
     VALIDATED : "VALIDATED",
     PUBLISHED : "PUBLISHED",
     ERRORS : "ERRORS"
@@ -22,16 +25,20 @@ export const ProfileService = {
       return { ok: false }
   },
 
-  async getDatasetsByCategory(category, ck) { 
+  async getDatasetsByCategory(category, page, ck) { 
     if ( ck ) 
-      return await doFetchCatalogue( 'datasets?filter{category.identifier}='+category, ck );
+      return await doFetchCatalogue( 'datasets?f=dataset&filter{category.identifier}='+category+ '&page=' + page + '&page_size=100&format=json', null, 'GET', null, ck );
     else 
       return { ok: false }
   },
 
-  async getDatasetsByKeyword( keyword, ck) { 
-    if ( ck ) 
-      return await doFetchCatalogue( 'datasets?filter{keywords.name}='+keyword, ck );
+  // keywords is a slugs' list comma separated  
+  async getDatasetsByKeyword( keywords, page, ck) {
+    let filter = ''; 
+    for ( let i = 0; i < keywords.length; i += 1 )
+      filter += 'filter{keywords.slug.in}=' + keywords[i] + '&'
+    if ( ck )  
+      return await doFetchCatalogue( 'datasets?f=dataset&' + filter + 'page=' + page + '&page_size=100&format=json', null, 'GET', null, ck );
     else 
       return { ok: false }
   },
@@ -44,23 +51,28 @@ export const ProfileService = {
   },
 
   async getLabData(ck, id) { 
-    const ep = `lab-data?point=${id}`
-    return await get(ck, null, ep);
+    const ep = `lab-data/?point=${id}`
+    return await doFetchBackOffice ( ep, null, 'GET', null, ck );
+  },
+
+  async getExtraLabData(ck, id) { 
+    const ep = `lab-data-extra-measures/?point=${id}`
+    return await doFetchBackOffice ( ep, null, 'GET', null, ck );
   },
   
   async getLayers(ck, id) { 
-    const ep = `point-layers?point=${id}`
+    const ep = `point-layers/?point=${id}`
     return doFetchBackOffice ( ep, null, 'GET', null, ck );
   },
 
   async getPhotos(ck, id) { 
-    const ep = `photos?point=${id}`
-    return await get(ck, null, ep);
+    const ep = `photos/?point=${id}`
+    return doFetchBackOffice ( ep, null, 'GET', null, ck );
   },
 
   async getStructures(ck, id) { 
-    const ep = `layer-structures?layer=${id}`
-    return await get(ck, null, ep);
+    const ep = `layer-structures/?layer=${id}`
+    return doFetchBackOffice ( ep, null, 'GET', null, ck );
   },
 
   async list(ck, endpoint) {

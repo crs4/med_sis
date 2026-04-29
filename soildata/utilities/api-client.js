@@ -22,7 +22,6 @@ export const doFetch = async ( base_url, endpoint, id, method, payload, cookie) 
     }
     const isJson = response.headers.get('content-type')?.includes('application/json');
     const data = isJson && await response.json();
-    console.log(data)
     return { data: data, ok: true, status: response.status }   
   }
   catch( error )  {
@@ -33,9 +32,10 @@ export const doFetch = async ( base_url, endpoint, id, method, payload, cookie) 
 
 export const doFetchBackOffice = async ( endpoint, id, method, payload, cookie) =>  
 { 
-  if ( !id )
-    endpoint += '/';
-  return doFetch (process.env.NEXT_PUBLIC_BACKOFFICE_API_BASE_URL, endpoint , id, method, payload, cookie)
+  const ep = endpoint;
+  if ( !id && !endpoint.includes("/?"))
+    ep += '/';
+  return doFetch (process.env.NEXT_PUBLIC_BACKOFFICE_API_BASE_URL, ep , id, method, payload, cookie)
 }
 
 export const doFetchGeoserver = async (dataset, cookie) =>  
@@ -55,7 +55,6 @@ export const doFetchGeoserver = async (dataset, cookie) =>
       return { data: null, ok: false, status: response.status }
     }
     const data = await response.json();
-    console.log(data)
     return { data: data, ok: true, status: response.status }   
   }
   catch( error )  {
