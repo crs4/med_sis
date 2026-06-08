@@ -23,7 +23,7 @@ import { Card } from 'primereact/card';
 import { Toast } from 'primereact/toast';   
 import { point, featureCollection } from '@turf/turf';
 
-const MyMap = dynamic(() => import("../../components/PointsMap"), { ssr:false })
+const MyMap = dynamic(() => import("../../components/map/PointsMap"), { ssr:false })
 
 export default function Page()  {
   const router = useRouter();

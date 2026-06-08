@@ -297,8 +297,8 @@ class PointGeneral(models.Model):
     date = models.DateField(blank=True, null=True, db_comment='date of the description')
     surveyors = models.TextField(blank=True, null=True, db_comment='surveyors names comma separated')
     location = models.TextField(blank=True, null=True, db_comment='Name of the point location')
-    lat_wgs84 = models.FloatField( db_comment='WGS84 Latitude in decimal degree')
-    lon_wgs84 = models.FloatField( db_comment='WGS84 Longitude in decimal degree')
+    lat_wgs84 = models.FloatField(  db_comment='WGS84 Latitude in decimal degree')
+    lon_wgs84 = models.FloatField(  db_comment='WGS84 Longitude in decimal degree')
     gps = models.BooleanField(blank=True, null=True, db_comment='is a gps acquisition?')
     elev_m_asl = models.FloatField( blank=True, null=True, db_comment='Altitude above the sea level in meter')
     elev_dem = models.FloatField( blank=True, null=True, db_comment='Altitude in meters retrived from a dem in meter')
@@ -956,21 +956,16 @@ class LayerStructure(models.Model):
 # DATASET
 # Statuses:
 # if status == CREATED  
-#   --> do nothing 
-# if status == CONFIGURED and kriging == true  -> IN_PREPROCESS
-#   -->  build VARIOGRAM in GN (IN_PREPROCESS -> PREPROCESSED, ERRORS)
-# if status == PREPROCESSED   
-#   --> do nothing
-# if status == VALIDATED and kriging == true  -> IN_PROCESS 
-#   --> Interpolation in GN (IN_PROCESS -> PUBLISHED, ERRORS)
-# if status == VALIDATED and kriging == false  -> IN_PROCESS 
-#   --> Interpolation in GN (IN_PROCESS -> PUBLISHED, ERRORS) 
+#   --> to configure in the front end 
+# if status == CONFIGURED 
+#   --> to validated in the front end 
+# if status == VALIDATED -> IN_PROCESS 
+#   --> Interpolation and/or Publishing in GN (IN_PROCESS -> PUBLISHED, ERRORS) 
 #  
 ############################################################
 DATASET_STATUSES = [
     ("CREATED" , "CREATED"),
     ("CONFIGURED" , "CONFIGURED"),
-    ("PROCESSED" , "PROCESSED"),
     ("VALIDATED" , "VALIDATED"),
     ("IN_PROCESS" , "IN PROCESS"),
     ("PUBLISHED" , "PUBLISHED"),
@@ -987,25 +982,22 @@ class Dataset(models.Model):
     date = models.DateField( db_comment='Creation date')
     source = models.TextField( db_comment='Name of the source', blank=True, null=True)
     src_typename = models.TextField( db_comment='Geoserver typename of the source', blank=True, null=True)
-    points = models.JSONField( db_comment='Source soil points data', blank=True, null=True) 
-    filter = models.JSONField( db_comment='Filter parameters', blank=True, null=True) 
+    points = models.JSONField( db_comment='Source geoJSON points data', blank=True, null=True) 
+    filter = models.JSONField( db_comment='Filter parameters and filtered points', blank=True, null=True) 
     kriging = models.BooleanField(blank=True, null=True, db_comment='It Needs Interpolation')
     k_variogram = models.JSONField( db_comment='Variogram - interpolation preliminary result', blank=True, null=True) 
-    k_params = models.JSONField( db_comment='interpolation parameters', blank=True, null=True)
-    k_data = models.JSONField( db_comment='Points with aggregate measure, can be empty', blank=True, null=True) 
-    k_gn_raster = models.TextField( db_comment='Geonode Id of the raster dataset', blank=True, null=True)
-    catalogue_id = models.TextField( db_comment='Geonode Id of the points dataset', blank=True, null=True)
+    k_params = models.JSONField( db_comment='Saga GIS Interpolation parameters', blank=True, null=True)
+    k_data = models.JSONField( db_comment='geoJSON Points with aggregate measure, can be empty', blank=True, null=True) 
+    report = models.JSONField( db_comment='Publishing and interpolation report', blank=True, null=True) 
     status = models.TextField( choices=DATASET_STATUSES, db_comment='Status of the dataset' )
     context = models.TextField( choices=DATASET_CONTEXT, db_comment="Dataset Context: Points or Indicators") 
     
     objects = models.Manager().using('backoffice')
     
     def start_processing(self):
-        """Start dataset creation"""
+        """Start dataset publishing"""
         from .tasks import process_dataset
-        if self.status == "VALIDATED":
-            self.status = "IN_PROCESS"
-        if self.status == "CONFIGURED":
+        if self.status == "VALIDATED": 
             self.status = "IN_PROCESS"
         self.save(using='backoffice')
         # This ensures that the task starts ONLY when the data is actually written to DB.

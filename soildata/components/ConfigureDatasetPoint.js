@@ -34,7 +34,7 @@ const AoiSelectionMap = dynamic(() => import("./map/AoiSelectionMap"), { ssr:fal
 
 const PointsFilterMap = dynamic(() => import("./map/PointsFilterMap"), { ssr:false })
 
-export default function ConfigureDataset( { dataset, setDataset })  {
+export default function ConfigureDatasetPoint( { dataset, setDataset })  {
   const t = useTranslations('default');
   const user = useUser();
   const router = useRouter();
@@ -43,18 +43,44 @@ export default function ConfigureDataset( { dataset, setDataset })  {
   const [activeIndex, setActiveIndex] = useState(0);
   // working state 
   const [isWorking, setIsWorking] = useState(false);
+  
   // working dataset
   const [workDataset, setWorkDataset] = useState(dataset)
-  // SOURCE
-  // sources datasets to choose the points (paginated)
-  const [srcDatasetsList, setSrcDatasetsList] = useState(null);
-  // sources datasets list page
-  const [srcDatasetsPage, setSrcDatasetsPage] = useState(1);
-  // selected source dataset  
-  const [selectedSource, setSelectedSource] = useState(null);
-  // sources paginator
-  const [sourcesPage, setSourcesPage] = useState(1);
-  const [totalSources, setTotalSources] = useState(0);
+  
+  // SOURCES
+  const srcDatasetsList = [
+    { name:"point general data", typename:"geonode:point_general_geo"},
+    { name:"surface unevenness data", typename:"geonode:surface_unevenness_geo"},
+    { name:"surface general", typename:"geonode:surface_geo"},
+    { name:"surface land use", typename:"geonode:land_use_geo"},
+    { name:"climate and weather", typename:"geonode:climate_weather_geo"},
+    { name:"landform and topography", typename:"geonode:landform_topography_geo"},
+    { name:"layer general data", typename:"geonode:point_layer_geo"},
+    { name:"layer remants data", typename:"geonode:layer_remants_geo"}, 
+    { name:"layer coarse fragments data", typename:"geonode:layer_coarse_fragments_geo"},
+    { name:"layer artefacts data", typename:"geonode:layer_artefacts_geo"},
+    { name:"layer cracks data", typename:"geonode:layer_cracks_geo"},
+    { name:"layer matrix colours data", typename:"geonode:layer_matrix_colours_geo"},
+    { name:"layer lithogenic variegates data", typename:"geonode:layer_lithogenic_variegates_geo"},
+    { name:"Layer redoximorphic features ", typename:"geonode:layer_redoximorphic_geo"}, 
+    { name:"Layer coatings bridges data", typename:"geonode:layer_coatings_bridges_geo"}, 
+    { name:"Layer carbonates data", typename:"geonode:layer_carbonates_geo"},
+    { name:"Layer gypsum data", typename:"geonode:layer_gypsum_geo"},
+    { name:"Layer secondary silica data", typename:"geonode:layer_secondary_silica_geo"}, 
+    { name:"Layer consistence data", typename:"geonode:layer_consistence_geo"},
+    { name:"layer permafrost data", typename:"geonode:layer_permafrost_geo"},
+    { name:"Layer organic carbon data", typename:"geonode:layer_organic_carbon_geo"},
+    { name:"Layer roots data", typename:"geonode:layer_roots_geo"},
+    { name:"Layer animal activity data", typename:"geonode:layer_animal_activity_geo"},
+    { name:"Layer human alterations data", typename:"geonode:layer_human_alterations_geo"},
+    { name:"Layer degree of decomposition data", typename:"geonode:layer_degree_decomposition_geo"},
+    { name:"Layer nomatrix pore data", typename:"geonode:layer_nonmatrix_pore_geo"},
+    { name:"Layer structure data", typename:"geonode:layer_structure_geo"},
+    { name:"Extra laboratory measure data", typename:"geonode:labdata_extra_geo"},
+    { name:"laboratory data", typename:"geonode:labdata_geo"},
+  ]
+  const [selectedSource, setSelectedSource] = useState(null)
+  
 
   // AOI FILTER
   // boundary datasets list (paginated)
@@ -78,18 +104,10 @@ export default function ConfigureDataset( { dataset, setDataset })  {
   // FILTERED points
   const [fPoints, setFPoints] = useState(null);
 
-  // FILTER period
-  const [selectedFrom, setSelectedFrom] = useState(null); 
-  const [selectedTo, setSelectedTo] = useState(null); 
   
   // FILTER project
   const [projects, setProjects] = useState([]); 
   const [selectedProject, setSelectedProject] = useState(null)
-   
-  // FILTER laboratory method
-  const [methods, setMethods] = useState([]);
-  const [selectedMethod, setSelectedMethod] = useState(null)
-  const [infoMethods, setInfoMethods] = useState(null);
 
   // FILTER survey method
   const [surMethods, setSurMethods] = useState([]);
@@ -125,18 +143,10 @@ export default function ConfigureDataset( { dataset, setDataset })  {
 
   // This sets the Area of Interest filter 
   const setAoi = (_area) => {
-    if ( _area ) {
-      const bbox = bbox(_area)
-      if ( bbox ) {
-        _area.bbox = bbox
-        workDataset.filter.aoi = _area;
-        setWorkDataset(workDataset)
-        filtering()
-        setSelectedArea(_area)
-        return;
-      }
-    }
-    toast.current.show({ severity: 'error', summary: 'Errors!', detail: 'Wrong Area of Interest selected.'}); 
+    workDataset.filter.aoi = _area;
+    setWorkDataset(workDataset)
+    filtering()
+    setSelectedArea(_area)
   }
 
   // This sets the dataset's source points (initialization) 
@@ -149,7 +159,6 @@ export default function ConfigureDataset( { dataset, setDataset })  {
   
   // This sets the name of dataset 
   const setName = (name) => {
-    console.log(name)
     workDataset.name = name;
     setWorkDataset(workDataset);
   }  
@@ -162,26 +171,16 @@ export default function ConfigureDataset( { dataset, setDataset })  {
 
   // This sets the period filter ( to  date ) 
   const setTo = (date) => {
-    if ( (new Date(workDataset.filter.from) > date ) ){
-      setSelectedTo(new Date(workDataset.filter.to))
-    }  
-    else {
-      workDataset.filter.to = date.toJSON();
-      setSelectedTo(date)
-      setWorkDataset(workDataset);
-    }
+    const d = new Date(date)
+    workDataset.filter.to = d.toString();
+    setWorkDataset(workDataset);
   }
   
   // This sets the period filter ( from  date )
   const setFrom = (date) => {
-    if ( (new Date(workDataset.filter.to) < date ) ){
-      setSelectedFrom(new Date(workDataset.filter.from))
-    }  
-    else {
-      workDataset.filter.from = date.toJSON();
-      setSelectedFrom(date)
-      setWorkDataset(workDataset);
-    }
+    const d = new Date(date)
+    workDataset.filter.from = d.toString();
+    setWorkDataset(workDataset);
   }
   
   // This sets a geonode dataset as source points dataset
@@ -194,9 +193,9 @@ export default function ConfigureDataset( { dataset, setDataset })  {
     }
     else {
       workDataset.source = sourceDS.name;
-      workDataset.src_typename = sourceDS.alternate;
-      if (sourceDS.alternate) 
-        await loadPoints(sourceDS.alternate)
+      workDataset.src_typename = sourceDS.typename;
+      if (sourceDS.typename) 
+        await loadPoints(sourceDS.typename)
     }
     setSelectedSource(sourceDS)
     setWorkDataset(workDataset)
@@ -205,23 +204,21 @@ export default function ConfigureDataset( { dataset, setDataset })  {
   
   // This extracts data to filter the source points dataset
   const extractData = async (points) => {
+    /* FILTER FIELDS
+      point_type, 
+      project, 
+      date, 
+      survey_m_id, 
+    */
     let prjs = ["All projects"]
     let sms = ["All methods"]
-    let lms = ["All methods"]
     let ts = ["All types"]
-    let tax = null
     if (!points)
       return;
     /// read projects, survey and laboratory methods
-    for ( let i=0; i< points.features.length; i+= 1 ){
+    for ( let i = 0; i < points.features.length; i += 1 ){
       const props = points.features[i].properties
       try {
-        if ( props.method ) {
-          if ( props.method.indexOf(':') > 0 ) 
-          // unique value if set
-            tax = props.method.substring(0,props.method.indexOf(':'))
-          lms.push(props.method)
-        }
         if ( props.project && prjs.indexOf(props.project) === -1 )
           prjs.push(props.project)
         if ( props.survey_m_id && sms.indexOf(props.survey_m_id) === -1 )
@@ -230,27 +227,19 @@ export default function ConfigureDataset( { dataset, setDataset })  {
           ts.push( props.point_type )
         if ( props.date ) {
           const d = new Date(props.date)
-          if ( workDataset.filter.from === null || new Date(workDataset.filter.from) > d )
-            workDataset.filter.from = d;
-          if ( workDataset.filter.to === null || new Date( workDataset.filter.to ) < d )
-            workDataset.filter.to = d;
-          setWorkDataset(workDataset)
+          if ( workDataset.filter.from === null || new Date(workDataset.filter.from) > d ) {
+            setFrom(d)
+          }
+          if ( workDataset.filter.to === null || new Date(workDataset.filter.to) < d ) {
+            setTo(d)
+          }  
         }
       }
       catch (e) {
-        console.log(e)
-        console.log('Errors in feature ' + i) 
+        console.log(e) 
       } 
     }
-    if ( tax ) {
-      const response = await TaxonomyService.listValues(document.cookie, tax)
-      if ( response && response.ok && response.data )
-        setInfoMethods(response2.data)
-    }
-    setSelectedFrom(new Date(workDataset.filter.from))
-    setSelectedTo(new Date(workDataset.filter.to))
     setProjects(prjs);
-    setMethods(lms);
     setSurMethods(sms);
     setTypes(ts)  
   }
@@ -259,7 +248,6 @@ export default function ConfigureDataset( { dataset, setDataset })  {
   const resetPoints = () => {
     setPoints (null);
     setProjects([{ descr: "All projects"}]);
-    setMethods([{ descr: "All methods"}]);
     setSurMethods([{ descr: "All methods"}]);
     setTypes([{ descr: "All types"}]);
   }
@@ -289,7 +277,7 @@ export default function ConfigureDataset( { dataset, setDataset })  {
       console.log(e);
       toast.current.show({ severity: 'error', summary: 'Errors!', detail: 'System Error, Errors loading source points.'});
       setIsWorking(false);
-    }  
+    } 
   }
  
   // This selects the AOI (polygonal or multipolygonal geometry) by providing a click location
@@ -302,9 +290,7 @@ export default function ConfigureDataset( { dataset, setDataset })  {
     const bboxFilter = 'bbox=' + pt[1] + ',' + pt[0] + ',' + pt[1] + ',' + pt[0];
     const p = null;
     const token = user.userData.access_token;
-    setIsWorking(true)
     const response = await ProfileService.getDataset( areasDataset.alternate, bboxFilter, token )
-    setIsWorking(false)
     let features = [];
     if ( response && response.ok && response.data && response.data.features ){
       // verify data: wfs use bounding box
@@ -331,9 +317,7 @@ export default function ConfigureDataset( { dataset, setDataset })  {
     const bboxArray = bbox(box)
     const bboxFilter = 'bbox=' + bboxArray[1] + ',' + bboxArray[0] + ',' + bboxArray[3] + ',' + bboxArray[2];
     const token = user.userData.access_token;
-    setIsWorking(true)
     const response = await ProfileService.getDataset( areasDataset.alternate, bboxFilter, token )
-    setIsWorking(false)
     let features = [];
     if ( response && response.ok && response.data && response.data.features ){
       // verify data
@@ -375,9 +359,10 @@ export default function ConfigureDataset( { dataset, setDataset })  {
               ( new Date (workDataset.filter.from)) > new Date( props.date ) )  ||
             ( workDataset.filter.to && 
               ( new Date (workDataset.filter.to)) < new Date( props.date ) ) ) 
-            { console.log('date'); ok = false }
+            { ok = false }
         }
         if ( ok && props && workDataset.filter.depth ){
+          
           if ( ( workDataset.filter.depth === ProfileService.FILTER_DEPTH.DEPTH0_20 ) && ( props.upper > 20 ))
             ok = false
           else if ( 
@@ -387,7 +372,7 @@ export default function ConfigureDataset( { dataset, setDataset })  {
               ( props.lower != null && props.lower < 20 ) 
             )
           )
-          { console.log('depth'); ok = false }
+          { ok = false }
         }      
         if ( ok && props && workDataset.filter.project &&  
           workDataset.filter.project !== props.project &&
@@ -395,14 +380,14 @@ export default function ConfigureDataset( { dataset, setDataset })  {
         )
         { console.log('prj'); ok = false }
         if ( ok && props && workDataset.filter.type && 
-          workDataset.filter.type !== props.type &&
+          workDataset.filter.type !== props.type_id &&
           workDataset.filter.type !== "All types" )
         { console.log('type'); ok = false }
-        if ( ok && props && workDataset.filter.method && 
-          workDataset.filter.method !== props.method &&
-          workDataset.filter.method !== "All Methods" )
+        if ( ok && props && workDataset.filter.surMethod && 
+          workDataset.filter.surMethod !== props.survey_m_id &&
+          workDataset.filter.surMethod !== "All methods" )
         { console.log('method'); ok = false }
-        if (ok)
+        if ( ok )
           filtered.push(pt)    
       }
       workDataset.filter.points = featureCollection(filtered);
@@ -441,8 +426,9 @@ export default function ConfigureDataset( { dataset, setDataset })  {
 
   // this saves the dataset and go to the next step
   const saveAndContinue = async (to) => {
-    saveWorkDataset()
-    setActiveIndex(to);
+    const result = await saveWorkDataset()
+    if ( result && to ) 
+      setActiveIndex(to);
   }
 
   // Go to Validate page
@@ -461,31 +447,6 @@ export default function ConfigureDataset( { dataset, setDataset })  {
 
   let StepHeaders = ['Source', 'Area of Interest', 'Filters'];
 
-  // This loads catalogue datasets using "physical_health","chemical_health","biological_health" keywords
-  const loadSources = async  ( page ) => {  
-    try {
-      setSrcDatasetsList(null);
-      setIsWorking(true)
-      const keywords = ["physical_health","chemical_health","biological_health"]
-      const respSources = await ProfileService.getDatasetsByKeyword(keywords, page, document.cookie);
-      setIsWorking(false)
-      if ( respSources && respSources.ok && respSources.data ) {
-        setSrcDatasetsList(respSources.data)
-        if (respSources.data.total)
-          setTotalSources(respSources.data.total)
-      }
-    } catch (error) {
-      console.log(error)
-      setIsWorking(false)  
-    }   
-  }
-
-  // This manages change page in dataset sources list  
-  const onSourcesPageChange = async  () => {
-    setSourcesPage(event.first);
-    loadSources(event.first)
-  }
-  
   // This loads the dataset sources list for a page  
   const loadAreasDatasets = async  ( page ) => { 
     try {
@@ -501,7 +462,8 @@ export default function ConfigureDataset( { dataset, setDataset })  {
     } catch (error) {
       console.log(error)
       setIsWorking(false) 
-    }   
+    } 
+     
   }
 
   // This loads the taxonomy for the Point Soil Data Types needed by filters   
@@ -589,21 +551,12 @@ export default function ConfigureDataset( { dataset, setDataset })  {
   const setFilterProject = (value) => {
     setSelectedProject(value);
     workDataset.filter.project = value
-    setWorkDataset(workDataset)
   };
 
   // This sets the points soil data type filter
   const setFilterType = (value) => {
     setSelectedType(value);
     workDataset.filter.type = value
-    setWorkDataset(workDataset)
-  };
-
-  // This sets the laboratory method filter
-  const setFilterMethod = (value) => {
-    setSelectedMethod(value);
-    workDataset.filter.method = value
-    setWorkDataset(workDataset)
   };
 
   // This initializes the laboratory method filter
@@ -621,12 +574,8 @@ export default function ConfigureDataset( { dataset, setDataset })  {
       const response2 = await TaxonomyService.listValues(document.cookie, 'SURVEY_METHODS')
       if ( response2 && response2.ok && response2.data )  
           setInfoSMethods(response2.data)
-      setSelectedFrom (new Date(workDataset.filter.from))
-      setSelectedTo (new Date(workDataset.filter.to))
-      setSelectedMethod(workDataset.filter.method)
-      setSelectedType(workDataset.filter.type)
-      setSelectedSurMethod(workDataset.filter.surMethod)
-      console.log (workDataset)
+      setSelectedType ( workDataset.filter.type )
+      setSelectedSurMethod( workDataset.filter.surMethod )
     } catch (error) {
       console.log(error)
     }  
@@ -637,7 +586,6 @@ export default function ConfigureDataset( { dataset, setDataset })  {
       router.push(`/401`);
     if ( workDataset && workDataset.points )
       initializeData()
-    loadSources(1)
     loadAreasDatasets(1)
   }, [user, dataset]); // eslint-disable-line
 
@@ -668,7 +616,6 @@ export default function ConfigureDataset( { dataset, setDataset })  {
                 <Loading title="loading point"/>
               )}
               { !isWorking && (
-
               <div className="flex flex-column gap-2 align-items-center  w-full">
                 <Button
                   icon='pi pi-trash'
@@ -678,14 +625,10 @@ export default function ConfigureDataset( { dataset, setDataset })  {
                   onClick={() => { setSource (null) }}
                 />
                 <h5 className="font-bold text-800">Selected source: <span className="font-bold text-cyan-800">{workDataset.source}</span></h5>   
-                { workDataset && workDataset.points && workDataset.points.features && ( 
-                  <h5 className="font-bold text-800">Points: <span className="font-bold text-cyan-800">
-                    { ( workDataset.points.features ? workDataset.points.features.length : 0 ) }
-                  </span></h5> 
-                )}
-                { selectedSource && selectedSource.abstract && (
-                  <InputTextarea id="description" value={selectedSource.abstract} disabled rows={5} cols={30} />
-                )}
+                <h5 className="font-bold text-800">Points: <span className="font-bold text-cyan-800">
+                { workDataset.points && ( workDataset.points.features ? workDataset.points.features.length : 0 )}
+                { !workDataset.points && ( 0 )}  
+                </span></h5> 
               </div>
               )}
               </>
@@ -695,12 +638,11 @@ export default function ConfigureDataset( { dataset, setDataset })  {
               { isWorking && (
                 <Loading title="Loading indicators"/>
               )}
-              { !isWorking && srcDatasetsList && srcDatasetsList.datasets && (srcDatasetsList.datasets.length > 0) && (
+              { !isWorking && srcDatasetsList && (
                 <>
                   <h6 className="md:w-30rem surface-200 font-bold text-cyan-800 p-3 shadow-2">Available Sources</h6>
-                  <ListBox value={selectedSource} disabled={isWorking} onChange={(e) => { setSource(e.value); } } options={srcDatasetsList.datasets} 
-                    optionLabel="name" className="md:w-30rem font-bold text-cyan-800" listStyle={{ maxHeight: '250px' }} />
-                  <Paginator first={sourcesPage} rows={10} totalRecords={totalSources} onPageChange={onSourcesPageChange} template={{ layout: 'PrevPageLink CurrentPageReport NextPageLink' }} />
+                  <Dropdown value={selectedSource} onChange={(e) => setSource(e.value)} options={srcDatasetsList} optionLabel="name" 
+                    placeholder="Select a section" className="w-full md:w-30rem font-bold text-cyan-800" checkmark={true}  highlightOnSelect={false} />
                 </>
               )}
               { !isWorking && ( !srcDatasetsList?.datasets || srcDatasetsList.datasets?.length === 0) && (
@@ -859,10 +801,10 @@ export default function ConfigureDataset( { dataset, setDataset })  {
           <Fieldset className="w-full m-2" legend={t('PERIOD')}>
             <h5 className="font-bold text-cyan-800">Select a period or None for all periods</h5>
             <div className="flex flex-row gap-2 font-bold text-cyan-800 w-full align-items-center mt-3">
-              <span className="flex w-3 m-2 justify-content-end">{t('FROM_DATE')}</span><Calendar value={ selectedFrom } onChange={ (e) => setFrom(e.value) } showIcon />
+              <span className="flex w-3 m-2 justify-content-end">{t('FROM_DATE')}</span><Calendar value={ new Date(workDataset.filter.from) } onChange={ (e) => setFrom(e.value) } showIcon />
             </div>  
             <div className="flex flex-row gap-2 font-bold text-cyan-800 w-full mt-3">
-              <span className="flex w-3 m-2 justify-content-end">{t('TO_DATE')}</span><Calendar value={ selectedTo } onChange={(e) => setTo(e.value)} showIcon />
+              <span className="flex w-3 m-2 justify-content-end">{t('TO_DATE')}</span><Calendar value={ new Date(workDataset.filter.to) } onChange={(e) => setTo(e.value)} showIcon />
             </div>  
           </Fieldset>
           <Fieldset className="w-full m-2" legend={t('DEPTH')}>
@@ -876,40 +818,30 @@ export default function ConfigureDataset( { dataset, setDataset })  {
             </div>
           </Fieldset>
           <Fieldset className="w-full m-2" legend={t('TYPE')}>
-            <div className="flex flex-column gap-1">
+            <div className="flex flex-column gap-3">
               <h5 className="font-bold text-cyan-800">Select a point soil data type or All types</h5>
               <Dropdown value={selectedType} onChange={(e) => setFilterType(e.value)} options={types} 
-                placeholder="select a type" className="md:w-30rem font-bold mt-1 text-cyan-800" />
+                placeholder="select a type" className="md:w-30rem font-bold text-cyan-800" />
               {( selectedType && (
                 <h5 className="font-bold text-cyan-800" >{ GetInfo( selectedType, infoTypes ) }</h5>
               ))}
             </div>
           </Fieldset> 
           <Fieldset className="w-full m-2" legend={t('SURMETHOD')}>
-            <div className="flex flex-column gap-1">
+            <div className="flex flex-column gap-3">
               <h5 className="font-bold text-cyan-800">Select a survey method or All methods</h5>
               <Dropdown value={selectedSurMethod} onChange={(e) => { setFilterSurMethod(e.value) } } 
-                options={surMethods} placeholder="select a survey method" className="md:w-30rem mt-1 font-bold text-cyan-800" />
+                options={surMethods} placeholder="select a survey method" className="md:w-30rem font-bold text-cyan-800" />
               {( selectedSurMethod && (
-                <h5 className="font-bold text-800" >{ GetInfo( selectedSurMethod, infoSMethods ) }</h5>
+                <h5 className="font-bold text-cyan-800" >{ GetInfo( selectedSurMethod, infoSMethods ) }</h5>
               ))}
             </div> 
           </Fieldset>
           <Fieldset className="w-full m-2" legend={t('PROJECT')}>
-            <div className="flex flex-column gap-1">
+            <div className="flex flex-column gap-3">
               <h5 className="font-bold text-cyan-800">Select a project or All projects</h5>
               <Dropdown value={selectedProject} onChange={(e) => setFilterProject(e.value)}  
-                options={projects} placeholder="select a project" className="md:w-30rem mt-1 font-bold text-cyan-800" />
-            </div>
-          </Fieldset>
-          <Fieldset className="w-full m-2" legend={t('METHOD')}>
-            <div className="flex flex-column gap-1">
-              <h5 className="font-bold text-cyan-800">Select a laboratory method or All methods</h5>
-              <Dropdown value={selectedMethod} onChange={(e) => { setFilterMethod(e.value) } } 
-                options={methods} placeholder="select a method" className="md:w-30rem mt-1 font-bold text-cyan-800" />
-              {( selectedMethod && (
-                <h5 className="font-bold text-cyan-800" >{ GetInfo( selectedMethod, infoMethods ) }</h5>
-              ))}
+                options={projects} placeholder="select a project" className="md:w-30rem font-bold text-cyan-800" />
             </div>
           </Fieldset>
           </>

@@ -8,6 +8,8 @@ export const TaxonomyService = {
     else return { data: null, ok: false, status: null }
   },
 
+  /*taxonomy's values
+    return a list of objects : { id, taxonomy, value,  description }  */
   async listValues(ck, id) { 
     if ( ck )
       if ( id )

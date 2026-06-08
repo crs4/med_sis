@@ -234,10 +234,6 @@ export default function Page()  {
   };
 
   const actionsTemplate = (rowData) => (
-    <>
-    { (rowData.status !== UploadService.STATUSES.IN_PROCESS &&
-       rowData.status !== UploadService.STATUSES.UPLOADED
-      ) && (
     <>     
     <Button
       icon="pi pi-times"
@@ -251,6 +247,9 @@ export default function Page()  {
       aria-controls={visibleDlg1 ? 'dlg_remove' : null} 
       aria-expanded={visibleDlg1 ? true : false}
     />
+    { (rowData.status !== UploadService.STATUSES.IN_PROCESS &&
+       rowData.status !== UploadService.STATUSES.UPLOADED
+      ) && (
     <Button
       icon="pi pi-folder-open"
       className="p-mr-2 p-mb-2 m-1"
@@ -261,7 +260,6 @@ export default function Page()  {
       onClick={() => goToUpload(rowData.id)}
       label=""
     />
-    </>
     )}
     </> 
   );

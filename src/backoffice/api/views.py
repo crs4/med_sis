@@ -7,10 +7,80 @@ from rest_framework import serializers
 from rest_framework.response import Response
 from backoffice.models import *
 from .serializers import *
+import json
+import os
 import logging
 import traceback
+import time
+import subprocess
+
 
 logger = logging.getLogger(__name__)
+
+class VariogramViewSet(viewsets.ViewSet):
+    """
+    API endpoint to run the saga gis command to build a variogram on demand.
+    """
+    permission_classes = [permissions.IsAdminUser]
+
+    """
+    post request
+    """
+    def create(self, request):
+        """ logger.info( f"Dataset loaded: {ds}, points: {dataset.date}" )
+        """    
+        id = request.data.get("id", "0")
+        nClasses = request.data.get("nClasses", 100)
+        model = request.data.get("model", "a + b * x ")
+        nSkip = request.data.get("nSkip", 1)
+        maxDist = request.data.get("maxDist", 0.0)
+        kPoints = request.data.get("points", "")
+        t = round(time.time() * 1000)
+        folder = 'kri' + str(id) + str(t) + str(nClasses) + str(nSkip) + str(maxDist) 
+        base_path = '/tmp/' + folder
+        try:
+            os.mkdir(base_path)
+        except:
+            logger.info( f"error folder path {base_path}, it exists" )
+            pass
+        try :
+            pathJSON = os.path.join( base_path, "points.geojson")
+            with open(pathJSON, "w", encoding="utf-8") as file:
+                json.dump(kPoints, file, indent=2)
+            pathSHP = os.path.join( base_path, "points.shp")
+            params = f"ogr2ogr {pathSHP} {pathJSON}"
+            subprocess.call([params], shell=True) 
+            logger.info( f"executed ogr2ogr {params}" )
+            if maxDist is None:
+                maxDist = -1.0
+            if nClasses is None:
+                nClasses = 100
+            if nSkip is None:
+                nSkip = 1
+            if model is None:
+                model = 'a + b * x'
+            pathVAR = os.path.join( base_path, "variogram.csv")
+            params = f"saga_cmd statistics_kriging 4 -POINTS '{pathSHP}'"
+            params += f" -ATTRIBUTE 'value' -VARIOGRAM '{pathVAR}' -VAR_MAXDIST {maxDist}"
+            params += f" -VAR_NCLASSES {nClasses} -VAR_NSKIP {nSkip} -VAR_MODEL '{model}'"
+            subprocess.call([params], shell=True) 
+            logger.info( f"executed saga_cmd {params}" )
+            content = ""
+            with open(pathVAR, "r", encoding="utf-8") as file:
+                content = file.read()
+            # clean
+            params = f"rm -r {base_path}"
+            subprocess.call([params], shell=True) 
+            return Response( { "variogram": content}, status=status.HTTP_200_OK )  
+        except SystemExit as exc:
+            logger.info( f"Errors executing saga_cmd {params}" )
+            return Response(
+                {"detail": (f"Errors: Open the log for further details. ")},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR )
+        return Response (
+            {},
+            status=status.HTTP_204_NO_CONTENT,
+        )  
 
 class UpdateLayersViewSet(viewsets.ViewSet):
     """
@@ -974,6 +1044,7 @@ class DatasetViewSet(viewsets.ModelViewSet):
         for item in serializer.data:
             item.pop('filter')
             item.pop('points')
+            item.pop('k_params')
             item.pop('k_variogram')
             item.pop('k_data')
         return Response(serializer.data)

@@ -33,37 +33,19 @@ const AppMenu = () => {
         {
             label: 'Points Soil Data',
             icon: 'pi pi-map-marker',
-            items: [
-                {
-                    label: 'List',
-                    icon: 'pi pi-list',
-                    to: '/points'
-                }
-            ]
+            to: '/points'
         },
         { separator: true },
         {
-            label: 'Publisher',
+            label: 'Publish',
             icon: 'pi pi-briefcase',
-            items: [
-                {
-                    label: 'List',
-                    icon: 'pi pi-list',
-                    to: '/datasets'
-                },
-            ]
+            to: '/publish'
         },
         { separator: true },
         {
             label: 'Taxonomies',
             icon: 'pi pi-book',
-            items: [
-                {
-                    label: 'List',
-                    icon: 'pi pi-list',
-                    to: '/taxonomy'
-                },
-            ]
+            to: '/taxonomy'
         },
         { separator: true },
         {
@@ -75,23 +57,11 @@ const AppMenu = () => {
                     icon: 'pi pi-list',
                     to: '/hydroptf'
                 },
-            ]
-        },
-        { separator: true },
-        {
-            label: 'Help',
-            icon: 'pi pi-question-circle',
-            items: [
                 {
-                    label: 'manuals',
-                    icon: 'pi pi-list',
-                    to: '/help'
+                    label: 'Area Soil Indicators',
+                    icon: 'pi pi-wrench',
+                    to: '/areasi'
                 },
-                {
-                    label: 'videos',
-                    icon: 'pi pi-list',
-                    to: '/help/videos'
-                }
             ]
         }
 

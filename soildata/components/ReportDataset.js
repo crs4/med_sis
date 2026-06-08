@@ -1,6 +1,6 @@
 "use client"
 
-import { point, featureCollection, feature, toMercator, bbox, bboxPolygon } from '@turf/turf';
+import { point, featureCollection, feature, toMercator } from '@turf/turf';
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
@@ -115,18 +115,16 @@ export default function ValidateDataset( { dataset, setDataset })  {
     return perc; 
   }
   
-  // points aggregation using sixth decimal place (1 meter) in latitude and longitude
-  // variogram data evaluate in simple mercator to speed validation
+  // aggregation using sixth decimal place (1 meter) in latitude and longitude
+  // convert in mercator (EPSG:900913) projection
+  // add abbox in mercator
   const aggregateKPoints = async () => {
     const aggregateIndex = {}
     if ( !workDataset || !workDataset.filter.points || !workDataset.filter.points.features )
       return
-    let epsg_utm_code = null
     workDataset.filter.points.features.forEach( ft => {
       if ( ft.geometry.coordinates ){
         const key = truncate( ft.geometry.coordinates[0] ) + '_' + truncate ( ft.geometry.coordinates[1] );
-        if ( !epsg_utm_code )
-          epsg_utm_code = getUTM_EPSG_CODE(ft.geometry.coordinates[1],ft.geometry.coordinates[0])
         if ( !aggregateIndex[key] )
           aggregateIndex[key] = { values: [], percentages: [] }
         const p = evalDepth( ft, workDataset.filter.depth )
@@ -155,12 +153,10 @@ export default function ValidateDataset( { dataset, setDataset })  {
       }
     });
     if ( kFeatures.length ) {
-      workDataset.k_params.epsg = epsg_utm_code;
       workDataset.k_params.points = featureCollection(kFeatures);
       workDataset.k_data = featureCollection(kGeoPts)
     } 
     else {
-      workDataset.k_params.epsg = null
       workDataset.k_params.points = null;
       workDataset.k_data = null;
     } 
@@ -227,8 +223,6 @@ export default function ValidateDataset( { dataset, setDataset })  {
       toast.current.show({ severity: 'error', summary: 'Error!', detail: 'Too few points to perform interpolation.'});
       return;
     }
-    const bbox = featureCollection([bboxPolygon ( bbox(workDataset.filter.aoi))]);
-    workDataset.k_params.bbox = bbox;
     workDataset.k_params.nClasses = nClasses;
     workDataset.k_params.model = model.formula;
     workDataset.k_params.nSkip = nSkip;
@@ -276,31 +270,6 @@ export default function ValidateDataset( { dataset, setDataset })  {
       toast.current.show({ severity: 'error', summary: 'Errors!', detail: 'Variogram not calculated, wrong parameters or system error (try later) '}); 
       setMessage('Variogram not calculated, wrong parameters (e.g maxDist too low ) or System error (try later)')
     }
-  }
-
-  // retrive the UTM EPSG Code needed in kriging interpolation
-  function getUTM_EPSG_CODE(latitude, longitude) {
-    // Ensure longitude is within valid -180 to 180 range
-    const lon = parseFloat(longitude);
-    const lat = parseFloat(latitude);
-
-    // Calculate zone number
-    let zoneNumber = Math.floor((lon + 180) / 6) + 1;
-
-    // Handle special case for Norway/Svalbard exception
-    if (lat >= 56.0 && lat < 64.0 && lon >= 3.0 && lon < 12.0) {
-        zoneNumber = 32;
-    }
-    // Handle special cases for Svalbard exceptions
-    if (lat >= 72.0 && lat < 84.0) {
-        if (lon >= 0.0 && lon < 9.0) zoneNumber = 31;
-        else if (lon >= 9.0 && lon < 21.0) zoneNumber = 33;
-        else if (lon >= 21.0 && lon < 33.0) zoneNumber = 35;
-        else if (lon >= 33.0 && lon < 42.0) zoneNumber = 37;
-    }
-
-    const utm_emisphere = lat >= 0 ? 'EPSG:326' : 'EPSG:327';
-    return `${utm_emisphere}${zoneNumber}`
   }
 
   // initialize parameters for kriging if present 

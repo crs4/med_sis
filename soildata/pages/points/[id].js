@@ -26,7 +26,7 @@ import Mapping from '../../data/mapping';
 import { Chart } from 'primereact/chart';
 import * as munsell from 'munsell';
 
-const MyMap = dynamic(() => import("../../components/PointMap"), { ssr:false })
+const MyMap = dynamic(() => import("../../components/map/PointMap"), { ssr:false })
 
 export default function Page()  {
   const router = useRouter();

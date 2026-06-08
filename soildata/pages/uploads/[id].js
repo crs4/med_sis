@@ -8,12 +8,12 @@ import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
 import { point, featureCollection } from '@turf/turf';
 import { useUser } from '../../context/user';
-import ReportTable from '../../components/XLSxResultTable';
+import ReportTable from '../../components/table/XLSxResultTable';
 import { UploadService } from '../../service/uploads';
 import { TaxonomyService } from '../../service/taxonomies';
 
 
-const MyMap = dynamic(() => import("../../components/XLSxMap"), { ssr:false })
+const MyMap = dynamic(() => import("../../components/map/XLSxMap"), { ssr:false })
 
 export default function Page()  {
   const router = useRouter();
@@ -55,7 +55,7 @@ export default function Page()  {
   return (
     <div className="layout-dashboard">
       <Toast ref={toast} />
-      <h4 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">{t('UPLOADS_LIST')}</h4>
+      <h4 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">{t('UPLOAD_RESULTS')}</h4>
       <div className="card text-cyan-800 shadow-2">
         <div className="flex flex-row-reverse  w-full gap-2 m-2">
           <Button 
@@ -82,9 +82,9 @@ export default function Page()  {
       )}
       {(upload && !loading  && upload.status !== UploadService.STATUSES.IN_PROCESS && upload.status !== UploadService.STATUSES.UPLOADED ) && (
         <div className="card text-xl  w-full font-bold text-cyan-800 m-2">
-          <h6> Upload:<span class="text-gray-600"> { upload.title } </span></h6>
-          <h6> Date:<span class="text-gray-600"> { upload.date.toString() }</span></h6>
-          <h6> Editor:<span class="text-gray-600"> { upload.editor }</span></h6>
+          <h4> Upload:<span class="text-gray-600"> { upload.title } </span></h4>
+          <h4> Date:<span class="text-gray-600"> { upload.date.toString() }</span></h4>
+          <h4> Editor:<span class="text-gray-600"> { upload.editor }</span></h4>
         </div>
       )} 
       {(upload && upload.report && upload.report['errors'] && 

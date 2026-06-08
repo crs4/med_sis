@@ -14,6 +14,8 @@ export const doFetch = async ( base_url, endpoint, id, method, payload, cookie) 
     let body = null
     if ( id )
       url += '/' + id ;
+    if ( method === 'PUT' )
+      url += '/';
     if ( payload )
       body = JSON.stringify(payload)
     response = await fetch( url, { method: method, headers: headers, body: body } )
@@ -38,15 +40,16 @@ export const doFetchBackOffice = async ( endpoint, id, method, payload, cookie) 
   return doFetch (process.env.NEXT_PUBLIC_BACKOFFICE_API_BASE_URL, ep , id, method, payload, cookie)
 }
 
-export const doFetchGeoserver = async (dataset, cookie) =>  
+export const doFetchGeoserver = async (typename, bboxFilter, token) =>  
 { 
   try { 
-    if ( !cookie || !dataset )
+    if ( !typename )
       return { data: null, ok: false, status: null }
-    let csrftoken = getMyCookie(cookie, 'csrftoken');
     let url = process.env.NEXT_PUBLIC_GEOSERVER_BASE_URL 
     url += '/ows?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetFeature&outputFormat=application%2Fjson&'
-    url += 'typename=' + dataset + '&maxFeatures=50000&access_token=' + csrftoken;
+    if ( bboxFilter )
+      url += bboxFilter + "&"
+    url += 'typename=' + typename + '&maxFeatures=100000&access_token=' + token;
     let headers = {
       Accept: "application/json"
     };

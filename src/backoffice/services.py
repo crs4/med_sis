@@ -4,8 +4,16 @@ import subprocess
 from datetime import datetime
 from django.conf import settings
 from .models import XLSxUpload, Dataset
+import os 
 import re
 import base64
+from osgeo import ogr, osr, gdal
+# Enable GDAL/OGR exceptions
+gdal.UseExceptions()
+# GDAL & OGR memory drivers
+GDAL_MEMORY_DRIVER = gdal.GetDriverByName('MEM')
+OGR_MEMORY_DRIVER = ogr.GetDriverByName('MEM')
+
 
 ###### XLSs Upload
 class XLSxUploadService:
@@ -240,6 +248,11 @@ class XLSxUploadService:
 ###### Dataset Publishing
 class DatasetService:
     def __init__(self):
+        self.report = {
+            "start_time": datetime.now().isoformat(),
+            "errors": [],
+            "success": True
+        }
         self.base_url = settings.API_BASE_URL
         # Configurazione dell'autenticazione basic
         self.auth_username = settings.API_USERNAME
@@ -255,75 +268,287 @@ class DatasetService:
         return {'Authorization': f'Basic {encoded_credentials}'}
    
     def process_dataset_data(self, dataset_id):
+############ EVALUATE PARAMETERS         
         try:
             # get Dataset object
-            dataset = Dataset.objects.using('backoffice').get(id=dataset_id)
-            
-            if dataset is not None:
-                if dataset.status == "IN_PROCESS" or dataset.status == "IN_PREPROCESS" :
-                    # read geoJSON points (EPSG:4326)    
-                    data = dataset.points_data
-                    if not isinstance(data, dict):
-                        data = json.loads(data)
-
-                    parameters = dataset.parameters
-                    if not isinstance(parameters, dict):
-                        parameters = json.loads(parameters)
+            dataset = Dataset.objects.using('backoffice').get(id=dataset_id) 
+            if dataset is not None and dataset.filter is not None:
+                if dataset.status == "IN_PROCESS" :
+                    filter = dataset.filter
+                    if not isinstance(filter, dict):
+                        filter = json.loads(filter)
+                    #1st dataset: geoJSON filtered points (EPSG:4326)    
+                    points = filter['points']
+                    #2nd dataset: geoJSON area of interest (EPSG:4326)    
+                    aoi = filter['aoi']
+                    # 3th dataset geotiff interpolation raster (EPSG:9000) 
+                    if dataset.kriging:
+                        k_params = dataset.k_params
+                        if not isinstance(k_params, dict):
+                            k_params = json.loads(k_params)
+                        # KRIGING dataset
+                        # geoJSON aggreagated points in area of interest (EPSG:4326)    
+                        k_data = dataset.k_data
+                        if not isinstance(k_data, dict):
+                            k_data = json.loads(k_data)
+                        k_model = k_params['model']
+                        k_maxdist = k_params['maxDist']
+                        k_box = k_params['bbox']
+                        k_epsg = k_params['epsg']
+                        k_nclasses = k_params['nClasses']
+                        k_nskip = k_params['nSkip']
                 else  :
-                    raise ValueError("Dataset is not IN_PROCESS or IN_PREPROCESS status")
+                    raise ValueError("Dataset is not IN_PROCESS status")
             else  :
                 raise ValueError("Dataset not found")
-    
-            # clon = str(( lon_degree + 180 ) / 6 + 1) 
-            # clat > 0 ? "6" : "7"  
-            # make CMD
-            # CMD1. gdal vector reproject -s "EPSG:4326" -r "32"+clat+clon  /tmp/requestid/src_points.geojson /tmp/requestid/src_points_utm.geojson
-            # CMD2. gdal vector convert --if "geoJSON" --of "ESRI Shapefile" --overwrite  /tmp/requestid/src_points_UTM.geojson /tmp/requestid/src_points_UTM.shp
-            # (-----------)
-            # x = subprocess.call([CMD1 and CMD2])
-            # if x == 0 : OK
-            # else : KO
-            
-            # if in_preprocess 
-            # SAGA_CMD  
-            # model = parameters['VAR_MODEL']
-            # attribute = parameters['ATTRIBUTE']
-            # log = parameters['LOG']
-            # max_dist = parameters['VAR_MAXDIST'] default: -1.000000
-            # saga_cmd statistics_kriging 4 -POINTS /tmp/requestid/src_points_utm.geojson -ATTRIBUTE [attribute] -VAR_NCLASSES [ncls] -VAR_MODEL [model] -LOG [log] -VARIOGRAM /tmp/requestid/variogram.csv  
-            # variogramma da csv a json
-            # salvare in request
-            # request.status = preprocessed 
-            # END
-             
-            # if in_process 
-            # SAGA_CMD  
-            # model = parameters['VAR_MODEL']
-            # attribute = parameters['ATTRIBUTE']
-            # log = parameters['LOG']
-            # max_dist = parameters['VAR_MAXDIST'] default: -1.000000
-            # classes = parameters['VAR_NCLASSES'] default: 100 , min 1
-            # BBOX: east, west, north, south
-            # saga_cmd statistics_kriging 0 -TARGET_DEFINITION 0 
-            #   -POINTS /tmp/requestid/points_utm.shp -FIELD [attribute] -VAR_MODEL [model] -LOG [log] -VAR_NCLASSES [ncls]
-            #   -TARGET_USER_XMIN [minX] -TARGET_USER_XMAX [maxX] -TARGET_USER_YMIN [minY] -TARGET_USER_YMAX [maxY] 
-            #   -TARGET_USER_SIZE 10.0 -TARGET_USER_FITS 0 -TQUALITY 1 -VAR_MAXDIST 0.0  -VAR_NSKIP 1  -BLOCK false -DBLOCK 100.0 
-            #   -CV_METHOD 1 -CV_SAMPLES 10 -SEARCH_RANGE 1 -SEARCH_RADIUS 60.0 -SEARCH_POINTS_ALL 1 -SEARCH_POINTS_MIN 16 -SEARCH_POINTS_MAX 20 
-            #   -PREDICTION  /tmp/requestid/prediction -VARIANCE  /tmp/requestid/variance
-            #
-            # GDAL sdat to geotiff
-            # publish to GN (metadata )
-            
-            
-            # saga_cmd statistics_kriging 4 -POINTS /tmp/requestid/src_points_utm.geojson -ATTRIBUTE [attribute] -VAR_MODEL [model] -LOG [log] -VARIOGRAM /tmp/requestid/variogram.csv  
-            # variogramma da csv a json
-            # salvare in request
-            # request.status = preprocessed 
-            # END
-                    
         except Exception as e:
+            self.report["success"] = False
+            self.report["errors"].append("Stage1: errors reading dataset, wrong parameters, exited")
             dataset.status = "ERRORS"
+            dataset.report = self.report
             dataset.save(using='backoffice')
             return False
-    
+        time = round(time.time() * 1000)
+        folder = f"dataset_{dataset_id}_{time}" 
+        name = f"dataset_{dataset_id}_{time}"
+        base_path = '/tmp/' + folder
+        try:
+            os.mkdir(base_path)
+        except:
+            pass
+############ GENERATE WORK FILES FROM PARAMETERS        
+        try :
+            with open(base_path+"/"+name+"_points.json", "w") as outfile:
+                json.dump(points, outfile)
+            with open(base_path+"/"+name+"_aoi.json", "w") as outfile:
+                json.dump(aoi, outfile)
+        except Exception as e:
+            self.report["success"] = False
+            self.report["errors"].append("Stage2: errors creating files, exited")
+            dataset.status = "ERRORS"
+            dataset.report = self.report
+            dataset.save(using='backoffice')
+            return False
+        
+############ IF KRIGING GENERATE KRIGING WORK FILES FROM PARAMETERS          
+        try :
+            if dataset.kriging:
+                with open(base_path+"/kpoints.json", "w") as outfile:
+                    json.dump(k_data, outfile)
+                with open(base_path+"/bbox.json", "w") as outfile:
+                    json.dump(k_box, outfile)
+            
+                # Reproject aggregated poimts and change file format
+                pointsSHP = os.path.join( base_path, "kpoints.shp")
+                pointsJSON = os.path.join( base_path, "kpoints.json")
+                params = f"ogr2ogr -s_srs 'EPSG:4326' -t_srs '{k_epsg}' {pointsSHP} {pointsJSON}"
+                subprocess.call([params], shell=True) 
+                # Reproject the area of interests and change file format
+                aoiJSON = os.path.join( base_path+"/"+name+"_aoi.json")
+                aoiUTMJSON = os.path.join( base_path, "utmaoi.json")
+                params = f"ogr2ogr -s_srs 'EPSG:4326' -t_srs '{k_epsg}' {aoiUTMJSON} {aoiJSON}"
+                subprocess.call([params], shell=True) 
+                # Reproject the bounding box 
+                pathSHP = os.path.join( base_path, "box.json")
+                pathJSON = os.path.join( base_path, "UTMbox.json")
+                params = f"ogr2ogr -s_srs 'EPSG:4326' -t_srs '{k_epsg}' {pathSHP} {pathJSON}"
+                subprocess.call([params], shell=True)                
+                with open(base_path+"/UTMbox.json", "r") as file:
+                    utmBox = json.load(file)
+                    north = utmBox.features[0].coordinates[3]
+                    south = utmBox.features[0].coordinates[1]
+                    east = utmBox.features[0].coordinates[2]
+                    west = utmBox.features[0].coordinates[0]
+                    size = north - south
+                    if size < east - west:
+                        size = east - west
+                    # Tiff size about 2000 x 2000 pixels
+                    # size in meters
+                    cell_size = size / 2000.0
+                predictionGRD = os.path.join( base_path, "prediction")
+                varianceGRD = os.path.join( base_path, "variance")  
+                # SAGA_CMD  
+                saga_cmd =  f"saga_cmd statistics_kriging 0 -POINTS {pointsSHP} -FIELD value -VAR_MODEL {k_model} -VAR_NCLASSES {k_nclasses} " 
+                saga_cmd += f" -TARGET_USER_XMIN {west} -TARGET_USER_XMAX {east} -TARGET_USER_YMIN {south} -TARGET_USER_YMAX {north} " 
+                saga_cmd += f" -TARGET_USER_SIZE {cell_size} -VAR_MAXDIST {k_maxdist}  -VAR_NSKIP {k_nskip} " 
+                saga_cmd += f" -PREDICTION {predictionGRD} -VARIANCE {varianceGRD} " 
+                subprocess.call([saga_cmd], shell=True) 
+        except Exception as e:
+            self.report["success"] = False
+            self.report["errors"].append("Stage3: errors in elaborating kriging interpolatio, exited")
+            dataset.status = "ERRORS"
+            dataset.report = self.report
+            dataset.save(using='backoffice')
+            return False
+
+############ IF KRIGING GENERATE AND VALIDATE GEOTIFF          
+        try :    
+            if dataset.kriging:
+                filename1 = f"{base_path}/{name}_prediction.tif" 
+                filename2 = f"{base_path}/{name}_variance.tif"
+                # 1. change saga grid format to GeoTiff
+                cmd = f"gdal_translate -of GTiff {predictionGRD}.sdat {filename1}"
+                subprocess.call([cmd], shell=True) 
+                cmd = f"gdal_translate -of GTiff {varianceGRD}.sdat {filename2}"
+                subprocess.call([cmd], shell=True) 
+                # 2. clip and compress GeoTiffs 
+                tif = gdal.Open( filename1 )
+                xsize = tif.RasterXSize
+                ysize = tif.RasterYSize
+                gtpar = tif.GetGeoTransform()
+                minx = gtpar[0]
+                maxy = gtpar[3]
+                maxx = minx + gtpar[1] * xsize
+                miny = maxy + gtpar[5] * ysize
+            # it is the main tiff configuration
+                gdal_warp_kwargs = {
+                    'format': 'GTiff',
+                    'cutlineDSName' : json.dumps(aoiUTMJSON),
+                    'cropToCutline' : True,
+                    'height' : ysize,
+                    'width' : xsize,
+                    'outputBounds' : [minx,miny,maxx,maxy],
+                    'creationOptions' : ['COMPRESS=LZW'],
+                    'dstSRS': 'EPSG:4326' 
+                }
+                tif=None
+                cmd = f"gdal.Warp( {filename1}, {filename1}, **gdal_warp_kwargs)"
+                subprocess.call([cmd], shell=True)  
+                cmd = f"gdal.Warp( {filename2}, {filename2}, **gdal_warp_kwargs)" 
+                subprocess.call([cmd], shell=True) 
+        except Exception as e:
+            self.report["success"] = False
+            self.report["errors"].append("Stage4: wrong Geotiff reading interpolation, exited")
+            dataset.status = "ERRORS"
+            dataset.report = self.report
+            dataset.save(using='backoffice')
+            return False
+        
+############ PUBLISHING POINTS DATASET
+        #1st dataset: filtered points (EPSG:4326) geoJSON base_path+"/"+name+"_points.json"    
+        try :
+            url = f"{self.base_url}/api/v2/uploads/upload/"
+            files= [
+                ('base_file', ( name +'_points.json',open(base_path+'/'+name +'_points.json','r'), 'application/json')),
+                ('json_file', ( name +'_points.json',open(base_path+'/'+name +'_points.json','r'), 'application/json'))
+            ]
+            response = requests.post( url, files=files, headers=self.auth_header)
+            if response.status_code == 200:
+                res = response.json()
+                if res.execution_id is not None :
+                    #monitoring task
+                    go = True
+                    while go:
+                        urlTask = f"{self.base_url}/api/v2/executionrequest/{res.execution_id}" 
+                        responseTask = requests.get( urlTask, headers=self.auth_header)
+                        if responseTask.status_code == 200:
+                            resTask = responseTask.json()
+                            if resTask.geonode_resource is not None : 
+                                geonode_points_id = resTask.geonode_resource
+                            if resTask.status == 'finished' or resTask.status == 'failed':
+                                go = False    
+                        else :
+                            go = False
+        except Exception as e:
+            self.report["success"] = False
+            self.report["errors"].append("Stage5: errors creating points dataset, exited")
+            dataset.status = "ERRORS"
+            dataset.report = self.report
+            dataset.save(using='backoffice')
+            return False
+############ PUBLISHING AOI DATASET        
+        #2nd dataset: area of interest (EPSG:4326) geoJSON base_path+"/"+name+"_aoi.json"
+        try :
+            url = f"{self.base_url}/api/v2/uploads/upload/"
+            files= [
+                ('base_file', ( name +'_aoi.json',open(base_path+'/'+name +'_points.json','r'), 'application/json')),
+                ('json_file', ( name +'_aoi.json',open(base_path+'/'+name +'_points.json','r'), 'application/json'))
+            ]
+            response = requests.post( url, files=files, headers=self.auth_header)
+            if response.status_code == 200:
+                res = response.json()
+                if res.execution_id is not None :
+                    #monitoring task
+                    go = True
+                    while go:
+                        urlTask = f"{self.base_url}/api/v2/executionrequest/{res.execution_id}" 
+                        responseTask = requests.get( urlTask, headers=self.auth_header)
+                        if responseTask.status_code == 200:
+                            resTask = responseTask.json()
+                            if resTask.geonode_resource is not None : 
+                                geonode_aoi_id = resTask.geonode_resource
+                            if resTask.status == 'finished' or resTask.status == 'failed':
+                                go = False    
+                        else :
+                            go = False
+        except Exception as e:
+            self.report["success"] = False
+            self.report["errors"].append("Stage6: errors creating aoi dataset, exited")
+            dataset.status = "ERRORS"
+            dataset.report = self.report
+            dataset.save(using='backoffice')
+            return False
+############ PUBLISHING INTERPOLATION RASTER DATASET
+        #3th dataset: interpolation raster - geotiff base_path+"/"+name+"_prediction.tif"
+        try :
+            if dataset.kriging:
+                url = f"{self.base_url}/api/v2/uploads/upload/"
+                files= [
+                    ('base_file', ( name+'_prediction.tif',open(base_path+'/'+name+'_prediction.tif','rb'), 'image/tiff')),
+                    ('tif_file', ( name+'_prediction.tif',open(base_path+'/'+name+'_prediction.tif','rb'), 'image/tiff'))
+                ]
+                response = requests.post( url, files=files, headers=self.auth_header)
+                if response.status_code == 200:
+                    res = response.json()
+                    if res.execution_id is not None :
+                        #monitoring task
+                        go = True
+                        while go:
+                            urlTask = f"{self.base_url}/api/v2/executionrequest/{res.execution_id}" 
+                            responseTask = requests.get( urlTask, headers=self.auth_header)
+                            if responseTask.status_code == 200:
+                                resTask = responseTask.json()
+                                if resTask.geonode_resource is not None : 
+                                    geonode_prediction_id = resTask.geonode_resource
+                                if resTask.status == 'finished' or resTask.status == 'failed':
+                                    go = False    
+                            else :
+                                go = False
+        except Exception as e:
+            self.report["success"] = False
+            self.report["errors"].append("Stage6: errors creating prediction raster dataset, exited")
+            dataset.status = "ERRORS"
+            dataset.report = self.report
+            dataset.save(using='backoffice')
+            return False
+
+############ METADATA geonode_points_id, geonode_aoi_id, geonode_prediction_id
+        try:
+            url = f"{self.base_url}/api/v2/datasets/{geonode_points_id}"
+            data = {
+                "title": f"Filter:{dataset.id} Source:{dataset.source} date:{dataset.date}",
+                "abstract": f"Filter:{dataset.id} Source:{dataset.source} date:{dataset.date}",
+                "category": {
+                    "identifier": "geoscientificInformation",
+                },
+                "keywords": dataset.filter.keywords
+            }
+            response = requests.patch( url, headers=self.auth_header, json=data)
+            #if response.status_code == 200:
+        except Exception as e:
+            self.report["success"] = False
+            self.report["errors"].append("Stage6: errors creating prediction raster dataset, exited")
+            dataset.status = "ERRORS"
+            dataset.report = self.report
+            dataset.save(using='backoffice')
+            return False
+
+############ FINALIZE
+        dataset.status = "PUBLISHED"
+        dataset.report = self.report
+        dataset.save(using='backoffice')
+        return True
+           
+                    
+        
     
