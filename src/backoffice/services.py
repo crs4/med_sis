@@ -461,6 +461,7 @@ class DatasetService:
         try :
             url = f"{self.base_url}/api/v2/uploads/upload/"
             files= [
+                # ('sld_file',('name +'_aoi.sld',open('...indicatorSLDFilepath.sld','rb'),'application/octet-stream')),
                 ('base_file', ( name +'_aoi.json',open(base_path+'/'+name +'_points.json','r'), 'application/json')),
                 ('json_file', ( name +'_aoi.json',open(base_path+'/'+name +'_points.json','r'), 'application/json'))
             ]
@@ -468,7 +469,7 @@ class DatasetService:
             if response.status_code == 200:
                 res = response.json()
                 if res.execution_id is not None :
-                    #monitoring task
+                    # upload monitoring task
                     go = True
                     while go:
                         urlTask = f"{self.base_url}/api/v2/executionrequest/{res.execution_id}" 
@@ -494,6 +495,7 @@ class DatasetService:
             if dataset.kriging:
                 url = f"{self.base_url}/api/v2/uploads/upload/"
                 files= [
+                    # ('sld_file',('name +'_aoi.sld',open('...indicatorPredictionsSLDFilepath.sld','rb'),'application/octet-stream')),
                     ('base_file', ( name+'_prediction.tif',open(base_path+'/'+name+'_prediction.tif','rb'), 'image/tiff')),
                     ('tif_file', ( name+'_prediction.tif',open(base_path+'/'+name+'_prediction.tif','rb'), 'image/tiff'))
                 ]
@@ -549,6 +551,11 @@ class DatasetService:
         dataset.save(using='backoffice')
         return True
            
-                    
+#### for all soil indicators data in JSON format
+# typename, name, abstract, sldpoint, sldprediction, type 
+# 
+# geoserver_data/data/workspaces/geonode/styles/typename.sld
+# 
+# geoserver_data/data/workspaces/geonode/backoffice/typename            
         
     

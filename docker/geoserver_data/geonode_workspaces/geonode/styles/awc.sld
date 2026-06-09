@@ -38,9 +38,7 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
-
-<Rule>
+        <Rule>
           <Name>Limited water storage capacity</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
@@ -72,9 +70,6 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
-
-
         <Rule>
           <Name>Good water storage capacity</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
@@ -107,8 +102,6 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
-
         <Rule>
           <Name>Ideal water storage capacity</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
@@ -135,7 +128,6 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-       
       </FeatureTypeStyle>
     </UserStyle>
   </NamedLayer>
