@@ -86,35 +86,20 @@ def process_dataset(self, dataset_id):
         dataset = Dataset.objects.using('backoffice').get(id=dataset_id)
         
         # Verifica che lo stato sia IN_PROCESS
-        if dataset.status != "IN_PROCESS" and dataset.status != "IN_PREPROCESS":
-            logger.warning(f"Dataset {dataset_id} is not in IN_PROCESS or IN_PREPROCESS status  (current state: {dataset.status})")
+        if dataset.status != "IN_PROCESS":
+            logger.warning(f"Dataset {dataset_id} is not in IN_PROCESS status  (current state: {dataset.status})")
             return False
         logger.info(f"Processing dataset {dataset_id} data...")
         service = DatasetService()
-        result = False
-        if dataset.status == "IN_PROCESS":
-            result = service.process_dataset_data(dataset_id)
-            if result:
-                dataset.status = "PUBLISHED"
-                logger.info(f"Dataset {dataset_id} published successfully")
-            else:
-                dataset.status = "ERRORS"
-                logger.warning(f"Dataset {dataset_id} not published")
-        else :
-            result = service.preprocess_dataset_data(dataset_id)
-            if result:
-                dataset.status = "PREPROCESSED"
-                logger.info(f"Dataset {dataset_id} completed preprocess successfully")
-            else:
-                dataset.status = "ERRORS"
-                logger.warning(f"dataset {dataset_id} preprocess with errors")
-            
+        result = service.process_dataset_data(dataset_id)
+        if result:
+            dataset.status = "PUBLISHED"
+            logger.info(f"Dataset {dataset_id} published successfully")
+        else:
+            dataset.status = "ERRORS"
+            logger.warning(f"Dataset {dataset_id} not published")
         dataset.save(using='backoffice')
-        # ---------------------------------------------------------------------------------------------
-        # NUOVO BLOCCO: Trigger updatelayers se l'import è un successo
-        # -----------------------------------------------------------
-        return True
-        
+        return result
     except Dataset.DoesNotExist:
         logger.error(f"Dataset {dataset_id} not found")
         return False

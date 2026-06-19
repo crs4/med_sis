@@ -25,32 +25,38 @@ import ProfileService from '../service/profiles';
 import TaxonomyService from '../service/taxonomies';
 import dynamic from 'next/dynamic'
 
-const PointsDatasetMap = dynamic(() => import("./map/PointsDatasetMap"), { ssr:false })
+const PointsFilterMap = dynamic(() => import("./map/PointsFilterMap"), { ssr:false })
 
 export default function ValidateDataset( { dataset, setDataset })  { 
   const models = [ 
-    { name: 'linear', formula: 'a + b * x'}, 
-    { name: 'power', formula: 'a + b * x^k'}, 
-    { name: 'square', formula: 'a + b * sqrt(x)'}, 
-    { name: 'logarithmic', formula: 'a + b * ln(1 + x)'}, 
-    { name: 'gaussian', formula: 'n + (s-n) * (1 - exp(-(x/r)^2))'}
+    { name: 'Linear', formula: 'a + b * x'}, 
+    { name: 'Power', formula: 'a + b * x^k'}, 
+    { name: 'Square', formula: 'a + b * sqrt(x)'}, 
+    { name: 'Logarithmic', formula: 'a + b * ln(1 + x)'}, 
+    { name: 'Spherical', formula: 'a + b * ifelse(x > c, 1, 1.5 * x / c - 0.5 * x^3 / c^3'}
   ]
   const user = useUser();
   const toast = useRef(null);
   const t = useTranslations('default');
   const router = useRouter();
   const [isWorking, setIsWorking] = useState(false);
+  // dataset work object
   const [workDataset, setWorkDataset] = useState(dataset);
+  // semi variogram result data 
   const [variogram, setVariogram] = useState(null);
-  const [kPoints, setKPoints] = useState(null);
+  // variogram points in simple mercator projection
+  const [vPoints, setVPoints] = useState([])
   const [kriging, setKriging] = useState(null);
-  const [maxDist, setMaxDist] = useState(0);
+  const [maxDist, setMaxDist] = useState(-1.00000);
   const [nClasses, setNClasses] = useState(100); 
   const [nSkip, setNSkip] = useState(1); 
   const [model, setModel] = useState(models[0]);
   const [descriptors, setDescriptors] = useState([]);
   const [message, setMessage] = useState('');
-  
+
+  const [visibleFiltered, setVisibleFiltered] = useState(false)
+  const [visibleAggregated, setVisibleAggregated] = useState(false)
+
   function generateDescriptor () {
     const _descriptors = [
       { name: "Name", value: workDataset.name },
@@ -68,15 +74,10 @@ export default function ValidateDataset( { dataset, setDataset })  {
       _descriptors.push({ name: "Filtered points", value: 0 })
     if ( workDataset.k_data ){
       const len = (workDataset.k_data.features ? workDataset.k_data.features.length : 0);
-      _descriptors.push({ name: "Aggregated points", value: len })
-      if ( len < 2 )
-        _descriptors.push({ name: "Warning", value: "too few points to perform the interpolation" })
-      else if ( len < 20 )
-        _descriptors.push({ name: "Warning", value: "very few points to perform the interpolation" })   
+      _descriptors.push({ name: "Aggregated points", value: len })  
     }
     else {
       _descriptors.push({ name: "Aggregated points", value: 0 })
-      _descriptors.push({ name: "Warning", value: "too few points to perform the interpolation" })
     }
     setDescriptors(_descriptors)
   }
@@ -103,21 +104,62 @@ export default function ValidateDataset( { dataset, setDataset })  {
     // 0 to 20 cm OR 20 to 50 cm
     if ( !ft || !ft.properties || ft.properties.upper === null || !depth_class  )
       return 0;
-    const uA = depth_class === 'depth0-20' ? 0 : 20,
-          lA = depth_class === 'depth0-20' ? 20 : 50,
+    const uA = depth_class === ProfileService.FILTER_DEPTH.DEPTH0_20 ? 0 : 20,
+          lA = depth_class === ProfileService.FILTER_DEPTH.DEPTH0_20 ? 20 : 50,
           uB = ft.properties.upper,
-          lB = ft.properties.lower? ft.properties.lower: lA,
+          lB = ft.properties.lower !== null ? ft.properties.lower: lA,
           l = ( lA > lB ) ? lB : lA,
           u = ( uA > uB ) ? uA : uB,
-          perc = 0;      
+          perc = 0; 
+    
     if ( (l - u) > 0 )   
-      perc = (l-u)/(lA-uA)
+      perc = (l-u)/(lA-uA) 
+    console.log(perc)
     return perc; 
   }
   
+  // uses Median absolute deviation (MAD) to identify outliers
+  function findOutliers( points ) {
+    try {  
+      if ( !points || !points.features )
+        return []
+      let array = [];
+      const median = null
+      points.features.forEach( ft => {
+        if ( ft.properties && ft.properties.value && !isNaN( parseFloat( ft.properties.value ) ) )                
+          array.push( parseFloat( ft.properties.value ) )
+      })
+      let ordered = [...array].sort((a, b) => a - b);
+      let middle = Math.floor(ordered.length / 2);
+      if ( middle > 0 ) 
+      // if the ordered size is an odd number return the central value
+        median = (ordered.length % 2 !== 0) ? ordered[middle] : (ordered[middle - 1] + ordered[middle]) / 2;
+      if ( median ) {
+        array = array.map( (elem) => ( median - elem  > 0 ) ? ( median - elem )  : ( elem - median ) )
+        ordered = [...array].sort((a, b) => a - b);
+        middle = Math.floor(ordered.length / 2);
+        let mad = null;
+        // if the ordered size is an odd number return the central value
+        if ( middle > 0 ) 
+          mad = (ordered.length % 2 !== 0) ? ordered[middle] : (ordered[middle - 1] + ordered[middle]) / 2;
+        points.features.forEach( ft => {
+          if ( ft.properties && ft.properties.value && !isNaN( parseFloat( ft.properties.value ) ) ) {
+            const v = parseFloat( ft.properties.value )
+            if ( mad != null && ( ( v - median > 0 ) ? ( v - median ) : ( median - v ) ) > 5*mad )
+              ft.properties.outlier = true
+            else ft.properties.outlier = false                
+          }  
+        })
+      }
+    } catch (error) {
+      console.log(error)  
+    }  
+    return points
+  }
+
   // points aggregation using sixth decimal place (1 meter) in latitude and longitude
-  // variogram data evaluate in simple mercator to speed validation
-  const aggregateKPoints = async () => {
+  // variogram data is in simple mercator instead UTM to speed validation
+  const aggregatePoints = async () => {
     const aggregateIndex = {}
     if ( !workDataset || !workDataset.filter.points || !workDataset.filter.points.features )
       return
@@ -126,51 +168,68 @@ export default function ValidateDataset( { dataset, setDataset })  {
       if ( ft.geometry.coordinates ){
         const key = truncate( ft.geometry.coordinates[0] ) + '_' + truncate ( ft.geometry.coordinates[1] );
         if ( !epsg_utm_code )
-          epsg_utm_code = getUTM_EPSG_CODE(ft.geometry.coordinates[1],ft.geometry.coordinates[0])
-        if ( !aggregateIndex[key] )
-          aggregateIndex[key] = { values: [], percentages: [] }
+          epsg_utm_code = getUTM_EPSG_CODE(ft.geometry.coordinates[1], ft.geometry.coordinates[0])
         const p = evalDepth( ft, workDataset.filter.depth )
         if ( ft.properties && ft.properties.value && p > 0 ){
-          aggregateIndex[key].pt = toMercator( point([ft.geometry.coordinates[0],ft.geometry.coordinates[1]]) )
-          aggregateIndex[key].ptgeo = point([ft.geometry.coordinates[0],ft.geometry.coordinates[1]])
+          if ( !aggregateIndex[key] )
+          aggregateIndex[key] = { points: [], values: [], percentages: [] }
+          // geo point for interpolation (UTM)
+          aggregateIndex[key].pt = point([ft.geometry.coordinates[0],ft.geometry.coordinates[1]])
+          // latitude
+          aggregateIndex[key].lat = truncate( ft.geometry.coordinates[1] )
+          // longitude
+          aggregateIndex[key].lon = truncate( ft.geometry.coordinates[0] )
+          // list of point values ​​and their relative depth intersection percentage
+          aggregateIndex[key].points.push(ft.properties.id)
           aggregateIndex[key].values.push(ft.properties.value)
-          aggregateIndex[key].lat = ft.geometry.coordinates[1]
-          aggregateIndex[key].lon = ft.geometry.coordinates[0]
           aggregateIndex[key].percentages.push(p)
         } 
       }  
     });
-    const kFeatures = [];
-    const kGeoPts = [];
+    /// aggregated points for kriging interpolation
+    const kPts = [];
     Object.keys(aggregateIndex).forEach ((d) => {
-      const data = aggregateIndex[d]
-      if ( data && data.pt && data.values.length ) {
+      try {
+        const data = aggregateIndex[d]
+        const kPt = data.pt
         let sum = 0 
         for ( let i = 0; i < data.values.length; i += 1 )
-          sum += data.values[i] / data.percentages[i]
-        data.pt.properties = { id: d, lat:data.lat, lon:data.lon, value : sum / data.values.length }
-        data.ptgeo.properties = { id: d, lat:data.lat, lon:data.lon, value : sum / data.values.length }
-        kFeatures.push(data.pt)
-        kGeoPts.push(data.ptgeo)
+          sum += data.values[i] * data.percentages[i]
+        let panel = '<div class="flex flex-column justify-content-center text-cyan-500 font-bold">';
+        panel += '<div class="justify-content-center text-blue-500 font-bold">' + data.points.length + ' aggregated Points '
+        panel += '<div>Latitude ' + data.lat + '</div>';
+        panel += '<div>Longitude ' + data.lon + '</div>';
+        panel += '<div>Value ' + (sum / data.values.length) + '</div>';
+        panel += '<div>[Point id :  value * depth percentage ] '
+        for ( let i = 0; i < data.points.length; i+=1 ) 
+          panel += '<div>' + data.points[i] + ': ' + data.values[i] + ' * ' + data.percentages[i] + '</div>'
+        panel += '</div>'
+        kPt.properties = { id: d, lat: data.lat, lon: data.lon, value: sum / data.values.length, popup: panel } 
+        kPts.push(kPt)
+      } catch (error) {
+        console.log(error)
       }
-    });
-    if ( kFeatures.length ) {
+    })
+    if ( kPts.length > 0 ){
+      workDataset.k_data = findOutliers(featureCollection(kPts))
       workDataset.k_params.epsg = epsg_utm_code;
-      workDataset.k_params.points = featureCollection(kFeatures);
-      workDataset.k_data = featureCollection(kGeoPts)
+      const vPts = []
+      workDataset.k_data.features.forEach ( (ft) => {
+        vPts.push( toMercator(ft) )
+      })
+      workDataset.k_params.points = featureCollection(vPts)
     } 
     else {
       workDataset.k_params.epsg = null
-      workDataset.k_params.points = null;
       workDataset.k_data = null;
+      workDataset.k_params.points = null;
     } 
-    setKPoints(workDataset.k_data)
     setWorkDataset(workDataset);
     await saveWorkDataset();  
   };
 
   const openList = () => {
-    router.push(`/datasets`);
+    router.push(`/publish`);
   };
 
   // This saves the dataset on backoffice db
@@ -200,7 +259,7 @@ export default function ValidateDataset( { dataset, setDataset })  {
   const finalizeDataset = async () => {
     /* publish in the catalogue */ 
     workDataset.status = ProfileService.DATASET_STATUSES.VALIDATED
-    if ( !workDataset.kriging || !workDataset.k_params || !workDataset.k_params.points || workDataset.k_params.points.length < 3 ){
+    if ( workDataset.kriging && ( !workDataset.k_params || !workDataset.k_data || !workDataset.k_data.features || workDataset.k_data.features.length < 3 )){
       toast.current.show({ severity: 'error', summary: 'Error!', detail: 'Too few points to perform interpolation.'});
       return;
     }
@@ -213,73 +272,91 @@ export default function ValidateDataset( { dataset, setDataset })  {
   const backToConfiguration = async () => {
     workDataset.status = ProfileService.DATASET_STATUSES.CREATED
     if ( workDataset.k_params && workDataset.k_params.points )
-      workDataset.k_params.points = null;
+      workDataset.k_params.epsg = null;
     workDataset.k_data = null;
     workDataset.k_variogram = null;
     setWorkDataset(workDataset)
     await saveWorkDataset()
   }
   
+  // return the points in simple mercator projection to calculate and evaluate the semi-variogram 
+  const setVariogramPoints = () => {
+    try {
+      const vPts = []
+      workDataset.k_data.features.forEach ( (ft) => {
+        vPts.push( toMercator(ft) )
+      })
+      workDataset.k_params.points = featureCollection(vPts)
+      setWorkDataset(workDataset) 
+    } catch (error) {
+      console.log(error)
+    } 
+  }
+    
   // Calculate variogram 
   const calculateVariogram = async () => {
-    setMessage('');
-    if ( !workDataset.k_params || !workDataset.k_params.points || workDataset.k_params.points.length < 3 ){
-      toast.current.show({ severity: 'error', summary: 'Error!', detail: 'Too few points to perform interpolation.'});
-      return;
-    }
-    const bbox = featureCollection([bboxPolygon ( bbox(workDataset.filter.aoi))]);
-    workDataset.k_params.bbox = bbox;
-    workDataset.k_params.nClasses = nClasses;
-    workDataset.k_params.model = model.formula;
-    workDataset.k_params.nSkip = nSkip;
-    workDataset.k_params.maxDist = maxDist; /// float
-    workDataset.k_variogram = null;
-    setVariogram(null);
-    setWorkDataset(workDataset);
-    const response = await ProfileService.calculateVariogram(document.cookie, workDataset.id, workDataset.k_params);  
-    if ( response && response.ok && response.data ) {
-      let var_pts = []
-      let mod_pts = []
-      let max = 0
-      let mind = null
-      let maxd = 0 
-      if ( response.data.variogram ) {
-        let array = response.data.variogram.split('\n')
-        let matrix = array.map( (e) => e.split(',') )
-        matrix = matrix.slice(1);
-        matrix.forEach( (e) => {
-          if ( e && e.length === 6 && e[1] && e[3] && e[5]  ){
-            var_pts.push({ x: e[1] , y: e[3] })
-            mod_pts.push({ x: e[1] , y: e[5] })
-            if ( e[3] > max ) max =  Math.round(e[3])
-            if ( e[5] > max ) max =  Math.round(e[5])
-            if ( mind === null || e[1] < mind  )
-              mind = Math.floor(e[1])
-            if ( e[1] > maxd ) maxd = Math.round(e[1])            
+    try {
+      setMessage('');
+       
+      if ( !workDataset.k_params || !workDataset.k_params.points || workDataset.k_params.points.length < 3 )
+        setMessage('Too few points to interpolate.');
+      else {
+        const bounds = featureCollection([bboxPolygon(bbox(workDataset.filter.aoi)) ]);
+        workDataset.k_params.bbox = bounds;
+        workDataset.k_params.nClasses = nClasses;
+        workDataset.k_params.model = model.formula;
+        workDataset.k_params.nSkip = nSkip;
+        workDataset.k_params.maxDist = maxDist; /// float
+        workDataset.k_variogram = null;
+        setVariogram(null);
+        setWorkDataset(workDataset);
+        const response = await ProfileService.calculateVariogram(document.cookie, workDataset.id, workDataset.k_params);  
+        if ( response && response.ok && response.data ) {
+          let var_pts = []
+          let mod_pts = []
+          let max = 0
+          let mind = null
+          let maxd = 0 
+          if ( response.data.variogram ) {
+            let array = response.data.variogram.split('\n')
+            let matrix = array.map( (e) => e.split(',') )
+            matrix = matrix.slice(1);
+            matrix.forEach( (e) => {
+              if ( e && e.length === 6 && e[1] && e[3] && e[5]  ){
+                var_pts.push({ x: e[1] , y: e[3] })
+                mod_pts.push({ x: e[1] , y: e[5] })
+                if ( e[3] > max ) max =  Math.round(e[3])
+                if ( e[5] > max ) max =  Math.round(e[5])
+                if ( mind === null || e[1] < mind  )
+                  mind = Math.floor(e[1])
+                if ( e[1] > maxd ) maxd = Math.round(e[1])            
+              } 
+            })
+            workDataset.k_variogram = {
+              var_pts: var_pts,
+              mod_pts: mod_pts,
+              max: max + 10,
+              mind: mind,
+              maxd: maxd,
+              model: model.formula
+            }
+            setWorkDataset(workDataset)
+            await saveWorkDataset()
+            setVariogram(workDataset.k_variogram)
+            toast.current.show({ severity: 'success', summary: 'Done!', detail: 'Variogram has been created.'});
           } 
-        })
-        workDataset.k_variogram = {
-          var_pts: var_pts,
-          mod_pts: mod_pts,
-          max: max,
-          mind: mind,
-          maxd: maxd,
-          model: model.formula
+        } 
+        else { 
+          setMessage('Variogram not calculated, wrong parameters (e.g maxDist too low ) or System error (try later)')
         }
-        setWorkDataset(workDataset)
-        await saveWorkDataset()
-        setVariogram(workDataset.k_variogram)
-        toast.current.show({ severity: 'success', summary: 'Done!', detail: 'Variogram has been created.'});
-      } 
-    } 
-    else { 
-      toast.current.show({ severity: 'error', summary: 'Errors!', detail: 'Variogram not calculated, wrong parameters or system error (try later) '}); 
-      setMessage('Variogram not calculated, wrong parameters (e.g maxDist too low ) or System error (try later)')
-    }
+      }
+    } catch (error) {
+      setMessage('Variogram not calculated System error (try later)')     
+    }    
   }
 
   // retrive the UTM EPSG Code needed in kriging interpolation
-  function getUTM_EPSG_CODE(latitude, longitude) {
+  const getUTM_EPSG_CODE = (latitude, longitude) => {
     // Ensure longitude is within valid -180 to 180 range
     const lon = parseFloat(longitude);
     const lat = parseFloat(latitude);
@@ -302,11 +379,50 @@ export default function ValidateDataset( { dataset, setDataset })  {
     const utm_emisphere = lat >= 0 ? 'EPSG:326' : 'EPSG:327';
     return `${utm_emisphere}${zoneNumber}`
   }
+    
+  const headerTemplate1 = () => {
+      return  <h4 className="font-bold shadow-1 p-3 bg-cyan-900 text-white" style={{ width: '90%' }} >List of filtered points values</h4>
+  };
+  
+  const headerTemplate2 = () => {
+    return  <h4 className="font-bold shadow-1 p-3 bg-cyan-900 text-white" style={{ width: '90%' }}> List of aggregated points values</h4>
+  };
+  
+  const getPtsValues = (fromFilter) => {
+    try {
+      console.log('pippo') 
+      const pts = []
+      let features = workDataset.filter.points.features 
+      if ( !fromFilter )
+        features = workDataset.k_data.features
+      features.forEach((ft) => {
+        let upper = fromFilter ? ft.properties.upper : ( workDataset.filter.depth === ProfileService.FILTER_DEPTH.DEPTH0_20 ) ? 0 : 20 ;
+        let lower = fromFilter ? ft.properties.lower : ( workDataset.filter.depth === ProfileService.FILTER_DEPTH.DEPTH0_20 ) ? 20 : 50 ;
+        pts.push( { code: ft.properties.id, value: ft.properties.value, upper: upper + " cm", lower: lower + " cm" } )
+      });
+      return pts; 
+    } catch (error) {
+      console.log(error)
+    }
+    return [];
+  }
+
+  const getOutliers = () => {
+    let ol = 0;
+    if ( workDataset.k_data && workDataset.k_data.features )
+      workDataset.k_data.features.forEach ( (ft) => { 
+        if ( ft.properties && ft.properties.outlier )
+          ol += 1;
+      } )
+    return ol;
+  }
 
   // initialize parameters for kriging if present 
   const initializeData = async () => {
     if ( !dataset )
       return;
+    console.log('input')
+    console.log(dataset)
     workDataset = dataset;
     setKriging(dataset.kriging);
     if ( dataset.k_param && dataset.k_param.maxDist )  
@@ -317,13 +433,8 @@ export default function ValidateDataset( { dataset, setDataset })  {
       setNSkip(dataset.k_param.nSkip)
     if ( dataset.k_param && dataset.k_param.model )  
       setModel(dataset.k_param.model)
-    if ( dataset.filter.points && !dataset.k_data ) { 
-      await aggregateKPoints(workDataset)
-    }
-    else {
-      setKPoints(dataset.k_data)
-    }
     setWorkDataset(workDataset);
+    await aggregatePoints()
     generateDescriptor()
   }
 
@@ -335,8 +446,7 @@ export default function ValidateDataset( { dataset, setDataset })  {
       initializeData()   
   }, [user]); // eslint-disable-line
 
-  useEffect(() => {
-  }, []); // eslint-disable-line
+  
 
 /*
 Mappa
@@ -359,21 +469,91 @@ variance/distance
       )} 
       { workDataset && (
       <>
-      <div className="card flex flex-warp text-cyan-800 w-full align-items-center"> 
-        <div className="flex text-cyan-800 md:w-5 sm:w-full">
-          <PointsDatasetMap fPoints={workDataset.filter.points} area={workDataset.filter.aoi} kPoints={workDataset.k_data} />
+      <Dialog  header={headerTemplate1} visible={visibleFiltered} style={{ width: '50vw' }}
+        onHide={() => {if (!visibleFiltered) return; setVisibleFiltered(false); }} className="surface-200">
+      {( workDataset.filter.points && workDataset.filter.points.features && workDataset.filter.points.features.length > 0 ) && (
+        <div className="card flex flex-column gap-2 text-cyan-800 w-full align-items-center">      
+        <h5 className="font-bold text-cyan-800 mt-1 mb-1">{t('VALUES')}:</h5>
+        <DataTable value={getPtsValues(true)} className="text-cyan-800 ml-5 mt-1" tableStyle={{ minWidth: '30rem' }} >
+          <Column field="code" sortable header={(<span className='text-xl font-bold'>{t('CODE')}</span>)} headerClassName="w-10rem"></Column>
+          <Column field="value" sortable header={(<span className='text-xl font-bold'>{t('VALUE')}</span>)}></Column>
+          <Column field="upper" sortable header={(<span className='text-xl font-bold'>{t('UPPER')}</span>)}></Column>
+          <Column field="lower" sortable header={(<span className='text-xl font-bold'>{t('LOWER')}</span>)}></Column>
+        </DataTable>
+        </div>
+        )} 
+        {( workDataset.k_data && workDataset.k_data.length > 0 ) && (
+        <h5 className="col-12 font-bold text-cyan-800 mt-1 mb-1">No filtered points found</h5>          
+        )}
+      </Dialog>        
+      <Dialog  header={headerTemplate2} visible={visibleAggregated} style={{ width: '50vw' }} 
+        onHide={() => {if (!visibleAggregated) return; setVisibleAggregated(false); }} className="surface-200">
+          {( workDataset.k_data && workDataset.k_data.features && workDataset.k_data.features.length > 0 ) && (
+          <div className="card flex flex-column text-cyan-800 w-full align-items-center">      
+          <h5 className="font-bold text-cyan-800 mt-1 mb-1">{t('VALUES')}:</h5>
+          <DataTable value={getPtsValues(false)} className="text-cyan-800 ml-5 col-12 mt-1" tableStyle={{ minWidth: '30rem' }} >
+            <Column field="code" sortable header={(<span className='text-xl font-bold'>{t('CODE')}</span>)} headerClassName="w-10rem"></Column>
+            <Column field="value" sortable header={(<span className='text-xl font-bold'>{t('VALUE')}</span>)}></Column>
+            <Column field="upper" sortable header={(<span className='text-xl font-bold'>{t('UPPER')}</span>)}></Column>
+            <Column field="lower" sortable header={(<span className='text-xl font-bold'>{t('LOWER')}</span>)}></Column>
+          </DataTable>
+          </div>
+          )} 
+          {( !workDataset.k_data || workDataset.k_data.length === 0 ) && (
+          <h5 className="col-12 font-bold text-cyan-800 mt-1 mb-1">Aggregated points not found</h5>          
+          )}
+      </Dialog>
+      <div className="card flex flex-warp text-cyan-800 w-full align-items-center">
+        <div className="flex flex-column text-cyan-800 md:w-6 sm:w-full">
+          <h5 className="flex justify-content-center w-full text-cyan-800">Aggregated Filtered Points Map</h5> 
+          <PointsFilterMap points={workDataset.k_data} area={workDataset.filter.aoi}  />
         </div>
         <div className="flex flex-column gap-2 align-content-start text-cyan-800 md:w-6 sm:w-full m-2">
-          <h5 className="flex justify-content-center w-full text-cyan-800"> New Dataset Descriptor</h5>
-          <DataTable value={descriptors} tableStyle={{ minWidth: '40rem' }}>
+          <h5 className="flex justify-content-center w-full text-cyan-800">Summary of the new Dataset </h5>
+          <DataTable className="font-bold text-cyan-800"  value={descriptors} tableStyle={{ minWidth: '40rem' }}>
             <Column field="name" header="" style={{ width: '25%' }}></Column>
-            <Column field="value" header="" ></Column>
+            <Column field="value" header=""  className="text-yellow-800" ></Column>
           </DataTable>
+          <div className="card flex flex-column gap-2 font-bold w-full"> 
+            { getOutliers() > 0 && (
+              <Message severity="error" text={"Warning! Found " + getOutliers() + " outliers in values"} />
+            )}
+            { getOutliers() === 0 && (
+              <Message severity="success" text="Good! Found 0 outlier in values" />
+            )} 
+            { workDataset.k_data && workDataset.k_data.features && workDataset.k_data.features.length < 20 && (
+              <Message severity="warn" text="Warning! The dataset has too few points for interpolation." />
+            )}
+            { !workDataset.k_data || !workDataset.k_data.features || workDataset.k_data.features.length === 0 && (
+              <Message severity="error" text="Warning! The dataset has no points for interpolation." />
+            )} 
+            <div className="flex flex-row gap-3 w-full justify-content-center align-items-center"> 
+            <Button
+                className="button"
+                loading={isWorking}
+                disabled={isWorking}
+                label={t('SHOW_FILTERED')}
+                icon="pi pi-wrench"
+                onClick={() => { setVisibleFiltered(true); }}
+              />
+            <Button
+                className="button"
+                loading={isWorking}
+                disabled={isWorking}
+                label={t('SHOW_AGGREGATED')}
+                icon="pi pi-wrench"
+                onClick={() => { setVisibleAggregated(true); }}
+              />
+            </div>
+          </div>
         </div>
-      </div>  
+      </div>
+       
+        
       <div className="card flex flex-row text-cyan-800 w-full justify-content-center align-items-center"> 
           <h5 className="text-cyan-800"><Checkbox onChange={e => initKriging(e.checked)} className="mr-3" checked={kriging} /> Elaborate Kriging Interpolation</h5>
-      </div>    
+      </div> 
+
       { workDataset.kriging && (
       <div className="card flex flex-warp text-cyan-800 w-full justify-content-center align-items-center">
         <div className="flex flex-column gap-2 text-cyan-800 md:w-5 sm:w-full">
@@ -391,11 +571,11 @@ variance/distance
                 incrementButtonClassName="p-button-success" incrementButtonIcon="pi pi-plus" 
                 mode="decimal" min={0} max={200} maxFractionDigits={0} className="mt-1 mb-3"
             />
-            <h5 className="mt-3">Maximum Distance	Floating point ( Minimum: 0, Default: 0.000000 )</h5> 
+            <h5 className="mt-3">Maximum Distance	Floating point ( Default: -1.000000, no distance )</h5> 
             <InputNumber value={maxDist} onValueChange={(e) => setMaxDist(e.value)} showButtons buttonLayout="horizontal" step={10}
                 decrementButtonClassName="p-button-danger" decrementButtonIcon="pi pi-minus"
                 incrementButtonClassName="p-button-success" incrementButtonIcon="pi pi-plus" 
-                mode="decimal" min={0} maxFractionDigits={6} className="mt-1 mb-3"
+                mode="decimal" min={-1.000000} maxFractionDigits={6} className="mt-1 mb-3"
             />
             <h5 className="mt-3">Skip Number ( Minimum: 1, Default: 1 )</h5> 
             <InputNumber value={nSkip} onValueChange={(e) => setNSkip(e.value)} showButtons buttonLayout="horizontal" step={1}
@@ -427,7 +607,7 @@ variance/distance
         </div>
       </div>
       )}
-      <div className="flex flex-roe justify-content-center w-full gap-3">
+      <div className="flex flex-row justify-content-center w-full gap-3">
         <Button
           className="button"
           loading={isWorking}
@@ -460,3 +640,49 @@ export async function getStaticProps(context) {
     },
   }
 }
+
+
+/*
+import React, { useRef } from 'react';
+import { Chart } from 'primereact/chart';
+import { Button } from 'primereact/button';
+
+const ChartExport = () => {
+    const chartRef = useRef(null);
+
+    const data = {
+        labels: ['January', 'February', 'March'],
+        datasets: [{
+            label: 'Sales',
+            data: [65, 59, 80],
+            backgroundColor: 'rgba(75,192,192,0.2)',
+            borderColor: 'rgba(75,192,192,1)'
+        }]
+    };
+
+    const exportToPNG = () => {
+        // Access the underlying chart instance
+        const chartInstance = chartRef.current.getChart();
+        
+        if (chartInstance) {
+            // Generate the base64 image string
+            const pngUrl = chartInstance.toBase64Image();
+            
+            // Create a download link and trigger it
+            const link = document.createElement('a');
+            link.href = pngUrl;
+            link.download = 'chart.png';
+            link.click();
+        }
+    };
+
+    return (
+        <div>
+            <Chart ref={chartRef} type="bar" data={data} />
+            <Button label="Export as PNG" icon="pi pi-download" onClick={exportToPNG} />
+        </div>
+    );
+};
+
+export default ChartExport;
+*/

@@ -3,7 +3,7 @@ from django.db import migrations
 SQL_CREATE = f"""
 -- Soil Indicators:
 -- 13 layers
-  --1)* Sodium exchangeable percentage
+  --1)* Sodium exchangeable percentage   !!! a.cec shold be > a.na
 
   CREATE OR REPLACE VIEW sodium_exchangeable_percentage_sodicity AS
   SELECT
@@ -13,7 +13,7 @@ SQL_CREATE = f"""
         ELSE (a.na / a.cec)*100
     END AS value,  'percentage' as unit, a.geom
   FROM public.labdata_geo a
-  WHERE ( a.esp IS NOT NULL OR ( a.cec IS NOT NULL AND a.na IS NOT NULL AND a.cec > 0 ));
+  WHERE ( a.esp IS NOT NULL OR ( a.cec IS NOT NULL AND a.na IS NOT NULL AND a.cec > 0 AND a.na <= a.cec  ));
   ALTER VIEW IF EXISTS sodium_exchangeable_percentage_sodicity OWNER TO backoffice_user;
 
   --2)* Sodium adsorption ratio

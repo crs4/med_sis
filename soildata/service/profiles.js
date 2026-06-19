@@ -9,7 +9,8 @@ export const ProfileService = {
   
   DATASET_CONTEXT : {
     POINTS_SOIL_DATA: "POINTS_SOIL_DATA",
-    SOIL_INDICATOR: "SOIL_INDICATOR"
+    SOIL_INDICATOR: "SOIL_INDICATOR",
+    AOI_SOIL_INDICATOR: "AOI_SOIL_INDICATOR" 
   },
 
   DATASET_STATUSES : {
@@ -28,9 +29,9 @@ export const ProfileService = {
       return { ok: false }
   },
 
-  async getDatasetsByCategory(category, page, ck) { 
+  async getDatasetsByCategory(category, ck) { 
     if ( ck ) 
-      return await doFetchCatalogue( 'datasets?f=dataset&filter{category.identifier}='+category+ '&filter{srid}=EPSG:4326&page=' + page + '&page_size=100&format=json', null, 'GET', null, ck );
+      return await doFetchCatalogue( 'datasets?f=dataset&filter{category.identifier}='+category+ '&filter{srid}=EPSG:4326&format=json', null, 'GET', null, ck );
     else 
       return { ok: false }
   },

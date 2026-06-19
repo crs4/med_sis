@@ -7,6 +7,8 @@ const MapLegend = ({ legend, data, position }) => {
   const map = useMap();
  
   const renderLegend = (legend) => {
+    console.log('render')
+    console.log(legend)
     if (!legend.elements) {
         return;
     }
@@ -30,6 +32,7 @@ const MapLegend = ({ legend, data, position }) => {
     const elementContainer = L.DomUtil.create('div', 'legend-elements', block);
     
     for ( let e = 0; e < elements.length; e += 1 ) {
+      console.log(elements[e])
       if ( elements[e] )
         addElement(elements[e].html, elements[e].label, elements[e].style, elementContainer);
     };
@@ -49,10 +52,10 @@ const MapLegend = ({ legend, data, position }) => {
   }
   
   useEffect(() => {
-    if (!map  || !data || !legend || legend.current) 
+    if (!map  || !data || (legend && legend.current)) 
       return;
     const _legend = [];
-    if ( data === "pointsFilter" )  {
+    if ( data.pointsFilter )  {
       _legend = {
         name: "Points Filtering ",
         layer: null,
@@ -85,7 +88,7 @@ const MapLegend = ({ legend, data, position }) => {
         ]
       }
     }
-    if ( data === "aoiSelection" )  {
+    else if ( data.aoiSelection )  {
       _legend = {
         name: "Area of interest Selection ",
         layer: null,
@@ -96,7 +99,7 @@ const MapLegend = ({ legend, data, position }) => {
             html: '',
             style: {
               'text-align': 'left',
-              'background-color': '#3767ab',
+              'background-color': '#267bf3',
               'width': '15px',
               'height': '15px',
               'position': 'relative',
@@ -108,7 +111,7 @@ const MapLegend = ({ legend, data, position }) => {
             html: '',
             style: {
               'text-align': 'left',
-              'background-color': '#af8929',
+              'background-color': '#bb9a45',
               'width': '15px',
               'height': '15px',
               'position': 'relative',
@@ -130,7 +133,7 @@ const MapLegend = ({ legend, data, position }) => {
         ]
       }
     }
-    if ( data === "xlsUploads" )  {
+    else if ( data.xlsUploads )  {
       _legend = {
         name: "Point Soil Data status ",
         layer: null,
@@ -174,7 +177,7 @@ const MapLegend = ({ legend, data, position }) => {
         ]
       }
     }
-    if ( data === "points" )  {
+    else if ( data.points )  {
       _legend = {
         name: "Point Soil Data",
         layer: null,
@@ -205,6 +208,7 @@ const MapLegend = ({ legend, data, position }) => {
         }]
       }
     }
+    else return;
     legend.current = L.control({position: position});
     legend.current.myleg = _legend
     legend.current.onAdd = function (map) {

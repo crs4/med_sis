@@ -1,5 +1,10 @@
 {
   "default": {
+    "CODE": "code",
+    "UPPER": "Upper",
+    "LOWER": "Lower",
+    "SHOW_FILTERED": "Show Filtered",
+    "SHOW_AGGREGATED": "Show Aggregated",
     "GENERATE_DATASET": "Generate the dataset",
     "BACK_CONFIGURATION": "Return to configuration",
     "CALCULATE_VARIOGRAM": "Calculate the variogram",

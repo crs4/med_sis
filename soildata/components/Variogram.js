@@ -9,7 +9,7 @@ const VariogramGraph = ( { data } ) => {
     useEffect(() => {
         if ( !data )
             return
-        // 2. Generate Sample Variogram Points (Experimental)
+        // 2. Generates the Sample Variogram Points (Experimental)
         // x = lag distance, y = semi-variance
         const experimentalPoints = data.var_pts;
         // 3. Generate Fitted Model Curve (Theoretical)
@@ -42,16 +42,17 @@ const VariogramGraph = ( { data } ) => {
         const options = {
             responsive: true,
             maintainAspectRatio: false,
+            aspectRatio: 0.6,
             scales: {
                 x: {
                     title: { display: true, text: 'Distance Lag (m)', font: { weight: 'bold' } },
-                    min: variogram.mind,
-                    max: variogram.maxd
+                    min: variogram.mind - 5 ,
+                    max: variogram.maxd + 5
                 },
                 y: {
                     title: { display: true, text: 'Semi-variance', font: { weight: 'bold' } },
-                    min: 0,
-                    max: variogram.max
+                    min: -5,
+                    max: variogram.max + 5
                 }
             },
             plugins: {
@@ -65,7 +66,7 @@ const VariogramGraph = ( { data } ) => {
 
         setChartData(myData);
         setChartOptions(options);
-    }, [data] );
+    }, [data] ); // eslint-disable-line
 
     return (
         <Chart type="scatter" data={chartData} options={chartOptions} style={{ width: '100%', height: '500px' }} />

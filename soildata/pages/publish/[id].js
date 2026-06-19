@@ -7,7 +7,6 @@ import ConfigureDataset from '../../components/ConfigureDataset';
 import ValidateDataset from '../../components/ValidateDataset';
 import ConfigureDatasetPoint from '../../components/ConfigureDatasetPoint';
 import ValidateDatasetPoint from '../../components/ValidateDatasetPoint';
-import ReportDataset from '../../components/ReportDataset';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { Toast } from 'primereact/toast';
@@ -60,7 +59,8 @@ return (
     { dataset && dataset.status === ProfileService.DATASET_STATUSES.CREATED && (
       <>
       <h5 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">Configuring Dataset</h5>
-      { dataset && dataset.context === ProfileService.DATASET_CONTEXT.SOIL_INDICATOR && (
+      { dataset && ( dataset.context === ProfileService.DATASET_CONTEXT.SOIL_INDICATOR ||
+                     dataset.context === ProfileService.DATASET_CONTEXT.AOI_SOIL_INDICATOR ) && (
         <ConfigureDataset dataset={dataset} setDataset={setDataset} />     
       )}
       { dataset && dataset.context === ProfileService.DATASET_CONTEXT.POINTS_SOIL_DATA && (
@@ -68,10 +68,11 @@ return (
       )} 
       </>
     )}
-    { dataset && dataset.status === ProfileService.DATASET_STATUSES.CONFIGURED && (
+    { dataset && ( dataset.status === ProfileService.DATASET_STATUSES.CONFIGURED || dataset.status === ProfileService.DATASET_STATUSES.ERRORS ) && (
       <>
       <h5 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">Validating Dataset</h5>
-      { dataset && dataset.context === ProfileService.DATASET_CONTEXT.SOIL_INDICATOR && (
+      { dataset && ( dataset.context === ProfileService.DATASET_CONTEXT.SOIL_INDICATOR || 
+                     dataset.context === ProfileService.DATASET_CONTEXT.AOI_SOIL_INDICATOR ) && (
         <ValidateDataset dataset={dataset} setDataset={setDataset} />     
       )}
       { dataset && dataset.context === ProfileService.DATASET_CONTEXT.POINTS_SOIL_DATA && (
@@ -82,7 +83,7 @@ return (
     { dataset && dataset.status === ProfileService.DATASET_STATUSES.PUBLISHED && (
       <>
       <h5 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">Dataset Published</h5>
-      <ReportDataset dataset={dataset} />     
+      
       </>
     )}  
     { dataset && dataset.status === ProfileService.DATASET_STATUSES.ERRORS && (

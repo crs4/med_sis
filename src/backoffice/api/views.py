@@ -31,9 +31,9 @@ class VariogramViewSet(viewsets.ViewSet):
         """    
         id = request.data.get("id", "0")
         nClasses = request.data.get("nClasses", 100)
-        model = request.data.get("model", "a + b * x ")
+        model = request.data.get("model", "a + b * x")
         nSkip = request.data.get("nSkip", 1)
-        maxDist = request.data.get("maxDist", 0.0)
+        maxDist = request.data.get("maxDist", -1.000)
         kPoints = request.data.get("points", "")
         t = round(time.time() * 1000)
         folder = 'kri' + str(id) + str(t) + str(nClasses) + str(nSkip) + str(maxDist) 
@@ -52,13 +52,16 @@ class VariogramViewSet(viewsets.ViewSet):
             subprocess.call([params], shell=True) 
             logger.info( f"executed ogr2ogr {params}" )
             if maxDist is None:
-                maxDist = -1.0
+                maxDist = -1.000
             if nClasses is None:
                 nClasses = 100
             if nSkip is None:
                 nSkip = 1
             if model is None:
                 model = 'a + b * x'
+
+# saga_cmd statistics_kriging 4 -POINTS /tmp/pippo/points.shp -ATTRIBUTE value -VARIOGRAM /tmp/pippo/var2.csv -VAR_MAXDIST -1.0000 -VAR_NCLASSES 30 -VAR_NSKIP 1 -VAR_MODEL 'n + (s-n) * (1 - exp(-(x/r)^2))'
+
             pathVAR = os.path.join( base_path, "variogram.csv")
             params = f"saga_cmd statistics_kriging 4 -POINTS '{pathSHP}'"
             params += f" -ATTRIBUTE 'value' -VARIOGRAM '{pathVAR}' -VAR_MAXDIST {maxDist}"
@@ -68,7 +71,7 @@ class VariogramViewSet(viewsets.ViewSet):
             content = ""
             with open(pathVAR, "r", encoding="utf-8") as file:
                 content = file.read()
-            # clean
+            #clean
             params = f"rm -r {base_path}"
             subprocess.call([params], shell=True) 
             return Response( { "variogram": content}, status=status.HTTP_200_OK )  
@@ -77,11 +80,8 @@ class VariogramViewSet(viewsets.ViewSet):
             return Response(
                 {"detail": (f"Errors: Open the log for further details. ")},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR )
-        return Response (
-            {},
-            status=status.HTTP_204_NO_CONTENT,
-        )  
-
+          
+#saga_cmd statistics_kriging 4 -POINTS /tmp/points.shp -ATTRIBUTE 'value' -VARIOGRAM /tmp/vario.csv -VAR_MAXDIST -1.0000 -VAR_NSKIP 1 -VAR_MODEL 'a + b*x'
 class UpdateLayersViewSet(viewsets.ViewSet):
     """
     API endpoint to run the updatelayers command on demand.

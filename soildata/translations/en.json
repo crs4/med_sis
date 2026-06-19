@@ -1,5 +1,10 @@
 {
   "default": {
+    "CODE": "code",
+    "UPPER": "Upper",
+    "LOWER": "Lower",
+    "SHOW_FILTERED": "Show Filtered",
+    "SHOW_AGGREGATED": "Show Aggregated",
     "GENERATE_DATASET": "Generate the dataset",
     "BACK_CONFIGURATION": "Return to configuration",
     "CALCULATE_VARIOGRAM": "Calculate the variogram",
@@ -15,8 +20,8 @@
     "SURMETHOD": "Survey method",
     "METHOD": "Laboratory method",
     "PROJECT": "Progetto",
-    "DEPTH0_20": "Upper 0 cm To Lower 20 cm",
-    "DEPTH20_50": "Upper 20 cm To Lower 50 cm",
+    "DEPTH0_20": "Upper: 0 cm, Lower: 20 cm",
+    "DEPTH20_50": "Upper: 20 cm, Lower: 50 cm",
     "DEPTH": "Filtering by depth",
     "PERIOD": "Filtering by date",
     "AOI_SELECTED": "You can see the selected area of interest on the map",

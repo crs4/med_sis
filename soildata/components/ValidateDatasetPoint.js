@@ -24,7 +24,7 @@ import ProfileService from '../service/profiles';
 import TaxonomyService from '../service/taxonomies';
 import dynamic from 'next/dynamic'
 
-const PointsDatasetMap = dynamic(() => import("./map/PointsDatasetMap"), { ssr:false })
+const PointsFilterMap = dynamic(() => import("./map/PointsFilterMap"), { ssr:false })
 
 export default function ValidateDatasetPoint( { dataset, setDataset })  { 
   const user = useUser();
@@ -118,7 +118,7 @@ export default function ValidateDatasetPoint( { dataset, setDataset })  {
       <>
       <div className="card flex flex-warp text-cyan-800 w-full align-items-center"> 
         <div className="flex text-cyan-800 md:w-5 sm:w-full">
-          <PointsDatasetMap fPoints={workDataset.filter.points} area={workDataset.filter.aoi} />
+          <PointsFilterMap points={workDataset.filter.points} area={workDataset.filter.aoi}  />
         </div>
         <div className="flex flex-column gap-2 text-cyan-800 md:w-6 sm:w-full m-2">
           <h5 className="flex justify-content-center w-full text-cyan-800"> New Dataset Descriptor</h5>

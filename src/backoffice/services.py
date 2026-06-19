@@ -1,6 +1,7 @@
 import json
 import requests
 import subprocess
+import time
 from datetime import datetime
 from django.conf import settings
 from .models import XLSxUpload, Dataset
@@ -251,6 +252,9 @@ class DatasetService:
         self.report = {
             "start_time": datetime.now().isoformat(),
             "errors": [],
+            "raster": None,
+            "points": None,
+            "variogram": None,
             "success": True
         }
         self.base_url = settings.API_BASE_URL
@@ -308,9 +312,9 @@ class DatasetService:
             dataset.report = self.report
             dataset.save(using='backoffice')
             return False
-        time = round(time.time() * 1000)
-        folder = f"dataset_{dataset_id}_{time}" 
-        name = f"dataset_{dataset_id}_{time}"
+        t = round(time.time() * 1000)
+        folder = f"dataset_{dataset_id}_{t}" 
+        name = f"dataset_{dataset_id}_{t}"
         base_path = '/tmp/' + folder
         try:
             os.mkdir(base_path)
@@ -330,7 +334,7 @@ class DatasetService:
             dataset.save(using='backoffice')
             return False
         
-############ IF KRIGING GENERATE KRIGING WORK FILES FROM PARAMETERS          
+############ IF KRIGING IS TRUE GENERATES WORK FILES FROM PARAMETERS          
         try :
             if dataset.kriging:
                 with open(base_path+"/kpoints.json", "w") as outfile:
@@ -349,45 +353,53 @@ class DatasetService:
                 params = f"ogr2ogr -s_srs 'EPSG:4326' -t_srs '{k_epsg}' {aoiUTMJSON} {aoiJSON}"
                 subprocess.call([params], shell=True) 
                 # Reproject the bounding box 
-                pathSHP = os.path.join( base_path, "box.json")
-                pathJSON = os.path.join( base_path, "UTMbox.json")
-                params = f"ogr2ogr -s_srs 'EPSG:4326' -t_srs '{k_epsg}' {pathSHP} {pathJSON}"
+                pathUTMJSON = os.path.join( base_path, "utmbbox.json")
+                pathGEOJSON = os.path.join( base_path, "bbox.json")
+                params = f"ogr2ogr -s_srs 'EPSG:4326' -t_srs '{k_epsg}' {pathUTMJSON} {pathGEOJSON}"
                 subprocess.call([params], shell=True)                
-                with open(base_path+"/UTMbox.json", "r") as file:
+                with open(base_path+"/utmbbox.json", "r") as file:
                     utmBox = json.load(file)
-                    north = utmBox.features[0].coordinates[3]
-                    south = utmBox.features[0].coordinates[1]
-                    east = utmBox.features[0].coordinates[2]
-                    west = utmBox.features[0].coordinates[0]
+                    feature = utmBox['features'][0]
+                    north = feature['bbox'][3]
+                    south = feature['bbox'][1]
+                    east = feature['bbox'][2]
+                    west = feature['bbox'][0]
                     size = north - south
                     if size < east - west:
                         size = east - west
-                    # Tiff size about 2000 x 2000 pixels
-                    # size in meters
+                    # Tiff size: 2000 x 2000 pixels
+                    # cell_size is in meters
                     cell_size = size / 2000.0
                 predictionGRD = os.path.join( base_path, "prediction")
                 varianceGRD = os.path.join( base_path, "variance")  
+                with open(base_path+"/report.json", "w") as outfile:
+                    json.dump(self.report, outfile)
                 # SAGA_CMD  
                 saga_cmd =  f"saga_cmd statistics_kriging 0 -POINTS {pointsSHP} -FIELD value -VAR_MODEL {k_model} -VAR_NCLASSES {k_nclasses} " 
                 saga_cmd += f" -TARGET_USER_XMIN {west} -TARGET_USER_XMAX {east} -TARGET_USER_YMIN {south} -TARGET_USER_YMAX {north} " 
                 saga_cmd += f" -TARGET_USER_SIZE {cell_size} -VAR_MAXDIST {k_maxdist}  -VAR_NSKIP {k_nskip} " 
                 saga_cmd += f" -PREDICTION {predictionGRD} -VARIANCE {varianceGRD} " 
+                self.report["errors"].append(saga_cmd)
+                with open(base_path+"/report.json", "w") as outfile:
+                    json.dump(self.report, outfile)
                 subprocess.call([saga_cmd], shell=True) 
         except Exception as e:
             self.report["success"] = False
-            self.report["errors"].append("Stage3: errors in elaborating kriging interpolatio, exited")
+            self.report["errors"].append("Stage3: errors in elaborating kriging interpolation, exited")
             dataset.status = "ERRORS"
             dataset.report = self.report
             dataset.save(using='backoffice')
             return False
 
 ############ IF KRIGING GENERATE AND VALIDATE GEOTIFF          
-        try :    
+        #try :    
+        if True:
             if dataset.kriging:
                 filename1 = f"{base_path}/{name}_prediction.tif" 
                 filename2 = f"{base_path}/{name}_variance.tif"
                 # 1. change saga grid format to GeoTiff
-                cmd = f"gdal_translate -of GTiff {predictionGRD}.sdat {filename1}"
+                #gdal_translate -of GTiff                 
+                cmd = f"gdal_translate -of GTiff -ot Float32 -co COMPRESS=DEFLATE -co PREDICTOR=3 {predictionGRD}.sdat {filename1}"
                 subprocess.call([cmd], shell=True) 
                 cmd = f"gdal_translate -of GTiff {varianceGRD}.sdat {filename2}"
                 subprocess.call([cmd], shell=True) 
@@ -412,17 +424,20 @@ class DatasetService:
                     'dstSRS': 'EPSG:4326' 
                 }
                 tif=None
-                cmd = f"gdal.Warp( {filename1}, {filename1}, **gdal_warp_kwargs)"
+                geofilename1 = f"{base_path}/{name}_predictiongeo.tif" 
+                geofilename2 = f"{base_path}/{name}_variancegeo.tif"
+                
+                cmd = f"gdal.Warp( {filename1}, {geofilename1}, **gdal_warp_kwargs)"
                 subprocess.call([cmd], shell=True)  
-                cmd = f"gdal.Warp( {filename2}, {filename2}, **gdal_warp_kwargs)" 
+                cmd = f"gdal.Warp( {filename2}, {geofilename2}, **gdal_warp_kwargs)" 
                 subprocess.call([cmd], shell=True) 
-        except Exception as e:
-            self.report["success"] = False
-            self.report["errors"].append("Stage4: wrong Geotiff reading interpolation, exited")
-            dataset.status = "ERRORS"
-            dataset.report = self.report
-            dataset.save(using='backoffice')
-            return False
+        #except Exception as e:
+        #    self.report["success"] = False
+        #    self.report["errors"].append("Stage4: wrong Geotiff reading interpolation, exited")
+        #    dataset.status = "ERRORS"
+        #    dataset.report = self.report
+        #    dataset.save(using='backoffice')
+        #    return False
         
 ############ PUBLISHING POINTS DATASET
         #1st dataset: filtered points (EPSG:4326) geoJSON base_path+"/"+name+"_points.json"    
@@ -460,12 +475,13 @@ class DatasetService:
         #2nd dataset: area of interest (EPSG:4326) geoJSON base_path+"/"+name+"_aoi.json"
         try :
             url = f"{self.base_url}/api/v2/uploads/upload/"
+            style = f"/geoserver_data/data/workspaces/geonode/styles/{data.source}.sld"
             files= [
                 # ('sld_file',('name +'_aoi.sld',open('...indicatorSLDFilepath.sld','rb'),'application/octet-stream')),
                 ('base_file', ( name +'_aoi.json',open(base_path+'/'+name +'_points.json','r'), 'application/json')),
                 ('json_file', ( name +'_aoi.json',open(base_path+'/'+name +'_points.json','r'), 'application/json'))
             ]
-            response = requests.post( url, files=files, headers=self.auth_header)
+            response = requests.post( url, files=files, headers=self.auth_header )
             if response.status_code == 200:
                 res = response.json()
                 if res.execution_id is not None :
@@ -495,7 +511,6 @@ class DatasetService:
             if dataset.kriging:
                 url = f"{self.base_url}/api/v2/uploads/upload/"
                 files= [
-                    # ('sld_file',('name +'_aoi.sld',open('...indicatorPredictionsSLDFilepath.sld','rb'),'application/octet-stream')),
                     ('base_file', ( name+'_prediction.tif',open(base_path+'/'+name+'_prediction.tif','rb'), 'image/tiff')),
                     ('tif_file', ( name+'_prediction.tif',open(base_path+'/'+name+'_prediction.tif','rb'), 'image/tiff'))
                 ]
@@ -528,13 +543,16 @@ class DatasetService:
         try:
             url = f"{self.base_url}/api/v2/datasets/{geonode_points_id}"
             data = {
-                "title": f"Filter:{dataset.id} Source:{dataset.source} date:{dataset.date}",
-                "abstract": f"Filter:{dataset.id} Source:{dataset.source} date:{dataset.date}",
+                "title": f"Filter {dataset.id} of {dataset.source} - {dataset.date}",
+                "abstract": f"Filter {dataset.id} executed on data source {dataset.source} executed in date:{dataset.date}",
                 "category": {
                     "identifier": "geoscientificInformation",
                 },
                 "keywords": dataset.filter.keywords
             }
+            
+
+
             response = requests.patch( url, headers=self.auth_header, json=data)
             #if response.status_code == 200:
         except Exception as e:
@@ -552,8 +570,8 @@ class DatasetService:
         return True
            
 #### for all soil indicators data in JSON format
-# typename, name, abstract, sldpoint, sldprediction, type 
-# 
+# typename, name, abstract, type 
+# dataset.source === soil indicator typename 
 # geoserver_data/data/workspaces/geonode/styles/typename.sld
 # 
 # geoserver_data/data/workspaces/geonode/backoffice/typename            

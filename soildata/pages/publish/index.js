@@ -36,8 +36,11 @@ export default function Page()  {
   const [datasets, setDatasets] = useState([]);  
   /* Selected dataset */
   const [selected, setSelected] = useState(null);
-  /* context of a new dataset */  
-  const [context, setContext] = useState(null);
+  /* soilContext of the new dataset */ 
+  // -ProfileService.DATASET_CONTEXT.SOIL_INDICATOR
+  // -ProfileService.DATASET_CONTEXT.AOI_SOIL_INDICATOR
+  // -ProfileService.DATASET_CONTEXT.POINTS_SOIL_DATA 
+  const [soilContext, setSoilContext] = useState(null);
   
   const [visibleRemoveDlg, setVisibleRemoveDlg] = useState(false);
   const [visibleCloneDlg, setVisibleCloneDlg] = useState(false);
@@ -67,22 +70,21 @@ export default function Page()  {
       source : null, // source dataset title
       src_typename : null, // source dataset typename (catalogue layer name )
       filter : {
-          aoi : null, // area of interest in geoJSON
-          from : null , // period filter: from date
-          to : null , // period filter: to date  
-          depth: null, // depth filter: value  in [null,'0to20cm','20to50cm'] 
-          project: null, // project name filter: string
-          type: null, // point soil data type filter:  (taxonomy)
-          method: null, // laboratory method filter:  (taxonomy)
-          surMethod: null, // survey method filter:  (taxonomy)
-          points: null // filtered points in geoJSON
+        aoi : null, // area of interest in geoJSON
+        from : null , // period filter: from date
+        to : null , // period filter: to date  
+        depth: null, // depth filter: value  in [null,'0to20cm','20to50cm'] 
+        project: null, // project name filter: string
+        type: null, // point soil data type filter:  (taxonomy)
+        method: null, // laboratory method filter:  (taxonomy)
+        surMethod: null, // survey method filter:  (taxonomy)
+        points: null // filtered points in geoJSON
       }, 
       kriging : false, // kriging interpolation toggle
       k_variogram : null, // variogram geoJSON object
-      k_gn_raster : null,  // !geonode dataset id
       k_params : {},
+      report : {},
       k_data : null, // aggregated points
-      catalogue_id : null,  // !geonode dataset id
       status : ProfileService.DATASET_STATUSES.CREATED,
       context : ProfileService.DATASET_CONTEXT.SOIL_INDICATOR
     }
@@ -102,10 +104,7 @@ export default function Page()  {
     setIsWorking(true)
     try {
       const dataset = initialDatasetConf()
-      if (context == "sections")
-        dataset.context = ProfileService.DATASET_CONTEXT.POINTS_SOIL_DATA
-      else if (context == "indicators") 
-        dataset.context = ProfileService.DATASET_CONTEXT.SOIL_INDICATOR
+      dataset.context = soilContext
       const response = await ProfileService.save( document.cookie, dataset, 'datasets' );
       if ( response.ok ) {
         toast.current.show({severity:'success', summary: 'Done!', detail:'dataset ' + response.data.id + ' has been created', life: 3000});
@@ -143,17 +142,24 @@ export default function Page()  {
       const response = await ProfileService.get( document.cookie, selected, 'datasets' );
       if ( response && response.ok && response.data ) {
         const nowd = formatDate(Date.now())
+        // old field not modified:
+        //   source, src_typename : the source dataset
+        //   filter : point filters  
+        //   kriging, k_params : kriging configuration
+        //   context : the context of dataset 
+        //            - Point soil data section
+        //            - Soil indicator
+        //            - Aoi soil indicator
         let dataset = {
           ...response.data, 
           date : nowd,
           name : user.userData.preferred_username+':'+nowd,
           user_name : user.userData.preferred_username,
           user_email : user.userData.email, 
-          points : null,
-          k_variogram : null,
-          k_gn_raster : null,  // geonode id
-          catalogue_id : null,  // geonode id
-          k_data : null,
+          points : null, // original geo points not filtered, reload
+          k_variogram : null, // semi-variogram data
+          k_data : null, // aggregated geo filtered points
+          report : null,  // final publication report with geonode ids
           status : ProfileService.DATASET_STATUSES.CREATED
         }
         
@@ -326,9 +332,11 @@ export default function Page()  {
   
   const contextBodyTemplate = (rowData) => {
     if ( rowData.context === ProfileService.DATASET_CONTEXT.POINTS_SOIL_DATA )
-      return ( <Tag icon="pi pi-caret-right" severity="info" value="Point Soil data section"></Tag>)
+      return ( <Tag icon="pi pi-caret-right" severity="info" value="Point Soil Data Section"></Tag>)
     else if ( rowData.context === ProfileService.DATASET_CONTEXT.SOIL_INDICATOR )
-      return ( <Tag icon="pi pi-caret-right" severity="info" value="Soil Indicators"></Tag>)
+      return ( <Tag icon="pi pi-caret-right" severity="info" value="Soil Indicator"></Tag>)
+    else if ( rowData.context === ProfileService.DATASET_CONTEXT.AOI_SOIL_INDICATOR )
+      return ( <Tag icon="pi pi-caret-right" severity="info" value="Area Soil Indicator"></Tag>)
     else return ( <Tag icon="pi pi-exclamation-triangle" severity="danger" value="No context error"></Tag>)
   };
 
@@ -337,9 +345,9 @@ export default function Page()  {
   };
   
   const contextItemTemplate = (option) => {
-    return <Tag icon="pi pi-caret-right" severity="info" value= {( option == ProfileService.DATASET_CONTEXT.POINTS_SOIL_DATA ) ? "Point Soil Data section" : "Soil indicator" }></Tag>;
+    return <Tag icon="pi pi-caret-right" severity="info" value= {( option == ProfileService.DATASET_CONTEXT.POINTS_SOIL_DATA ) ? "Point Soil Data section" : (( option == ProfileService.DATASET_CONTEXT.SOIL_INDICATOR ) ? "Soil indicator" : "Area Soil Indicator" ) }></Tag>;
   };
-
+  
   const statusBodyTemplate = (rowData) => {
     if ( rowData.status === ProfileService.DATASET_STATUSES.CREATED )
       return ( <Tag icon="pi pi-caret-right" severity="info" value="To configure"></Tag>)
@@ -353,7 +361,6 @@ export default function Page()  {
     else if ( rowData.status === ProfileService.DATASET_STATUSES.ERRORS )
       return ( <Tag icon="pi pi-exclamation-triangle" severity="danger" value="Errors"></Tag>)
     else return ( <Tag icon="pi pi-exclamation-triangle" severity="danger" value="No Status error"></Tag>)
-  
   };
   
   const className1 = 'col-6 font-bold text-cyan-800 mt-1 mb-1';
@@ -400,12 +407,20 @@ export default function Page()  {
       </div>
       <Dialog header={headerTemplate} visible={visibleCreateDlg} style={{ width: '50vw' }} onHide={() => setVisibleCreateDlg(false)} >
         <div className="m-4 font-bold text-cyan-800">
-          <h5>You must choose the context of new dataset source data</h5>
-          <div className="flex flex-row gap-3">
-            <RadioButton inputId="sections" name="context" value="sections" onChange={(e) => setContext("sections") } checked={ context === 'sections'} />
-            <label htmlFor="sections" className="ml-2">Point Soil Data Sections</label>
-            <RadioButton inputId="indicators" name="context" value="indicators" onChange={(e) => setContext("indicators") } checked={ context === 'indicators'} />
-            <label htmlFor="indicators" className="ml-2">Soil Indicators</label>
+          <h5>You must choose the context of the new dataset</h5>
+          <div className="flex flex-column gap-3">
+            <div>
+              <RadioButton inputId="sections" name="context" value="sections" onChange={(e) => setSoilContext(ProfileService.DATASET_CONTEXT.POINTS_SOIL_DATA) } checked={ soilContext === ProfileService.DATASET_CONTEXT.POINTS_SOIL_DATA} />
+              <label htmlFor="sections" className="ml-2">Point Soil Data Sections</label>
+            </div>
+            <div>
+              <RadioButton inputId="indicators" name="context" value="indicators" onChange={(e) => setSoilContext(ProfileService.DATASET_CONTEXT.SOIL_INDICATOR) } checked={ soilContext === ProfileService.DATASET_CONTEXT.SOIL_INDICATOR} />
+              <label htmlFor="indicators" className="ml-2">Soil Indicators</label>
+            </div>
+            <div>
+              <RadioButton inputId="indicators" name="context" value="indicators" onChange={(e) => setSoilContext(ProfileService.DATASET_CONTEXT.AOI_SOIL_INDICATOR) } checked={ soilContext === ProfileService.DATASET_CONTEXT.AOI_SOIL_INDICATOR} />
+              <label htmlFor="indicators" className="ml-2">Soil indicators evaluated in an area</label>
+            </div>
           </div>
           <div class="flex flex-row justify-content-center w-full m-3">
             <Button

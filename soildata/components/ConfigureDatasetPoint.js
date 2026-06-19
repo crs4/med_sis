@@ -27,6 +27,7 @@ import { useRouter } from 'next/router';
 import { useUser } from '../context/user';
 import { ProfileService } from '../service/profiles';
 import TaxonomyService from '../service/taxonomies';
+import BaseDatasets from '../data/basedatasets';
 import dynamic from "next/dynamic";
 import Loading from './Loading';
 
@@ -43,42 +44,10 @@ export default function ConfigureDatasetPoint( { dataset, setDataset })  {
   const [activeIndex, setActiveIndex] = useState(0);
   // working state 
   const [isWorking, setIsWorking] = useState(false);
-  
   // working dataset
   const [workDataset, setWorkDataset] = useState(dataset)
-  
   // SOURCES
-  const srcDatasetsList = [
-    { name:"point general data", typename:"geonode:point_general_geo"},
-    { name:"surface unevenness data", typename:"geonode:surface_unevenness_geo"},
-    { name:"surface general", typename:"geonode:surface_geo"},
-    { name:"surface land use", typename:"geonode:land_use_geo"},
-    { name:"climate and weather", typename:"geonode:climate_weather_geo"},
-    { name:"landform and topography", typename:"geonode:landform_topography_geo"},
-    { name:"layer general data", typename:"geonode:point_layer_geo"},
-    { name:"layer remants data", typename:"geonode:layer_remants_geo"}, 
-    { name:"layer coarse fragments data", typename:"geonode:layer_coarse_fragments_geo"},
-    { name:"layer artefacts data", typename:"geonode:layer_artefacts_geo"},
-    { name:"layer cracks data", typename:"geonode:layer_cracks_geo"},
-    { name:"layer matrix colours data", typename:"geonode:layer_matrix_colours_geo"},
-    { name:"layer lithogenic variegates data", typename:"geonode:layer_lithogenic_variegates_geo"},
-    { name:"Layer redoximorphic features ", typename:"geonode:layer_redoximorphic_geo"}, 
-    { name:"Layer coatings bridges data", typename:"geonode:layer_coatings_bridges_geo"}, 
-    { name:"Layer carbonates data", typename:"geonode:layer_carbonates_geo"},
-    { name:"Layer gypsum data", typename:"geonode:layer_gypsum_geo"},
-    { name:"Layer secondary silica data", typename:"geonode:layer_secondary_silica_geo"}, 
-    { name:"Layer consistence data", typename:"geonode:layer_consistence_geo"},
-    { name:"layer permafrost data", typename:"geonode:layer_permafrost_geo"},
-    { name:"Layer organic carbon data", typename:"geonode:layer_organic_carbon_geo"},
-    { name:"Layer roots data", typename:"geonode:layer_roots_geo"},
-    { name:"Layer animal activity data", typename:"geonode:layer_animal_activity_geo"},
-    { name:"Layer human alterations data", typename:"geonode:layer_human_alterations_geo"},
-    { name:"Layer degree of decomposition data", typename:"geonode:layer_degree_decomposition_geo"},
-    { name:"Layer nomatrix pore data", typename:"geonode:layer_nonmatrix_pore_geo"},
-    { name:"Layer structure data", typename:"geonode:layer_structure_geo"},
-    { name:"Extra laboratory measure data", typename:"geonode:labdata_extra_geo"},
-    { name:"laboratory data", typename:"geonode:labdata_geo"},
-  ]
+  const srcDatasetsList = BaseDatasets.sections
   const [selectedSource, setSelectedSource] = useState(null)
   
 
@@ -280,63 +249,6 @@ export default function ConfigureDatasetPoint( { dataset, setDataset })  {
     } 
   }
  
-  // This selects the AOI (polygonal or multipolygonal geometry) by providing a click location
-  const setByPoint = async (pin) => {
-    if ( !areasDataset || !areasDataset.alternate )
-      return
-    if ( !pin || !pin.geometry || !pin.geometry.coordinates || !pin.geometry.coordinates.length === 2 )
-      return;
-    const pt = pin.geometry.coordinates;
-    const bboxFilter = 'bbox=' + pt[1] + ',' + pt[0] + ',' + pt[1] + ',' + pt[0];
-    const p = null;
-    const token = user.userData.access_token;
-    const response = await ProfileService.getDataset( areasDataset.alternate, bboxFilter, token )
-    let features = [];
-    if ( response && response.ok && response.data && response.data.features ){
-      // verify data: wfs use bounding box
-      const geojson = response.data
-      if ( geojson.features ) {
-        for ( let i = 0; i <  geojson.features.length; i+=1 )
-         if ( booleanPointInPolygon(pin,geojson.features[i],))
-          features.push(geojson.features[i])  
-        if ( features.length > 0 ){
-          setAoi(featureCollection(features))
-          toast.current.show({ severity: 'success', summary: 'Done!', detail: 'Area polygon has been selected.'});
-          return;
-        }
-        else toast.current.show({ severity: 'error', summary: 'None!', detail: 'Area polygon not found.'});   
-      }
-    }
-    setAoi(null);
-  }
-
-  // This selects the AOI (polygonal or multipolygonal geometry) by quering catalogue using a box filter
-  const setByBox = async (box) => {
-    if ( !areasDataset || !areasDataset.alternate )
-      return
-    const bboxArray = bbox(box)
-    const bboxFilter = 'bbox=' + bboxArray[1] + ',' + bboxArray[0] + ',' + bboxArray[3] + ',' + bboxArray[2];
-    const token = user.userData.access_token;
-    const response = await ProfileService.getDataset( areasDataset.alternate, bboxFilter, token )
-    let features = [];
-    if ( response && response.ok && response.data && response.data.features ){
-      // verify data
-      const geojson = response.data
-      if ( geojson.features ) {
-        for ( let i = 0; i <  geojson.features.length; i+=1 )
-          if ( booleanIntersects(box,geojson.features[i]))
-            features.push(geojson.features[i])  
-        if ( features.length > 0 ){
-          setAoi(featureCollection(features))
-          toast.current.show({ severity: 'success', summary: 'Done!', detail: 'Area polygon has been selected.'});
-          return;
-        }
-        else toast.current.show({ severity: 'error', summary: 'None!', detail: 'Area polygon not found.'});   
-      }
-    }
-    setAoi(null);
-  }
-
   // This performs filtering using the Filter object
   const filtering = () => {
     //return []
@@ -756,7 +668,7 @@ export default function ConfigureDatasetPoint( { dataset, setDataset })  {
             )}  
           </Fieldset>
           { workDataset && workDataset.points && (
-          <AoiSelectionMap  token={user.userData.access_token} areasTypeName={areasTypeName} points={workDataset.points} area={selectedArea} setByBox={setByBox} setByPoint={setByPoint} />
+          <AoiSelectionMap  token={user.userData.access_token} areasTypeName={areasTypeName} points={workDataset.points} area={selectedArea} setAoi={setAoi} />
           )} 
           <div class="flex justify-content-center w-full m-3">
             <Button
