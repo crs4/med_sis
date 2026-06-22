@@ -152,7 +152,7 @@ class Migration(migrations.Migration):
                     "grad_ups",
                     models.FloatField(
                         blank=True,
-                        db_comment="Ground surface upslope inclination with respect to the horizontal plane. If the profile lies on a flat surface, the gradient is 0%. ",
+                        db_comment="Ground surface upslope inclination with respect to the horizontal plane. If the profile lies on a flat surface, the gradient is 0%%. ",
                         null=True,
                         validators=[backoffice.models.validate_percentage],
                     ),
@@ -161,7 +161,7 @@ class Migration(migrations.Migration):
                     "grad_downs",
                     models.FloatField(
                         blank=True,
-                        db_comment="Ground surface downslope inclination with respect to the horizontal plane. If the profile lies on a flat surface, the gradient is 0%. ",
+                        db_comment="Ground surface downslope inclination with respect to the horizontal plane. If the profile lies on a flat surface, the gradient is 0%%. ",
                         null=True,
                         validators=[backoffice.models.validate_percentage],
                     ),
@@ -573,7 +573,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 "db_table": "layer_coatings_bridges",
-                "db_table_comment": "Report the abundance of clay coatings in % of the surfaces of soil aggregates, coarse fragments and/or biopore walls clay bridges between sand grains in % of involved sand grains.",
+                "db_table_comment": "Report the abundance of clay coatings in %% of the surfaces of soil aggregates, coarse fragments and/or biopore walls clay bridges between sand grains in %% of involved sand grains.",
                 "managed": True,
             },
         ),
@@ -987,7 +987,7 @@ class Migration(migrations.Migration):
                     "abund_oxi",
                     models.FloatField(
                         blank=True,
-                        db_comment="Abundance of cemented oximorphic features, by volume [%]",
+                        db_comment="Abundance of cemented oximorphic features, by volume [%%]",
                         null=True,
                         validators=[backoffice.models.validate_percentage],
                     ),
@@ -1653,7 +1653,7 @@ class Migration(migrations.Migration):
                     "gravel",
                     models.FloatField(
                         blank=True,
-                        db_comment="Gravel content (%)",
+                        db_comment="Gravel content (%%)",
                         null=True,
                         validators=[backoffice.models.validate_percentage],
                     ),
@@ -2394,7 +2394,7 @@ class Migration(migrations.Migration):
                     "hom_part",
                     models.FloatField(
                         blank=True,
-                        db_comment="Described parts, by exposed area [%]",
+                        db_comment="Described parts, by exposed area [%%]",
                         null=True,
                         validators=[backoffice.models.validate_percentage],
                     ),
@@ -2403,7 +2403,7 @@ class Migration(migrations.Migration):
                     "struct_w_s",
                     models.FloatField(
                         blank=True,
-                        db_comment="Structure Wedge-shaped aggregates tilted between ≥ 10° and ≤ 60° from the horizontal: abundance, by volume [%]",
+                        db_comment="Structure Wedge-shaped aggregates tilted between ≥ 10° and ≤ 60° from the horizontal: abundance, by volume [%%]",
                         null=True,
                         validators=[backoffice.models.validate_percentage],
                     ),
@@ -2472,7 +2472,7 @@ class Migration(migrations.Migration):
                     "coars_text_v_tongues",
                     models.FloatField(
                         blank=True,
-                        db_comment="the percentage (by exposed area) occupied by continuous vertical tongues of coarser-textured parts with a horizontal extension of ≥ 1 cm (if these tongues are absent, report 0%)",
+                        db_comment="the percentage (by exposed area) occupied by continuous vertical tongues of coarser-textured parts with a horizontal extension of ≥ 1 cm (if these tongues are absent, report 0%%)",
                         null=True,
                         validators=[backoffice.models.validate_percentage],
                     ),
@@ -2481,7 +2481,7 @@ class Migration(migrations.Migration):
                     "coars_text_depth",
                     models.FloatField(
                         blank=True,
-                        db_comment="the depth range in cm, where these tongues cover ≥ 10% of the exposed area (if they extend across several layers, the length is only reported in the description of that layer, where they start at the layer’s upper limit).",
+                        db_comment="the depth range in cm, where these tongues cover ≥ 10%% of the exposed area (if they extend across several layers, the length is only reported in the description of that layer, where they start at the layer’s upper limit).",
                         null=True,
                         validators=[backoffice.models.validate_percentage],
                     ),
@@ -2499,7 +2499,7 @@ class Migration(migrations.Migration):
                     "stress_fts_pressfaces",
                     models.FloatField(
                         blank=True,
-                        db_comment="Pressure faces in % of the surfaces of soil aggregates",
+                        db_comment="Pressure faces in %% of the surfaces of soil aggregates",
                         null=True,
                         validators=[backoffice.models.validate_percentage],
                     ),
@@ -2508,7 +2508,7 @@ class Migration(migrations.Migration):
                     "stress_fts_slicksides",
                     models.FloatField(
                         blank=True,
-                        db_comment="Slickensides in % of the surfaces of soil aggregates.",
+                        db_comment="Slickensides in %% of the surfaces of soil aggregates.",
                         null=True,
                         validators=[backoffice.models.validate_percentage],
                     ),
