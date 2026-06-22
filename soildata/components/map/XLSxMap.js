@@ -66,7 +66,7 @@ export default function S4Mmap ({data}) {
             onEachFeature={onEachFeature}
             data={points}
           /> 
-          <MapLegend legendRef={controlLegend} data={{xlsUploads: true}} position="bottomleft" />
+          <MapLegend legend={controlLegend} data={{xlsUploads: true}} position="bottomleft" />
           </>
         )}
       </MapContainer>
