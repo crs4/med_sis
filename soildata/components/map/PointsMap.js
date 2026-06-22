@@ -81,7 +81,7 @@ export default function S4Mmap ({data, selected}) {
             onEachFeature={onEachFeature}
             data={points}
           /> 
-          <MapLegend legendRef={controlLegend} data={{points: true}} position="bottomleft" />  
+          <MapLegend legend={controlLegend} data={{points: true}} position="bottomleft" />  
       
           </>
         )}
