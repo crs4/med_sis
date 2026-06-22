@@ -121,11 +121,11 @@ export default function ConfigureDataset( { dataset, setDataset })  {
   }
 
   // This sets the Area of Interest filter 
-  const setAoi = (_area) => {
+  const setAoi = async (_area) => {
     if ( !_area || !bbox(_area) )
       _area = null
     workDataset.filter.aoi = _area;
-    setWorkDataset(filtering(workDataset))
+    setWorkDataset(await filtering(workDataset))
     setSelectedArea(_area)
     if ( _area )
         toast.current.show({ severity: 'success', summary: 'Done!', detail: 'Area of Interest selected.'});
@@ -324,7 +324,7 @@ export default function ConfigureDataset( { dataset, setDataset })  {
   const getMediana = ( points, element ) => {
     const array = []
     if ( points && points.features ){
-      points.features.forEch ((ft) => {
+      points.features.forEach ((ft) => {
         if ( !isNaN( parseFloat( ft.properties[element] ) ) )                
           array.push( parseFloat( ft.properties[element] ) )
       })
@@ -347,7 +347,7 @@ export default function ConfigureDataset( { dataset, setDataset })  {
     const medianaA = getMediana( points, elementA)
     const medianaB = getMediana( points, elementB)
     if ( medianaA && medianaB ) {
-      points.features.forEch ((ft) => {
+      points.features.forEach ((ft) => {
         if ( !isNaN( parseFloat(ft.properties[elementA]) ) && !isNan( parseFloat(ft.properties[elementB]) ) ) 
         {
           ft.properties.value = ( parseFloat(ft.properties[elementA]) / parseFloat(ft.properties[elementB]) ) / ( medianaA / medianaB )                  
@@ -367,7 +367,7 @@ export default function ConfigureDataset( { dataset, setDataset })  {
         const points = response.data;
         /////// filter feature properties  
         const elemA = null, elemB = null
-        points.features.forEch ( (ft) =>  {
+        points.features.forEach ( (ft) =>  {
           if ( ft.properties )  {
             /// set base attributes
             const new_props = {
@@ -597,6 +597,7 @@ export default function ConfigureDataset( { dataset, setDataset })  {
       setMapPoints( aggregatedPts )
     } 
     catch (error) {
+      console.log(error)
       _workDataset.filter.points = null
       toast.current.show({severity:'error', summary: 'Errors!', detail: 'Errors filtering points' , life: 3000});  
     } 
@@ -711,7 +712,7 @@ export default function ConfigureDataset( { dataset, setDataset })  {
         });     
         const result = await readFilePromise(file)
         if ( result ) {   
-          setAoi(result)
+          await setAoi(result)
           toast.current.show({ severity: 'success', summary: 'Done!', detail: 'Your area of interest has been uploaded.'});
           return;
         }
@@ -778,7 +779,7 @@ export default function ConfigureDataset( { dataset, setDataset })  {
     <div className="layout-dashboard">
     <Toast ref={toast} />
       {(!workDataset || !workDataset.filter) && (
-      <span className="font-bold text-red-800">Error: dataset or filter not initialized </span>
+      <span className="font-bold text-red-800">{ console.log(workDataset) } Error: dataset or filter not initialized </span>
       )} 
       { workDataset && workDataset.filter  && (
       <>

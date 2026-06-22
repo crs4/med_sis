@@ -28,7 +28,7 @@ const VariogramGraph = ( { data } ) => {
                 },
                 {
                     type: 'line',
-                    label: 'Fitted Model ('+variogram.model+')',
+                    label: 'Fitted Model ('+data.model+')',
                     data: modelCurve,
                     borderColor: '#EF4444',
                     borderWidth: 2,

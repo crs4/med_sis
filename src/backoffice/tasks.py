@@ -91,15 +91,19 @@ def process_dataset(self, dataset_id):
             return False
         logger.info(f"Processing dataset {dataset_id} data...")
         service = DatasetService()
-        result = service.process_dataset_data(dataset_id)
-        if result:
-            dataset.status = "PUBLISHED"
-            logger.info(f"Dataset {dataset_id} published successfully")
-        else:
-            dataset.status = "ERRORS"
-            logger.warning(f"Dataset {dataset_id} not published")
-        dataset.save(using='backoffice')
-        return result
+        report = service.process_dataset_data(dataset_id)
+        if report:
+            for msg in report.get('msgs'):
+                logger.info(f"msg: {msg}")
+            if report.get('success'):
+                dataset.status = "PUBLISHED"
+                logger.info(f"Dataset {dataset_id} published")
+            else:
+                dataset.status = "ERRORS"
+                logger.warning(f"Dataset {dataset_id} not published")
+            dataset.save(using='backoffice')
+            return True
+        return False
     except Dataset.DoesNotExist:
         logger.error(f"Dataset {dataset_id} not found")
         return False

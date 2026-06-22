@@ -58,6 +58,7 @@ const GeomanControl = ({ toolbarRef, setByBox, setByPoint }) => {
           await map.setByPoint(geojson) 
         map.pm.getGeomanDrawLayers(false).forEach(
           (geomanLayer) => {map.removeLayer(geomanLayer);})
+        console.log('create')
       });
     }, 
   })
@@ -209,14 +210,12 @@ export default function AoiSelectionMap ({
     if ( response && response.ok && response.data && response.data.features ){
       // verify data: wfs use bounding box
       const geojson = response.data
-      console.log(geojson)
       if ( geojson.features ) {
         for ( let i = 0; i <  geojson.features.length; i+=1 )
           if ( booleanPointInPolygon(pin,geojson.features[i],))
             features.push(geojson.features[i])  
         if ( features.length > 0 ){
-          console.log('ok')
-          setAoi(featureCollection(features))
+          await setAoi(featureCollection(features))
           return;
         }
       }
@@ -236,13 +235,11 @@ export default function AoiSelectionMap ({
       // verify data
       const geojson = response.data
       if ( geojson.features ) {
-        console.log(geojson)
         for ( let i = 0; i <  geojson.features.length; i+=1 )
           if ( booleanIntersects(box,geojson.features[i]))
             features.push(geojson.features[i])  
         if ( features.length > 0 ){
-          console.log('ok')
-          setAoi(featureCollection(features))
+          await setAoi(featureCollection(features))
           return;
         }
       }

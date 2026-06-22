@@ -24,6 +24,8 @@ const LayersGeoJSON = ({ layersRef, points, area }) => {
 
   // It defines the style of the points of the measure 
   function pointToLayer (feature, latlng) {
+    if ( feature && feature.properties && feature.properties.outlier )
+      return L.circleMarker(latlng, { radius: 8, fillColor: '#f76218', color: '#a21505', weight: 2, opacity: 1, fillOpacity: 1 }); 
     return L.circleMarker(latlng, { radius: 8, fillColor: '#188ff7', color: '#0805a2', weight: 2, opacity: 1, fillOpacity: 1 });
   };
 
@@ -49,12 +51,12 @@ const LayersGeoJSON = ({ layersRef, points, area }) => {
       }
       const layers = [] 
       if ( area ){
-        layers.push( L.geoJSON(area, {
+        layers.push( L.geoJSON( area, {
           style: areaStyle
-        }) )
+        }))
       }
       if ( points ){
-        layers.push( L.geoJSON(points, {
+        layers.push( L.geoJSON( points, {
           pointToLayer: pointToLayer,
           onEachFeature: onEachFeature
         }) )

@@ -249,23 +249,25 @@ class XLSxUploadService:
 ###### Dataset Publishing
 class DatasetService:
     def __init__(self):
+        # Reset of report data ( create datasets result )
         self.report = {
             "start_time": datetime.now().isoformat(),
-            "errors": [],
+            "msgs": [],
             "raster": None,
             "points": None,
             "variogram": None,
             "success": True
         }
+        # base URL of APIs
         self.base_url = settings.API_BASE_URL
-        # Configurazione dell'autenticazione basic
+        # basic authentication  parameters
         self.auth_username = settings.API_USERNAME
         self.auth_password = settings.API_PASSWORD
         self.auth_header = self._get_basic_auth_header()
 
     def _get_basic_auth_header(self):
         """
-        Genera l'header di autenticazione basic
+        Generates the header for basic authentication
         """
         credentials = f"{self.auth_username}:{self.auth_password}"
         encoded_credentials = base64.b64encode(credentials.encode()).decode()
@@ -295,6 +297,9 @@ class DatasetService:
                         k_data = dataset.k_data
                         if not isinstance(k_data, dict):
                             k_data = json.loads(k_data)
+                        k_points = k_params['points']
+                        if not isinstance(k_points, dict):
+                            k_points = json.loads(k_points)
                         k_model = k_params['model']
                         k_maxdist = k_params['maxDist']
                         k_box = k_params['bbox']
@@ -307,11 +312,8 @@ class DatasetService:
                 raise ValueError("Dataset not found")
         except Exception as e:
             self.report["success"] = False
-            self.report["errors"].append("Stage1: errors reading dataset, wrong parameters, exited")
-            dataset.status = "ERRORS"
-            dataset.report = self.report
-            dataset.save(using='backoffice')
-            return False
+            self.report["msgs"].append("Stage1: errors reading dataset, wrong parameters, exited")
+            return self.report
         t = round(time.time() * 1000)
         folder = f"dataset_{dataset_id}_{t}" 
         name = f"dataset_{dataset_id}_{t}"
@@ -322,23 +324,20 @@ class DatasetService:
             pass
 ############ GENERATE WORK FILES FROM PARAMETERS        
         try :
-            with open(base_path+"/"+name+"_points.json", "w") as outfile:
+            with open(base_path+"/points.json", "w") as outfile:
                 json.dump(points, outfile)
-            with open(base_path+"/"+name+"_aoi.json", "w") as outfile:
+            with open(base_path+"/aoi.json", "w") as outfile:
                 json.dump(aoi, outfile)
         except Exception as e:
             self.report["success"] = False
-            self.report["errors"].append("Stage2: errors creating files, exited")
-            dataset.status = "ERRORS"
-            dataset.report = self.report
-            dataset.save(using='backoffice')
-            return False
-        
+            self.report["msgs"].append("Stage2: errors creating files, exited")
+            return self.report
+        #ogr2ogr -s_srs 'EPSG:4326' -t_srs 'EPSG:32636' kpoints.shp kpoints.json
 ############ IF KRIGING IS TRUE GENERATES WORK FILES FROM PARAMETERS          
         try :
             if dataset.kriging:
                 with open(base_path+"/kpoints.json", "w") as outfile:
-                    json.dump(k_data, outfile)
+                    json.dump(k_points, outfile)
                 with open(base_path+"/bbox.json", "w") as outfile:
                     json.dump(k_box, outfile)
             
@@ -348,7 +347,7 @@ class DatasetService:
                 params = f"ogr2ogr -s_srs 'EPSG:4326' -t_srs '{k_epsg}' {pointsSHP} {pointsJSON}"
                 subprocess.call([params], shell=True) 
                 # Reproject the area of interests and change file format
-                aoiJSON = os.path.join( base_path+"/"+name+"_aoi.json")
+                aoiJSON = os.path.join( base_path, "aoi.json")
                 aoiUTMJSON = os.path.join( base_path, "utmaoi.json")
                 params = f"ogr2ogr -s_srs 'EPSG:4326' -t_srs '{k_epsg}' {aoiUTMJSON} {aoiJSON}"
                 subprocess.call([params], shell=True) 
@@ -372,80 +371,50 @@ class DatasetService:
                     cell_size = size / 2000.0
                 predictionGRD = os.path.join( base_path, "prediction")
                 varianceGRD = os.path.join( base_path, "variance")  
-                with open(base_path+"/report.json", "w") as outfile:
-                    json.dump(self.report, outfile)
                 # SAGA_CMD  
-                saga_cmd =  f"saga_cmd statistics_kriging 0 -POINTS {pointsSHP} -FIELD value -VAR_MODEL {k_model} -VAR_NCLASSES {k_nclasses} " 
+                saga_cmd =  f"saga_cmd statistics_kriging 0 -POINTS {pointsSHP} -FIELD value -VAR_MODEL '{k_model}' -VAR_NCLASSES {k_nclasses} " 
                 saga_cmd += f" -TARGET_USER_XMIN {west} -TARGET_USER_XMAX {east} -TARGET_USER_YMIN {south} -TARGET_USER_YMAX {north} " 
                 saga_cmd += f" -TARGET_USER_SIZE {cell_size} -VAR_MAXDIST {k_maxdist}  -VAR_NSKIP {k_nskip} " 
                 saga_cmd += f" -PREDICTION {predictionGRD} -VARIANCE {varianceGRD} " 
-                self.report["errors"].append(saga_cmd)
-                with open(base_path+"/report.json", "w") as outfile:
-                    json.dump(self.report, outfile)
                 subprocess.call([saga_cmd], shell=True) 
         except Exception as e:
             self.report["success"] = False
-            self.report["errors"].append("Stage3: errors in elaborating kriging interpolation, exited")
-            dataset.status = "ERRORS"
-            dataset.report = self.report
-            dataset.save(using='backoffice')
-            return False
+            self.report["msgs"].append("Stage3: errors in elaborating kriging interpolation, exited")
+            return self.report
 
 ############ IF KRIGING GENERATE AND VALIDATE GEOTIFF          
-        #try :    
-        if True:
+        try :    
             if dataset.kriging:
-                filename1 = f"{base_path}/{name}_prediction.tif" 
-                filename2 = f"{base_path}/{name}_variance.tif"
+                output = f"{base_path}/prediction.tif"
+                output2 = f"{base_path}/prediction_clip.tif" 
                 # 1. change saga grid format to GeoTiff
                 #gdal_translate -of GTiff                 
-                cmd = f"gdal_translate -of GTiff -ot Float32 -co COMPRESS=DEFLATE -co PREDICTOR=3 {predictionGRD}.sdat {filename1}"
+                cmd = f"gdal_translate -of GTiff -ot Float32 -co COMPRESS=DEFLATE -co PREDICTOR=3 {predictionGRD}.sdat {output}"
                 subprocess.call([cmd], shell=True) 
-                cmd = f"gdal_translate -of GTiff {varianceGRD}.sdat {filename2}"
-                subprocess.call([cmd], shell=True) 
-                # 2. clip and compress GeoTiffs 
-                tif = gdal.Open( filename1 )
-                xsize = tif.RasterXSize
-                ysize = tif.RasterYSize
-                gtpar = tif.GetGeoTransform()
-                minx = gtpar[0]
-                maxy = gtpar[3]
-                maxx = minx + gtpar[1] * xsize
-                miny = maxy + gtpar[5] * ysize
-            # it is the main tiff configuration
-                gdal_warp_kwargs = {
-                    'format': 'GTiff',
-                    'cutlineDSName' : json.dumps(aoiUTMJSON),
-                    'cropToCutline' : True,
-                    'height' : ysize,
-                    'width' : xsize,
-                    'outputBounds' : [minx,miny,maxx,maxy],
-                    'creationOptions' : ['COMPRESS=LZW'],
-                    'dstSRS': 'EPSG:4326' 
-                }
-                tif=None
-                geofilename1 = f"{base_path}/{name}_predictiongeo.tif" 
-                geofilename2 = f"{base_path}/{name}_variancegeo.tif"
                 
-                cmd = f"gdal.Warp( {filename1}, {geofilename1}, **gdal_warp_kwargs)"
+                cmd = f"gdalwarp -cutline {aoiUTMJSON} -crop_to_cutline -overwrite {output} {output2}"
                 subprocess.call([cmd], shell=True)  
-                cmd = f"gdal.Warp( {filename2}, {geofilename2}, **gdal_warp_kwargs)" 
-                subprocess.call([cmd], shell=True) 
-        #except Exception as e:
-        #    self.report["success"] = False
-        #    self.report["errors"].append("Stage4: wrong Geotiff reading interpolation, exited")
-        #    dataset.status = "ERRORS"
-        #    dataset.report = self.report
-        #    dataset.save(using='backoffice')
-        #    return False
+                ##CLEAN
+                f = base_path+"/points.json"
+                f2 = base_path+"/aoi.json"
+                f3 = base_path+"/kpoints.json"
+                f4 = base_path+"/bbox.json"
+                f5 = base_path+"/kpoints.shp"
+                f6 = base_path+"/utmaoi.json"
+                f7 = base_path+"/utmbbox.json"
+                f8 = base_path+"/bbox.json"
+        except Exception as e:
+            self.report["success"] = False
+            self.report["errors"].append("Stage4: wrong Geotiff reading interpolation, exited")
+            return self.report
         
 ############ PUBLISHING POINTS DATASET
         #1st dataset: filtered points (EPSG:4326) geoJSON base_path+"/"+name+"_points.json"    
         try :
             url = f"{self.base_url}/api/v2/uploads/upload/"
             files= [
-                ('base_file', ( name +'_points.json',open(base_path+'/'+name +'_points.json','r'), 'application/json')),
-                ('json_file', ( name +'_points.json',open(base_path+'/'+name +'_points.json','r'), 'application/json'))
+                ('base_file', ( name +'_points.json',open(base_path+'/points.json','r'), 'application/json')),
+                ('json_file', ( name +'_points.json',open(base_path+'/points.json','r'), 'application/json'))
             ]
             response = requests.post( url, files=files, headers=self.auth_header)
             if response.status_code == 200:
@@ -466,20 +435,17 @@ class DatasetService:
                             go = False
         except Exception as e:
             self.report["success"] = False
-            self.report["errors"].append("Stage5: errors creating points dataset, exited")
-            dataset.status = "ERRORS"
-            dataset.report = self.report
-            dataset.save(using='backoffice')
-            return False
+            self.report["msgs"].append("Stage5: errors creating points dataset, exited")
+            return self.report
 ############ PUBLISHING AOI DATASET        
         #2nd dataset: area of interest (EPSG:4326) geoJSON base_path+"/"+name+"_aoi.json"
         try :
             url = f"{self.base_url}/api/v2/uploads/upload/"
-            style = f"/geoserver_data/data/workspaces/geonode/styles/{data.source}.sld"
+            #style = f"/geoserver_data/data/workspaces/geonode/styles/{data.source}.sld"
             files= [
                 # ('sld_file',('name +'_aoi.sld',open('...indicatorSLDFilepath.sld','rb'),'application/octet-stream')),
-                ('base_file', ( name +'_aoi.json',open(base_path+'/'+name +'_points.json','r'), 'application/json')),
-                ('json_file', ( name +'_aoi.json',open(base_path+'/'+name +'_points.json','r'), 'application/json'))
+                ('base_file', ( name +'_aoi.json',open(base_path+'/aoi.json','r'), 'application/json')),
+                ('json_file', ( name +'_aoi.json',open(base_path+'/aoi.json','r'), 'application/json'))
             ]
             response = requests.post( url, files=files, headers=self.auth_header )
             if response.status_code == 200:
@@ -500,19 +466,16 @@ class DatasetService:
                             go = False
         except Exception as e:
             self.report["success"] = False
-            self.report["errors"].append("Stage6: errors creating aoi dataset, exited")
-            dataset.status = "ERRORS"
-            dataset.report = self.report
-            dataset.save(using='backoffice')
-            return False
+            self.report["msgs"].append("Stage6: errors creating aoi dataset, exited")
+            return self.report
 ############ PUBLISHING INTERPOLATION RASTER DATASET
         #3th dataset: interpolation raster - geotiff base_path+"/"+name+"_prediction.tif"
         try :
             if dataset.kriging:
                 url = f"{self.base_url}/api/v2/uploads/upload/"
                 files= [
-                    ('base_file', ( name+'_prediction.tif',open(base_path+'/'+name+'_prediction.tif','rb'), 'image/tiff')),
-                    ('tif_file', ( name+'_prediction.tif',open(base_path+'/'+name+'_prediction.tif','rb'), 'image/tiff'))
+                    ('base_file', ( name+'_prediction.tif',open(base_path+'/prediction.tif','rb'), 'image/tiff')),
+                    ('tif_file', ( name+'_prediction.tif',open(base_path+'/prediction.tif','rb'), 'image/tiff'))
                 ]
                 response = requests.post( url, files=files, headers=self.auth_header)
                 if response.status_code == 200:
@@ -533,41 +496,31 @@ class DatasetService:
                                 go = False
         except Exception as e:
             self.report["success"] = False
-            self.report["errors"].append("Stage6: errors creating prediction raster dataset, exited")
-            dataset.status = "ERRORS"
-            dataset.report = self.report
-            dataset.save(using='backoffice')
-            return False
+            self.report["msgs"].append("Stage7: errors creating prediction raster dataset, exited")
+            return self.report
 
 ############ METADATA geonode_points_id, geonode_aoi_id, geonode_prediction_id
         try:
             url = f"{self.base_url}/api/v2/datasets/{geonode_points_id}"
             data = {
-                "title": f"Filter {dataset.id} of {dataset.source} - {dataset.date}",
-                "abstract": f"Filter {dataset.id} executed on data source {dataset.source} executed in date:{dataset.date}",
-                "category": {
-                    "identifier": "geoscientificInformation",
-                },
-                "keywords": dataset.filter.keywords
+                "title": f"Filter: {dataset.id} source: {dataset.source}, date: {dataset.date}",
+                "abstract": f"Filter {dataset.id} executed on source {dataset.source} executed in date:{dataset.date}",
+                "category": "geoscientificInformation",
+                "keywords": "pippo"
             }
-            
-
-
             response = requests.patch( url, headers=self.auth_header, json=data)
             #if response.status_code == 200:
         except Exception as e:
             self.report["success"] = False
-            self.report["errors"].append("Stage6: errors creating prediction raster dataset, exited")
-            dataset.status = "ERRORS"
-            dataset.report = self.report
-            dataset.save(using='backoffice')
-            return False
+            self.report["msgs"].append("Stage8: errors creating prediction raster dataset, exited")
+            return self.report
 
 ############ FINALIZE
-        dataset.status = "PUBLISHED"
-        dataset.report = self.report
-        dataset.save(using='backoffice')
-        return True
+        self.report["success"] = True
+        self.report["msgs"].append("Stage9: datasets successfully published ")
+        with open(base_path+"/report.json", "w") as outfile:
+            json.dump(self.report, outfile)    
+        return self.report
            
 #### for all soil indicators data in JSON format
 # typename, name, abstract, type 

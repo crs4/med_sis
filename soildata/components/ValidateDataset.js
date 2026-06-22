@@ -1,6 +1,6 @@
 "use client"
 
-import { point, featureCollection, feature, toMercator, bbox, bboxPolygon } from '@turf/turf';
+import { point, featureCollection, feature, toMercator, bbox, bboxPolygon, clone, toWgs84 } from '@turf/turf';
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
@@ -32,8 +32,7 @@ export default function ValidateDataset( { dataset, setDataset })  {
     { name: 'Linear', formula: 'a + b * x'}, 
     { name: 'Power', formula: 'a + b * x^k'}, 
     { name: 'Square', formula: 'a + b * sqrt(x)'}, 
-    { name: 'Logarithmic', formula: 'a + b * ln(1 + x)'}, 
-    { name: 'Spherical', formula: 'a + b * ifelse(x > c, 1, 1.5 * x / c - 0.5 * x^3 / c^3'}
+    { name: 'Logarithmic', formula: 'a + b * ln(1 + x)'}
   ]
   const user = useUser();
   const toast = useRef(null);
@@ -45,7 +44,8 @@ export default function ValidateDataset( { dataset, setDataset })  {
   // semi variogram result data 
   const [variogram, setVariogram] = useState(null);
   // variogram points in simple mercator projection
-  const [vPoints, setVPoints] = useState([])
+  const [mapPoints, setMapPoints] = useState([])
+  const [noOutliers, setNoOutliers] = useState(false)
   const [kriging, setKriging] = useState(null);
   const [maxDist, setMaxDist] = useState(-1.00000);
   const [nClasses, setNClasses] = useState(100); 
@@ -53,7 +53,6 @@ export default function ValidateDataset( { dataset, setDataset })  {
   const [model, setModel] = useState(models[0]);
   const [descriptors, setDescriptors] = useState([]);
   const [message, setMessage] = useState('');
-
   const [visibleFiltered, setVisibleFiltered] = useState(false)
   const [visibleAggregated, setVisibleAggregated] = useState(false)
 
@@ -93,12 +92,6 @@ export default function ValidateDataset( { dataset, setDataset })  {
         finalResult = isNaN(trimmedResult) ? 0 : trimmedResult;
     return finalResult;
   }
- 
-  function initKriging (k) {
-    setKriging(k);
-    workDataset.kriging = k;
-    setWorkDataset(workDataset); 
-  }
 
   function evalDepth (ft, depth_class) {
     // 0 to 20 cm OR 20 to 50 cm
@@ -113,12 +106,11 @@ export default function ValidateDataset( { dataset, setDataset })  {
           perc = 0; 
     
     if ( (l - u) > 0 )   
-      perc = (l-u)/(lA-uA) 
-    console.log(perc)
+      perc = (l-u)/(lA-uA)
     return perc; 
   }
   
-  // uses Median absolute deviation (MAD) to identify outliers
+  // The median absolute deviation (MAD) is used to identify outliers.
   function findOutliers( points ) {
     try {  
       if ( !points || !points.features )
@@ -188,6 +180,7 @@ export default function ValidateDataset( { dataset, setDataset })  {
     });
     /// aggregated points for kriging interpolation
     const kPts = [];
+    const popups = {};
     Object.keys(aggregateIndex).forEach ((d) => {
       try {
         const data = aggregateIndex[d]
@@ -204,8 +197,9 @@ export default function ValidateDataset( { dataset, setDataset })  {
         for ( let i = 0; i < data.points.length; i+=1 ) 
           panel += '<div>' + data.points[i] + ': ' + data.values[i] + ' * ' + data.percentages[i] + '</div>'
         panel += '</div>'
-        kPt.properties = { id: d, lat: data.lat, lon: data.lon, value: sum / data.values.length, popup: panel } 
+        kPt.properties = { id: d, lat: data.lat, lon: data.lon, value: sum / data.values.length }
         kPts.push(kPt)
+        popups[d] = panel
       } catch (error) {
         console.log(error)
       }
@@ -214,15 +208,22 @@ export default function ValidateDataset( { dataset, setDataset })  {
       workDataset.k_data = findOutliers(featureCollection(kPts))
       workDataset.k_params.epsg = epsg_utm_code;
       const vPts = []
+      const mPts = []
       workDataset.k_data.features.forEach ( (ft) => {
-        vPts.push( toMercator(ft) )
+        if ( !workDataset.k_params.outlier )
+          vPts.push( toMercator(ft) )
+        const mPt = clone(ft)
+        mPt.properties.popup = popups[mPt.properties.id]
+        mPts.push(mPt)
       })
       workDataset.k_params.points = featureCollection(vPts)
+      setMapPoints(featureCollection(mPts))
     } 
     else {
       workDataset.k_params.epsg = null
       workDataset.k_data = null;
       workDataset.k_params.points = null;
+      setMapPoints(null);
     } 
     setWorkDataset(workDataset);
     await saveWorkDataset();  
@@ -263,6 +264,19 @@ export default function ValidateDataset( { dataset, setDataset })  {
       toast.current.show({ severity: 'error', summary: 'Error!', detail: 'Too few points to perform interpolation.'});
       return;
     }
+    //if kriging is True generates points in WGS84 to interpolate
+    if ( workDataset.kriging ) {
+      if ( workDataset.k_params.noOutliers ){
+        const kPoints = [];
+        workDataset.k_data.features.forEach( (ft) => {  
+          if ( !ft.properties.outlier )
+            kPoints.push(ft) 
+        })
+        workDataset.k_params.points = featureCollection(kPoints)
+      }  
+      else workDataset.k_params.points = workDataset.k_data
+      console.log(workDataset.k_params.points)
+    }
     setWorkDataset(workDataset)
     await saveWorkDataset()
     openList()
@@ -271,45 +285,39 @@ export default function ValidateDataset( { dataset, setDataset })  {
   // Re-configure   --- to NULL
   const backToConfiguration = async () => {
     workDataset.status = ProfileService.DATASET_STATUSES.CREATED
-    if ( workDataset.k_params && workDataset.k_params.points )
+    if ( workDataset.k_params && workDataset.k_params.points ){
       workDataset.k_params.epsg = null;
+      workDataset.k_params.points = null;
+    }
     workDataset.k_data = null;
     workDataset.k_variogram = null;
     setWorkDataset(workDataset)
     await saveWorkDataset()
-  }
-  
-  // return the points in simple mercator projection to calculate and evaluate the semi-variogram 
-  const setVariogramPoints = () => {
-    try {
-      const vPts = []
-      workDataset.k_data.features.forEach ( (ft) => {
-        vPts.push( toMercator(ft) )
-      })
-      workDataset.k_params.points = featureCollection(vPts)
-      setWorkDataset(workDataset) 
-    } catch (error) {
-      console.log(error)
-    } 
   }
     
   // Calculate variogram 
   const calculateVariogram = async () => {
     try {
       setMessage('');
-       
-      if ( !workDataset.k_params || !workDataset.k_params.points || workDataset.k_params.points.length < 3 )
+      const bounds = featureCollection([bboxPolygon(bbox(workDataset.filter.aoi)) ]);
+      workDataset.k_params.bbox = bounds;
+      workDataset.k_params.nClasses = nClasses;
+      workDataset.k_params.model = model.formula;
+      workDataset.k_params.nSkip = nSkip;
+      workDataset.k_params.maxDist = maxDist;
+      workDataset.k_params.noOutliers = noOutliers;
+      workDataset.k_variogram = null;
+      const vPts = []
+      workDataset.k_data.features.forEach ( (ft) => {
+        if ( !noOutliers || !ft.properties.outlier )
+          vPts.push( toMercator(ft) )
+      })
+      workDataset.k_params.points = featureCollection(vPts)
+      setWorkDataset(workDataset);
+      setVariogram(null);
+      if ( !workDataset.k_params.points || !workDataset.k_params.points.features || workDataset.k_params.points.features.length < 3 )
         setMessage('Too few points to interpolate.');
       else {
-        const bounds = featureCollection([bboxPolygon(bbox(workDataset.filter.aoi)) ]);
-        workDataset.k_params.bbox = bounds;
-        workDataset.k_params.nClasses = nClasses;
-        workDataset.k_params.model = model.formula;
-        workDataset.k_params.nSkip = nSkip;
-        workDataset.k_params.maxDist = maxDist; /// float
-        workDataset.k_variogram = null;
-        setVariogram(null);
-        setWorkDataset(workDataset);
         const response = await ProfileService.calculateVariogram(document.cookie, workDataset.id, workDataset.k_params);  
         if ( response && response.ok && response.data ) {
           let var_pts = []
@@ -346,9 +354,7 @@ export default function ValidateDataset( { dataset, setDataset })  {
             toast.current.show({ severity: 'success', summary: 'Done!', detail: 'Variogram has been created.'});
           } 
         } 
-        else { 
-          setMessage('Variogram not calculated, wrong parameters (e.g maxDist too low ) or System error (try later)')
-        }
+        else setMessage('Variogram not calculated, wrong parameters (e.g maxDist too low ) or System error (try later)')
       }
     } catch (error) {
       setMessage('Variogram not calculated System error (try later)')     
@@ -390,7 +396,6 @@ export default function ValidateDataset( { dataset, setDataset })  {
   
   const getPtsValues = (fromFilter) => {
     try {
-      console.log('pippo') 
       const pts = []
       let features = workDataset.filter.points.features 
       if ( !fromFilter )
@@ -421,19 +426,20 @@ export default function ValidateDataset( { dataset, setDataset })  {
   const initializeData = async () => {
     if ( !dataset )
       return;
-    console.log('input')
-    console.log(dataset)
-    workDataset = dataset;
     setKriging(dataset.kriging);
-    if ( dataset.k_param && dataset.k_param.maxDist )  
-      setMaxDist(dataset.k_param.maxDist)
-    if ( dataset.k_param && dataset.k_param.nClasses )  
-      setNClasses(dataset.k_param.nClasses)
-    if ( dataset.k_param && dataset.k_param.nSkip )  
-      setNSkip(dataset.k_param.nSkip)
-    if ( dataset.k_param && dataset.k_param.model )  
-      setModel(dataset.k_param.model)
-    setWorkDataset(workDataset);
+    if ( dataset.k_params ) {
+      if ( dataset.k_params.maxDist )  
+        setMaxDist(dataset.k_params.maxDist)
+      if ( dataset.k_params.nClasses )  
+        setNClasses(dataset.k_params.nClasses)
+      if ( dataset.k_params.nSkip )  
+        setNSkip(dataset.k_params.nSkip)
+      if ( dataset.k_params.model )  
+        models.forEach( (m) =>  { if ( m.formula === dataset.k_params.model ) setModel(m) } )
+      if ( dataset.k_params.noOutliers )  
+        setNoOutliers(dataset.k_params.noOutliers)
+    }
+    setWorkDataset(dataset);
     await aggregatePoints()
     generateDescriptor()
   }
@@ -446,21 +452,6 @@ export default function ValidateDataset( { dataset, setDataset })  {
       initializeData()   
   }, [user]); // eslint-disable-line
 
-  
-
-/*
-Mappa
-kriging toogle
-diagram
-kriging parameters
-
-maxDist -> -1.0  default
-nClasses -> 100  default
-nSkip = -> 1 default
-model = -> linear : 'a + b * x' default
-
-variance/distance
-*/
   return (
     <div className="layout-dashboard">
       <Toast ref={toast} /> 
@@ -506,7 +497,7 @@ variance/distance
       <div className="card flex flex-warp text-cyan-800 w-full align-items-center">
         <div className="flex flex-column text-cyan-800 md:w-6 sm:w-full">
           <h5 className="flex justify-content-center w-full text-cyan-800">Aggregated Filtered Points Map</h5> 
-          <PointsFilterMap points={workDataset.k_data} area={workDataset.filter.aoi}  />
+          <PointsFilterMap points={mapPoints} area={workDataset.filter.aoi}  />
         </div>
         <div className="flex flex-column gap-2 align-content-start text-cyan-800 md:w-6 sm:w-full m-2">
           <h5 className="flex justify-content-center w-full text-cyan-800">Summary of the new Dataset </h5>
@@ -527,8 +518,8 @@ variance/distance
             { !workDataset.k_data || !workDataset.k_data.features || workDataset.k_data.features.length === 0 && (
               <Message severity="error" text="Warning! The dataset has no points for interpolation." />
             )} 
-            <div className="flex flex-row gap-3 w-full justify-content-center align-items-center"> 
-            <Button
+              <div className="flex flex-row gap-3 w-full justify-content-center align-items-center"> 
+              <Button
                 className="button"
                 loading={isWorking}
                 disabled={isWorking}
@@ -536,7 +527,7 @@ variance/distance
                 icon="pi pi-wrench"
                 onClick={() => { setVisibleFiltered(true); }}
               />
-            <Button
+              <Button
                 className="button"
                 loading={isWorking}
                 disabled={isWorking}
@@ -547,11 +538,14 @@ variance/distance
             </div>
           </div>
         </div>
-      </div>
-       
-        
+      </div>       
       <div className="card flex flex-row text-cyan-800 w-full justify-content-center align-items-center"> 
-          <h5 className="text-cyan-800"><Checkbox onChange={e => initKriging(e.checked)} className="mr-3" checked={kriging} /> Elaborate Kriging Interpolation</h5>
+          <h5 className="text-cyan-800">
+            <Checkbox 
+                onChange={ (e) => { setKriging(e.checked); setWorkDataset({ ...workDataset, kriging: e.checked })}} 
+                className="mr-3" checked={kriging} /> 
+              Elaborate Kriging Interpolation
+          </h5>
       </div> 
 
       { workDataset.kriging && (
@@ -559,6 +553,26 @@ variance/distance
         <div className="flex flex-column gap-2 text-cyan-800 md:w-5 sm:w-full">
           <Card title={t('KRIGING_INTERPOLATION')} subTitle={t('KRIGING_INTERPOLATION_SUBTILE')} 
               className="flex flex-column justify-content-center w-full gap-3 text-cyan-800">
+            
+            { getOutliers() > 0 && (
+            <>
+            <h5 className="mt-3 text-cyan-800">
+            <Checkbox 
+              onChange={ (e) => { 
+                setNoOutliers(e.checked); 
+                setWorkDataset({ ...workDataset, k_param: { ...workDataset.k_params , noOutliers: e.checked }})
+              }}  
+              className="mr-3" checked={noOutliers} /> 
+              Do not use outliers
+            </h5>
+            <div className="mt-1 text-red-800">
+            <span> The presence of outliers generates out of scale predictions by skewing parameter estimates and 
+              altering the underlying data distribution. Outliers can result from data entry errors, but they can 
+              also be genuine data points that </span>
+            <span className="font-bold"> WARRANT MORE INVESTIGATION.</span>
+            </div>
+            </>
+            )} 
             <h5 className="mt-3">Model ( Default: linear &quot; a + x * b &quot;  )</h5> 
             <Dropdown value={model} onChange={(e) => setModel(e.value)} options={models} optionLabel="name" 
               placeholder="Select a model" className="w-full md:w-14rem" />
@@ -566,13 +580,13 @@ variance/distance
             <h6 className="mt-1 text-cyan-800">{ model.formula }</h6> 
             )}     
             <h5 className="mt-3">Initial Number of Distance Classes ( Minimum: 2, Default: 100 )</h5> 
-            <InputNumber value={nClasses} onValueChange={(e) => setNClasses(e.value)} showButtons buttonLayout="horizontal" step={1}
+            <InputNumber value={nClasses} onValueChange={(e) => setNClasses(e.value)} showButtons buttonLayout="horizontal" step={10}
                 decrementButtonClassName="p-button-danger" decrementButtonIcon="pi pi-minus"
                 incrementButtonClassName="p-button-success" incrementButtonIcon="pi pi-plus" 
                 mode="decimal" min={0} max={200} maxFractionDigits={0} className="mt-1 mb-3"
             />
-            <h5 className="mt-3">Maximum Distance	Floating point ( Default: -1.000000, no distance )</h5> 
-            <InputNumber value={maxDist} onValueChange={(e) => setMaxDist(e.value)} showButtons buttonLayout="horizontal" step={10}
+            <h5 className="mt-3">Maximum Distance	Floating point ( Default: -1.000000, not used )</h5> 
+            <InputNumber value={maxDist} onValueChange={(e) => setMaxDist(e.value)} showButtons buttonLayout="horizontal" step={1}
                 decrementButtonClassName="p-button-danger" decrementButtonIcon="pi pi-minus"
                 incrementButtonClassName="p-button-success" incrementButtonIcon="pi pi-plus" 
                 mode="decimal" min={-1.000000} maxFractionDigits={6} className="mt-1 mb-3"
@@ -622,7 +636,7 @@ variance/distance
           loading={isWorking}
           disabled={isWorking}
           type="submit"
-          label={t('GENERATE_DATASET')}
+          label={t('GENERATE_DATASETS')}
           icon="pi pi-save"
           onClick={() => { finalizeDataset(); }}
         />
@@ -643,46 +657,7 @@ export async function getStaticProps(context) {
 
 
 /*
-import React, { useRef } from 'react';
-import { Chart } from 'primereact/chart';
-import { Button } from 'primereact/button';
-
-const ChartExport = () => {
-    const chartRef = useRef(null);
-
-    const data = {
-        labels: ['January', 'February', 'March'],
-        datasets: [{
-            label: 'Sales',
-            data: [65, 59, 80],
-            backgroundColor: 'rgba(75,192,192,0.2)',
-            borderColor: 'rgba(75,192,192,1)'
-        }]
-    };
-
-    const exportToPNG = () => {
-        // Access the underlying chart instance
-        const chartInstance = chartRef.current.getChart();
-        
-        if (chartInstance) {
-            // Generate the base64 image string
-            const pngUrl = chartInstance.toBase64Image();
-            
-            // Create a download link and trigger it
-            const link = document.createElement('a');
-            link.href = pngUrl;
-            link.download = 'chart.png';
-            link.click();
-        }
-    };
-
-    return (
-        <div>
-            <Chart ref={chartRef} type="bar" data={data} />
-            <Button label="Export as PNG" icon="pi pi-download" onClick={exportToPNG} />
-        </div>
-    );
-};
-
-export default ChartExport;
+{
+  "category": "location"
+}
 */
