@@ -16,18 +16,7 @@ const AppMenu = () => {
         {
             label: 'XLS Uploads',
             icon: 'pi pi-download',
-            items: [
-                {
-                    label: 'List',
-                    icon: 'pi pi-list',
-                    to: '/uploads'
-                },
-                {
-                    label: 'New',
-                    icon: 'pi pi-plus',
-                    to: '/uploads/create'
-                }
-            ]
+            to: '/uploads'
         },
         { separator: true },
         {
@@ -53,15 +42,15 @@ const AppMenu = () => {
             icon: 'pi pi-briefcase',
             items: [
                 {
+                    label: 'Base Dataset Configuration',
+                    icon: 'pi pi-wrench',
+                    to: '/configure'
+                },
+                {
                     label: 'Hydro PTF',
                     icon: 'pi pi-list',
                     to: '/hydroptf'
-                },
-                {
-                    label: 'Area Soil Indicators',
-                    icon: 'pi pi-wrench',
-                    to: '/areasi'
-                },
+                }
             ]
         }
 

@@ -1,16 +1,19 @@
 <layer>
   <name>relative_field_capacity</name>
-  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7e55</id>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7eac</id>
   <type>VECTOR</type>
   <defaultStyle>
     <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7fc0</id>
   </defaultStyle>
   <resource class="featureType">
-    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7e56</id>
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7ead</id>
   </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
   <attribution>
     <logoWidth>0</logoWidth>
     <logoHeight>0</logoHeight>
   </attribution>
-  <dateCreated>2026-04-13 08:27:10.343 UTC</dateCreated>
+  <dateCreated>2026-06-29 10:18:16.818 UTC</dateCreated>
+  <dateModified>2026-06-29 10:20:27.788 UTC</dateModified>
 </layer>

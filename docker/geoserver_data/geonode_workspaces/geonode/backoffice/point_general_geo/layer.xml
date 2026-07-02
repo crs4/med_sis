@@ -1,16 +1,19 @@
 <layer>
   <name>point_general_geo</name>
-  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7e48</id>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7eb2</id>
   <type>VECTOR</type>
   <defaultStyle>
-    <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7ffb</id>
+    <id>StyleInfoImpl--bb68920:19f114781fa:-7ea4</id>
   </defaultStyle>
   <resource class="featureType">
-    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7e49</id>
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7eb3</id>
   </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
   <attribution>
     <logoWidth>0</logoWidth>
     <logoHeight>0</logoHeight>
   </attribution>
-  <dateCreated>2026-04-13 08:39:27.735 UTC</dateCreated>
+  <dateCreated>2026-06-29 10:15:56.388 UTC</dateCreated>
+  <dateModified>2026-06-29 10:20:10.856 UTC</dateModified>
 </layer>

@@ -255,7 +255,7 @@ class DatasetService:
             "msgs": [],
             "raster": None,
             "points": None,
-            "variogram": None,
+            "aoi": None,
             "success": True
         }
         # base URL of APIs
@@ -273,9 +273,81 @@ class DatasetService:
         encoded_credentials = base64.b64encode(credentials.encode()).decode()
         return {'Authorization': f'Basic {encoded_credentials}'}
    
+    def _get_style_for_raster(self, max, min):
+        """
+        Generates the style for the raster
+        """
+        step = (max - min )/4
+        ramp = [ min, max-3*step, max-2*step, max-step, max ]
+
+        style =  '<?xml version="1.0" encoding="UTF-8"?>\n'
+        style += '<StyledLayerDescriptor version="1.0.0"\n' 
+        style += '          xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd"\n' 
+        style += '          xmlns="http://www.opengis.net/sld"\n' 
+        style += '          xmlns:ogc="http://www.opengis.net/ogc"\n' 
+        style += '          xmlns:xlink="http://www.w3.org/1999/xlink"\n' 
+        style += '          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">\n'
+        style += '    <NamedLayer>\n'
+        style += '      <Name>prediction_raster</Name>\n'
+        style += '      <UserStyle>\n' 
+        style += '          <Title>Raster of prediction</Title>\n' 
+        style += '          <Abstract>Raster of prediction</Abstract>\n' 
+        style += '          <FeatureTypeStyle>\n'  
+        style += '          <Rule>\n'
+        style += '              <Name>Prediction_raster</Name>\n'
+        style += '              <Title>Prediction raster</Title>\n'
+        style += '              <RasterSymbolizer>\n' 
+        style += '                  <ChannelSelection>\n'
+        style += '                      <GrayChannel>\n'
+        style += '                          <SourceChannelName>1</SourceChannelName>\n'
+        style += '                      </GrayChannel>\n'
+        style += '                  </ChannelSelection>\n'
+        style += '                  <ColorMap type="ramp">\n'  
+        color = None
+        for x in ramp:
+            if color is None : color = '#d7191c'
+            elif color == '#d7191c' : color = '#fdae61'
+            elif color == '#fdae61' : color = '#ffffbf'
+            elif color == '#ffffbf' : color = '#abdda4'
+            elif color == '#abdda4' : color = '#2b83ba'
+            style += f"                    <ColorMapEntry label=\"{x}\" quantity=\"{x}\" color=\"{color}\"/>\n"
+        style += '                  </ColorMap>\n'
+        style += '              </RasterSymbolizer>\n'
+        style += '          </Rule>\n'
+        style += '        </FeatureTypeStyle>\n'
+        style += '      </UserStyle>\n'
+        style += '    </NamedLayer>\n'
+        style += '</StyledLayerDescriptor>\n'
+        return style
+
+    def _manageTask( self, url, files ):
+        geonode_resource_id = None
+        response = requests.post( url, files=files, headers=self.auth_header )
+        if response.status_code >= 200 and response.status_code < 300:
+            res = response.json()
+            if res["execution_id"] is not None :
+                #monitoring task
+                go = True
+                while go:
+                    urlTask = f"{self.base_url}/api/v2/executionrequest/{res['execution_id']}" 
+                    responseTask = requests.get( urlTask, headers=self.auth_header)
+                    if responseTask.status_code >= 200 and responseTask.status_code < 300:
+                        resTask = (responseTask.json())['request']
+                        if resTask['geonode_resource'] is not None : 
+                            geonode_resource_id = resTask['geonode_resource']
+                        if resTask['status'] == 'finished' or resTask['status'] == 'failed':
+                            go = False 
+                    else :
+                        go = False
+                return geonode_resource_id
+    
+    def _writeReport( self, base_path ):
+        with open(base_path+"/report.json", "w") as outfile:
+            json.dump(self.report, outfile)
+
     def process_dataset_data(self, dataset_id):
 ############ EVALUATE PARAMETERS         
-        try:
+        if True:
             # get Dataset object
             dataset = Dataset.objects.using('backoffice').get(id=dataset_id) 
             if dataset is not None and dataset.filter is not None:
@@ -310,10 +382,10 @@ class DatasetService:
                     raise ValueError("Dataset is not IN_PROCESS status")
             else  :
                 raise ValueError("Dataset not found")
-        except Exception as e:
-            self.report["success"] = False
-            self.report["msgs"].append("Stage1: errors reading dataset, wrong parameters, exited")
-            return self.report
+        #except Exception as e:
+        #    self.report["success"] = False
+        #    self.report["msgs"].append("Stage1: errors reading datasets, wrong parameters, exited")
+        #    return self.report
         t = round(time.time() * 1000)
         folder = f"dataset_{dataset_id}_{t}" 
         name = f"dataset_{dataset_id}_{t}"
@@ -324,6 +396,7 @@ class DatasetService:
             pass
 ############ GENERATE WORK FILES FROM PARAMETERS        
         try :
+            self.report["msgs"].append("Stage1: Temporary folder with data created")
             with open(base_path+"/points.json", "w") as outfile:
                 json.dump(points, outfile)
             with open(base_path+"/aoi.json", "w") as outfile:
@@ -331,8 +404,10 @@ class DatasetService:
         except Exception as e:
             self.report["success"] = False
             self.report["msgs"].append("Stage2: errors creating files, exited")
+            self._writeReport(base_path)
             return self.report
-        #ogr2ogr -s_srs 'EPSG:4326' -t_srs 'EPSG:32636' kpoints.shp kpoints.json
+        self.report["msgs"].append("Stage1: points.json and aoi.json files created")
+            
 ############ IF KRIGING IS TRUE GENERATES WORK FILES FROM PARAMETERS          
         try :
             if dataset.kriging:
@@ -340,7 +415,8 @@ class DatasetService:
                     json.dump(k_points, outfile)
                 with open(base_path+"/bbox.json", "w") as outfile:
                     json.dump(k_box, outfile)
-            
+                self.report["msgs"].append("Stage3 (Kriging): k_points.json and k_box.json files created")
+                   
                 # Reproject aggregated poimts and change file format
                 pointsSHP = os.path.join( base_path, "kpoints.shp")
                 pointsJSON = os.path.join( base_path, "kpoints.json")
@@ -356,6 +432,7 @@ class DatasetService:
                 pathGEOJSON = os.path.join( base_path, "bbox.json")
                 params = f"ogr2ogr -s_srs 'EPSG:4326' -t_srs '{k_epsg}' {pathUTMJSON} {pathGEOJSON}"
                 subprocess.call([params], shell=True)                
+                self.report["msgs"].append("Stage3 (Kriging): k_points.shp, utmaoi.json and utmbbox.json files created")
                 with open(base_path+"/utmbbox.json", "r") as file:
                     utmBox = json.load(file)
                     feature = utmBox['features'][0]
@@ -376,10 +453,13 @@ class DatasetService:
                 saga_cmd += f" -TARGET_USER_XMIN {west} -TARGET_USER_XMAX {east} -TARGET_USER_YMIN {south} -TARGET_USER_YMAX {north} " 
                 saga_cmd += f" -TARGET_USER_SIZE {cell_size} -VAR_MAXDIST {k_maxdist}  -VAR_NSKIP {k_nskip} " 
                 saga_cmd += f" -PREDICTION {predictionGRD} -VARIANCE {varianceGRD} " 
-                subprocess.call([saga_cmd], shell=True) 
+                subprocess.call([saga_cmd], shell=True)
+                self.report["msgs"].append("Stage3 (Kriging): ordinary kriging")
+                self.report["msgs"].append(f"Stage3 (Kriging): {saga_cmd}")
+                 
         except Exception as e:
             self.report["success"] = False
-            self.report["msgs"].append("Stage3: errors in elaborating kriging interpolation, exited")
+            self.report["msgs"].append("Stage3 (Kriging): Errors in elaborating kriging interpolation, exited")
             return self.report
 
 ############ IF KRIGING GENERATE AND VALIDATE GEOTIFF          
@@ -387,146 +467,428 @@ class DatasetService:
             if dataset.kriging:
                 output = f"{base_path}/prediction.tif"
                 output2 = f"{base_path}/prediction_clip.tif" 
+
                 # 1. change saga grid format to GeoTiff
                 #gdal_translate -of GTiff                 
-                cmd = f"gdal_translate -of GTiff -ot Float32 -co COMPRESS=DEFLATE -co PREDICTOR=3 {predictionGRD}.sdat {output}"
+                cmd = f"gdal_translate -of GTiff -ot Float32 -co 'COMPRESS=LZW' -co 'PREDICTOR=1' {predictionGRD}.sdat {output}"
                 subprocess.call([cmd], shell=True) 
                 
-                cmd = f"gdalwarp -cutline {aoiUTMJSON} -crop_to_cutline -overwrite {output} {output2}"
+                cmd = f"gdalwarp -co 'COMPRESS=LZW' -co 'PREDICTOR=1' -cutline {aoiUTMJSON} -crop_to_cutline -overwrite {output} {output2}"
                 subprocess.call([cmd], shell=True)  
-                ##CLEAN
-                f = base_path+"/points.json"
-                f2 = base_path+"/aoi.json"
-                f3 = base_path+"/kpoints.json"
-                f4 = base_path+"/bbox.json"
-                f5 = base_path+"/kpoints.shp"
-                f6 = base_path+"/utmaoi.json"
-                f7 = base_path+"/utmbbox.json"
-                f8 = base_path+"/bbox.json"
+                self.report["msgs"].append("Stage4 (Kriging): Tiff and Aoi clipped Tiff files created")
+            
         except Exception as e:
             self.report["success"] = False
-            self.report["errors"].append("Stage4: wrong Geotiff reading interpolation, exited")
+            self.report["errors"].append("Stage4 (Kriging): wrong data reading Geotiff, exited")
+            self._writeReport(base_path)
             return self.report
         
 ############ PUBLISHING POINTS DATASET
+        base_path_sld = '/geoserver_data/data/workspaces/geonode/styles/'
         #1st dataset: filtered points (EPSG:4326) geoJSON base_path+"/"+name+"_points.json"    
         try :
+            typename = dataset.src_typename
+            typename = typename[8:]
             url = f"{self.base_url}/api/v2/uploads/upload/"
             files= [
                 ('base_file', ( name +'_points.json',open(base_path+'/points.json','r'), 'application/json')),
-                ('json_file', ( name +'_points.json',open(base_path+'/points.json','r'), 'application/json'))
+                ('json_file', ( name +'_points.json',open(base_path+'/points.json','r'), 'application/json')),
+                ('sld_file',  ( name + '_points.sld',  open(base_path_sld+typename+'.sld','rb'),'application/octet-stream'))
             ]
-            response = requests.post( url, files=files, headers=self.auth_header)
-            if response.status_code == 200:
-                res = response.json()
-                if res.execution_id is not None :
-                    #monitoring task
-                    go = True
-                    while go:
-                        urlTask = f"{self.base_url}/api/v2/executionrequest/{res.execution_id}" 
-                        responseTask = requests.get( urlTask, headers=self.auth_header)
-                        if responseTask.status_code == 200:
-                            resTask = responseTask.json()
-                            if resTask.geonode_resource is not None : 
-                                geonode_points_id = resTask.geonode_resource
-                            if resTask.status == 'finished' or resTask.status == 'failed':
-                                go = False    
-                        else :
-                            go = False
+            geonode_points_id = self._manageTask(url,files)
+            if geonode_points_id is not None:
+                self.report["msgs"].append(f"Stage5 (Publishing): points dataset published: {geonode_points_id} ")
+                self.report["points"] = geonode_points_id
+            else: 
+                self.report["msgs"].append("Stage5 (Publishing): errors, points dataset not published")
+
         except Exception as e:
             self.report["success"] = False
             self.report["msgs"].append("Stage5: errors creating points dataset, exited")
+            self._writeReport(base_path)
             return self.report
-############ PUBLISHING AOI DATASET        
+############ PUBLISHING AOI DATASET 
+# styles location: /geoserver_data/data/workspaces/geonode/styles/
+# typename of source -> typename.sld         
         #2nd dataset: area of interest (EPSG:4326) geoJSON base_path+"/"+name+"_aoi.json"
-        try :
+        try:
             url = f"{self.base_url}/api/v2/uploads/upload/"
             #style = f"/geoserver_data/data/workspaces/geonode/styles/{data.source}.sld"
             files= [
-                # ('sld_file',('name +'_aoi.sld',open('...indicatorSLDFilepath.sld','rb'),'application/octet-stream')),
-                ('base_file', ( name +'_aoi.json',open(base_path+'/aoi.json','r'), 'application/json')),
-                ('json_file', ( name +'_aoi.json',open(base_path+'/aoi.json','r'), 'application/json'))
+                ('base_file', ( name + '_aoi.json', open(base_path+'/aoi.json','r'), 'application/json')),
+                ('json_file', ( name + '_aoi.json', open(base_path+'/aoi.json','r'), 'application/json')),
+                ('sld_file',  ( name + '_aoi.sld',  open(base_path_sld+'areas.sld','rb'),'application/octet-stream'))
             ]
-            response = requests.post( url, files=files, headers=self.auth_header )
-            if response.status_code == 200:
-                res = response.json()
-                if res.execution_id is not None :
-                    # upload monitoring task
-                    go = True
-                    while go:
-                        urlTask = f"{self.base_url}/api/v2/executionrequest/{res.execution_id}" 
-                        responseTask = requests.get( urlTask, headers=self.auth_header)
-                        if responseTask.status_code == 200:
-                            resTask = responseTask.json()
-                            if resTask.geonode_resource is not None : 
-                                geonode_aoi_id = resTask.geonode_resource
-                            if resTask.status == 'finished' or resTask.status == 'failed':
-                                go = False    
-                        else :
-                            go = False
+            geonode_aoi_id = self._manageTask(url,files)
+            if geonode_aoi_id is not None:
+                self.report["msgs"].append("Stage6 (Publishing): AOI dataset published")
+                self.report["aoi"] = geonode_aoi_id
+            else: 
+                self.report["msgs"].append("Stage6 (Publishing): errors, AOI dataset not published")    
         except Exception as e:
             self.report["success"] = False
             self.report["msgs"].append("Stage6: errors creating aoi dataset, exited")
+            self._writeReport(base_path)
             return self.report
+        
 ############ PUBLISHING INTERPOLATION RASTER DATASET
         #3th dataset: interpolation raster - geotiff base_path+"/"+name+"_prediction.tif"
         try :
             if dataset.kriging:
+                prediction_tif = gdal.Open(f"{base_path}/prediction_clip.tif")
+                srcband = prediction_tif.GetRasterBand(1)
+                # Get raster statistics
+                stats = srcband.GetStatistics(True, True)
+                min = stats[0]
+                max = stats[1]
+                style = self._get_style_for_raster(max, min)
+                with open(base_path+"/raster.sld", "w") as outfile:
+                    outfile.write(style)
                 url = f"{self.base_url}/api/v2/uploads/upload/"
                 files= [
-                    ('base_file', ( name+'_prediction.tif',open(base_path+'/prediction.tif','rb'), 'image/tiff')),
-                    ('tif_file', ( name+'_prediction.tif',open(base_path+'/prediction.tif','rb'), 'image/tiff'))
+                    ('base_file', ( name + '_prediction.tif',open(base_path+'/prediction_clip.tif','rb'), 'image/tiff')),
+                    ('tif_file', ( name + '_prediction.tif',open(base_path+'/prediction_clip.tif','rb'), 'image/tiff')),
+                    ('sld_file',  ( name + '_prediction.sld',  open(base_path + '/raster.sld','rb'),'application/octet-stream'))
                 ]
-                response = requests.post( url, files=files, headers=self.auth_header)
-                if response.status_code == 200:
-                    res = response.json()
-                    if res.execution_id is not None :
-                        #monitoring task
-                        go = True
-                        while go:
-                            urlTask = f"{self.base_url}/api/v2/executionrequest/{res.execution_id}" 
-                            responseTask = requests.get( urlTask, headers=self.auth_header)
-                            if responseTask.status_code == 200:
-                                resTask = responseTask.json()
-                                if resTask.geonode_resource is not None : 
-                                    geonode_prediction_id = resTask.geonode_resource
-                                if resTask.status == 'finished' or resTask.status == 'failed':
-                                    go = False    
-                            else :
-                                go = False
+                geonode_prediction_id = self._manageTask(url,files)
+                if geonode_prediction_id is not None:
+                    self.report["msgs"].append("Stage7 (Kriging - Publishing): interpolation raster dataset published")
+                    self.report["raster"] = geonode_prediction_id
+                else: 
+                    self.report["msgs"].append("Stage7 (Kriging - Publishing): errors, interpolation raster dataset not published")
+                
         except Exception as e:
             self.report["success"] = False
-            self.report["msgs"].append("Stage7: errors creating prediction raster dataset, exited")
+            self.report["msgs"].append("Stage7 (Kriging - Publishing): errors creating prediction raster dataset, exited")
+            self._writeReport(base_path)
             return self.report
 
 ############ METADATA geonode_points_id, geonode_aoi_id, geonode_prediction_id
         try:
             url = f"{self.base_url}/api/v2/datasets/{geonode_points_id}"
             data = {
-                "title": f"Filter: {dataset.id} source: {dataset.source}, date: {dataset.date}",
+                "title": f"{name}-POINTS",
                 "abstract": f"Filter {dataset.id} executed on source {dataset.source} executed in date:{dataset.date}",
                 "category": "geoscientificInformation",
-                "keywords": "pippo"
             }
             response = requests.patch( url, headers=self.auth_header, json=data)
-            #if response.status_code == 200:
+            if response.status_code >= 200 and response.status_code < 300:
+                self.report["msgs"].append("Stage8 (Metadata - Publishing): metadata for points dataset published")
+            else: 
+                self.report["msgs"].append("Stage8 (Metadata - Publishing): metadata not published")
+            
         except Exception as e:
             self.report["success"] = False
-            self.report["msgs"].append("Stage8: errors creating prediction raster dataset, exited")
+            self.report["msgs"].append("Stage8: errors metadata for points dataset not published")
+            self._writeReport(base_path)
             return self.report
-
+            
 ############ FINALIZE
+        cmd = f"rm -r {base_path}"
+        subprocess.call([cmd], shell=True) 
         self.report["success"] = True
         self.report["msgs"].append("Stage9: datasets successfully published ")
-        with open(base_path+"/report.json", "w") as outfile:
-            json.dump(self.report, outfile)    
+        self.report["msgs"].append("Stage10: temporary folder removed ")
+        
         return self.report
            
-#### for all soil indicators data in JSON format
-# typename, name, abstract, type 
-# dataset.source === soil indicator typename 
-# geoserver_data/data/workspaces/geonode/styles/typename.sld
-# 
-# geoserver_data/data/workspaces/geonode/backoffice/typename            
+class BaseDatasetService:
+    def __init__(self):
+        # Reset of report data ( create datasets result )
+        self.report = {
+            "start_time": datetime.now().isoformat(),
+            "msgs": [],
+            "success": True
+        }
+        # base URL of APIs
+        self.base_url = settings.API_BASE_URL
+        # basic authentication  parameters
+        self.auth_username = settings.API_USERNAME
+        self.auth_password = settings.API_PASSWORD
+        self.auth_header = self._get_basic_auth_header()
+
+    def _get_basic_auth_header(self):
+        """
+        Generates the header for basic authentication
+        """
+        credentials = f"{self.auth_username}:{self.auth_password}"
+        encoded_credentials = base64.b64encode(credentials.encode()).decode()
+        return {'Authorization': f'Basic {encoded_credentials}'}
+   
+    def _manageTask( self, url, files ):
+        geonode_resource_id = None
+        response = requests.post( url, files=files, headers=self.auth_header )
+        if response.status_code >= 200 and response.status_code < 300:
+            res = response.json()
+            if res["execution_id"] is not None :
+                #monitoring task
+                go = True
+                while go:
+                    urlTask = f"{self.base_url}/api/v2/executionrequest/{res['execution_id']}" 
+                    responseTask = requests.get( urlTask, headers=self.auth_header)
+                    if responseTask.status_code >= 200 and responseTask.status_code < 300:
+                        resTask = (responseTask.json())['request']
+                        if resTask['geonode_resource'] is not None : 
+                            geonode_resource_id = resTask['geonode_resource']
+                        if resTask['status'] == 'finished' or resTask['status'] == 'failed':
+                            go = False 
+                    else :
+                        go = False
+                return geonode_resource_id
+    
+    def _writeReport( self, base_path ):
+        with open(base_path+"/report.json", "w") as outfile:
+            json.dump(self.report, outfile)
+
+    def process_base_dataset_data(self, dataset_id):
+############ EVALUATE PARAMETERS         
+        if True:
+            # get Dataset object
+            dataset = Dataset.objects.using('backoffice').get(id=dataset_id) 
+            if dataset is not None and dataset.filter is not None:
+                if dataset.status == "IN_PROCESS" :
+                    filter = dataset.filter
+                    if not isinstance(filter, dict):
+                        filter = json.loads(filter)
+                    #1st dataset: geoJSON filtered points (EPSG:4326)    
+                    points = filter['points']
+                    #2nd dataset: geoJSON area of interest (EPSG:4326)    
+                    aoi = filter['aoi']
+                    # 3th dataset geotiff interpolation raster (EPSG:9000) 
+                    if dataset.kriging:
+                        k_params = dataset.k_params
+                        if not isinstance(k_params, dict):
+                            k_params = json.loads(k_params)
+                        # KRIGING dataset
+                        # geoJSON aggreagated points in area of interest (EPSG:4326)    
+                        k_data = dataset.k_data
+                        if not isinstance(k_data, dict):
+                            k_data = json.loads(k_data)
+                        k_points = k_params['points']
+                        if not isinstance(k_points, dict):
+                            k_points = json.loads(k_points)
+                        k_model = k_params['model']
+                        k_maxdist = k_params['maxDist']
+                        k_box = k_params['bbox']
+                        k_epsg = k_params['epsg']
+                        k_nclasses = k_params['nClasses']
+                        k_nskip = k_params['nSkip']
+                else  :
+                    raise ValueError("Dataset is not IN_PROCESS status")
+            else  :
+                raise ValueError("Dataset not found")
+        #except Exception as e:
+        #    self.report["success"] = False
+        #    self.report["msgs"].append("Stage1: errors reading datasets, wrong parameters, exited")
+        #    return self.report
+        t = round(time.time() * 1000)
+        folder = f"dataset_{dataset_id}_{t}" 
+        name = f"dataset_{dataset_id}_{t}"
+        base_path = '/tmp/' + folder
+        try:
+            os.mkdir(base_path)
+        except:
+            pass
+############ GENERATE WORK FILES FROM PARAMETERS        
+        try :
+            self.report["msgs"].append("Stage1: Temporary folder with data created")
+            with open(base_path+"/points.json", "w") as outfile:
+                json.dump(points, outfile)
+            with open(base_path+"/aoi.json", "w") as outfile:
+                json.dump(aoi, outfile)
+        except Exception as e:
+            self.report["success"] = False
+            self.report["msgs"].append("Stage2: errors creating files, exited")
+            self._writeReport(base_path)
+            return self.report
+        self.report["msgs"].append("Stage1: points.json and aoi.json files created")
+            
+############ IF KRIGING IS TRUE GENERATES WORK FILES FROM PARAMETERS          
+        try :
+            if dataset.kriging:
+                with open(base_path+"/kpoints.json", "w") as outfile:
+                    json.dump(k_points, outfile)
+                with open(base_path+"/bbox.json", "w") as outfile:
+                    json.dump(k_box, outfile)
+                self.report["msgs"].append("Stage3 (Kriging): k_points.json and k_box.json files created")
+                   
+                # Reproject aggregated poimts and change file format
+                pointsSHP = os.path.join( base_path, "kpoints.shp")
+                pointsJSON = os.path.join( base_path, "kpoints.json")
+                params = f"ogr2ogr -s_srs 'EPSG:4326' -t_srs '{k_epsg}' {pointsSHP} {pointsJSON}"
+                subprocess.call([params], shell=True) 
+                # Reproject the area of interests and change file format
+                aoiJSON = os.path.join( base_path, "aoi.json")
+                aoiUTMJSON = os.path.join( base_path, "utmaoi.json")
+                params = f"ogr2ogr -s_srs 'EPSG:4326' -t_srs '{k_epsg}' {aoiUTMJSON} {aoiJSON}"
+                subprocess.call([params], shell=True) 
+                # Reproject the bounding box 
+                pathUTMJSON = os.path.join( base_path, "utmbbox.json")
+                pathGEOJSON = os.path.join( base_path, "bbox.json")
+                params = f"ogr2ogr -s_srs 'EPSG:4326' -t_srs '{k_epsg}' {pathUTMJSON} {pathGEOJSON}"
+                subprocess.call([params], shell=True)                
+                self.report["msgs"].append("Stage3 (Kriging): k_points.shp, utmaoi.json and utmbbox.json files created")
+                with open(base_path+"/utmbbox.json", "r") as file:
+                    utmBox = json.load(file)
+                    feature = utmBox['features'][0]
+                    north = feature['bbox'][3]
+                    south = feature['bbox'][1]
+                    east = feature['bbox'][2]
+                    west = feature['bbox'][0]
+                    size = north - south
+                    if size < east - west:
+                        size = east - west
+                    # Tiff size: 2000 x 2000 pixels
+                    # cell_size is in meters
+                    cell_size = size / 2000.0
+                predictionGRD = os.path.join( base_path, "prediction")
+                varianceGRD = os.path.join( base_path, "variance")  
+                # SAGA_CMD  
+                saga_cmd =  f"saga_cmd statistics_kriging 0 -POINTS {pointsSHP} -FIELD value -VAR_MODEL '{k_model}' -VAR_NCLASSES {k_nclasses} " 
+                saga_cmd += f" -TARGET_USER_XMIN {west} -TARGET_USER_XMAX {east} -TARGET_USER_YMIN {south} -TARGET_USER_YMAX {north} " 
+                saga_cmd += f" -TARGET_USER_SIZE {cell_size} -VAR_MAXDIST {k_maxdist}  -VAR_NSKIP {k_nskip} " 
+                saga_cmd += f" -PREDICTION {predictionGRD} -VARIANCE {varianceGRD} " 
+                subprocess.call([saga_cmd], shell=True)
+                self.report["msgs"].append("Stage3 (Kriging): ordinary kriging")
+                self.report["msgs"].append(f"Stage3 (Kriging): {saga_cmd}")
+                 
+        except Exception as e:
+            self.report["success"] = False
+            self.report["msgs"].append("Stage3 (Kriging): Errors in elaborating kriging interpolation, exited")
+            return self.report
+
+############ IF KRIGING GENERATE AND VALIDATE GEOTIFF          
+        try :    
+            if dataset.kriging:
+                output = f"{base_path}/prediction.tif"
+                output2 = f"{base_path}/prediction_clip.tif" 
+
+                # 1. change saga grid format to GeoTiff
+                #gdal_translate -of GTiff                 
+                cmd = f"gdal_translate -of GTiff -ot Float32 -co 'COMPRESS=LZW' -co 'PREDICTOR=1' {predictionGRD}.sdat {output}"
+                subprocess.call([cmd], shell=True) 
+                
+                cmd = f"gdalwarp -co 'COMPRESS=LZW' -co 'PREDICTOR=1' -cutline {aoiUTMJSON} -crop_to_cutline -overwrite {output} {output2}"
+                subprocess.call([cmd], shell=True)  
+                self.report["msgs"].append("Stage4 (Kriging): Tiff and Aoi clipped Tiff files created")
+            
+        except Exception as e:
+            self.report["success"] = False
+            self.report["errors"].append("Stage4 (Kriging): wrong data reading Geotiff, exited")
+            self._writeReport(base_path)
+            return self.report
         
+############ PUBLISHING POINTS DATASET
+        base_path_sld = '/geoserver_data/data/workspaces/geonode/styles/'
+        #1st dataset: filtered points (EPSG:4326) geoJSON base_path+"/"+name+"_points.json"    
+        try :
+            typename = dataset.src_typename
+            typename = typename[8:]
+            url = f"{self.base_url}/api/v2/uploads/upload/"
+            files= [
+                ('base_file', ( name +'_points.json',open(base_path+'/points.json','r'), 'application/json')),
+                ('json_file', ( name +'_points.json',open(base_path+'/points.json','r'), 'application/json')),
+                ('sld_file',  ( name + '_points.sld',  open(base_path_sld+typename+'.sld','rb'),'application/octet-stream'))
+            ]
+            geonode_points_id = self._manageTask(url,files)
+            if geonode_points_id is not None:
+                self.report["msgs"].append(f"Stage5 (Publishing): points dataset published: {geonode_points_id} ")
+                self.report["points"] = geonode_points_id
+            else: 
+                self.report["msgs"].append("Stage5 (Publishing): errors, points dataset not published")
+
+        except Exception as e:
+            self.report["success"] = False
+            self.report["msgs"].append("Stage5: errors creating points dataset, exited")
+            self._writeReport(base_path)
+            return self.report
+############ PUBLISHING AOI DATASET 
+# styles location: /geoserver_data/data/workspaces/geonode/styles/
+# typename of source -> typename.sld         
+        #2nd dataset: area of interest (EPSG:4326) geoJSON base_path+"/"+name+"_aoi.json"
+        try:
+            url = f"{self.base_url}/api/v2/uploads/upload/"
+            #style = f"/geoserver_data/data/workspaces/geonode/styles/{data.source}.sld"
+            files= [
+                ('base_file', ( name + '_aoi.json', open(base_path+'/aoi.json','r'), 'application/json')),
+                ('json_file', ( name + '_aoi.json', open(base_path+'/aoi.json','r'), 'application/json')),
+                ('sld_file',  ( name + '_aoi.sld',  open(base_path_sld+'areas.sld','rb'),'application/octet-stream'))
+            ]
+            geonode_aoi_id = self._manageTask(url,files)
+            if geonode_aoi_id is not None:
+                self.report["msgs"].append("Stage6 (Publishing): AOI dataset published")
+                self.report["aoi"] = geonode_aoi_id
+            else: 
+                self.report["msgs"].append("Stage6 (Publishing): errors, AOI dataset not published")    
+        except Exception as e:
+            self.report["success"] = False
+            self.report["msgs"].append("Stage6: errors creating aoi dataset, exited")
+            self._writeReport(base_path)
+            return self.report
+        
+############ PUBLISHING INTERPOLATION RASTER DATASET
+        #3th dataset: interpolation raster - geotiff base_path+"/"+name+"_prediction.tif"
+        try :
+            if dataset.kriging:
+                prediction_tif = gdal.Open(f"{base_path}/prediction_clip.tif")
+                srcband = prediction_tif.GetRasterBand(1)
+                # Get raster statistics
+                stats = srcband.GetStatistics(True, True)
+                min = stats[0]
+                max = stats[1]
+                style = self._get_style_for_raster(max, min)
+                with open(base_path+"/raster.sld", "w") as outfile:
+                    outfile.write(style)
+                url = f"{self.base_url}/api/v2/uploads/upload/"
+                files= [
+                    ('base_file', ( name + '_prediction.tif',open(base_path+'/prediction_clip.tif','rb'), 'image/tiff')),
+                    ('tif_file', ( name + '_prediction.tif',open(base_path+'/prediction_clip.tif','rb'), 'image/tiff')),
+                    ('sld_file',  ( name + '_prediction.sld',  open(base_path + '/raster.sld','rb'),'application/octet-stream'))
+                ]
+                geonode_prediction_id = self._manageTask(url,files)
+                if geonode_prediction_id is not None:
+                    self.report["msgs"].append("Stage7 (Kriging - Publishing): interpolation raster dataset published")
+                    self.report["raster"] = geonode_prediction_id
+                else: 
+                    self.report["msgs"].append("Stage7 (Kriging - Publishing): errors, interpolation raster dataset not published")
+                
+        except Exception as e:
+            self.report["success"] = False
+            self.report["msgs"].append("Stage7 (Kriging - Publishing): errors creating prediction raster dataset, exited")
+            self._writeReport(base_path)
+            return self.report
+
+############ METADATA geonode_points_id, geonode_aoi_id, geonode_prediction_id
+        try:
+            url = f"{self.base_url}/api/v2/datasets/{geonode_points_id}"
+            data = {
+                "title": f"{name}-POINTS",
+                "abstract": f"Filter {dataset.id} executed on source {dataset.source} executed in date:{dataset.date}",
+                "category": "geoscientificInformation",
+            }
+            response = requests.patch( url, headers=self.auth_header, json=data)
+            if response.status_code >= 200 and response.status_code < 300:
+                self.report["msgs"].append("Stage8 (Metadata - Publishing): metadata for points dataset published")
+            else: 
+                self.report["msgs"].append("Stage8 (Metadata - Publishing): metadata not published")
+            
+        except Exception as e:
+            self.report["success"] = False
+            self.report["msgs"].append("Stage8: errors metadata for points dataset not published")
+            self._writeReport(base_path)
+            return self.report
+            
+############ FINALIZE
+        cmd = f"rm -r {base_path}"
+        subprocess.call([cmd], shell=True) 
+        self.report["success"] = True
+        self.report["msgs"].append("Stage9: datasets successfully published ")
+        self.report["msgs"].append("Stage10: temporary folder removed ")
+        
+        return self.report
+             
+
+
+
+
     

@@ -1,0 +1,19 @@
+<layer>
+  <name>ph_h2o_microbial_carbon</name>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7ece</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--bb68920:19f114781fa:-7ec6</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7ecf</id>
+  </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-06-29 10:08:34.271 UTC</dateCreated>
+  <dateModified>2026-06-29 10:10:16.358 UTC</dateModified>
+</layer>

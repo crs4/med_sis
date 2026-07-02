@@ -1,6 +1,6 @@
 from celery import shared_task
-from .services import XLSxUploadService, DatasetService
-from .models import XLSxUpload, Dataset
+from .services import XLSxUploadService, DatasetService, BaseDatasetService
+from .models import XLSxUpload, Dataset, BaseDataset
 import logging
 from django.core.management import call_command
 
@@ -93,6 +93,7 @@ def process_dataset(self, dataset_id):
         service = DatasetService()
         report = service.process_dataset_data(dataset_id)
         if report:
+            dataset.report = report
             for msg in report.get('msgs'):
                 logger.info(f"msg: {msg}")
             if report.get('success'):
@@ -118,5 +119,48 @@ def process_dataset(self, dataset_id):
                 logger.error(f"It is not possible to save the status ERRORS in dataset {dataset_id}: {save_e}")
         return False
 
-
+@shared_task(bind=True, name='backoffice.tasks.process_base_dataset', queue='default')
+def process_base_dataset(self, dataset_id):
+    """
+    Task to create a base dataset in the catalogue and manage its metadata
+    """
+    dataset = None
+    try:
+        logger.info(f"Starting processing dataset {dataset_id}")
+        # Recupera l'oggetto Dataset
+        dataset = BaseDataset.objects.using('backoffice').get(id=dataset_id)
+        
+        # Verifica che lo stato sia IN_PROCESS
+        if dataset.status != "IN_PROCESS":
+            logger.warning(f"Dataset {dataset_id} is not in IN_PROCESS status  (current state: {dataset.status})")
+            return False
+        logger.info(f"Processing dataset {dataset_id} data...")
+        service = BaseDatasetService()
+        report = service.process_base_dataset_data(dataset_id)
+        if report:
+            dataset.report = report
+            for msg in report.get('msgs'):
+                logger.info(f"msg: {msg}")
+            if report.get('success'):
+                dataset.status = "PUBLISHED"
+                logger.info(f"Dataset {dataset_id} published")
+            else:
+                dataset.status = "ERRORS"
+                logger.warning(f"Dataset {dataset_id} not published")
+            dataset.save(using='backoffice')
+            return True
+        return False
+    except Dataset.DoesNotExist:
+        logger.error(f"Dataset {dataset_id} not found")
+        return False
+    except Exception as e:
+        logger.error(f"Errors elaborating dataset {dataset_id}: {str(e)}")
+        # Aggiorna lo stato in caso di errore critico
+        if dataset:
+            try:
+                dataset.status = "ERRORS"
+                dataset.save(using='backoffice')
+            except Exception as save_e:
+                logger.error(f"It is not possible to save the status ERRORS in dataset {dataset_id}: {save_e}")
+        return False
     

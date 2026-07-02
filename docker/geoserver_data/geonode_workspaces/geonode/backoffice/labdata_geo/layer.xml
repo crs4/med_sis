@@ -1,16 +1,19 @@
 <layer>
   <name>labdata_geo</name>
-  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7f5b</id>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7f81</id>
   <type>VECTOR</type>
   <defaultStyle>
-    <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7ffb</id>
+    <id>StyleInfoImpl-37b18cc6:14d5d036d48:-8000</id>
   </defaultStyle>
   <resource class="featureType">
-    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7f5c</id>
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7f82</id>
   </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
   <attribution>
     <logoWidth>0</logoWidth>
     <logoHeight>0</logoHeight>
   </attribution>
-  <dateCreated>2026-04-13 06:15:42.1 UTC</dateCreated>
+  <dateCreated>2026-06-29 03:14:43.729 UTC</dateCreated>
+  <dateModified>2026-06-29 12:59:32.897 UTC</dateModified>
 </layer>

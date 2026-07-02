@@ -20,84 +20,155 @@ import { ConfirmDialog } from 'primereact/confirmdialog';
 import { Card } from 'primereact/card'; 
 import { Toast } from 'primereact/toast';   
 
-//// only admin
-// execute updateLayers
-// execute setMetadata
-// execute setKeywords
-
 export default function Page()  {
   const router = useRouter();
   const t = useTranslations('default');
   const user = useUser();
   const toast = useRef(null);
-  const [pointsGeoJSON, setPointsGeoJSON] = useState(null);
-  const [filters, setFilters] = useState(null);
-  const [globalFilterValue, setGlobalFilterValue] = useState('');   
   const [isWorking, setIsWorking] = useState(false);
-  const [current, setCurrent] = useState(null);
-  const [points, setPoints] = useState([]);
-  const [visibleDlg, setVisibleDlg] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [mapData, setMapData] = useState(null);
-  const [selected, setSelected] = useState(null); 
-  const [types, setTypes] = useState([]);
-  const [cls_systems, setCls_systems] = useState([]);
-  
-  const srcDatasetsList = BaseDatasets.indicators
+  const [indicators, setIndicators] = useState([]);
+  const [sections, setSections] = useState([]);
 
   useEffect(() => {
+    // only administrators and data managers
     if ( !user.userData || ( user.userData.forbidden !== null && user.userData.forbidden) )
         router.push(`/401`);
+    // fetch soil indicators and points soildata lists 
     const fetchData = async  () => {
-      const _data = await ProfileService.list(document.cookie,'point-generals');
-      if ( !_data || !_data.ok )
-        toast.current.show({severity:'error', summary: 'Errors!', detail: 'Errors reading soil data points' , life: 3000});
-      else if ( !_data.data || !Array.isArray(_data.data) || _data.data.length === 0 ) 
-        toast.current.show({severity:'warn', summary: 'No data!', detail: 'No Points Found' , life: 3000});
+      setIsWorking(true);
+      const _idata = await ProfileService.list(document.cookie,'base-datasets');
+      setIsWorking(false);   
+      if ( !_idata || !_idata.ok || !_idata.data || !Array.isArray(_idata.data) || _idata.data.length === 0 )
+        toast.current.show({severity:'error', summary: 'No data!', detail: 'Base datasets descriptors not found' , life: 3000});
       else { 
-        toast.current.show({severity:'success', summary: 'Success!', detail: 'The soil data data list has been loaded' , life: 3000});
+        const _indicators = _idata.data.filter((d) => d.type === 'SOIL_INDICATOR');
+        const _sections = _idata.data.filter((d) => d.type === 'POINT_SOIL_DATA_SECTION');
+        setIndicators(_indicators)
+        setSections(_sections)
+        toast.current.show({severity:'success', summary: 'Done!', detail: "Base Datasets descriptors list has been loaded" , life: 3000});
       }
-      const _tdata = await TaxonomyService.listValues(document.cookie,'POINT_DATA_TYPES');
-      if ( !_tdata || !_tdata.ok ) { 
-        toast.current.show({severity:'error', summary: 'Errors!', detail: 'Errors reading taxonomies' , life: 3000});
-        setTypes([])
-      }
-      else {
-        let _ts = [];
-        _tdata.data.forEach( function (t) { _ts[t.id] = t  });
-        setTypes(_ts)
-      }   
-      const _cls_sys = await TaxonomyService.listValues(document.cookie,'CLASSIFICATION_SYSTEMS');
-      if ( !_cls_sys || !_cls_sys.ok ) { 
-        toast.current.show({severity:'error', summary: 'Errors!', detail: 'Errors reading soil classifications systems info' , life: 3000});
-        setCls_systems([])  
-      }
-      else { 
-        let _cs = []
-        _cls_sys.data.forEach( function (t) { _cs[t.id] = t });
-        setCls_systems(_cs)  
-      }  
-      setPoints(setDate(_data.data));
-      initFilters();
+      setIsWorking(false);   
     }
     fetchData();
-    setLoading(false);  
   },[user]);  // eslint-disable-line
-  
-  
-    
               
-  
+  const statusTemplate = (rowData) => (
+    <>
+    { !rowData.check  && (
+    <Button
+      icon="pi pi-times"
+      className="p-mb-2 p-mr-2 m-1"
+      severity="danger"
+      label=""
+      tooltip={t('DATASET_NOT_INITIALISED')}
+      tooltipOptions={{ position: 'top' }}
+    />
+    )}
+    { rowData.check  && (
+    <Button
+      icon="pi pi-check"
+      className="p-mr-2 p-mb-2 m-1"
+      severity="success"
+      tooltip={t('DATASET_INITIALISED')}
+      tooltipOptions={{ position: 'top' }}
+      label=""
+    />
+    )}
+    </> 
+  );
+
+  const updateLayers = async () => {
+    setIsWorking(true)
+    const resp = await ProfileService.doFetchBackOffice ( 'updatelayers', null, 'POST', {}, document.cookie)
+    setIsWorking(false)
+    console.log(resp)
+    if ( !resp || resp.status < 200 || resp.status >= 300  ){
+        toast.current.show({severity:'error', summary: 'Errors!', detail: "Errors configuring base datasets" , life: 3000}); 
+    }
+    else  toast.current.show({severity:'success', summary: 'Done!', detail: "base datasets configuration started it take about 10 minutes" , life: 3000});  
+  }
+
+  const header1 = (
+    <div className="flex justify-content-center w-full">
+        <h4 className="font-bold text-cyan-800 p-3 mb-3">{t('SOIL_INDICATORS')}</h4>   
+    </div>
+  )
+
+  const header2 = (
+    <div className="flex justify-content-center w-full">
+        <h4 className="font-bold text-cyan-800 p-3 mb-3">{t('POINT_SOIL_DATA_SECTIONS')}</h4>   
+    </div>
+  )
+
   return (
   <div className="layout-dashboard">
     <Toast ref={toast} />
-    <h5 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">Points Soil Data List</h5>
-    <Card className="flex w-full" >      
-    {(loading) && (
-      <Loading  title="Loading points" />
+    <div className="flex flex-row-reverse w-full p-2">
+      <Button 
+        icon="pi pi-wrench"
+        className="flex bg-primary font-bold border-round"
+        disabled={isWorking}
+        onClick={() => updateLayers()}
+        label={t('UPDATE_LAYERS')}
+      />
+      <Button 
+        icon="pi pi-wrench"
+        className="flex bg-primary font-bold border-round"
+        disabled={isWorking}
+        onClick={() => updateLayers()}
+        label={t('INITIALIZE_LAYERS')}
+      />
+    </div>
+    <h5 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">Base datasets</h5>
+    {( isWorking ) && (
+        <h4 className="font-bold text-cyan-800">Loading Descriptors...</h4>
     )}
-      
-    </Card>
+    { indicators && !isWorking && ( 
+      <>
+        <DataTable
+          value={indicators}
+          paginator
+          dataKey="code"
+          className="p-datatable-gridlines"
+          showGridlines
+          rows={20}
+          loading={isWorking}
+          responsiveLayout="scroll"
+          emptyMessage="Soil Indicators not found"
+          header={header1}
+        >
+          <Column header="Name" field="name" sortable style={{ minWidth: '10rem' }} />
+          <Column header="Abstract" field="abstract" style={{ minWidth: '40rem' }} />
+          <Column header="Type" field="type" sortable style={{ minWidth: '10rem' }}   />
+          <Column header="keywords" field="keywords" sortable style={{ minWidth: '10rem' }}   />
+          <Column header="Status" field="status" sortable style={{ minWidth: '10rem' }}   />
+          <Column header="Actions" body={statusTemplate} />
+        </DataTable>
+      </>
+    )}
+    { sections && !isWorking && ( 
+      <>
+        <DataTable
+          value={indicators}
+          paginator
+          dataKey="code"
+          className="p-datatable-gridlines"
+          showGridlines
+          rows={20}
+          loading={isWorking}
+          responsiveLayout="scroll"
+          emptyMessage="Soil Indicators not found"
+          header={header1}
+        >
+          <Column header="Name" field="name" sortable style={{ minWidth: '10rem' }} />
+          <Column header="Abstract" field="abstract" style={{ minWidth: '40rem' }} />
+          <Column header="Type" field="type" sortable style={{ minWidth: '10rem' }}   />
+          <Column header="keywords" field="keywords" sortable style={{ minWidth: '10rem' }}   />
+          <Column header="Status" field="status" sortable style={{ minWidth: '10rem' }}   />
+          <Column header="Actions" body={statusTemplate} />
+        </DataTable>
+      </>
+    )}    
   </div>
   );
 };

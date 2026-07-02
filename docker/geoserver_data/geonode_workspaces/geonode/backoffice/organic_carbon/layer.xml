@@ -1,0 +1,19 @@
+<layer>
+  <name>organic_carbon</name>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7eee</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--bb68920:19f114781fa:-7ee0</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7eef</id>
+  </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-06-29 10:00:55.87 UTC</dateCreated>
+  <dateModified>2026-06-29 10:05:05.299 UTC</dateModified>
+</layer>

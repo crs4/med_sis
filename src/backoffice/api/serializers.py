@@ -494,7 +494,15 @@ class  LayerStructureSerializer(serializers.ModelSerializer):
             })        
         #read_only_fields = ('id',)  # Il codice è generato automaticamente
  
+#########################################
+## BaseDatasets 
+#########################################
 
+class BaseDatasetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BaseDataset 
+        fields = '__all__'  
+    
 #########################################
 ## Datasets 
 #########################################

@@ -1,0 +1,19 @@
+<layer>
+  <name>hydraulic_conductivity_at_saturation</name>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7f85</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--bb68920:19f114781fa:-7f73</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7f86</id>
+  </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-06-29 03:13:15.628 UTC</dateCreated>
+  <dateModified>2026-06-29 03:15:31.953 UTC</dateModified>
+</layer>

@@ -1,0 +1,19 @@
+<layer>
+  <name>mercury</name>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7f0b</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--bb68920:19f114781fa:-7f00</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7f0c</id>
+  </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-06-29 09:54:25.184 UTC</dateCreated>
+  <dateModified>2026-06-29 09:55:30.352 UTC</dateModified>
+</layer>

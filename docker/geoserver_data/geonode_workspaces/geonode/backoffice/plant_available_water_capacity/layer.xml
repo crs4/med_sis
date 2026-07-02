@@ -1,0 +1,19 @@
+<layer>
+  <name>plant_available_water_capacity</name>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7eb7</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--bb68920:19f114781fa:-7ea6</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7eb8</id>
+  </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-06-29 10:15:11.457 UTC</dateCreated>
+  <dateModified>2026-06-29 10:20:05.365 UTC</dateModified>
+</layer>

@@ -1,0 +1,19 @@
+<layer>
+  <name>oxygen_availability_for_roots</name>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7eea</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--bb68920:19f114781fa:-7edc</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7eeb</id>
+  </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-06-29 10:02:10.702 UTC</dateCreated>
+  <dateModified>2026-06-29 10:05:16.106 UTC</dateModified>
+</layer>

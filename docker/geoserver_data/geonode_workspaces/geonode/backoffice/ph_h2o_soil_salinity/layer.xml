@@ -1,0 +1,19 @@
+<layer>
+  <name>ph_h2o_soil_salinity</name>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7ebd</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7fc5</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7ebe</id>
+  </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-06-29 10:11:43.710 UTC</dateCreated>
+  <dateModified>2026-06-29 10:15:16.399 UTC</dateModified>
+</layer>

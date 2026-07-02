@@ -22,6 +22,19 @@ export const ProfileService = {
     ERRORS : "ERRORS"
   },
 
+  BASE_DATASET_STATUSES : {
+    "TO_CONFIGURE": "To configure",
+    "CREATED": "Created",
+    "IN_PROCESS": "Processing...",
+    "PUBLISHED": "Published",
+    "ERRORS": "Errors"
+  },
+
+  BASE_DATASET_TYPES : {
+    "SOIL_INDICATOR": "Soil Indicator",
+    "POINT_SOIL_DATA_SECTION": "Point soil data section"
+  },
+
   async getDataset(typename, bboxFilter, token) { 
     if ( typename && token ) 
       return await doFetchGeoserver ( typename, bboxFilter, token );
@@ -29,9 +42,16 @@ export const ProfileService = {
       return { ok: false }
   },
 
+  async getDatasetsByAlternate(alternate, ck) { 
+    if ( ck ) 
+      return await doFetchCatalogue( 'datasets?filter{alternate}='+alternate+ '&format=json', null, 'GET', null, ck );
+    else 
+      return { ok: false }
+  },
+
   async getDatasetsByCategory(category, ck) { 
     if ( ck ) 
-      return await doFetchCatalogue( 'datasets?f=dataset&filter{category.identifier}='+category+ '&filter{srid}=EPSG:4326&format=json', null, 'GET', null, ck );
+      return await doFetchCatalogue( 'datasets?filter{category.identifier}='+category+ '&filter{srid}=EPSG:4326&format=json', null, 'GET', null, ck );
     else 
       return { ok: false }
   },

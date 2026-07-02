@@ -1,16 +1,19 @@
 <layer>
   <name>lead_relative_content</name>
-  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7e66</id>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7f0d</id>
   <type>VECTOR</type>
   <defaultStyle>
     <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7fc2</id>
   </defaultStyle>
   <resource class="featureType">
-    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7e67</id>
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7f0e</id>
   </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
   <attribution>
     <logoWidth>0</logoWidth>
     <logoHeight>0</logoHeight>
   </attribution>
-  <dateCreated>2026-04-13 08:21:09.228 UTC</dateCreated>
+  <dateCreated>2026-06-29 09:52:32.995 UTC</dateCreated>
+  <dateModified>2026-06-29 09:55:13.91 UTC</dateModified>
 </layer>

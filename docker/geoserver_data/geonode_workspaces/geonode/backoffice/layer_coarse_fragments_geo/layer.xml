@@ -1,16 +1,19 @@
 <layer>
   <name>layer_coarse_fragments_geo</name>
-  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7ec4</id>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7f66</id>
   <type>VECTOR</type>
   <defaultStyle>
-    <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7ffb</id>
+    <id>StyleInfoImpl--bb68920:19f114781fa:-7f58</id>
   </defaultStyle>
   <resource class="featureType">
-    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7ec5</id>
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7f67</id>
   </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
   <attribution>
     <logoWidth>0</logoWidth>
     <logoHeight>0</logoHeight>
   </attribution>
-  <dateCreated>2026-04-13 07:49:28.921 UTC</dateCreated>
+  <dateCreated>2026-06-29 03:19:15.269 UTC</dateCreated>
+  <dateModified>2026-06-29 03:20:33.512 UTC</dateModified>
 </layer>

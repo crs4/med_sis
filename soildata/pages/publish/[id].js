@@ -5,11 +5,10 @@ import { ProfileService } from '../../service/profiles';
 import { userContext, useUser } from '../../context/user';
 import ConfigureDataset from '../../components/ConfigureDataset';
 import ValidateDataset from '../../components/ValidateDataset';
-import ConfigureDatasetPoint from '../../components/ConfigureDatasetPoint';
-import ValidateDatasetPoint from '../../components/ValidateDatasetPoint';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { Toast } from 'primereact/toast';
+import { Button } from 'primereact/button';
 import { clone, featureCollection } from '@turf/turf';
 
 /*
@@ -32,19 +31,30 @@ export default function Page()  {
   const toast = useRef(null);
   const [loading, setLoading] = useState(false);
   
-  /* Read the new dataset data */
+  /* fetch dataset data */
   const fetchDataset = async (id) => {
+    console.log('fetch')
     setLoading(true)
     try {
       const response = await ProfileService.get( document.cookie, id, 'datasets'  );
       if ( response && response.ok && response.data ){
-        setDataset (response.data);
+        const ds = response.data
+        setDataset (ds);
+        console.log(ds)
       }      
     } catch (error) {
       console.log(error);
+      console.log('no data')
     }
     setLoading(false) 
+    
+    
   }
+
+  const reload = () => {
+    if (id)
+      router.push(`/publish/${id}`);
+  };
 
   useEffect(() => {
     if ( !user.userData || ( user.userData.forbidden !== null && user.userData.forbidden) )
@@ -59,31 +69,28 @@ return (
     { dataset && dataset.status === ProfileService.DATASET_STATUSES.CREATED && (
       <>
       <h5 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">Configuring Dataset</h5>
-      { dataset && ( dataset.context === ProfileService.DATASET_CONTEXT.SOIL_INDICATOR ||
-                     dataset.context === ProfileService.DATASET_CONTEXT.AOI_SOIL_INDICATOR ) && (
-        <ConfigureDataset dataset={dataset} setDataset={setDataset} />     
+      { dataset && (
+        <ConfigureDataset 
+          isIndicators={ !(dataset.context === ProfileService.DATASET_CONTEXT.POINTS_SOIL_DATA) }
+          dataset={dataset} 
+          setDataset={setDataset} />     
       )}
-      { dataset && dataset.context === ProfileService.DATASET_CONTEXT.POINTS_SOIL_DATA && (
-        <ConfigureDatasetPoint dataset={dataset} setDataset={setDataset} />     
-      )} 
       </>
     )}
     { dataset && ( dataset.status === ProfileService.DATASET_STATUSES.CONFIGURED || dataset.status === ProfileService.DATASET_STATUSES.ERRORS ) && (
       <>
       <h5 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">Validating Dataset</h5>
-      { dataset && ( dataset.context === ProfileService.DATASET_CONTEXT.SOIL_INDICATOR || 
-                     dataset.context === ProfileService.DATASET_CONTEXT.AOI_SOIL_INDICATOR ) && (
-        <ValidateDataset dataset={dataset} setDataset={setDataset} />     
-      )}
-      { dataset && dataset.context === ProfileService.DATASET_CONTEXT.POINTS_SOIL_DATA && (
-        <ValidateDatasetPoint dataset={dataset} setDataset={setDataset} />     
+      { dataset && (
+        <ValidateDataset 
+          isIndicators={ !(dataset.context === ProfileService.DATASET_CONTEXT.POINTS_SOIL_DATA) }
+          dataset={dataset} 
+          setDataset={setDataset} />     
       )}
       </>
     )}
     { dataset && dataset.status === ProfileService.DATASET_STATUSES.PUBLISHED && (
       <>
-      <h5 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">Dataset Published</h5>
-      
+      <h5 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">Dataset Publishing Report</h5>
       </>
     )}  
     { dataset && dataset.status === ProfileService.DATASET_STATUSES.ERRORS && (
@@ -96,7 +103,17 @@ return (
       dataset.status !== ProfileService.DATASET_STATUSES.ERRORS && 
       dataset.status !== ProfileService.DATASET_STATUSES.PUBLISHED && (
       <>
-      <h5 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">Dataset in elaboration... </h5>   
+      <h5 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">Dataset in elaboration... </h5>
+      <div class="flex justify-content-center w-full m-3">
+        <Button
+          label={t("REFRESH")}
+          icon='pi pi-save'
+          type='button'
+          disabled={ isWorking || !workDataset }
+          className='mt-4 flex'
+          onClick={() => { reload() }} 
+        />
+      </div>    
       </>
     )}  
 

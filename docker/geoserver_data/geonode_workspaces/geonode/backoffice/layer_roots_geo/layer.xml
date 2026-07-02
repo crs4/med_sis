@@ -1,16 +1,19 @@
 <layer>
   <name>layer_roots_geo</name>
-  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7e7d</id>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7f2c</id>
   <type>VECTOR</type>
   <defaultStyle>
-    <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7ffb</id>
+    <id>StyleInfoImpl--bb68920:19f114781fa:-7f1e</id>
   </defaultStyle>
   <resource class="featureType">
-    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7e7e</id>
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7f2d</id>
   </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
   <attribution>
     <logoWidth>0</logoWidth>
     <logoHeight>0</logoHeight>
   </attribution>
-  <dateCreated>2026-04-13 08:12:15.990 UTC</dateCreated>
+  <dateCreated>2026-06-29 03:29:42.910 UTC</dateCreated>
+  <dateModified>2026-06-29 03:30:32.228 UTC</dateModified>
 </layer>

@@ -1,0 +1,19 @@
+<layer>
+  <name>ph_h2o_microbial_diversity</name>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7ecc</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7fc9</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7ecd</id>
+  </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-06-29 10:09:10.557 UTC</dateCreated>
+  <dateModified>2026-06-29 10:10:22.121 UTC</dateModified>
+</layer>

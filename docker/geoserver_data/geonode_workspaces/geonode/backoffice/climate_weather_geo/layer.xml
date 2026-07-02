@@ -1,12 +1,12 @@
 <layer>
   <name>climate_weather_geo</name>
-  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7fff</id>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7fc0</id>
   <type>VECTOR</type>
   <defaultStyle>
-    <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7ffb</id>
+    <id>StyleInfoImpl--bb68920:19f114781fa:-7fb4</id>
   </defaultStyle>
   <resource class="featureType">
-    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-8000</id>
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7fc1</id>
   </resource>
   <queryable>true</queryable>
   <opaque>false</opaque>
@@ -14,6 +14,6 @@
     <logoWidth>0</logoWidth>
     <logoHeight>0</logoHeight>
   </attribution>
-  <dateCreated>2026-04-13 04:16:19.66 UTC</dateCreated>
-  <dateModified>2026-04-13 04:32:39.327 UTC</dateModified>
+  <dateCreated>2026-06-29 03:01:10.579 UTC</dateCreated>
+  <dateModified>2026-06-29 03:02:47.522 UTC</dateModified>
 </layer>

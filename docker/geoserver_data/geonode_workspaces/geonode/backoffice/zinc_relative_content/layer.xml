@@ -1,16 +1,19 @@
 <layer>
   <name>zinc_relative_content</name>
-  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7e6f</id>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7e68</id>
   <type>VECTOR</type>
   <defaultStyle>
     <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7fc1</id>
   </defaultStyle>
   <resource class="featureType">
-    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7e70</id>
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7e69</id>
   </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
   <attribution>
     <logoWidth>0</logoWidth>
     <logoHeight>0</logoHeight>
   </attribution>
-  <dateCreated>2026-04-13 08:16:43.692 UTC</dateCreated>
+  <dateCreated>2026-06-29 10:34:07.166 UTC</dateCreated>
+  <dateModified>2026-06-29 10:35:27.944 UTC</dateModified>
 </layer>

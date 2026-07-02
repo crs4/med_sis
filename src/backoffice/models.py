@@ -74,7 +74,7 @@ class XLSxUpload(models.Model):
     type = models.TextField(choices=UPLOAD_TYPES, db_comment='Type of the upload')
     title = models.TextField(db_comment='sheet name')
     report = models.JSONField( db_comment='Report of the upload')
-    data = models.JSONField( db_comment='Data uploaded')
+    data = models.JSONField( db_comment='Upload Json Data')
     editor = models.TextField( db_comment='Owner of the upload', null=True, blank=True)
     date = models.DateTimeField( db_comment='Date of the upload')
     status = models.TextField( choices=UPLOAD_RESULTS, db_comment='Status of the upload' )
@@ -350,13 +350,13 @@ class LabData(models.Model):
     f_silt = models.FloatField( validators=[validate_percentage], db_comment='Fine silt  (percentage of the fine earth)', blank=True, null=True)
     met_silt = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdata_met_silt_set',   blank=True, null=True)
     clay = models.FloatField( db_comment='Clay  (percentage of the fine earth)', blank=True, null=True)
-    met_clay = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdata_met_clay_set_set',  blank=True, null=True)
+    met_clay = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdata_met_clay_set',  blank=True, null=True)
     bulk_dens = models.FloatField( db_comment='Bulk density (g/cm3)'	, blank=True, null=True)
-    met_bulk_dens = models.TextField(blank=True, null=True)
+    met_bulk_dens = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdata_met_bulk_dens_set',  blank=True, null=True)
     slake_test = models.FloatField( db_comment='Bulk density (g/cm3)'	, blank=True, null=True)
     met_slake_test = models.TextField(blank=True, null=True)
     el_cond = models.FloatField( db_comment='Electric conductivity (dS/m)', blank=True, null=True)
-    met_el_cond = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdata_met_clay_set',  db_comment='Method used for Electric conductivity', blank=True, null=True)
+    met_el_cond = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdata_met_el_cond_set',  db_comment='Method used for Electric conductivity', blank=True, null=True)
     hy_cond = models.FloatField( db_comment='Hydraulic conductivity at saturation (mm/h)', blank=True, null=True)
     met_hy_cond = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdata_met_hy_cond_set',  db_comment='Method used for Hydraulic conductivity at saturation', blank=True, null=True)
     satur = models.FloatField( db_comment='Saturation (percentage)', blank=True, null=True)
@@ -377,7 +377,7 @@ class LabData(models.Model):
     org_mat = models.FloatField( db_comment='Organic matter content (percentage)', blank=True, null=True)
     met_org_mat = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdata_met_org_mat_set',  db_comment='Method used for organic matter content', blank=True, null=True)
     caco3_content = models.FloatField( db_comment='CaCO3 content (percentage)', blank=True, null=True)
-    met_content_caco3 = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdata_met_content_caco3_set',  db_comment='Method used for CaCO3 content',  blank=True, null=True)
+    met_caco3_content = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdata_met_caco3_content_set',  db_comment='Method used for CaCO3 content',  blank=True, null=True)
     active_caco3 = models.FloatField( db_comment='CaCO3 content (percentage)', blank=True, null=True)
     met_active_caco3 = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdata_met_active_caco3_set',  db_comment='Method used for active CaCO3',  blank=True, null=True)
     gypsum = models.FloatField( db_comment='Gypsum content (percentage)', blank=True, null=True)
@@ -974,6 +974,7 @@ DATASET_STATUSES = [
 DATASET_CONTEXT = [
     ("POINTS_SOIL_DATA", "POINTS_SOIL_DATA"),
     ("SOIL_INDICATOR", "SOIL_INDICATOR"),
+    ("AOI_SOIL_INDICATOR", "AOI_SOIL_INDICATOR"),
 ]
 class Dataset(models.Model):
     name = models.TextField( db_comment='Name')
@@ -1009,9 +1010,55 @@ class Dataset(models.Model):
         managed = True
         db_table = 'datasets'
 
+######################################
+# BASE DATASETS
+######################################
+
+BASE_DATASET_STATUSES = [
+    ("TO_CONFIGURE" , "TO_CONFIGURE"),
+    ("CREATED" , "CREATED"),
+    ("IN_PROCESS" , "IN_PROCESS"),
+    ("PUBLISHED" , "PUBLISHED"),
+    ("ERRORS" , "ERRORS"),
+]
+
+BASE_DATASET_TYPES = [
+    ("SOIL_INDICATOR" , "SOIL_INDICATOR"),
+    ("POINT_SOIL_DATA_SECTION" , "POINT_SOIL_DATA_SECTION"),
+]
+
+class BaseDataset(models.Model):
+    code = models.TextField(primary_key=True, db_comment='Geoserver typename and Database SQL view name of the point soil data section')
+    name = models.TextField(db_comment='Title of the dataset', blank=True, null=True ) 
+    abstract = models.TextField(db_comment='Abstract of the dataset', blank=True, null=True ) 
+    geonode_id = models.TextField(db_comment='catalogue identifier', blank=True, null=True )
+    status = models.TextField( choices=BASE_DATASET_STATUSES, db_comment='Status of the dataset' )
+    type = models.TextField( choices=BASE_DATASET_TYPES, db_comment='Type of the dataset' )
+    keywords = models.TextField(db_comment='keywords comma separated', blank=True, null=True )
+    unit = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='sis_measure_unit_set', blank=True, null=True)
+     
+    objects = models.Manager().using('backoffice')
+    
+    def start_processing(self):
+        """Start base dataset publishing"""
+        from .tasks import process_base_dataset
+        if self.status == "CREATED": 
+            self.status = "IN_PROCESS"
+        self.save(using='backoffice')
+        # This ensures that the task starts ONLY when the data is actually written to DB.
+        transaction.on_commit(
+            lambda: process_base_dataset.delay(self.id),
+            using='backoffice')    
+        return True
+    
+    class Meta:
+        managed = True
+        db_table = 'base_dataset_section'
+        db_table_comment = 'Base Dataset of Soil Data'
+
 
 ###########################
-# LabDataExtraMeasureData
+# Laboratory Data Extra Measure Data
 ###########################
 class LabDataExtraMeasure(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -1019,16 +1066,17 @@ class LabDataExtraMeasure(models.Model):
     measure = models.ForeignKey(TaxonomyValue, on_delete=models.CASCADE, related_name='labdataextrameasure_measure_set' )
     method = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdataextrameasure_method_set',  blank=True, null=True)
     unit = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdataextrameasure_unit_set',  blank=True, null=True)
-    labdata = models.ForeignKey(LabData, on_delete=models.CASCADE, related_name='labdataextrameasure_labdata_set')
+    upper = models.FloatField( validators=[validate_positive],  db_comment='Sampling upper boundary', blank=True, null=True)
+    lower = models.FloatField( validators=[validate_positive],  db_comment='Sampling lower boundary', blank=True, null=True)
+    date = models.DateTimeField( db_comment='Date of the sample', blank=True, null=True )
     value = models.FloatField( db_comment='numeric value of measure', blank=True, null=True )
     
     objects = models.Manager().using('backoffice')
-    
+   
     class Meta:
         managed = True
         db_table = 'labdata_extra_measure'
-        unique_together = (('measure', 'labdata'),)
-        db_table_comment = 'Laboratory data extra measures'
+        db_table_comment = 'Laboratory data of extra measures types not present in labadata'
         
 
 ###########################
@@ -1036,7 +1084,7 @@ class LabDataExtraMeasure(models.Model):
 ###########################
 
 class Photo(models.Model):
-    id = models.TextField(primary_key=True, db_comment='Geonode document identifier (number)', serialize=False)
+    id = models.TextField(primary_key=True, db_comment='Geonode document identifier (number)')
     title = models.TextField(db_comment='Photo title')
     caption = models.TextField(blank=True, null=True, db_comment='Description')
     point = models.ForeignKey(PointGeneral, on_delete=models.CASCADE, related_name='photo_point_set', db_comment='Point soil data identifier') 

@@ -1,16 +1,19 @@
 <layer>
   <name>sodium_exchangeable_percentage_waterlogging</name>
-  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7e33</id>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7e90</id>
   <type>VECTOR</type>
   <defaultStyle>
     <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7fe0</id>
   </defaultStyle>
   <resource class="featureType">
-    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7e34</id>
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7e91</id>
   </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
   <attribution>
     <logoWidth>0</logoWidth>
     <logoHeight>0</logoHeight>
   </attribution>
-  <dateCreated>2026-04-13 08:45:46.550 UTC</dateCreated>
+  <dateCreated>2026-06-29 10:23:38.466 UTC</dateCreated>
+  <dateModified>2026-06-29 10:25:27.225 UTC</dateModified>
 </layer>

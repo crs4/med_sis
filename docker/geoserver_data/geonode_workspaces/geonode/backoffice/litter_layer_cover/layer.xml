@@ -1,0 +1,19 @@
+<layer>
+  <name>litter_layer_cover</name>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7f11</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--bb68920:19f114781fa:-7f04</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7f12</id>
+  </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-06-29 09:50:46.69 UTC</dateCreated>
+  <dateModified>2026-06-29 09:55:19.65 UTC</dateModified>
+</layer>

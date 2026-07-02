@@ -1,0 +1,19 @@
+<layer>
+  <name>base_saturation_exchangeable_activity</name>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7ff1</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--bb68920:19f114781fa:-7fe1</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7ff2</id>
+  </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-06-29 02:51:58.637 UTC</dateCreated>
+  <dateModified>2026-06-29 02:55:14.624 UTC</dateModified>
+</layer>

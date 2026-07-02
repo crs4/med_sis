@@ -1,16 +1,19 @@
 <layer>
   <name>sodium_adsorption_ratio_sodicity</name>
-  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7e40</id>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7e96</id>
   <type>VECTOR</type>
   <defaultStyle>
     <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7fbf</id>
   </defaultStyle>
   <resource class="featureType">
-    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7e41</id>
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7e97</id>
   </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
   <attribution>
     <logoWidth>0</logoWidth>
     <logoHeight>0</logoHeight>
   </attribution>
-  <dateCreated>2026-04-13 08:42:11.319 UTC</dateCreated>
+  <dateCreated>2026-06-29 10:21:36.243 UTC</dateCreated>
+  <dateModified>2026-06-29 10:25:11.19 UTC</dateModified>
 </layer>

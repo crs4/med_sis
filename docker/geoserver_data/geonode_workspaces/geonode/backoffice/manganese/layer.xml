@@ -1,0 +1,19 @@
+<layer>
+  <name>manganese</name>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7f0f</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--bb68920:19f114781fa:-7f02</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7f10</id>
+  </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-06-29 09:51:34.666 UTC</dateCreated>
+  <dateModified>2026-06-29 09:55:24.739 UTC</dateModified>
+</layer>

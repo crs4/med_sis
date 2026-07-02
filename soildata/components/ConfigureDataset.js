@@ -33,7 +33,7 @@ const AoiSelectionMap = dynamic(() => import("./map/AoiSelectionMap"), { ssr:fal
 
 const PointsFilterMap = dynamic(() => import("./map/PointsFilterMap"), { ssr:false })
 
-export default function ConfigureDataset( { dataset, setDataset })  {
+export default function ConfigureDataset( { isIndicators, dataset, setDataset } )  {
   const t = useTranslations('default');
   const user = useUser();
   const router = useRouter();
@@ -45,8 +45,12 @@ export default function ConfigureDataset( { dataset, setDataset })  {
   // working dataset
   const [workDataset, setWorkDataset] = useState(dataset)
   // SOURCES
-  const srcDatasetsList = (dataset.context === ProfileService.DATASET_CONTEXT.AOI_SOIL_INDICATOR) ? BaseDatasets.aoiSoilIndicators : BaseDatasets.indicators
+  const srcDatasetsList = isIndicators ? 
+      (dataset.context === ProfileService.DATASET_CONTEXT.AOI_SOIL_INDICATOR) ? BaseDatasets.aoiSoilIndicators : BaseDatasets.indicators
+      :
+      BaseDatasets.sections
   const [selectedSource, setSelectedSource] = useState(null);
+  
   // MAP Points
   const [mapPoints, setMapPoints] = useState(null)
 
@@ -136,9 +140,10 @@ export default function ConfigureDataset( { dataset, setDataset })  {
   const setPoints = (points) => {
     workDataset.points = points;
     workDataset.filter.points = points;
-    if (workDataset.k_params){
-      workDataset.k_params.epsg = null
-      workDataset.k_params.points = null;
+    workDataset.k_params = {
+      ...workDataset.k_params,
+      epsg:  null,
+      points:  null
     }
     workDataset.k_data = null;
     setWorkDataset(workDataset)
@@ -185,9 +190,10 @@ export default function ConfigureDataset( { dataset, setDataset })  {
     workDataset.source = null; 
     workDataset.points = null;
     workDataset.filter.points = null;
-    if (workDataset.k_params){
-      workDataset.k_params.epsg = null
-      workDataset.k_params.points = null;
+    workDataset.k_params = {
+      ...workDataset.k_params,
+      epsg:  null,
+      points:  null
     }
     workDataset.k_data = null;
     if ( sourceDS === null ) 
@@ -203,6 +209,7 @@ export default function ConfigureDataset( { dataset, setDataset })  {
       }
     }
     setWorkDataset(workDataset)
+    saveWorkDataset()
     setSelectedSource(sourceDS)
   };
   
@@ -221,7 +228,7 @@ export default function ConfigureDataset( { dataset, setDataset })  {
     for ( let i=0; i< points.features.length; i+= 1 ){
       const props = points.features[i].properties
       try {
-        if ( props.method ) {
+        if ( isIndicators && props.method ) {
           if ( props.method.indexOf(':') > 0 ) 
           // unique value if set
             tax = props.method.substring(0,props.method.indexOf(':'))
@@ -321,10 +328,10 @@ export default function ConfigureDataset( { dataset, setDataset })  {
   }
 
   // get the mediana of a set of values of a numeric attribute in the points features properties 
-  const getMediana = ( points, element ) => {
+  const getMediana = ( pts, element ) => {
     const array = []
-    if ( points && points.features ){
-      points.features.forEach ((ft) => {
+    if ( pts ){
+      pts.forEach ((ft) => {
         if ( !isNaN( parseFloat( ft.properties[element] ) ) )                
           array.push( parseFloat( ft.properties[element] ) )
       })
@@ -342,20 +349,23 @@ export default function ConfigureDataset( { dataset, setDataset })  {
 
   // Enrichment factor calculation (!!!after AOI filter)
   const elaborateEF = ( points, elementA, elementB ) => {
-    if ( !points || !points.features )
-      return null;
-    const medianaA = getMediana( points, elementA)
-    const medianaB = getMediana( points, elementB)
-    if ( medianaA && medianaB ) {
-      points.features.forEach ((ft) => {
-        if ( !isNaN( parseFloat(ft.properties[elementA]) ) && !isNan( parseFloat(ft.properties[elementB]) ) ) 
-        {
-          ft.properties.value = ( parseFloat(ft.properties[elementA]) / parseFloat(ft.properties[elementB]) ) / ( medianaA / medianaB )                  
-        }        
-      })
-    }         
+    const efPoints = []
+    if ( points && points.length ){
+      const medianaA = getMediana( points, elementA)
+      const medianaB = getMediana( points, elementB)
+      
+      if ( medianaA && medianaB ) {
+        points.forEach ((ft) => {
+          if ( !isNaN( parseFloat(ft.properties[elementA]) ) && !isNan( parseFloat(ft.properties[elementB]) ) ){ 
+            ft.properties.value = ( parseFloat(ft.properties[elementA]) / parseFloat(ft.properties[elementB]) ) / ( medianaA / medianaB )                  
+            efPoints.push(ft)
+          }
+        })
+      }
+    }
+    return efPoints;          
   }
-
+      
   // This loads and sets the source points from a catalogue dataset
   const loadIndicatorPoints = async (indicator, typename) => {
     try {
@@ -364,10 +374,11 @@ export default function ConfigureDataset( { dataset, setDataset })  {
       const response = await ProfileService.getDataset( 'geonode:' + typename, null, token )
       setIsWorking(false);
       if ( response && response.ok && response.data && response.data.features ){
-        const points = response.data;
+        const labdata_points = response.data;
+        const new_points = []
         /////// filter feature properties  
         const elemA = null, elemB = null
-        points.features.forEach ( (ft) =>  {
+        labdata_points.features.forEach ( (ft) =>  {
           if ( ft.properties )  {
             /// set base attributes
             const new_props = {
@@ -384,99 +395,110 @@ export default function ConfigureDataset( { dataset, setDataset })  {
             }
             switch (indicator) {
               case 'Enrichment factor - Pb' :
-                new_props.pb = ft.properties.pb;                
-                new_props.zn = ft.properties.zn;
-                new_props.method = ft.properties.met_pb_id;
-                elemA = 'pb';
+                new_props.pb = ft.properties.pb                
+                new_props.zn = ft.properties.zn
+                new_props.method = ft.properties.met_pb_id
+                elemA = 'pb'
                 elemB = 'zn'
+                new_points.push(ft)
               break;
               case "Enrichment factor - Hg" :
                 new_props.hg = ft.properties.hg                
                 new_props.zn = ft.properties.zn
                 new_props.method = ft.properties.met_hg_id
-                elemA = 'hg';
+                elemA = 'hg'
                 elemB = 'zn'
+                new_points.push(ft)
                 break;
               case "Enrichment factor - Cd" :
                 new_props.cd = ft.properties.cd                
                 new_props.zn = ft.properties.zn
                 new_props.method = ft.properties.met_cd_id
-                elemA = 'cd';
+                elemA = 'cd'
                 elemB = 'zn'
+                new_points.push(ft)
               break;
               case "Enrichment factor - Ni" :
                 new_props.ni = ft.properties.ni                
                 new_props.zn = ft.properties.zn
                 new_props.method = ft.properties.met_ni_id;
-                elemA = 'ni';
+                elemA = 'ni'
                 elemB = 'zn'
+                new_points.push(ft)
               break;
               case "Enrichment factor - Cu" :
                 new_props.cu = ft.properties.cu                
                 new_props.zn = ft.properties.zn
                 new_props.method = ft.properties.met_cu_id
-                elemA = 'cu';
+                elemA = 'cu'
                 elemB = 'zn'
+                new_points.push(ft)
               break;
               case "Enrichment factor - Sb" :
                 new_props.sb = ft.properties.sb                
                 new_props.zn = ft.properties.zn
                 new_props.method = ft.properties.met_sb_id
-                elemA = 'sb';
+                elemA = 'sb'
                 elemB = 'zn'
+                new_points.push(ft)
               break;
               case "Enrichment factor - Mn" :
                 new_props.mn = ft.properties.mn                
                 new_props.zn = ft.properties.zn
                 new_props.method = ft.properties.met_mn_id
-                elemA = 'mn';
+                elemA = 'mn'
                 elemB = 'zn'
+                new_points.push(ft)
               break;
               case "Enrichment factor - Cr" :
                 new_props.cr = ft.properties.cr                
                 new_props.zn = ft.properties.zn
                 new_props.method = ft.properties.met_cr_id
-                elemA = 'cr';
+                elemA = 'cr'
                 elemB = 'zn'
+                new_points.push(ft)
               break;
               case "Enrichment factor - Co" :
                 new_props.co = ft.properties.co                
                 new_props.zn = ft.properties.zn
                 new_props.method = ft.properties.met_co_id
-                elemA = 'co';
+                elemA = 'co'
                 elemB = 'zn'
+                new_points.push(ft)
               break;
               case "Enrichment factor - V" :
                 new_props.v = ft.properties.v                
                 new_props.zn = ft.properties.zn
                 new_props.method = ft.properties.met_v_id
-                elemA = 'v';
+                elemA = 'v'
                 elemB = 'zn'
+                new_points.push(ft)
               break;
               case "Enrichment factor - As" :
                 new_props.as_value = ft.properties.as_value                
                 new_props.zn = ft.properties.zn
                 new_props.method = ft.properties.met_as_id
-                elemA = 'as_value';
+                elemA = 'as_value'
                 elemB = 'zn'
+                new_points.push(ft)
               break;
               case "Enrichment factor - Zn" :
                 new_props.cu = ft.properties.cu                
                 new_props.zn = ft.properties.zn
                 new_props.method = ft.properties.met_zn_id
-                elemA = 'zn';
+                elemA = 'zn'
                 elemB = 'cu'
+                new_points.push(ft)
               break;
-              default :
-                new_props.method = null;
             }  
-            ft.properties = new_props     
+            ft.properties = new_props
           }  
         })
         if ( elemA && elemB )
-          elaborateEF(points, elemA, elemB )
-        setPoints (points);
-        await extractData (points);
+          new_points = elaborateEF(new_points, elemA, elemB )
+        else new_points = []
+        setPoints (featureCollection(new_points));
+        await extractData (featureCollection(new_points));
         setWorkDataset(await filtering(workDataset));
         toast.current.show({ severity: 'success', summary: 'Done!', detail: 'Source points has been loaded and evaluated.'});
       }
@@ -540,7 +562,6 @@ export default function ConfigureDataset( { dataset, setDataset })  {
               ( new Date (_workDataset.filter.to)) <= new Date( props.date ) ) ) 
           { 
             ok = false
-            console.log('date   ' + ok)
           }
           
           // depth filter
@@ -553,7 +574,6 @@ export default function ConfigureDataset( { dataset, setDataset })  {
                         ( props.lower != null && props.lower < 20 ) ) )
           { 
             ok = false
-            console.log('depth   ' + ok)
           }
           // project filter
           if ( _workDataset.filter.project &&  
@@ -561,7 +581,6 @@ export default function ConfigureDataset( { dataset, setDataset })  {
                _workDataset.filter.project !== "All projects" )
           { 
             ok = false
-            console.log('project   ' + ok)
           }
           // point's type filter
           if ( _workDataset.filter.type && 
@@ -569,15 +588,13 @@ export default function ConfigureDataset( { dataset, setDataset })  {
               _workDataset.filter.type !== "All types" )
           { 
             ok = false
-            console.log('filter   ' + ok)
           }
           // measure method filter
-          if ( _workDataset.filter.method && 
+          if ( isIndicators && _workDataset.filter.method && 
               _workDataset.filter.method !== props.method &&
               _workDataset.filter.method !== "All methods" )
           { 
             ok = false
-            console.log('method   ' + ok)
           }
           
           // measure method filter
@@ -586,7 +603,6 @@ export default function ConfigureDataset( { dataset, setDataset })  {
               _workDataset.filter.surMethod !== "All methods" )
           { 
             ok = false
-            console.log('surMethod   ' + ok)
           }   
         }
         if (ok)
@@ -632,6 +648,8 @@ export default function ConfigureDataset( { dataset, setDataset })  {
 
   // this saves the dataset and go to the next step
   const saveAndContinue = async (to) => {
+    if ( !workDataset.points || !workDataset.points.features || !workDataset.points.features.length  )
+      return
     saveWorkDataset()
     setActiveIndex(to);
   }
@@ -772,14 +790,14 @@ export default function ConfigureDataset( { dataset, setDataset })  {
   
   const aoiSourceTypes = [
     { key: 'custom', name: 'Custom Polygon' },
-    { key: 'dataset', name: 'Catalogue dataset'}
+    { key: 'dataset', name: 'Boundaries Catalogue dataset'}
   ]
   
   return (
     <div className="layout-dashboard">
     <Toast ref={toast} />
       {(!workDataset || !workDataset.filter) && (
-      <span className="font-bold text-red-800">{ console.log(workDataset) } Error: dataset or filter not initialized </span>
+      <span className="font-bold text-red-800"> Error: dataset or filter not initialized </span>
       )} 
       { workDataset && workDataset.filter  && (
       <>
@@ -852,7 +870,7 @@ export default function ConfigureDataset( { dataset, setDataset })  {
                 label={t("SAVE_CONTINUE")}
                 icon='pi pi-save'
                 type='button'
-                disabled={ isWorking || !workDataset || !workDataset.points }
+                disabled={ isWorking || !workDataset.points || !workDataset.points.features || !workDataset.points.features.length }
                 className='mt-4 flex'
                 onClick={() => { saveAndContinue(1) }} 
               />
@@ -888,7 +906,7 @@ export default function ConfigureDataset( { dataset, setDataset })  {
                     icon='pi pi-map'
                     type='button'
                     disabled={ isWorking || !areasDataset || !areasDataset.alternate }
-                    onClick={() => { console.log(areasDataset); addAreasToMap(areasDataset.alternate); }}
+                    onClick={() => {addAreasToMap(areasDataset.alternate); }}
                   />
                   </> 
                 )}
@@ -1063,6 +1081,7 @@ export default function ConfigureDataset( { dataset, setDataset })  {
                 options={projects} placeholder="select a project" className="md:w-30rem mt-1 font-bold text-cyan-800" />
             </div>
           </Fieldset>
+          { isIndicators && (
           <Fieldset className="w-full m-2" legend={t('METHOD')}>
             <div className="flex flex-column gap-1">
               <h5 className="font-bold text-cyan-800">Select a laboratory method or All methods</h5>
@@ -1076,6 +1095,7 @@ export default function ConfigureDataset( { dataset, setDataset })  {
               ))}
             </div>
           </Fieldset>
+          )}
           </>
         )}
           <div class="flex justify-content-center w-full m-3">

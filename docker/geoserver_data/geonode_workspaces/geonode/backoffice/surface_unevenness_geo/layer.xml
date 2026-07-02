@@ -1,16 +1,19 @@
 <layer>
   <name>surface_unevenness_geo</name>
-  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7f58</id>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7e7f</id>
   <type>VECTOR</type>
   <defaultStyle>
-    <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7ffb</id>
+    <id>StyleInfoImpl--bb68920:19f114781fa:-7e75</id>
   </defaultStyle>
   <resource class="featureType">
-    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7f59</id>
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7e80</id>
   </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
   <attribution>
     <logoWidth>0</logoWidth>
     <logoHeight>0</logoHeight>
   </attribution>
-  <dateCreated>2026-04-13 06:17:52.376 UTC</dateCreated>
+  <dateCreated>2026-06-29 10:27:32.172 UTC</dateCreated>
+  <dateModified>2026-06-29 10:30:22.335 UTC</dateModified>
 </layer>

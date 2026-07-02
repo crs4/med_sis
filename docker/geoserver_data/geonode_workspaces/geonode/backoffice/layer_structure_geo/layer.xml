@@ -1,16 +1,19 @@
 <layer>
   <name>layer_structure_geo</name>
-  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7e78</id>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7f1b</id>
   <type>VECTOR</type>
   <defaultStyle>
-    <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7ffb</id>
+    <id>StyleInfoImpl--bb68920:19f114781fa:-7f16</id>
   </defaultStyle>
   <resource class="featureType">
-    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7e79</id>
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7f1c</id>
   </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
   <attribution>
     <logoWidth>0</logoWidth>
     <logoHeight>0</logoHeight>
   </attribution>
-  <dateCreated>2026-04-13 08:14:43.448 UTC</dateCreated>
+  <dateCreated>2026-06-29 03:31:30.176 UTC</dateCreated>
+  <dateModified>2026-06-29 09:50:06.760 UTC</dateModified>
 </layer>

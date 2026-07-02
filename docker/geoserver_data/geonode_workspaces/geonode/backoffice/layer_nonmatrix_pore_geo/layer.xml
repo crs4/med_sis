@@ -1,16 +1,19 @@
 <layer>
   <name>layer_nonmatrix_pore_geo</name>
-  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7e95</id>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7f3a</id>
   <type>VECTOR</type>
   <defaultStyle>
-    <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7ffb</id>
+    <id>StyleInfoImpl--bb68920:19f114781fa:-7f2a</id>
   </defaultStyle>
   <resource class="featureType">
-    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7e96</id>
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7f3b</id>
   </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
   <attribution>
     <logoWidth>0</logoWidth>
     <logoHeight>0</logoHeight>
   </attribution>
-  <dateCreated>2026-04-13 08:03:30.320 UTC</dateCreated>
+  <dateCreated>2026-06-29 03:25:32.364 UTC</dateCreated>
+  <dateModified>2026-06-29 03:30:05.11 UTC</dateModified>
 </layer>

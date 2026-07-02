@@ -1,0 +1,19 @@
+<layer>
+  <name>exchangeable_potassium_potential_impact</name>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7f94</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--bb68920:19f114781fa:-7f7f</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7f95</id>
+  </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-06-29 03:10:15.517 UTC</dateCreated>
+  <dateModified>2026-06-29 03:15:04.812 UTC</dateModified>
+</layer>

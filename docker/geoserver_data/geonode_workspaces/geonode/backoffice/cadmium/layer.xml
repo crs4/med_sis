@@ -1,0 +1,19 @@
+<layer>
+  <name>cadmium</name>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7fe9</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--bb68920:19f114781fa:-7fd3</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7fea</id>
+  </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-06-29 02:54:36.299 UTC</dateCreated>
+  <dateModified>2026-06-29 02:55:42.546 UTC</dateModified>
+</layer>

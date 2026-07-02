@@ -1,0 +1,19 @@
+<layer>
+  <name>lead</name>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7f18</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--bb68920:19f114781fa:-7f07</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7f19</id>
+  </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-06-29 09:50:04.883 UTC</dateCreated>
+  <dateModified>2026-06-29 09:55:06.895 UTC</dateModified>
+</layer>

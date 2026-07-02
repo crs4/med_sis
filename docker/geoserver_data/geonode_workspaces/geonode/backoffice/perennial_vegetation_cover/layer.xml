@@ -1,0 +1,19 @@
+<layer>
+  <name>perennial_vegetation_cover</name>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7ee4</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--bb68920:19f114781fa:-7ed4</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7ee5</id>
+  </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-06-29 10:04:01.388 UTC</dateCreated>
+  <dateModified>2026-06-29 10:05:32.660 UTC</dateModified>
+</layer>

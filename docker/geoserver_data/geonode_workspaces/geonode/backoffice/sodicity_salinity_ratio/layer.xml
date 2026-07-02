@@ -1,16 +1,19 @@
 <layer>
   <name>sodicity_salinity_ratio</name>
-  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7e4b</id>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7e98</id>
   <type>VECTOR</type>
   <defaultStyle>
     <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7fba</id>
   </defaultStyle>
   <resource class="featureType">
-    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7e4c</id>
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7e99</id>
   </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
   <attribution>
     <logoWidth>0</logoWidth>
     <logoHeight>0</logoHeight>
   </attribution>
-  <dateCreated>2026-04-13 08:38:36.635 UTC</dateCreated>
+  <dateCreated>2026-06-29 10:20:57.321 UTC</dateCreated>
+  <dateModified>2026-06-29 10:25:05.761 UTC</dateModified>
 </layer>

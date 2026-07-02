@@ -1,0 +1,19 @@
+<layer>
+  <name>exchangeable_potassium</name>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7f9e</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--bb68920:19f114781fa:-7f8e</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7f9f</id>
+  </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-06-29 03:09:31.166 UTC</dateCreated>
+  <dateModified>2026-06-29 03:10:29.939 UTC</dateModified>
+</layer>

@@ -442,6 +442,12 @@ def fixtures(ctx):
         pty=True,
     )
 
+    ctx.run(
+        f"python manage.py loaddata --app backoffice --database backoffice basedatasets.json \
+--settings={_localsettings()}",
+        pty=True,
+    )
+
 @task
 def collectstatic(ctx):
     print("************************static artifacts******************************")

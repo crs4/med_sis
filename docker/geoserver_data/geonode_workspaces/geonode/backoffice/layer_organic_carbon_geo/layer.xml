@@ -1,17 +1,19 @@
 <layer>
   <name>layer_organic_carbon_geo</name>
-  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7e92</id>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7f34</id>
   <type>VECTOR</type>
   <defaultStyle>
-    <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7ffb</id>
+    <id>StyleInfoImpl--bb68920:19f114781fa:-7f28</id>
   </defaultStyle>
   <resource class="featureType">
-    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7e93</id>
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7f35</id>
   </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
   <attribution>
     <logoWidth>0</logoWidth>
     <logoHeight>0</logoHeight>
   </attribution>
-  <dateCreated>2026-04-13 08:04:19.998 UTC</dateCreated>
-  <dateModified>2026-04-13 08:48:42.404 UTC</dateModified>
+  <dateCreated>2026-06-29 03:26:18.537 UTC</dateCreated>
+  <dateModified>2026-06-29 03:30:10.525 UTC</dateModified>
 </layer>

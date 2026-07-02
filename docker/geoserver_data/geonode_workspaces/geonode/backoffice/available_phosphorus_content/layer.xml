@@ -1,0 +1,19 @@
+<layer>
+  <name>available_phosphorus_content</name>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7ff3</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--bb68920:19f114781fa:-7fe5</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7ff4</id>
+  </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-06-29 02:51:14.746 UTC</dateCreated>
+  <dateModified>2026-06-29 02:55:06.999 UTC</dateModified>
+</layer>

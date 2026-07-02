@@ -27,7 +27,7 @@ import dynamic from 'next/dynamic'
 
 const PointsFilterMap = dynamic(() => import("./map/PointsFilterMap"), { ssr:false })
 
-export default function ValidateDataset( { dataset, setDataset })  { 
+export default function ValidateDataset( { isIndicators, dataset, setDataset })  { 
   const models = [ 
     { name: 'Linear', formula: 'a + b * x'}, 
     { name: 'Power', formula: 'a + b * x^k'}, 
@@ -260,12 +260,12 @@ export default function ValidateDataset( { dataset, setDataset })  {
   const finalizeDataset = async () => {
     /* publish in the catalogue */ 
     workDataset.status = ProfileService.DATASET_STATUSES.VALIDATED
-    if ( workDataset.kriging && ( !workDataset.k_params || !workDataset.k_data || !workDataset.k_data.features || workDataset.k_data.features.length < 3 )){
+    if ( isIndicators && workDataset.kriging && ( !workDataset.k_params || !workDataset.k_data || !workDataset.k_data.features || workDataset.k_data.features.length < 3 )){
       toast.current.show({ severity: 'error', summary: 'Error!', detail: 'Too few points to perform interpolation.'});
       return;
     }
     //if kriging is True generates points in WGS84 to interpolate
-    if ( workDataset.kriging ) {
+    if ( isIndicators && workDataset.kriging ) {
       if ( workDataset.k_params.noOutliers ){
         const kPoints = [];
         workDataset.k_data.features.forEach( (ft) => {  
@@ -275,8 +275,16 @@ export default function ValidateDataset( { dataset, setDataset })  {
         workDataset.k_params.points = featureCollection(kPoints)
       }  
       else workDataset.k_params.points = workDataset.k_data
-      console.log(workDataset.k_params.points)
+      const bounds = featureCollection([bboxPolygon(bbox(workDataset.filter.aoi)) ]);
+      workDataset.k_params.bbox = bounds;
+      workDataset.k_params.nClasses = nClasses ? nClasses: 100;
+      workDataset.k_params.model = model.formula ? model.formula : 'a + b* x';
+      workDataset.k_params.nSkip = nSkip ? nSkip : 1;
+      workDataset.k_params.maxDist = maxDist ? maxDist : -1.0000;
+      workDataset.k_params.noOutliers = noOutliers ? noOutliers : false;
     }
+    // reset source points
+    workDataset.points = { }
     setWorkDataset(workDataset)
     await saveWorkDataset()
     openList()
@@ -285,12 +293,15 @@ export default function ValidateDataset( { dataset, setDataset })  {
   // Re-configure   --- to NULL
   const backToConfiguration = async () => {
     workDataset.status = ProfileService.DATASET_STATUSES.CREATED
-    if ( workDataset.k_params && workDataset.k_params.points ){
-      workDataset.k_params.epsg = null;
-      workDataset.k_params.points = null;
-    }
-    workDataset.k_data = null;
-    workDataset.k_variogram = null;
+    if (isIndicators){
+      workDataset.k_params = {
+        ...workDataset.k_params,
+        epsg:  null,
+        points:  null
+      }
+      workDataset.k_data = null;
+      workDataset.k_variogram = null;
+    }  
     setWorkDataset(workDataset)
     await saveWorkDataset()
   }
@@ -426,18 +437,20 @@ export default function ValidateDataset( { dataset, setDataset })  {
   const initializeData = async () => {
     if ( !dataset )
       return;
-    setKriging(dataset.kriging);
-    if ( dataset.k_params ) {
-      if ( dataset.k_params.maxDist )  
-        setMaxDist(dataset.k_params.maxDist)
-      if ( dataset.k_params.nClasses )  
-        setNClasses(dataset.k_params.nClasses)
-      if ( dataset.k_params.nSkip )  
-        setNSkip(dataset.k_params.nSkip)
-      if ( dataset.k_params.model )  
-        models.forEach( (m) =>  { if ( m.formula === dataset.k_params.model ) setModel(m) } )
-      if ( dataset.k_params.noOutliers )  
-        setNoOutliers(dataset.k_params.noOutliers)
+    if ( isIndicators ){
+      setKriging(dataset.kriging);
+      if ( dataset.k_params ) {
+        if ( dataset.k_params.maxDist )  
+          setMaxDist(dataset.k_params.maxDist)
+        if ( dataset.k_params.nClasses )  
+          setNClasses(dataset.k_params.nClasses)
+        if ( dataset.k_params.nSkip )  
+          setNSkip(dataset.k_params.nSkip)
+        if ( dataset.k_params.model )  
+          models.forEach( (m) =>  { if ( m.formula === dataset.k_params.model ) setModel(m) } )
+        if ( dataset.k_params.noOutliers )  
+          setNoOutliers(dataset.k_params.noOutliers)
+      }
     }
     setWorkDataset(dataset);
     await aggregatePoints()
@@ -506,7 +519,9 @@ export default function ValidateDataset( { dataset, setDataset })  {
             <Column field="value" header=""  className="text-yellow-800" ></Column>
           </DataTable>
           <div className="card flex flex-column gap-2 font-bold w-full"> 
-            { getOutliers() > 0 && (
+          { isIndicators && (
+            <>
+            { ( getOutliers() > 0) && (
               <Message severity="error" text={"Warning! Found " + getOutliers() + " outliers in values"} />
             )}
             { getOutliers() === 0 && (
@@ -517,8 +532,10 @@ export default function ValidateDataset( { dataset, setDataset })  {
             )}
             { !workDataset.k_data || !workDataset.k_data.features || workDataset.k_data.features.length === 0 && (
               <Message severity="error" text="Warning! The dataset has no points for interpolation." />
-            )} 
-              <div className="flex flex-row gap-3 w-full justify-content-center align-items-center"> 
+            )}
+            </> 
+          )}
+            <div className="flex flex-row gap-3 w-full justify-content-center align-items-center"> 
               <Button
                 className="button"
                 loading={isWorking}
@@ -527,6 +544,7 @@ export default function ValidateDataset( { dataset, setDataset })  {
                 icon="pi pi-wrench"
                 onClick={() => { setVisibleFiltered(true); }}
               />
+              { isIndicators && (
               <Button
                 className="button"
                 loading={isWorking}
@@ -535,10 +553,12 @@ export default function ValidateDataset( { dataset, setDataset })  {
                 icon="pi pi-wrench"
                 onClick={() => { setVisibleAggregated(true); }}
               />
+              )}
             </div>
           </div>
         </div>
-      </div>       
+      </div> 
+      { isIndicators && (      
       <div className="card flex flex-row text-cyan-800 w-full justify-content-center align-items-center"> 
           <h5 className="text-cyan-800">
             <Checkbox 
@@ -547,8 +567,8 @@ export default function ValidateDataset( { dataset, setDataset })  {
               Elaborate Kriging Interpolation
           </h5>
       </div> 
-
-      { workDataset.kriging && (
+      )}
+      {  isIndicators && workDataset.kriging && (
       <div className="card flex flex-warp text-cyan-800 w-full justify-content-center align-items-center">
         <div className="flex flex-column gap-2 text-cyan-800 md:w-5 sm:w-full">
           <Card title={t('KRIGING_INTERPOLATION')} subTitle={t('KRIGING_INTERPOLATION_SUBTILE')} 
@@ -634,7 +654,7 @@ export default function ValidateDataset( { dataset, setDataset })  {
         <Button
           className="button"
           loading={isWorking}
-          disabled={isWorking}
+          disabled={ isWorking || !workDataset.filter || !workDataset.filter.points || !workDataset.points.features || !workDataset.points.features.length }
           type="submit"
           label={t('GENERATE_DATASETS')}
           icon="pi pi-save"

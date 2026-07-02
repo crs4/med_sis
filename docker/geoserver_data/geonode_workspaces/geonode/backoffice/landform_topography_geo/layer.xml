@@ -1,16 +1,19 @@
 <layer>
   <name>landform_topography_geo</name>
-  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7ed4</id>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7f6e</id>
   <type>VECTOR</type>
   <defaultStyle>
-    <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7ffb</id>
+    <id>StyleInfoImpl--bb68920:19f114781fa:-7f60</id>
   </defaultStyle>
   <resource class="featureType">
-    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7ed5</id>
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7f6f</id>
   </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
   <attribution>
     <logoWidth>0</logoWidth>
     <logoHeight>0</logoHeight>
   </attribution>
-  <dateCreated>2026-04-13 07:45:03.375 UTC</dateCreated>
+  <dateCreated>2026-06-29 03:16:00.640 UTC</dateCreated>
+  <dateModified>2026-06-29 03:20:11.460 UTC</dateModified>
 </layer>

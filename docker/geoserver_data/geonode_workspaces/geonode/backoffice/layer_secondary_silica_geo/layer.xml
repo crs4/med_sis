@@ -1,12 +1,12 @@
 <layer>
   <name>layer_secondary_silica_geo</name>
-  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7e7b</id>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7f24</id>
   <type>VECTOR</type>
   <defaultStyle>
     <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7e74</id>
   </defaultStyle>
   <resource class="featureType">
-    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7e7c</id>
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7f25</id>
   </resource>
   <queryable>true</queryable>
   <opaque>false</opaque>
@@ -14,6 +14,6 @@
     <logoWidth>0</logoWidth>
     <logoHeight>0</logoHeight>
   </attribution>
-  <dateCreated>2026-04-13 08:13:10.838 UTC</dateCreated>
-  <dateModified>2026-04-13 08:15:17.551 UTC</dateModified>
+  <dateCreated>2026-06-29 03:30:18.606 UTC</dateCreated>
+  <dateModified>2026-06-29 09:50:04.863 UTC</dateModified>
 </layer>

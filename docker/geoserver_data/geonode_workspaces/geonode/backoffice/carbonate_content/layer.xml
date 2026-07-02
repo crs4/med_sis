@@ -1,0 +1,19 @@
+<layer>
+  <name>carbonate_content</name>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7fdf</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--bb68920:19f114781fa:-7fcb</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7fe0</id>
+  </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-06-29 02:55:16.398 UTC</dateCreated>
+  <dateModified>2026-06-29 03:00:04.631 UTC</dateModified>
+</layer>

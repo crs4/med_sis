@@ -1,0 +1,19 @@
+<layer>
+  <name>soc_stock</name>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7ea8</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--bb68920:19f114781fa:-7e9b</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7ea9</id>
+  </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-06-29 10:19:59.584 UTC</dateCreated>
+  <dateModified>2026-06-29 10:20:38.639 UTC</dateModified>
+</layer>

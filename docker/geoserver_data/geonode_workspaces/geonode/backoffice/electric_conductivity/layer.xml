@@ -1,0 +1,19 @@
+<layer>
+  <name>electric_conductivity</name>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7fa4</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--bb68920:19f114781fa:-7f96</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7fa5</id>
+  </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-06-29 03:07:26.302 UTC</dateCreated>
+  <dateModified>2026-06-29 03:10:13.614 UTC</dateModified>
+</layer>

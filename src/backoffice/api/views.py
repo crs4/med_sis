@@ -1155,3 +1155,106 @@ class TaxonomyViewSet(viewsets.ModelViewSet):
 
         return queryset
 
+#########################################
+## Sis Measures
+#########################################   
+class PointSoilDataSectionViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows you to view and edit SisMeasure.
+    """
+    queryset = PointSoilDataSection.objects.all() 
+    serializer_class = PointSoilDataSectionSerializer
+    permission_classes = [permissions.IsAdminUser ]
+    
+    def get_queryset(self):
+        """
+        Filter
+        """
+        queryset = PointSoilDataSection.objects.all()
+        
+        # Name Filter 
+        code = self.request.query_params.get('code', None)
+        if code is not None:
+            queryset = queryset.filter(code=code)
+            
+        return queryset
+
+
+#########################################
+## Soil Indicators (Sis Measures) 
+#########################################   
+class BaseDatasetViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows you to view and edit SisMeasure.
+    """
+    queryset = BaseDataset.objects.all() 
+    serializer_class = BaseDatasetSerializer
+    permission_classes = [permissions.IsAdminUser ]
+    
+    def get_queryset(self):
+        """
+        Filter
+        """
+        queryset = BaseDataset.objects.all()
+        
+        # Name Filter 
+        code = self.request.query_params.get('code', None)
+        if code is not None:
+            queryset = queryset.filter(code=code)
+            
+        return queryset
+    
+#########################################
+## Datasets 
+#########################################   
+class DatasetViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows you to view and edit XLSxUpload.
+    """
+    queryset = Dataset.objects.all() 
+    serializer_class = DatasetSerializer
+    permission_classes = [permissions.IsAdminUser ]
+    
+    def get_queryset(self):
+        """
+        Filtra 
+        """
+        queryset = Dataset.objects.all()
+        
+        # Name Filter 
+        name = self.request.query_params.get('name', None)
+        if name is not None:
+            queryset = queryset.filter(name=name)
+            
+        # User name Filter
+        user = self.request.query_params.get('user', None)
+        if user is not None:
+            queryset = queryset.filter(user_name=user)
+
+        # User email Filter
+        user_email = self.request.query_params.get('email', None)
+        if user_email is not None:
+            queryset = queryset.filter(user_email=user_email)
+
+        # Status Filter
+        status = self.request.query_params.get('status', None)
+        if status is not None:
+            queryset = queryset.filter(status=status)
+
+        context = self.request.query_params.get('context', None)
+        if context is not None:
+            queryset = queryset.filter(context=context)
+
+        return queryset
+    
+    def list(self, dataset):
+        queryset = Dataset.objects.all()
+        serializer = DatasetSerializer(queryset, many=True)
+        for item in serializer.data:
+            item.pop('filter')
+            item.pop('points')
+            item.pop('k_params')
+            item.pop('k_variogram')
+            item.pop('k_data')
+        return Response(serializer.data)
+    

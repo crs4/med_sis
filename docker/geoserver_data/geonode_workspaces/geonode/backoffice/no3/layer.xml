@@ -1,0 +1,19 @@
+<layer>
+  <name>no3</name>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7ef7</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--bb68920:19f114781fa:-7ef1</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7ef8</id>
+  </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-06-29 09:57:08.763 UTC</dateCreated>
+  <dateModified>2026-06-29 10:00:16.657 UTC</dateModified>
+</layer>

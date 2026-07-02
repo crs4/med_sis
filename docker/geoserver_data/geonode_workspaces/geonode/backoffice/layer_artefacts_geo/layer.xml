@@ -1,16 +1,19 @@
 <layer>
   <name>layer_artefacts_geo</name>
-  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7eca</id>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7f6a</id>
   <type>VECTOR</type>
   <defaultStyle>
-    <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7ffb</id>
+    <id>StyleInfoImpl--bb68920:19f114781fa:-7f5c</id>
   </defaultStyle>
   <resource class="featureType">
-    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7ecb</id>
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7f6b</id>
   </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
   <attribution>
     <logoWidth>0</logoWidth>
     <logoHeight>0</logoHeight>
   </attribution>
-  <dateCreated>2026-04-13 07:47:15.300 UTC</dateCreated>
+  <dateCreated>2026-06-29 03:17:28.492 UTC</dateCreated>
+  <dateModified>2026-06-29 03:20:22.395 UTC</dateModified>
 </layer>

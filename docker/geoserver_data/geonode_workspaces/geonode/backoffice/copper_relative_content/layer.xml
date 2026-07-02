@@ -1,16 +1,19 @@
 <layer>
   <name>copper_relative_content</name>
-  <id>LayerInfoImpl-49cd48e1:19d850dfa6e:-7fae</id>
+  <id>LayerInfoImpl--bb68920:19f114781fa:-7fba</id>
   <type>VECTOR</type>
   <defaultStyle>
     <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7fc3</id>
   </defaultStyle>
   <resource class="featureType">
-    <id>FeatureTypeInfoImpl-49cd48e1:19d850dfa6e:-7faf</id>
+    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7fbb</id>
   </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
   <attribution>
     <logoWidth>0</logoWidth>
     <logoHeight>0</logoHeight>
   </attribution>
-  <dateCreated>2026-04-13 05:49:33.65 UTC</dateCreated>
+  <dateCreated>2026-06-29 03:03:30.241 UTC</dateCreated>
+  <dateModified>2026-06-29 03:05:24.167 UTC</dateModified>
 </layer>
