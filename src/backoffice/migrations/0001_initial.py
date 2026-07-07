@@ -1814,7 +1814,7 @@ class Migration(migrations.Migration):
                     "met_acidity",
                     models.TextField(
                         blank=True,
-                        db_comment="Method used for Soil acidity ",
+                        db_comment="Method used for Soil acidity: Exchangeable Al (meq/100g)",
                         null=True,
                     ),
                 ),
@@ -2011,6 +2011,12 @@ class Migration(migrations.Migration):
                     "descr",
                     models.TextField(
                         blank=True, db_comment="Taxonomy value's description", null=True
+                    ),
+                ),
+                (
+                    "uri",
+                    models.TextField(
+                        blank=True, db_comment="URI to the corresponding in a controlled vocabulary (e.g. GloSIS).", null=True
                     ),
                 ),
                 (
@@ -4850,7 +4856,7 @@ class Migration(migrations.Migration):
                 blank=True,
                 null=True,
                 on_delete=django.db.models.deletion.SET_NULL,
-                related_name="labdata_met_clay_set_set",
+                related_name="labdata_met_clay_set",
                 to="backoffice.taxonomyvalue",
             ),
         ),
@@ -4896,7 +4902,7 @@ class Migration(migrations.Migration):
                 db_comment="Method used for Electric conductivity",
                 null=True,
                 on_delete=django.db.models.deletion.SET_NULL,
-                related_name="labdata_met_clay_set",
+                related_name="labdata_met_el_cond_set",
                 to="backoffice.taxonomyvalue",
             ),
         ),

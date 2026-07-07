@@ -18,16 +18,10 @@ ENV LANG C.UTF-8
 COPY src /usr/src/s4m_catalogue/
 WORKDIR /usr/src/s4m_catalogue
 
-# Add cron job to update backoffice layers every hour at minute 0
-COPY src/backoffice-updatelayers-cron /etc/cron.d/backoffice-updatelayers-cron
-RUN chmod 0644 /etc/cron.d/backoffice-updatelayers-cron && \
-    touch /var/log/backoffice-updatelayers.log
-
 COPY src/wait-for-databases.sh /usr/bin/wait-for-databases
 RUN chmod +x /usr/bin/wait-for-databases
 RUN chmod +x /usr/src/s4m_catalogue/tasks.py &&\
     chmod +x /usr/src/s4m_catalogue/entrypoint.sh
-RUN chmod +x /usr/src/s4m_catalogue/cron-backoffice-updatelayers.sh
 
 COPY src/celery.sh /usr/bin/celery-commands
 RUN chmod +x /usr/bin/celery-commands

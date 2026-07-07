@@ -51,6 +51,8 @@ export default function Page()  {
     router.push(`/publish/${id}`);
   };
 
+  
+
   const formatDate = (value) => {
     const date = new Date(value).toJSON()
     if (date)
@@ -367,7 +369,7 @@ export default function Page()  {
   const className2 = 'col-6 text-green-800 mt-1 mb-1';
   
   const headerTemplate = () => {
-    return  <h4 className="font-bold shadow-1 p-3 bg-cyan-700 text-white" style={{ width: '90%' }}>Choose the context of the new Dataset </h4>
+    return  <h5 className="font-bold shadow-1 p-3 bg-cyan-700 text-white" style={{ width: '90%' }}>Choose the context of the new Dataset </h5>
   };
   
   const fetchData = async  () => {
@@ -399,10 +401,10 @@ export default function Page()  {
     {(isWorking) && (
       <Loading  title={t('LOADING')} />
     )} 
-      <div className="card flex flex-reverse w-full m-3"> 
+      <div className="card flex flex-reverse w-full m-4"> 
         <Button icon="pi pi-plus" className="mr-2 mb-2" label="New Dataset" disabled={isWorking}
-          tooltip={t('CREATE_DATASET')} tooltipOptions={{ position: 'top' }}
-          onClick={() => createDataset()}
+          tooltip={t('DATASETS_LIST')} tooltipOptions={{ position: 'top' }}
+          onClick={() => goToList()}
         />
       </div>
       <Dialog header={headerTemplate} visible={visibleCreateDlg} style={{ width: '50vw' }} onHide={() => setVisibleCreateDlg(false)} >

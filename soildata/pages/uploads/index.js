@@ -269,6 +269,15 @@ export default function Page()  {
       <Toast ref={toast} />
       <h4 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">{t('UPLOADS_LIST')}</h4>
       <div className="card text-cyan-800">
+        <div className="flex flex-row-reverse w-full p-2">
+          <Button 
+            icon="pi pi-download"
+            className="flex bg-primary font-bold border-round"
+            disabled={isWorking}
+            onClick={() => openCreate()}
+            label={t('NEW_UPLOAD')}
+          />
+        </div>
       { uploads && !loading && ( 
         <>
         <ConfirmDialog id="dlg_remove" group="declarative"  visible={visibleDlg1} onHide={() => setVisibleDlg1(false)} message="Are you sure you want to delete xlsx upload?" 

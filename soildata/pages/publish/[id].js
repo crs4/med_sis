@@ -40,7 +40,6 @@ export default function Page()  {
       if ( response && response.ok && response.data ){
         const ds = response.data
         setDataset (ds);
-        console.log(ds)
       }      
     } catch (error) {
       console.log(error);
@@ -50,6 +49,10 @@ export default function Page()  {
     
     
   }
+
+  const goToList = () => {
+    router.push(`/publish/`);
+  };
 
   const reload = () => {
     if (id)
@@ -66,6 +69,12 @@ export default function Page()  {
 return (
   <div className="layout-dashboard">
     <Toast ref={toast} />
+    <div className="card flex flex-reverse w-full m-4"> 
+      <Button icon="pi pi-plus" className="mr-2 mb-2" label="List of Dataset" disabled={isWorking}
+        tooltip={t('DATASET_LIST')} tooltipOptions={{ position: 'top' }}
+        onClick={() => goToList()}
+      />
+    </div>
     { dataset && dataset.status === ProfileService.DATASET_STATUSES.CREATED && (
       <>
       <h5 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">Configuring Dataset</h5>

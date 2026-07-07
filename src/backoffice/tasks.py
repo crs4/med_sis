@@ -126,23 +126,23 @@ def process_base_dataset(self, dataset_id):
     """
     dataset = None
     try:
-        logger.info(f"Starting processing dataset {dataset_id}")
+        logger.info(f"Starting processing base dataset {dataset_id}")
         # Recupera l'oggetto Dataset
-        dataset = BaseDataset.objects.using('backoffice').get(id=dataset_id)
+        dataset = BaseDataset.objects.using('backoffice').get(code=dataset_id)
         
         # Verifica che lo stato sia IN_PROCESS
         if dataset.status != "IN_PROCESS":
             logger.warning(f"Dataset {dataset_id} is not in IN_PROCESS status  (current state: {dataset.status})")
             return False
-        logger.info(f"Processing dataset {dataset_id} data...")
+        logger.info(f"Processing base dataset {dataset_id} data...")
         service = BaseDatasetService()
         report = service.process_base_dataset_data(dataset_id)
         if report:
-            dataset.report = report
             for msg in report.get('msgs'):
                 logger.info(f"msg: {msg}")
             if report.get('success'):
                 dataset.status = "PUBLISHED"
+                dataset.geonode_id = report.get('geonode')
                 logger.info(f"Dataset {dataset_id} published")
             else:
                 dataset.status = "ERRORS"
@@ -163,4 +163,12 @@ def process_base_dataset(self, dataset_id):
             except Exception as save_e:
                 logger.error(f"It is not possible to save the status ERRORS in dataset {dataset_id}: {save_e}")
         return False
+    
+@shared_task(bind=True, name='backoffice.tasks.process_hydro_ptf_model', queue='default')
+def process_hydro_ptf_model(self, dataset_id):
+    return False;
+
+@shared_task(bind=True, name='backoffice.tasks.process_hydro_ptf_elaboration', queue='default')
+def process_hydro_ptf_elaboration(self, dataset_id):
+    return False;
     

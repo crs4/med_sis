@@ -130,10 +130,6 @@ export default function Page()  {
           operator: FilterOperator.AND,
           constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]
       },
-      editor: {
-        operator: FilterOperator.AND,
-        constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]
-      },
       date: {
           operator: FilterOperator.AND,
           constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }]
@@ -184,8 +180,6 @@ export default function Page()  {
       return ( <Tag severity="danger" value="Critical error"></Tag>) */
   };
 
-  
-
   const header = renderHeader();
 
   const mapModels = (data) => {
@@ -233,10 +227,6 @@ export default function Page()  {
       <Toast ref={toast} />
       <h4 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">{t('HYDROPTF_LIST')}</h4>
       <div className="card text-cyan-800">
-      { models && !loading && ( 
-        <>
-        <ConfirmDialog id="dlg_remove" group="declarative"  visible={visibleDlg1} onHide={() => setVisibleDlg1(false)} message="Are you sure you want to delete Hydro PTF model?" 
-          header="Confirmation" icon="pi pi-exclamation-triangle" accept={performRemove} reject={rejectDlg1} />
         <div className="flex flex-row-reverse w-full p-2">
           <Button 
             icon="pi pi-download"
@@ -246,6 +236,11 @@ export default function Page()  {
             label={t('NEW_HYDROPTF')}
           />
         </div>
+      { models && !loading && ( 
+        <>
+        <ConfirmDialog id="dlg_remove" group="declarative"  visible={visibleDlg1} onHide={() => setVisibleDlg1(false)} message="Are you sure you want to delete Hydro PTF model?" 
+          header="Confirmation" icon="pi pi-exclamation-triangle" accept={performRemove} reject={rejectDlg1} />
+        
         <DataTable
           value={models}
           paginator

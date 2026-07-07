@@ -449,9 +449,7 @@ class  LayerStructureSerializer(serializers.ModelSerializer):
         fields = '__all__'
     
     def validate(self, data):
-        """
-        Validazione personalizzata per controllare l'unicità prima del salvataggio
-        """
+        
         layer = data.get('layer')
         level = data.get('level')
         # Controlla se esiste già una combinazione Point-layer-level (quando level non è None)
@@ -502,7 +500,34 @@ class BaseDatasetSerializer(serializers.ModelSerializer):
     class Meta:
         model = BaseDataset 
         fields = '__all__'  
-    
+
+    def update(self, instance, validated_data):
+        """
+        Override to start elaboration if status or fields are changed
+        """
+        # standard update
+        instance = super().update(instance, validated_data)
+        
+        if 'status' in validated_data:
+            # start_processing in models.py controll: 
+            # if self.status == "CREATED" --> "IN_PROCESS"
+            instance.save(using='backoffice')
+            
+            # Avvia il processo
+            started = instance.start_processing()
+            
+            # Opzionale: Loggare se il processo non è partito per qualche motivo
+            if not started:
+                logger.error(
+                    f"Impossible to restart processing for Dataset ID {instance.code}. "
+                    f"Current status: {instance.status}. "
+                    "Check Celery configuration or model constraints."
+                )
+                # Opzionale: Aggiungere un warning nel report dell'oggetto
+                instance.status="ERRORS"
+                instance.save(using='backoffice')
+
+        return instance
 #########################################
 ## Datasets 
 #########################################
@@ -520,14 +545,10 @@ class DatasetSerializer(serializers.ModelSerializer):
         # standard update
         instance = super().update(instance, validated_data)
         
-        # 
-        # (es. 'data' o 'operation'). Se modifico il titolo non deve riprocessare.
-        # L'if il task solo se vengono modificati i campi che richiedono un ri-processamento.
         if 'status' in validated_data:
             # start_processing in models.py controlla: 
             # if self.status == "VALIDATED" and self.kriging == true --> process(interpolate) and publish --> "PUBLISHED"
             # if self.status == "VALIDATED" and self.kriging == false --> publish --> "PUBLISHED"
-            # if self.status == "CONFIGURED" and self.kriging == true --> process(variogram) --> "PROCESSED"
             instance.save(using='backoffice')
             
             # Avvia il processo
@@ -577,5 +598,76 @@ class TaxonomySerializer(serializers.ModelSerializer):
     class Meta:
         model = Taxonomy 
         fields = '__all__' 
+
+#########################################
+## HYDROPTF 
+#########################################
+
+class HydroPtfModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HydroPtfModel
+        fields = '__all__'
+        read_only_fields = ('id',)   
+    
+    def update(self, instance, validated_data):
+        """
+        Override to start elaboration if status or fields are changed
+        """
+        # standard update
+        instance = super().update(instance, validated_data)
+        
+        if 'status' in validated_data:
+            # start_processing in models.py controlla: 
+            # if self.status == "CREATED"  --> "IN_PROCESS"
+            instance.save(using='backoffice')
+            
+            # Avvia il processo
+            started = instance.start_processing()
+            
+            # Opzionale: Loggare se il processo non è partito per qualche motivo
+            if not started:
+                logger.error(
+                    f"Impossible to restart processing for Dataset ID {instance.id}. "
+                    f"Current status: {instance.status}. "
+                    "Check Celery configuration or model constraints."
+                )
+                # Opzionale: Aggiungere un warning nel report dell'oggetto
+                instance.status="ERRORS"
+                instance.save(using='backoffice')
+
+        return instance
+
+class HydroPtfElaborationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HydroPtfElaboration 
+        fields = '__all__'
+        read_only_fields = ('id',)   
+    
+    def update(self, instance, validated_data):
+        """
+        Override to start elaboration if status or fields are changed
+        """
+        # standard update
+        instance = super().update(instance, validated_data)
+        
+        if 'status' in validated_data:
+            # if self.status == "CREATED"  --> "IN_PROCESS"
+            instance.save(using='backoffice')
+            
+            # Avvia il processo
+            started = instance.start_processing()
+            
+            # Opzionale: Loggare se il processo non è partito per qualche motivo
+            if not started:
+                logger.error(
+                    f"Impossible to restart processing for Dataset ID {instance.id}. "
+                    f"Current status: {instance.status}. "
+                    "Check Celery configuration or model constraints."
+                )
+                # Opzionale: Aggiungere un warning nel report dell'oggetto
+                instance.status="ERRORS"
+                instance.save(using='backoffice')
+
+        return instance
 
   

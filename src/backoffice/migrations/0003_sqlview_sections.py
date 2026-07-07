@@ -282,11 +282,22 @@ CREATE OR REPLACE VIEW layer_structure_geo AS
 ALTER VIEW IF EXISTS layer_structure_geo OWNER TO backoffice_user;
 
 CREATE OR REPLACE VIEW labdata_extra_geo AS
-    SELECT e.id, l.id as labdata_id, l.point_id, l.point_type, l.project, l.date, l.survey_m_id, l.l_number, 
-      l.horizon, l.upper, l.lower, e.measure_id, e.method_id, e.unit_id, e.value, l.geom
-    FROM labdata_geo l, labdata_extra_measure e
-    WHERE l.id = e.labdata_id; 
+  SELECT e.id, e.point_id, t.point_type, t.project, t.date, t.survey_m_id, 
+    t.upper, t.lower, e.measure_id as measure, e.method_id as method, e.unit_id as unit, e.value, t.geom
+  FROM labdata_extra_measure e, labdata_geo t
+  WHERE t.id = e.labdata_id;
 ALTER VIEW IF EXISTS labdata_extra_geo OWNER TO backoffice_user; 
+
+CREATE OR REPLACE VIEW active_carbonate AS
+  SELECT 
+    l.id, l.point_id, l.point_type, l.date, l.upper, l.lower, l.survey_m_id, l.project, l.horizon, 
+    l.active_caco3 as value, 
+    'percentage' AS unit, 
+    l.met_active_caco3_id as method, 
+    l.geom
+    FROM labdata_geo l
+    WHERE l.active_caco3 IS NOT NULL;
+ALTER VIEW IF EXISTS active_carbonate OWNER TO backoffice_user;
 
 CREATE OR REPLACE VIEW photo_geo AS
     SELECT 

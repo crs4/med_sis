@@ -10,7 +10,8 @@ export const ProfileService = {
   DATASET_CONTEXT : {
     POINTS_SOIL_DATA: "POINTS_SOIL_DATA",
     SOIL_INDICATOR: "SOIL_INDICATOR",
-    AOI_SOIL_INDICATOR: "AOI_SOIL_INDICATOR" 
+    AOI_SOIL_INDICATOR: "AOI_SOIL_INDICATOR",
+    LABDATA_EXTRA_MEASURE: "LABDATA_EXTRA_MEASURE" 
   },
 
   DATASET_STATUSES : {
@@ -23,16 +24,16 @@ export const ProfileService = {
   },
 
   BASE_DATASET_STATUSES : {
-    "TO_CONFIGURE": "To configure",
-    "CREATED": "Created",
-    "IN_PROCESS": "Processing...",
-    "PUBLISHED": "Published",
-    "ERRORS": "Errors"
+    "TO_CONFIGURE": "TO_CONFIGURE",
+    "CREATED": "CREATED",
+    "IN_PROCESS": "IN_PROCESS",
+    "PUBLISHED": "PUBLISHED",
+    "ERRORS": "ERRORS"
   },
 
   BASE_DATASET_TYPES : {
-    "SOIL_INDICATOR": "Soil Indicator",
-    "POINT_SOIL_DATA_SECTION": "Point soil data section"
+    "SOIL_INDICATOR": "SOIL_INDICATOR",
+    "POINT_SOIL_DATA_SECTION": "POINT_SOIL_DATA_SECTION"
   },
 
   async getDataset(typename, bboxFilter, token) { 
@@ -138,17 +139,3 @@ export const ProfileService = {
 }
 
 export default ProfileService
-
-
-/*  AREA di lavoro da cancellare via boot or published ????? /tmp/ dataset:id:time:time
-1)  aggregate points: points.geojson
-2)  trasformation: if points and or aoi not exist 
-    gdal vector reproject -s EPSG:4326 -t EPSG:xx6yy points.geojson points.shp
-    //// reproject aoi bbox  West	 East	 South	 North	
-    gdal vector reproject -s EPSG:4326 -t EPSG:xx6yy aoibbox.geojson aoibbox.shp
-    write cmd.txt ( to elaborate )
-3a)  clean diagram.csv -> elaborate for diagram -> generate.csv  
-4a)  python add csv as json to dataset
-3b)  clean tiff    
-
-*/

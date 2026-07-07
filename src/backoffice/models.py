@@ -36,7 +36,8 @@ class TaxonomyValue(models.Model):
     taxonomy = models.ForeignKey(Taxonomy, on_delete=models.CASCADE, related_name='values_taxonomy_set', db_comment='Taxonomy id') 
     value = models.TextField(db_comment='Taxonomy value')
     descr = models.TextField( db_comment='Taxonomy value\'s description', null=True, blank=True)
-    
+    uri = models.TextField( db_comment='uri to a controlled vocubolary entry', null=True, blank=True)
+
     objects = models.Manager().using('backoffice')
     class Meta:
         managed = True
@@ -352,7 +353,7 @@ class LabData(models.Model):
     clay = models.FloatField( db_comment='Clay  (percentage of the fine earth)', blank=True, null=True)
     met_clay = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdata_met_clay_set',  blank=True, null=True)
     bulk_dens = models.FloatField( db_comment='Bulk density (g/cm3)'	, blank=True, null=True)
-    met_bulk_dens = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdata_met_bulk_dens_set',  blank=True, null=True)
+    met_bulk_dens = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdata_met_bulk_dens_set', db_comment="Method used for bulk density", blank=True, null=True)
     slake_test = models.FloatField( db_comment='Bulk density (g/cm3)'	, blank=True, null=True)
     met_slake_test = models.TextField(blank=True, null=True)
     el_cond = models.FloatField( db_comment='Electric conductivity (dS/m)', blank=True, null=True)
@@ -1023,8 +1024,10 @@ BASE_DATASET_STATUSES = [
 ]
 
 BASE_DATASET_TYPES = [
-    ("SOIL_INDICATOR" , "SOIL_INDICATOR"),
-    ("POINT_SOIL_DATA_SECTION" , "POINT_SOIL_DATA_SECTION"),
+    ("soil_chemical_health" , "soil_chemical_health"),
+    ("soil_physical_health" , "soil_physical_health"),
+    ("soil_biological_health" , "soil_biological_health"),
+    ("points_soil_data" , "points_soil_data"),
 ]
 
 class BaseDataset(models.Model):
@@ -1034,7 +1037,6 @@ class BaseDataset(models.Model):
     geonode_id = models.TextField(db_comment='catalogue identifier', blank=True, null=True )
     status = models.TextField( choices=BASE_DATASET_STATUSES, db_comment='Status of the dataset' )
     type = models.TextField( choices=BASE_DATASET_TYPES, db_comment='Type of the dataset' )
-    keywords = models.TextField(db_comment='keywords comma separated', blank=True, null=True )
     unit = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='sis_measure_unit_set', blank=True, null=True)
      
     objects = models.Manager().using('backoffice')
@@ -1047,7 +1049,7 @@ class BaseDataset(models.Model):
         self.save(using='backoffice')
         # This ensures that the task starts ONLY when the data is actually written to DB.
         transaction.on_commit(
-            lambda: process_base_dataset.delay(self.id),
+            lambda: process_base_dataset.delay(self.code),
             using='backoffice')    
         return True
     
@@ -1097,3 +1099,74 @@ class Photo(models.Model):
         db_table = 'photos'
         db_table_comment = 'photos descriptor'
         
+###########################
+# HydroPTF
+###########################
+
+HYDROPTF_MODEL_STATUSES = [
+    ("CREATED" , "CREATED"),
+    ("IN_PROCESS" , "IN_PROCESS"),
+    ("TRAINED" , "TRAINED"),
+    ("ERRORS" , "ERRORS"),
+]
+
+HYDROPTF_DATA_STATUSES = [
+    ("CREATED" , "CREATED"),
+    ("IN_PROCESS" , "IN_PROCESS"),
+    ("ELABORATED" , "ELABORATED"),
+    ("ERRORS" , "ERRORS"),
+]
+
+class HydroPtfModel (models.Model):
+    id = models.TextField(primary_key=True, db_comment='Geonode document identifier (number)')
+    title = models.TextField(db_comment='Model title')
+    date = models.DateTimeField( db_comment='Date of the sample', blank=True, null=True )
+    train_data = models.JSONField( db_comment='Training Data')
+    model_data = models.JSONField( db_comment='Result of training')
+    status = models.TextField( choices=HYDROPTF_MODEL_STATUSES, db_comment='Status of the Hydro PTF Model' )
+    
+    objects = models.Manager().using('backoffice')
+    
+    def start_processing(self):
+        """Start training HydroPtf model """
+        from .tasks import process_hydro_ptf_model
+        if self.status == "CREATED": 
+            self.status = "IN_PROCESS"
+        self.save(using='backoffice')
+        # This ensures that the task starts ONLY when the data is actually written to DB.
+        transaction.on_commit(
+            lambda: process_hydro_ptf_model.delay(self.code),
+            using='backoffice')    
+        return True
+    
+    class Meta:
+        managed = True
+        db_table = 'hydroptf_model'
+        db_table_comment = 'hydroptf models'
+        
+class HydroPtfElaboration (models.Model):
+    id = models.TextField(primary_key=True, db_comment='Geonode document identifier (number)')
+    title = models.TextField(db_comment='Model title')
+    date = models.DateTimeField( db_comment='Date of the sample', blank=True, null=True )
+    ptfmodel = models.ForeignKey(HydroPtfModel, on_delete=models.CASCADE, related_name='photo_point_set', db_comment='Point soil data identifier') 
+    inputData = models.JSONField( db_comment='Input Data')
+    outputData = models.JSONField( db_comment='Input Data')
+    status = models.TextField( choices=HYDROPTF_DATA_STATUSES, db_comment='Status of the Hydro PTF Elaboration' )
+    
+    objects = models.Manager().using('backoffice')
+    
+    def start_processing(self):
+        """Start elaboration HydroPtf model """
+        from .tasks import process_hydro_ptf_elaboration
+        if self.status == "CREATED": 
+            self.status = "IN_PROCESS"
+        self.save(using='backoffice')
+        # This ensures that the task starts ONLY when the data is actually written to DB.
+        transaction.on_commit(
+            lambda: process_hydro_ptf_elaboration.delay(self.code),
+            using='backoffice')    
+        return True
+    class Meta:
+        managed = True
+        db_table = 'hydroptf_elaboration'
+        db_table_comment = 'hydroptf elaborations'

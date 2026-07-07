@@ -37,11 +37,14 @@ router.register(r'layer-non-matrix-pores', LayerNonMatrixPoreViewSet)
 router.register(r'layer-structures', LayerStructureViewSet)
 router.register(r'lab-data', LabDataViewSet)
 router.register(r'lab-data-extra-measures', LabDataExtraMeasureViewSet )
+router.register(r'extrameasures', ExtrameasureViewSet, basename='extrameasures' )
 router.register(r'datasets', DatasetViewSet)
-router.register(r'base-dataset', BaseDatasetViewSet)
+router.register(r'base-datasets', BaseDatasetViewSet)
 router.register(r'photos', PhotoViewSet)
 router.register(r'taxonomies', TaxonomyViewSet)
 router.register(r'taxonomy-values', TaxonomyValueViewSet)
+router.register(r'hydro-ptf-models', HydroPtfModelViewSet)
+router.register(r'hydro-ptf-elaborations', HydroPtfElaborationViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

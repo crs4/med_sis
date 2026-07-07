@@ -75,7 +75,7 @@ export default function Page( )  {
         }
       });
     } catch (e) {
-      
+      console(e)
     }
     return panel;  
   }

@@ -80,8 +80,21 @@ class VariogramViewSet(viewsets.ViewSet):
             return Response(
                 {"detail": (f"Errors: Open the log for further details. ")},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR )
-          
-#saga_cmd statistics_kriging 4 -POINTS /tmp/points.shp -ATTRIBUTE 'value' -VARIOGRAM /tmp/vario.csv -VAR_MAXDIST -1.0000 -VAR_NSKIP 1 -VAR_MODEL 'a + b*x'
+
+class ExtrameasureViewSet(viewsets.ViewSet):
+    """
+    API endpoint to run the updatelayers command on demand.
+    """
+    permission_classes = [permissions.IsAdminUser]  
+
+    """
+    list  request
+    """
+    def list(self, request):
+        measures = LabDataExtraMeasure.objects.distinct('measure')
+        return Response( { "Measures": measures}, status=status.HTTP_200_OK )
+
+
 class UpdateLayersViewSet(viewsets.ViewSet):
     """
     API endpoint to run the updatelayers command on demand.
@@ -1038,7 +1051,7 @@ class DatasetViewSet(viewsets.ModelViewSet):
 
         return queryset
     
-    def list(self, dataset):
+    def list(self, request):
         queryset = Dataset.objects.all()
         serializer = DatasetSerializer(queryset, many=True)
         for item in serializer.data:
@@ -1095,17 +1108,14 @@ class LabDataExtraMeasureViewSet(viewsets.ModelViewSet):
         id = self.request.query_params.get('id', None)
         if id is not None:
             queryset = queryset.filter(id=id)
-        t = self.request.query_params.get('labdata', None)
-        if t is not None:
-            queryset = queryset.filter(labdata=t)
         m = self.request.query_params.get('measure', None)
         if m is not None:
             queryset = queryset.filter(measure=m)
         p = self.request.query_params.get('point', None)
         if p is not None:
             queryset = queryset.filter(point=p)
- 
         return queryset
+    
 #########################################
 ## Taxonomy 
 #########################################
@@ -1155,33 +1165,9 @@ class TaxonomyViewSet(viewsets.ModelViewSet):
 
         return queryset
 
-#########################################
-## Sis Measures
-#########################################   
-class PointSoilDataSectionViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows you to view and edit SisMeasure.
-    """
-    queryset = PointSoilDataSection.objects.all() 
-    serializer_class = PointSoilDataSectionSerializer
-    permission_classes = [permissions.IsAdminUser ]
-    
-    def get_queryset(self):
-        """
-        Filter
-        """
-        queryset = PointSoilDataSection.objects.all()
-        
-        # Name Filter 
-        code = self.request.query_params.get('code', None)
-        if code is not None:
-            queryset = queryset.filter(code=code)
-            
-        return queryset
-
 
 #########################################
-## Soil Indicators (Sis Measures) 
+## Base Soil Dataset 
 #########################################   
 class BaseDatasetViewSet(viewsets.ModelViewSet):
     """
@@ -1209,7 +1195,7 @@ class BaseDatasetViewSet(viewsets.ModelViewSet):
 #########################################   
 class DatasetViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows you to view and edit XLSxUpload.
+    API endpoint that allows you to view and edit Dataset.
     """
     queryset = Dataset.objects.all() 
     serializer_class = DatasetSerializer
@@ -1247,7 +1233,7 @@ class DatasetViewSet(viewsets.ModelViewSet):
 
         return queryset
     
-    def list(self, dataset):
+    def list(self, request):
         queryset = Dataset.objects.all()
         serializer = DatasetSerializer(queryset, many=True)
         for item in serializer.data:
@@ -1256,5 +1242,76 @@ class DatasetViewSet(viewsets.ModelViewSet):
             item.pop('k_params')
             item.pop('k_variogram')
             item.pop('k_data')
+        return Response(serializer.data)
+    
+#########################################
+## Datasets 
+#########################################   
+class HydroPtfModelViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows you to view and edit HydroPtfModel.
+    """
+    queryset = HydroPtfModel.objects.all() 
+    serializer_class = HydroPtfModelSerializer
+    permission_classes = [permissions.IsAdminUser ]
+    
+    def get_queryset(self):
+        """
+        Filtra 
+        """
+        queryset = Dataset.objects.all()
+        
+        # Status Filter
+        id = self.request.query_params.get('id', None)
+        if id is not None:
+            queryset = queryset.filter(id=id)
+        
+        # Status Filter
+        status = self.request.query_params.get('status', None)
+        if status is not None:
+            queryset = queryset.filter(status=status)
+           
+
+        return queryset
+    
+    def list(self, request):
+        queryset = HydroPtfModel.objects.all()
+        serializer = HydroPtfModelSerializer(queryset, many=True)
+        for item in serializer.data:
+            item.pop('train_data')
+            item.pop('model_data')
+        return Response(serializer.data)
+    
+#########################################
+## Datasets 
+#########################################   
+class HydroPtfElaborationViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows you to view and edit HydroPtfElaboration.
+    """
+    queryset = HydroPtfElaboration.objects.all() 
+    serializer_class = HydroPtfElaborationSerializer
+    permission_classes = [permissions.IsAdminUser ]
+    
+    def get_queryset(self):
+        # Status Filter
+        id = self.request.query_params.get('id', None)
+        
+        if id is not None:
+            queryset = queryset.filter(id=id)
+        
+        # Status Filter
+        status = self.request.query_params.get('status', None)
+        if status is not None:
+            queryset = queryset.filter(status=status)
+
+        return queryset
+    
+    def list(self, request):
+        queryset = HydroPtfElaboration.objects.all()
+        serializer = HydroPtfElaborationSerializer(queryset, many=True)
+        for item in serializer.data:
+            item.pop('inputData')
+            item.pop('outputData')
         return Response(serializer.data)
     

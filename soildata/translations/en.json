@@ -1,5 +1,32 @@
 {
   "default": {
+    "LIST_OF_VALUES": "List of values",
+    "DELETE_ENTRY_Q": "Are you sure you want to delete the entry",
+    "HYDROPTF_LIST": "Hydro Ptf trained models list",
+    "NEW_HYDROPTF": "Training of the Hydro Ptf model", 
+    "CREATE_TAXONOMY": "Create a new taxonomy",
+    "ADD_CLASS": "Add a new entry to the taxonomy",
+    "ID": "Identifier",
+    "TAXONOMY": "Taxonomy",
+    "CLASS": "Value",
+    "DESCRIPTION": "Description",
+    "DELETE_TAXONOMY_Q": "Are you sure you want to delete the taxonomy?",
+    "REFRESH_LIST": "Refresh List",
+    "GOTO_CATALOGUE": "Show in catalogue",
+    "CONFIGURE": "Configure", 
+    "POINTS_SOIL_DATA": "Points Soil Data",
+    "RECONFIGURE": "Reconfigure",
+    "IN_PROCESS": "In Process...", 
+    "CONFIGURE_ALL_LAYERS": "Configure ALL datasets",
+    "WATING_ELABORATION": "Waiting Elaboration",
+    "POINT_SOIL_DATA_SECTION": "Point Soil Data Section", 
+    "SOIL_INDICATOR": "Soil Indicator",
+    "CONFIGURE_DATASET": "Configure",
+    "TO_CONFIGURE": "To Configure",
+    "PUBLISHED": "Published",
+    "PHYSICAL_HEALTH": "Physical Health",
+    "CHEMICAL_HEALTH": "Chemical Health",
+    "BIOLOGICAL_HEALTH": "Biological Health",
     "CODE": "code",
     "UPPER": "Upper",
     "LOWER": "Lower",
@@ -243,6 +270,5 @@
     "PLAN_BASED_NEW_LU ": "Planning based future LU map",
     "PROJECT_NEED_REPROCESSING ": "the project requires data reprocessing ",
     "PROJECT_REPROCESSING ": "Reprocess Data"
-    
   }
 }

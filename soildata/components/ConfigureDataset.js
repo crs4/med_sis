@@ -25,7 +25,7 @@ import { useRouter } from 'next/router';
 import { useUser } from '../context/user';
 import ProfileService from '../service/profiles';
 import TaxonomyService from '../service/taxonomies';
-import BaseDatasets from '../data/basedatasets';
+import AoiSoilIndicators from '../data/basedatasets';
 import dynamic from "next/dynamic";
 import Loading from './Loading';
 
@@ -42,13 +42,13 @@ export default function ConfigureDataset( { isIndicators, dataset, setDataset } 
   const [activeIndex, setActiveIndex] = useState(0);
   // working state 
   const [isWorking, setIsWorking] = useState(false);
+  // loading state 
+  const [isLoading, setIsLoading] = useState(false);
   // working dataset
   const [workDataset, setWorkDataset] = useState(dataset)
   // SOURCES
-  const srcDatasetsList = isIndicators ? 
-      (dataset.context === ProfileService.DATASET_CONTEXT.AOI_SOIL_INDICATOR) ? BaseDatasets.aoiSoilIndicators : BaseDatasets.indicators
-      :
-      BaseDatasets.sections
+  const [srcDatasetsList, setSrcDatasetsList] = useState(null); 
+  
   const [selectedSource, setSelectedSource] = useState(null);
   
   // MAP Points
@@ -200,13 +200,11 @@ export default function ConfigureDataset( { isIndicators, dataset, setDataset } 
       workDataset.src_typename = null;
     else {
       workDataset.source = sourceDS.name;
-      if (sourceDS.typename){ 
-        workDataset.src_typename = 'geonode:' + sourceDS.typename;
-        if ( workDataset.context === ProfileService.DATASET_CONTEXT.SOIL_INDICATOR )
-          await loadPoints(sourceDS.typename)
-        else 
-          await loadIndicatorPoints(sourceDS.name,sourceDS.typename)    
-      }
+      workDataset.src_typename = 'geonode:' + sourceDS.code;
+      if ( workDataset.context !== ProfileService.DATASET_CONTEXT.SOIL_INDICATOR )
+        await loadPoints('geonode:' + sourceDS.code)
+      else 
+      await loadIndicatorPoints(sourceDS.name, 'geonode:' + sourceDS.code)    
     }
     setWorkDataset(workDataset)
     saveWorkDataset()
@@ -365,13 +363,56 @@ export default function ConfigureDataset( { isIndicators, dataset, setDataset } 
     }
     return efPoints;          
   }
-      
-  // This loads and sets the source points from a catalogue dataset
-  const loadIndicatorPoints = async (indicator, typename) => {
+    
+  const transformT  = (text) => {
+    try  {
+      let m = text.toUpperCase().match(/\w/g);
+      let t = '';
+      if ( m )
+        m.forEach( (c) => t += c)
+      if ( t === '' ) return null
+      else return t   
+    } catch (error) {
+      console.log(error)  
+    };
+    return null
+  };
+
+  // This loads and sets the source points for a specific measure in the 
+  // extra labdata measure catalogue dataset using geoserver
+  // typename = labdata_extra_geo  
+  const loadExtraMeasureIndicatorPoints = async (indicator) => {
     try {
       const token = user.userData.access_token;
       setIsWorking(true);
-      const response = await ProfileService.getDataset( 'geonode:' + typename, null, token )
+      const response = await ProfileService.getExtraLabDataMeasure( indicator.measure, token )
+      setIsWorking(false);
+      if ( response && response.ok && response.data && response.data.features ){
+        const points = response.data; 
+        setPoints (points);
+        await extractData (points);
+        setWorkDataset(await filtering(workDataset));
+        toast.current.show({ severity: 'success', summary: 'Done!', detail: 'Source points has been loaded.'});
+      }
+      else {
+        resetPoints()
+        toast.current.show({ severity: 'error', summary: 'Errors!', detail: 'Source points not available.'}); 
+      }
+    } catch (e) {
+      resetPoints()
+      console.log(e);
+      toast.current.show({ severity: 'error', summary: 'Errors!', detail: 'System Error, Errors loading source points.'});
+      setIsWorking(false);
+    }  
+  }
+
+  // This loads and sets the source points from labdata catalogue dataset using geoserver
+  // then evaluate the values for the Enrichment Factor Soil Indicator for an chemical element  
+  const loadAoiIndicatorPoints = async (indicator, typename) => {
+    try {
+      const token = user.userData.access_token;
+      setIsWorking(true);
+      const response = await ProfileService.getDataset(  typename, null, token )
       setIsWorking(false);
       if ( response && response.ok && response.data && response.data.features ){
         const labdata_points = response.data;
@@ -518,7 +559,7 @@ export default function ConfigureDataset( { isIndicators, dataset, setDataset } 
     try {
       const token = user.userData.access_token;
       setIsWorking(true);
-      const response = await ProfileService.getDataset( 'geonode:' + typename, null, token )
+      const response = await ProfileService.getDataset( typename, null, token )
       setIsWorking(false);
       if ( response && response.ok && response.data && response.data.features ){
         const points = response.data; 
@@ -670,13 +711,56 @@ export default function ConfigureDataset( { isIndicators, dataset, setDataset } 
 
   let StepHeaders = ['Source', 'Area of Interest', 'Filters'];
 
-  // This loads the boundaries datasets list  
-  const loadAreasDatasets = async  ( ) => { 
+  const fetchData = async  () => { 
+    setIsLoading(true);
+    try {
+      /// this loads the sources descritors using the context of the dataset.
+      //  The context indicates the  mode to retrieve points data:
+      //  ProfileService.DATASET_CONTEXT.AOI_SOIL_INDICATOR : For each point, the values will be calculated using the labdata_geodataset.
+      //  ProfileService.DATASET_CONTEXT.POINTS_SOIL_DATA : The values will be loaded from a point soil data section catalogue dataset
+      //  ProfileService.DATASET_CONTEXT.SOIL_INDICATOR : The values will be loaded from a soil indictor catalogue dataset 
+      //  ProfileService.DATASET_CONTEXT.LABDATA_EXTRA_MEASURE: The values will be filtered from the "labdata_extra_geo" catalogue dataset
+      const list = [];  
+      if ( dataset.context === ProfileService.DATASET_CONTEXT.AOI_SOIL_INDICATOR ) 
+        list = AoiSoilIndicators.datasets 
+      else if ( dataset.context === ProfileService.DATASET_CONTEXT.POINTS_SOIL_DATA ||
+                dataset.context === ProfileService.DATASET_CONTEXT.SOIL_INDICATOR ) {
+        const _idata = await ProfileService.list(document.cookie,'base-datasets');
+        if ( !_idata || !_idata.ok || !_idata.data || !Array.isArray(_idata.data) || _idata.data.length === 0 )
+          toast.current.show({severity:'error', summary: 'No data!', detail: 'Base datasets descriptors not found' , life: 3000});
+        else {
+          if ( isIndicators )
+            list = _idata.data.filter((d) => d.type !== 'points_soil_data');
+          else list = _idata.data.filter((d) => d.type === 'points_soil_data');
+          // sort by name
+          toast.current.show({severity:'success', summary: 'Done!', detail: "Base Datasets descriptors list has been loaded" , life: 3000});
+        } 
+      }
+      else if ( dataset.context === ProfileService.DATASET_CONTEXT.LABDATA_EXTRA_MEASURE ) {
+        const _idata = await ProfileService.list(document.cookie,'extrameasures');
+        if ( !_idata || !_idata.ok || !_idata.data || !Array.isArray(_idata.data) || _idata.data.length === 0 )
+          toast.current.show({severity:'error', summary: 'No data!', detail: 'Base datasets descriptors not found' , life: 3000});
+        else {
+          const measures = _idata.data
+          measures.forEach ( mes => {
+            list.push({ "name": transformT(mes), "abstract:":"Extra Laboratory Mesaure: "+mes, "code": mes, "type": "points_soil_data"},)  
+          })
+          toast.current.show({severity:'success', summary: 'Done!', detail: "Base Datasets descriptors list has been loaded" , life: 3000});
+        } 
+      }
+      setSrcDatasetsList( list.sort( (a, b) => {
+        const n1 = a.code.toUpperCase(); // ignore upper and lowercase
+        const n2 = b.code.toUpperCase(); // ignore upper and lowercase
+        if (n1 < n2) return -1;
+        if (n1 > n2) return 1;
+        return 0 
+      } ) ); 
+    } catch (error) {
+      console.log(error)
+    }  
     try {
       setAreasDatasets(null);
-      setIsWorking(true)
       const respAreas = await ProfileService.getDatasetsByCategory('boundaries', document.cookie);
-      setIsWorking(false)
       if ( respAreas && respAreas.ok && respAreas.data ) {
         setAreasDatasets(respAreas.data)
         if ( respAreas.data.total )
@@ -684,8 +768,8 @@ export default function ConfigureDataset( { isIndicators, dataset, setDataset } 
       }     
     } catch (error) {
       console.log(error)
-      setIsWorking(false) 
-    }   
+    } 
+    setIsLoading(false);  
   }
   
   // This uploads a geoJSON file to set the AOI filter 
@@ -785,19 +869,24 @@ export default function ConfigureDataset( { isIndicators, dataset, setDataset } 
       router.push(`/401`);
     if ( workDataset && workDataset.points )
       initializeData()
-    loadAreasDatasets()
+    fetchData()
   }, [user, dataset]); // eslint-disable-line
   
   const aoiSourceTypes = [
     { key: 'custom', name: 'Custom Polygon' },
     { key: 'dataset', name: 'Boundaries Catalogue dataset'}
-  ]
-  
+  ]  
+
   return (
     <div className="layout-dashboard">
     <Toast ref={toast} />
+    {( isLoading ) && (
+      <Loading title="loading data..."/>
+    )}  
+    {( !isLoading ) && (
+      <>
       {(!workDataset || !workDataset.filter) && (
-      <span className="font-bold text-red-800"> Error: dataset or filter not initialized </span>
+      <h5 className="font-bold text-red-800"> Error: dataset or filter not initialized </h5>
       )} 
       { workDataset && workDataset.filter  && (
       <>
@@ -831,10 +920,12 @@ export default function ConfigureDataset( { isIndicators, dataset, setDataset } 
                     { ( workDataset.points.features ? workDataset.points.features.length : 0 ) }
                   </span></h5>
                 )}
+                { (!workDataset.points || !workDataset.points.features) && (
+                  <h5 className="font-bold text-800">Points: <span className="font-bold text-cyan-800"> 0 </span></h5>
+                )}
                 { !workDataset.points || !workDataset.points.features && ( 
                   <h5 classname="font-bold text-cyan-800">{t('EMPTY')}</h5>
                 )}
-
                 { selectedSource && selectedSource.abstract && (
                   <InputTextarea id="description" value={selectedSource.abstract} disabled rows={5} cols={30} />
                 )}
@@ -1119,7 +1210,9 @@ export default function ConfigureDataset( { isIndicators, dataset, setDataset } 
         </div>              
         )}
       </>
-      )}  
+      )}
+    </>
+    )}  
     </div>
   )
 }
