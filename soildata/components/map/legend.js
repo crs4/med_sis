@@ -143,7 +143,7 @@ const MapLegend = ({ legend, data, position }) => {
             html: '',
             style: {
               'text-align': 'left',
-              'background-color': '#0805a2',
+              'background-color': '#0d0',
               'width': '20px',
               'height': '20px',
               'position': 'relative',
@@ -155,7 +155,7 @@ const MapLegend = ({ legend, data, position }) => {
             html: '',
             style: {
               'text-align': 'left',
-              'background-color': '#d0526c',
+              'background-color': '#f22',
               'width': '20px',
               'height': '20px',
               'position': 'relative',
@@ -167,7 +167,7 @@ const MapLegend = ({ legend, data, position }) => {
             html: '',
             style: {
               'text-align': 'left',
-              'background-color': '#777777',
+              'background-color': '#f80',
               'width': '20px',
               'height': '20px',
               'position': 'relative',

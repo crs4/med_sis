@@ -282,15 +282,7 @@ export default function Page()  {
         <>
         <ConfirmDialog id="dlg_remove" group="declarative"  visible={visibleDlg1} onHide={() => setVisibleDlg1(false)} message="Are you sure you want to delete xlsx upload?" 
           header="Confirmation" icon="pi pi-exclamation-triangle" accept={performRemove} reject={rejectDlg1} />
-        <div className="flex flex-row-reverse w-full p-2">
-          <Button 
-            icon="pi pi-download"
-            className="flex bg-primary font-bold border-round"
-            disabled={isWorking}
-            onClick={() => openCreate()}
-            label={t('NEW_UPLOAD')}
-          />
-        </div>
+        
         <DataTable
           value={uploads}
           paginator

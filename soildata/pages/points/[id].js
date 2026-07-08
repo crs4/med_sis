@@ -170,6 +170,7 @@ export default function Page()  {
 
   const resetInfo = ( async(newData) => {
     setSelected(newData)
+    console.log(newData)
     setTaxList(null) 
     setVisibleInfo(true)
     if ( newData && newData.data && newData.data.taxonomy)  {
@@ -540,16 +541,17 @@ export default function Page()  {
   
   async function  saveField () {
     setVisibleEdit(false)
+    console.log('save')
     if ( !selectedId || !selectedValue )
       return null;
     if ( selected && selected.data )
     try {
       const fielddObj =  { };
       fielddObj[selected.data.name] = selectedValue;
-      const response = await ProfileService.update( document.cookie, selectedId, fielddObj, selected.data.ep);
+      const response = await ProfileService.patch( document.cookie, selectedId, fielddObj, selected.data.ep);
       const nvalue = selectedValue;
       if ( selected.data.taxonomy )
-        nvalue = selectedValue.substring(selectedValue.lastIndexOf(':'))
+        nvalue = selectedValue.substring(selectedValue.lastIndexOf(':')+1)
       if ( selected.data.id && selected.key )
       { 
         const data = pointData.slice();

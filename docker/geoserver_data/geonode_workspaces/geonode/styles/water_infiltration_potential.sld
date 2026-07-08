@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <NamedLayer>
-    <Name>base_saturation_exchangeable_activity</Name>
+    <Name>Depth of water infiltration potential in one hour at wilting point</Name>
     <UserStyle>
-      <Title>Base saturation - BS - exchangeable activity (%)</Title>
+      <Name>Depth of water infiltration potential in one hour at wilting point</Name>
+      <Title>Depth of water infiltration potential in one hour at wilting point</Title>
       <FeatureTypeStyle>
-        <Rule>
-          <Name>The most sensitive culture are affected by exchangeable acidity (for cropland only)</Name>
+        
+	<Rule>
+          <Name>Low layer infiltration potential</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-            <And>
+	   <And>
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>0</Literal>
               </PropertyIsGreaterThanOrEqualTo>
               <PropertyIsLessThan>
                 <PropertyName>value</PropertyName>
-                <Literal>80</Literal>
+                <Literal>1</Literal>
               </PropertyIsLessThan>
-            </And>
-          </Filter>
+	    </And>
+	   </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>
@@ -37,20 +39,18 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-        <Rule>
-          <Name>The most sensitive culture are potentially not affected by exchangeable acidity (for cropland only)</Name>
+
+       
+	<Rule>
+          <Name>Good layer infiltration potential (No threshold for over infiltration risk)</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-            <And>
-	      	  <PropertyIsGreaterThan>
+	     <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
-                <Literal>80</Literal>
-              </PropertyIsGreaterThan>
-	      	  <PropertyIsLessThanOrEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>100</Literal>
-              </PropertyIsLessThanOrEqualTo>
-	    	</And>
-          </Filter>
+                <Literal>1</Literal>
+              </PropertyIsGreaterThanOrEqualTo>
+              
+	   </Filter>
+
           <PointSymbolizer>
             <Graphic>
               <Mark>
@@ -69,6 +69,7 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
+       
       </FeatureTypeStyle>
     </UserStyle>
   </NamedLayer>

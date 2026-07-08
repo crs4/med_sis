@@ -404,7 +404,7 @@ export default function Page()  {
       <div className="card flex flex-reverse w-full m-4"> 
         <Button icon="pi pi-plus" className="mr-2 mb-2" label="New Dataset" disabled={isWorking}
           tooltip={t('DATASETS_LIST')} tooltipOptions={{ position: 'top' }}
-          onClick={() => goToList()}
+          onClick={() => createDataset()}
         />
       </div>
       <Dialog header={headerTemplate} visible={visibleCreateDlg} style={{ width: '50vw' }} onHide={() => setVisibleCreateDlg(false)} >

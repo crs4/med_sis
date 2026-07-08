@@ -112,6 +112,15 @@ export const ProfileService = {
       return { ok: false }
   },  
  
+  async patch (ck, id, payload, endpoint) {
+    if ( ck ) 
+    { 
+      let response = await doFetchBackOffice ( endpoint, id, 'PATCH', payload, ck );
+      return response;
+    }
+    else return { ok: false }
+  },
+
   async update (ck, id, payload, endpoint) {
     if ( ck ) 
     { 

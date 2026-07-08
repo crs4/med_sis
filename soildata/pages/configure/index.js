@@ -105,7 +105,7 @@ export default function Page()  {
 
   const actionTemplate = (rowData) => (
     <> 
-    { rowData.status === 'TO_CONFIGURE' && (
+    { rowData && rowData.status === 'TO_CONFIGURE' && (
       <Button
         icon="pi pi-wrench"
         className="p-mb-2 p-mr-2 m-1"
@@ -114,17 +114,40 @@ export default function Page()  {
         onClick={() => configure(rowData)}
       />
     )}
-    { rowData.geonode_id && rowData.status === 'PUBLISHED' && (
+    { rowData && rowData.geonode_id && rowData.status === 'PUBLISHED' && (
+      <>
       <a href={ '/catalogue/#/dataset/' + rowData.geonode_id } >
         <Button
-          icon="pi pi-open"
+          icon="pi pi-desktop"
+          tooltip={t('GOTO_CATALOGUE')}
+          tooltipOptions={{ position: 'top' }}
           disabled={isWorking}
-        className="p-mb-2 p-mr-2 m-1"
-          label={t('GOTO_CATALOGUE')}
+          className="m-2"
         />
       </a> 
+      { rowData && rowData.type !== 'points_soil_data' && (
+      <Button 
+        icon="pi pi-replay"
+        tooltip={t('RECONFIGURE')}
+        tooltipOptions={{ position: 'top' }}
+        disabled={isWorking}
+        className="m-2"
+        onClick={() => configure(rowData, true)}
+      />
+      )}
+      { rowData && rowData.type === 'points_soil_data' && (
+      <Button 
+        icon="pi pi-replay"
+        tooltip={t('RECONFIGURE')}
+        tooltipOptions={{ position: 'top' }}
+        disabled={isWorking}
+        className="m-2"
+        onClick={() => configure(rowData, true)}
+      />
+      )}
+      </>
     )}
-    { rowData.status === 'ERRORS' && (
+    { rowData && rowData.status === 'ERRORS' && (
       <Button
         icon="pi pi-replay"
         className="p-mb-2 p-mr-2 m-1"
@@ -136,32 +159,40 @@ export default function Page()  {
     </>  
   )
 
-  const configure = async (ds) => {
+  const configure = async (ds, isIndicator) => {
     try {
       ds.status = "CREATED"
       const resp = await ProfileService.update ( document.cookie, ds.code, ds, 'base-datasets' )
       if ( !resp || resp.status < 200 || resp.status >= 300  )
-        toast.current.show({severity:'error', summary: 'Errors!', detail: "Errors starting configuration" , life: 3000}); 
-      else 
+        toast.current.show({severity:'error', summary: 'Errors!', detail: "Errors starting configuration for dataset " + ds.code , life: 3000}); 
+      else {
         toast.current.show({severity:'success', summary: 'Done!', detail: "Configuration started for dataset " + ds.code , life: 3000});
-      
+        if ( isIndicator ) {
+          setIndicators(indicators)  
+        }
+        else {
+          setSections(sections)
+        } 
+        return ds;
+      }
+         
     } catch (e) {
       console.log(e)
+      
     }
+    return null
   }
 
   const configureAll = async () => {
     try {
       setIsWorking(true)
       for ( let i = 0; i < indicators.length; i += 1 ){
-        const ds = indicators[i];
         await new Promise(resolve => setTimeout(resolve, 3000)); 
-        await configure(ds);
+        await configure( indicators[i] , true );
       }  
       for ( let i = 0; i < sections.length; i += 1 ){
-        const ds = sections[i];
-        await new Promise(resolve => setTimeout(resolve, 1000)); 
-        await configure(ds);
+        await new Promise(resolve => setTimeout(resolve, 3000)); 
+        await configure(sections[i], false );
       }
       setIsWorking(false) 
       fetchData ()   
@@ -198,7 +229,6 @@ export default function Page()  {
       <DataTable
         value={indicators}
         paginator
-        dataKey="code"
         className="p-datatable-gridlines  text-cyan-800"
         showGridlines
         rows={20}
@@ -209,7 +239,7 @@ export default function Page()  {
         <Column header="Abstract" field="abstract" style={{ minWidth: '20rem' }} />
         <Column header="Category" field="type" sortable body={typeTemplate} style={{ minWidth: '10rem' }}   />
         <Column header="Status" field="status" sortable body={statusTemplate} style={{ minWidth: '10rem' }}   />
-        <Column header="Actions" body={actionTemplate} />
+        <Column header="Actions" body={actionTemplate} style={{ minWidth: '10rem' }}  />
     </DataTable>
     )}
     <h5 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">{t('POINT_SOIL_DATA_SECTION')} Base Datasets</h5>
@@ -217,7 +247,6 @@ export default function Page()  {
       <DataTable
           value={sections}
           paginator
-          dataKey="code"
           className="p-datatable-gridlines font-bold text-cyan-800"
           showGridlines
           rows={20}

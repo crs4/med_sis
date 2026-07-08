@@ -200,8 +200,8 @@ export default function Page( )  {
       return (
         <>
         {( rowData.uri && 
-         ( rowData.uri.startWith('https://qudt.org/vocab/') || 
-           rowData.uri.startWith('https://glosis-ld.github.io/') ) ) && (
+         ( rowData.uri.startsWith('https://qudt.org/vocab/') || 
+           rowData.uri.startsWith('https://glosis-ld.github.io/') ) ) && (
           <div className="flex flex-wrap gap-2">
             <a href={rowData.uri} >
               <Button type="button" icon="pi pi-book" rounded></Button>

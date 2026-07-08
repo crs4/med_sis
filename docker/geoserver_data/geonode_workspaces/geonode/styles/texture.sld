@@ -10,11 +10,11 @@
           <Filter xmlns="http://www.opengis.net/ogc">
             <Or>
               <PropertyIsEqualTo>
-                <PropertyName>texture</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>TEXTURE_CLASSES:C</Literal>
               </PropertyIsEqualTo>
 	      	  <PropertyIsEqualTo>
-                <PropertyName>texture</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>TEXTURE_CLASSES:SiC</Literal>
               </PropertyIsEqualTo>              
             </Or>
@@ -42,11 +42,11 @@
           <Filter xmlns="http://www.opengis.net/ogc">
             <Or>
               <PropertyIsEqualTo>
-                <PropertyName>texture</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>TEXTURE_CLASSES:SCL</Literal>
               </PropertyIsEqualTo>
 	      <PropertyIsEqualTo>
-                <PropertyName>texture</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>TEXTURE_CLASSES:SC</Literal>
               </PropertyIsEqualTo>
               
@@ -76,27 +76,27 @@
           <Filter xmlns="http://www.opengis.net/ogc">
             <Or>
               <PropertyIsEqualTo>
-                <PropertyName>texture</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>TEXTURE_CLASSES:SL</Literal>
               </PropertyIsEqualTo>
 	      <PropertyIsEqualTo>
-                <PropertyName>texture</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>TEXTURE_CLASSES:L</Literal>
               </PropertyIsEqualTo>
 	      <PropertyIsEqualTo>
-                <PropertyName>texture</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>TEXTURE_CLASSES:SiL</Literal>
               </PropertyIsEqualTo>
 	      <PropertyIsEqualTo>
-                <PropertyName>texture</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>TEXTURE_CLASSES:CL</Literal>
               </PropertyIsEqualTo>
               <PropertyIsEqualTo>
-                <PropertyName>texture</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>TEXTURE_CLASSES:SiCL</Literal>
               </PropertyIsEqualTo>
 	      <PropertyIsEqualTo>
-                <PropertyName>texture</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>TEXTURE_CLASSES:Si</Literal>
               </PropertyIsEqualTo>              
             </Or>
@@ -125,11 +125,11 @@
           <Filter xmlns="http://www.opengis.net/ogc">
             <Or>
               <PropertyIsEqualTo>
-                <PropertyName>texture</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>TEXTURE_CLASSES:S</Literal>
               </PropertyIsEqualTo>
 	      <PropertyIsEqualTo>
-                <PropertyName>texture</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>TEXTURE_CLASSES:LS</Literal>
               </PropertyIsEqualTo>
 	         

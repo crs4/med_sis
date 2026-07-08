@@ -1097,6 +1097,76 @@ CREATE OR REPLACE VIEW zinc_relative_content AS
   FROM public.labdata_geo a
   WHERE a.cu is not null and a.zn is not null and a.pb is not null and (a.cu + a.zn + a.pb) > 0;
   ALTER VIEW IF EXISTS zinc_relative_content OWNER TO backoffice_user;
+
+--72)
+CREATE OR REPLACE VIEW water_infiltration_potential AS
+WITH 
+temp1_table AS (
+	SELECT id, point_id, point_type, date, upper, lower, survey_m_id, project, NULL as method, geom,  
+    texture_id as texture,
+	  (((hy_cond)/10)*(POWER((1-((v_c_sand/100)/0.84)),1.26))) AS ks
+	FROM public.labdata_geo
+),
+temp2_table AS (
+  SELECT *,
+	  CASE 
+	    WHEN texture = 'C' THEN 0.5112
+	    WHEN texture = 'SiC' THEN 0.5135
+	    WHEN texture = 'SC' THEN 0.5169
+	    WHEN texture = 'SiCL' THEN 0.5159
+	    WHEN texture = 'CL' THEN 0.5212
+	    WHEN texture = 'SCL' THEN 0.5268
+	    WHEN texture = 'SiL' THEN 0.5322
+  	  WHEN texture = 'L' THEN 0.5607
+	    WHEN texture = 'SL' THEN 0.5679
+      WHEN texture = 'LS' THEN 0.5783
+	    WHEN texture = 'S' THEN 0.5839
+	  ELSE NULL
+	END AS alfa,
+	CASE 
+	  WHEN texture = 'C' THEN -0.0904
+	  WHEN texture = 'SiC' THEN 0.0063
+	  WHEN texture = 'SC' THEN 0.0152
+	  WHEN texture = 'SiCL' THEN 0.1422
+	  WHEN texture = 'CL' THEN 0.2004
+	  WHEN texture = 'SCL'  THEN 0.3483
+	  WHEN texture = 'SiL' THEN 0.4709
+  	WHEN texture = 'L' THEN 0.5080
+	  WHEN texture = 'SL' THEN 0.7331
+    WHEN texture = 'LS' THEN 0.8550
+	  WHEN texture = 'S' THEN 1.1434
+	  ELSE NULL
+	END AS log_k,
+  CASE 
+	  WHEN texture = 'C' THEN POWER ( ( (0.5112*(POWER(10,-0.0904)))/ks),2.046)
+	  WHEN texture = 'SiC' THEN POWER ( ( (0.5135*(POWER(10,0.0063)))/ks),2.055)
+	  WHEN texture = 'SC' THEN POWER ( ( (0.5169*(POWER(10,0.0152)))/ks),2.069)
+	  WHEN texture = 'SiCL' THEN POWER ( ( (0.5159*(POWER(10,0.1422)))/ks),2.066)
+	  WHEN texture = 'CL' THEN POWER ( ( (0.5212*(POWER(10,0.2004)))/ks),2.088)
+	  WHEN texture = 'SCL' THEN POWER ( ( (0.5268*(POWER(10,0.3483)))/ks),2.113)
+	  WHEN texture = 'SiL'  THEN POWER ( ( (0.5322*(POWER(10,0.4709)))/ks),2.138)
+  	WHEN texture = 'L' THEN POWER ( ( (0.5607*(POWER(10,0.5080)))/ks),2.276)
+	  WHEN texture = 'SL' THEN POWER ( ( (0.5679*(POWER(10,0.7331)))/ks),2.314)
+    WHEN texture = 'LS' THEN POWER ( ( (0.5783*(POWER(10,0.8550)))/ks),2.369)
+	  WHEN texture = 'S' THEN POWER ( ( (0.5839*(POWER(10,1.1434)))/ks),2.403)
+	  ELSE NULL
+	END AS tb
+  FROM temp1_table
+)
+
+SELECT id, id as point_id, point_type, date, upper, lower, survey_m_id, project, texture, NULL as method,  
+	CASE
+	  WHEN tb>=1 THEN (((POWER(10,log_k)) * (POWER(1,alfa))) / NULLIF(lower - upper , 0))
+	  WHEN tb<1 THEN ((((POWER(10,log_k)) * (POWER(tb,alfa))) + (ks * (1-tb)) ) / NULLIF(lower - upper, 0))
+	  ELSE NULL    
+	END AS value,
+  'cm' AS unit,
+  geom
+
+FROM temp2_table;
+ALTER VIEW IF EXISTS water_infiltration_potential OWNER TO backoffice_user;
+
+
 """
 SQL_DROP = f""" 
 DROP VIEW IF EXISTS active_calcium_carbonate CASCADE;
