@@ -7,7 +7,7 @@ RUN mkdir -p /usr/src/s4m_catalogue
 RUN apt-get update -y \
     && apt-get install --no-install-recommends curl wget unzip gnupg2 saga locales cron libsqlite3-mod-spatialite -y \
     && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
-
+ 
 # Configure locale
 RUN sed -i -e 's/# C.UTF-8 UTF-8/C.UTF-8 UTF-8/' /etc/locale.gen && \
     locale-gen

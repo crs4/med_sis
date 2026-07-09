@@ -7,33 +7,23 @@ FROM geonode/geoserver_data:${BASE_IMAGE_VERSION}
 # geonode_workspaces/geonode/backoffice/...
 # geonode_workspaces/geonode/styles/...
 COPY geonode_workspaces/geonode /tmp/geonode
-##### Python replace metadata links - to do 
-## Read in the file
-#with open('featuretype.xml', 'r') as file:
-#  filedata = file.read()
-#to_write = ${NGINX_BASE_URL}
-## Replace the target string
-#filedata = filedata.replace('<content>http://localhost/', to_write)
-#
-## Write the file out again
-#with open('featuretype.xml', 'w') as file:
-#  file.write(filedata)
-
 
 
 RUN set -e \
-    # mi assicuro che la directory del workspace geonode esista
+    # 0) change the server addr in featuretype.xml
+    #RUN /usr/bin/change_addr.sh 
+    #  workspace geonode should be exist
     && mkdir -p /geoserver_data/data/workspaces/geonode \
     \
-    # 1) workspace.xml: lo copio solo se non esiste già
+    # 1) workspace.xml: Copy the file if it does not already exist.
     && if [ ! -f /geoserver_data/data/workspaces/geonode/workspace.xml ]; then \
            cp /tmp/geonode/workspace.xml /geoserver_data/data/workspaces/geonode/workspace.xml; \
-       fi \
-    \
-    # 2) cartella backoffice: la copio solo se NON esiste già
+        fi \
+    \   
+    # 2) Copy the backoffice folder if it does not already exist. 
     && if [ ! -d /geoserver_data/data/workspaces/geonode/backoffice ]; then \
-           cp -R /tmp/geonode/backoffice /geoserver_data/data/workspaces/geonode/; \
-       fi \
+            cp -R /tmp/geonode/backoffice /geoserver_data/data/workspaces/geonode/; \
+        fi \
     \
     # 3) cartella styles: la copio solo se non esiste già
     && if [ -d /tmp/geonode/styles ] && [ ! -d /geoserver_data/data/workspaces/geonode/styles ]; then \

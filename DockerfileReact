@@ -2,9 +2,8 @@ FROM node:lts-alpine3.22
 
 WORKDIR /app
 
-COPY . .
+COPY soildata .
 
-COPY .env .
 
 RUN npm install
 RUN npm install sharp

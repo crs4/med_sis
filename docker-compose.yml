@@ -197,9 +197,11 @@ services:
   soildata:
     image: ${COMPOSE_PROJECT_NAME}/react:22-alpine3.21
     container_name: react4${COMPOSE_PROJECT_NAME}
+    env_file:
+      - .env
     build:
-      context: ./soildata
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: DockerfileReact 
     restart: unless-stopped
     ports:
       - "3000:3000"

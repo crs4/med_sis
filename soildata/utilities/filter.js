@@ -5,7 +5,6 @@ import { pointsWithinPolygon } from turf
 // Filters:  Area Of Interest; depth; project; type; method; date  ),
 export default filter = async (filter,points) => {
   if ( points && filter )
-  try {
     let result = points
     if ( filter.aoi )
       result = pointsWithinPolygon( points, filter.aoi)
@@ -62,6 +61,4 @@ export default filter = async (filter,points) => {
     }  
   } 
   return vresult; 
-}
-
 }
