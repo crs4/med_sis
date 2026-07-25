@@ -187,7 +187,7 @@
                 </Stroke>
               </Mark>
               <Size>14</Size>
-            </Graphic>http://localhost/geoserver/web/wicket/bookmarkable/org.geoserver.wms.web.data.StyleEditPage?106&name=sodium_exchangeable_percentage_waterlogging&workspace=geonode#
+            </Graphic>
           </PointSymbolizer>
         </Rule>       
       </FeatureTypeStyle>

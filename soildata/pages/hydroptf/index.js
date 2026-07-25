@@ -488,13 +488,14 @@ export default function Page()  {
               emptyMessage="No results"
               header={renderHeaderBatch}
           >
-            <Column header={t("PTF_SAND")} field="SAND" />
-            <Column header={t("PTF_CLAY")} field="CLAY" />
-            <Column header={t("PTF_OC")} field="OC" />
-            <Column header={t("PTF_BULK")} field="BD" />
-            <Column header={t("PTF_POT")} field="Pot" />
-            <Column header={t("PTF_GRAVIMETRIC")} field="Gravimetric" />
-            <Column header={t("PTF_VOLUMETRIC")} field="Volumetric" />
+            <Column header={t("Identifier")} field="Sample_id" sortable />
+            <Column header={t("PTF_SAND")} field="SAND" sortable />
+            <Column header={t("PTF_CLAY")} field="CLAY" sortable/>
+            <Column header={t("PTF_OC")} field="OC" sortable/>
+            <Column header={t("PTF_BULK")} field="BD" sortable/>
+            <Column header={t("PTF_POT")} field="Pot" sortable/>
+            <Column header={t("PTF_GRAVIMETRIC")} field="Gravimetric" sortable />
+            <Column header={t("PTF_VOLUMETRIC")} field="Volumetric" sortable />
           </DataTable>
         </div>    
       </Dialog> 

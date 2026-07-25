@@ -731,8 +731,8 @@ class BaseDatasetService:
                                 self.report["msgs"].append(f"error writing metadata in the dataset {geonode_dataset['pk']}")
                             self.report["geonode"] = dataset.geonode_id
                             
-############ CHANGE PERMISSIONS
-                            url = f"{self.base_url}/api/v2/datasets/{geonode_dataset['pk']}/permissions"
+############ CHANGE PERMISSIONSapi/v2/resources/
+                            url = f"{self.base_url}/api/v2/resources/{geonode_dataset['pk']}/permissions"
                             payload = json.dumps({ "groups": [ { "id": 4, "permissions": "manage"}]})
                             response3 = requests.patch( url, json=payload, headers=self.auth_header )
                             if response3.status_code >= 200 and response2.status_code < 300:

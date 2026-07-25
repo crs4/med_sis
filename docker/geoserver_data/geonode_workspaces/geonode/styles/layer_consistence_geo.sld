@@ -6,10 +6,9 @@
       <Name>Rupture resistance cemented soil</Name>
       <Title>Rupture resistance cemented soil</Title>
       <FeatureTypeStyle>
-	  <Rule>
+	      <Rule>
           <Name>Not cemented (NOC) - Potentially sensitive to wind erosion</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-            
               <PropertyIsEqualTo>
                 <PropertyName>cement_cls_id</PropertyName>
                 <Literal>CEMENTATION_CLASSES:NOC</Literal>
@@ -47,7 +46,7 @@
                 <Literal>CEMENTATION_CLASSES:VWC</Literal>
               </PropertyIsEqualTo>
               <PropertyIsEqualTo>
-                <PropertyName>cement_cls</PropertyName>
+                <PropertyName>cement_cls_id</PropertyName>
                 <Literal>CEMENTATION_CLASSES:WEC</Literal>
               </PropertyIsEqualTo>
 

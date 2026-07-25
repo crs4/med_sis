@@ -10,11 +10,11 @@
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>sar_elcond</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>0</Literal>
               </PropertyIsGreaterThanOrEqualTo>
               <PropertyIsLessThan>
-                <PropertyName>sar_elcond</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>5</Literal>
               </PropertyIsLessThan>
             </And>
@@ -43,7 +43,7 @@
           <Name>Beneficial impact of gypsum input for salinity remediation (only for saturated paste extract)</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
              <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>sar_elcond</PropertyName>
+                <PropertyName>value</PropertyName>
                 <Literal>5</Literal>
               </PropertyIsGreaterThanOrEqualTo>
              </Filter>
