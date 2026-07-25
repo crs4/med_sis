@@ -1,0 +1,2 @@
+Model,hidden_layer_sizes,activation,solver,alpha,learning_rate,max_iter,random_state,n_iter_,n_layers,n_outputs
+Final_MLP,"(10,)",relu,adam,0.0001,constant,2000,42,405,3,1

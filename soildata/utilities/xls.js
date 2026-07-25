@@ -2,6 +2,59 @@ import ExcelJS from 'exceljs';
 import Mapping from '../data/mapping';
 import { UploadService } from '../service/uploads';
 
+export const validateXLSFilePtfElaboration = async (file, withBulk) => {
+  try {
+    const dataJSON = { "filename" : file }
+    /// const cfields = ['Sample_ID','SAND','CLAY','OC','BD']
+    let workbook = new ExcelJS.Workbook();
+    const blob = new Blob([file], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8' });
+    const buffer = await blob.arrayBuffer();
+    await workbook.xlsx.load(buffer);
+    if ( workbook.worksheets.length < 1 ) 
+    {
+      console.log ( 'Errors empty file' )
+      return { data: null , msg: 'errors empty file' }
+    }
+    let worksheet = workbook.worksheets[0]; 
+    if ( worksheet ) 
+    {
+      const rows = [];
+      const fields = [];
+      let i = 0;
+      const valid_rows = []
+      console.log('start')
+      console.log(withBulk)
+      worksheet.eachRow({ includeEmpty: true }, function(row, rowNumber) {
+        /// first row field's name
+        ///["Sample_id", "CLAY", "SAND", "OC", "BD"]
+        let ok = true
+        
+        if ( rowNumber > 1 )  {
+          if ( isNaN( Number(row.values[2]) ) || row.values[2] < 0 || row.values[2] > 100 ||  
+               isNaN( Number(row.values[3]) ) || row.values[3] < 0 || row.values[3] > 100 ||
+               isNaN( Number(row.values[4]) ) || row.values[4] < 0 || row.values[4] > 100 
+          )
+            ok = false
+          if ( ok && withBulk && ( isNaN( Number(row.values[5]) ) || row.values[5] < 0 ) )  
+              ok = false
+          if ( ok ) 
+            valid_rows.push(row.values.slice(1,6))
+          console.log(row.values.slice(1,6))
+        }
+        i += 1
+      })
+      dataJSON = valid_rows
+      return { data: dataJSON , msg: 'ok' }  
+    }
+    else
+      return { data: null , msg: 'Errors wrong sheet' }
+  } catch (e) {
+    console.log(e)
+    return { data: null , msg: 'Error reading file' }
+  }
+  return null; 
+}
+
 export const readXLSFile = async (file, sheet) => {
   let perc;
   let json = { data: null, msg: 'No data' }
@@ -30,7 +83,6 @@ export const readXLSFile = async (file, sheet) => {
     
   } catch (e) {
     console.log(e)
-    console('Error reading file')
     return { data: null , msg: 'Error reading file' }
   }
   return json; 
@@ -213,22 +265,24 @@ export const validateSingleSheet = async (taxonomies, sheet_name, sheet_mapping,
         const row = raw_data[j];
         if ( row ) {
           try {
+            /// row[1] contains the point key 
             /// key for a profile or sample or project === row[1]
             /// key for a profile layer or profile labdata === row[1] + '@' + row[3]
             /// key for a sample labdata === row[1] + '@' + row[2] + '@' + row[3]
             /// 
+            if ( row[1] ) row[1] = row[1].toString().trim(); // removes whitespace (spaces, tabs, and newlines) from the beginning and end of the key   
             if ( !row[1] ) 
-              results['report']['errors'][sheet_name].push(['?',j,1,'-k']);  /// wrong key
-            else { // no primary key -> skip row
-              if ( !row[1] || keys[row[1]] )  {
-                  results['report']['errors'][sheet_name].push(['?',j,1,'-k']);  /// wrong key or duplicate key
-              }
+              results['report']['errors'][sheet_name].push(['?',j,1,'-k']);  /// no primary key -> skip row 
+            else { 
+              if ( !row[1] || keys[row[1]] )  
+                results['report']['errors'][sheet_name].push(['?',j,1,'-k']);  /// wrong key or duplicate key
               else {
                 let key = row[1];
                 keys[key] = j;
                 wrong = 0;
                 filled = 0;
                 let lmap = sheet_mapping['size'];
+                // validate all fields in the row
                 let res = validate_row(taxonomies, row, j, key, sheet_name, sheet_mapping, results);
                 if (res) {
                   wrong = res.wrong;
@@ -239,11 +293,14 @@ export const validateSingleSheet = async (taxonomies, sheet_name, sheet_mapping,
                 if ( !results['report']['tree'][row[1]]['wrong'] )
                   results['report']['tree'][row[1]]['wrong'] = wrong;
                 else results['report']['tree'][row[1]]['wrong'] += wrong;
+                // calculate the percentage of filled fields
                 let perc = (filled/lmap)*100;
                 perc = Number(perc).toPrecision(2);
                 results['report']['tree'][row[1]]['Main'] = perc + ':' + wrong;
+                // if no error, the row is valid  
                 if ( wrong === 0 )
                   validated_row += 1;
+                // update the number of valid row
                 if ( results['report']['total_errors'] )
                   results['report']['total_errors'] += wrong;
                 else 
@@ -258,6 +315,7 @@ export const validateSingleSheet = async (taxonomies, sheet_name, sheet_mapping,
       return validated_row;
 }
 
+// validate the rows in sheets of point soil data
 export const validatePointSheet = (taxonomies, sheet_name, sheet_mapping, results) => {
       let keys = [];
       
@@ -286,9 +344,11 @@ export const validatePointSheet = (taxonomies, sheet_name, sheet_mapping, result
             /// key for a profile layer or profile labdata === row[1] + '@' + row[3]
             /// key for a sample labdata === row[1] + '@' + row[2] + '@' + row[3]
             /// 
+            
             if ( !row[1] ) 
               results['report']['errors'][sheet_name].push(['?',j,1,'-k']);  /// wrong key
-            else { // no primary key -> skip row
+            else { 
+              row[1] = row[1].toString().trim()
               if (( !isLayer && !isLabData && !isLabData_sampling && keys[row[1]]) || 
                   ( isLayer || isLabData ) && ( !row[3] || keys[row[1]+'@'+row[3]] )  || 
                   ( isLabData_sampling && ( 
@@ -360,6 +420,7 @@ export const createObjects = async (data, uploadType, cookie) => {
   else return null; 
 } 
 
+// it generates objects to store in the db from points soil data sheets
 export const createObjectsPoints = async (res) => {
 //// XLS profile sheets
   const data = res.data;
@@ -371,9 +432,11 @@ export const createObjectsPoints = async (res) => {
   let level = null;
   let value = null; 
   let taxonomy = null;
+
+  // sheet "General and surface" 
+  // it generates objects to store in the db for several model
   let sheet_mapping = Mapping[ 'XLS_P:'+sheets[0]];
   let sheet = data[sheets[0]];
-  
   if ( sheet )
     for ( let i = 0; i < sheet.length; i+=1 ) {
       let row = sheet[i];
@@ -408,10 +471,10 @@ export const createObjectsPoints = async (res) => {
     }
   else console.log ('No sheet 1')
     
-  // Layer  LayerRedoximorphicColour  LayerStructure
+  // sheet "layer description" 
+  // it generates objects to store in the db for several model
   sheet_mapping = Mapping['XLS_P:'+sheets[1]];
   sheet = data[sheets[1]];
-  
   if ( sheet ) {
     for ( let i = 0; i < sheet.length+1; i+=1 ) {
       let row = sheet[i];
@@ -455,7 +518,8 @@ export const createObjectsPoints = async (res) => {
   }
   else console.log ('No sheet 2')
   
-  // labdata  
+  // sheet labdata 
+  // it generates objects to store in the db for Labdata model  
   sheet_mapping = Mapping['XLS_P:'+sheets[2]];
   sheet = data[sheets[2]];
   fixtures['LabData'] = { };
@@ -483,8 +547,8 @@ export const createObjectsPoints = async (res) => {
     }
   else console.log ('No sheet 3')
   
-  
-  // labdata mapping 
+  // sheet labdata for sampling 
+  // it generates objects to store in the db for Labdata model
   sheet_mapping = Mapping['XLS_P:'+sheets[3]];
   sheet = data[sheets[3]];
   if ( !fixtures['LabData'] )
@@ -530,8 +594,8 @@ export const createObjectsPoints = async (res) => {
   return result
 } 
 
+// it generates objects to store in the db for Project model
 export const createObjectsProjects = async (res) => {
-//// XLS profile sheets
   const data = res.data;
   let fixtures = {}
   let model = null;
@@ -580,8 +644,8 @@ export const createObjectsProjects = async (res) => {
   return result
 }
 
+// it generates objects to store in the db for Photos model
 export const createObjectsPhotos = async (res, cookie) => {
-//// XLS profile sheets
   const data = res.data;
   res.report = {  total_errors: 0, 'errors': { 'Photos': [] }, 'tree': [] }
   res.validated = 0;

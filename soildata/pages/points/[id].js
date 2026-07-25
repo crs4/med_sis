@@ -170,7 +170,6 @@ export default function Page()  {
 
   const resetInfo = ( async(newData) => {
     setSelected(newData)
-    console.log(newData)
     setTaxList(null) 
     setVisibleInfo(true)
     if ( newData && newData.data && newData.data.taxonomy)  {
@@ -541,7 +540,6 @@ export default function Page()  {
   
   async function  saveField () {
     setVisibleEdit(false)
-    console.log('save')
     if ( !selectedId || !selectedValue )
       return null;
     if ( selected && selected.data )

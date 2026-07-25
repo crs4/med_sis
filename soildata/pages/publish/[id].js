@@ -33,7 +33,6 @@ export default function Page()  {
   
   /* fetch dataset data */
   const fetchDataset = async (id) => {
-    console.log('fetch')
     setLoading(true)
     try {
       const response = await ProfileService.get( document.cookie, id, 'datasets'  );
@@ -43,11 +42,8 @@ export default function Page()  {
       }      
     } catch (error) {
       console.log(error);
-      console.log('no data')
     }
     setLoading(false) 
-    
-    
   }
 
   const goToList = () => {
@@ -62,7 +58,7 @@ export default function Page()  {
   useEffect(() => {
     if ( !user.userData || ( user.userData.forbidden !== null && user.userData.forbidden) )
         router.push(`/401`);
-    if (id)
+    if (id && !dataset)
       fetchDataset(id)
   },[user, id]);  // eslint-disable-line
 
@@ -70,7 +66,7 @@ return (
   <div className="layout-dashboard">
     <Toast ref={toast} />
     <div className="card flex flex-reverse w-full m-4"> 
-      <Button icon="pi pi-plus" className="mr-2 mb-2" label="List of Dataset" disabled={isWorking}
+      <Button icon="pi pi-plus" className="mr-2 mb-2" label="List of Dataset" disabled={loading}
         tooltip={t('DATASET_LIST')} tooltipOptions={{ position: 'top' }}
         onClick={() => goToList()}
       />
@@ -107,10 +103,7 @@ return (
       <h5 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">Errors generating dataset... </h5>   
       </>
     )} 
-    { dataset && dataset.status !== ProfileService.DATASET_STATUSES.CREATED && 
-      dataset.status !== ProfileService.DATASET_STATUSES.CONFIGURED &&
-      dataset.status !== ProfileService.DATASET_STATUSES.ERRORS && 
-      dataset.status !== ProfileService.DATASET_STATUSES.PUBLISHED && (
+    { dataset && dataset.status === ProfileService.DATASET_STATUSES.IN_PROCESS && (
       <>
       <h5 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">Dataset in elaboration... </h5>
       <div class="flex justify-content-center w-full m-3">
@@ -118,7 +111,7 @@ return (
           label={t("REFRESH")}
           icon='pi pi-save'
           type='button'
-          disabled={ isWorking || !workDataset }
+          disabled={ loading || !workDataset }
           className='mt-4 flex'
           onClick={() => { reload() }} 
         />

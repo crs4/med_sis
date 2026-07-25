@@ -1,6 +1,6 @@
 from celery import shared_task
-from .services import XLSxUploadService, DatasetService, BaseDatasetService
-from .models import XLSxUpload, Dataset, BaseDataset
+from .services import XLSxUploadService, DatasetService, BaseDatasetService, HydroPtfModelService
+from .models import XLSxUpload, Dataset, BaseDataset, HydroPtfElaboration
 import logging
 from django.core.management import call_command
 
@@ -163,12 +163,50 @@ def process_base_dataset(self, dataset_id):
             except Exception as save_e:
                 logger.error(f"It is not possible to save the status ERRORS in dataset {dataset_id}: {save_e}")
         return False
-    
-@shared_task(bind=True, name='backoffice.tasks.process_hydro_ptf_model', queue='default')
-def process_hydro_ptf_model(self, dataset_id):
-    return False;
 
-@shared_task(bind=True, name='backoffice.tasks.process_hydro_ptf_elaboration', queue='default')
-def process_hydro_ptf_elaboration(self, dataset_id):
-    return False;
+@shared_task(bind=True, name='backoffice.tasks.process_hydro_ptf', queue='default')
+def process_hydro_ptf(self, _id):
+    """
+    Task to elaborate data using the Hydro Ptf model
+    """
+    elaboration = None
+    try:
+        logger.info(f"Starting processing hydro ptf elaboration {_id}")
+        # Recupera l'oggetto Dataset
+        elaboration = HydroPtfElaboration.objects.using('backoffice').get(id=_id)
+        
+        # Verifica che lo stato sia IN_PROCESS
+        if elaboration.status != "IN_PROCESS":
+            logger.warning(f"hydro ptf elaboration {_id} is not in IN_PROCESS status  (current state: {elaboration.status})")
+            return False
+        logger.info(f"Processing hydro ptf elaboration {_id} data...")
+        report = HydroPtfModelService().elaborate_hydro_ptf_model(_id)
+        if report:
+            for msg in report.get('msgs'):
+                logger.info(f"msg: {msg}")
+            if report.get('success'):
+                elaboration.status = "SUCCESS"
+                logger.info(f"PTF Elaboration {_id} finished")
+            else:
+                elaboration.status = "ERRORS"
+                logger.warning(f"PTF Elaboration {_id} errors")
+            elaboration.save(using='backoffice')
+            return True
+        return False
+    except HydroPtfElaboration.DoesNotExist:
+        logger.error(f"Dataset {_id} not found")
+        return False
+    except Exception as e:
+        logger.error(f"Errors elaborating hydro ptf elaboration {_id}: {str(e)}")
+        # Aggiorna lo stato in caso di errore critico
+        if elaboration:
+            try:
+                elaboration.status = "ERRORS"
+                elaboration.save(using='backoffice')
+            except Exception as save_e:
+                logger.error(f"It is not possible to save the status ERRORS in hydro ptf elaboration {_id}: {save_e}")
+        return False
+
+    
+    
     

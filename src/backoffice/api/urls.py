@@ -43,8 +43,8 @@ router.register(r'base-datasets', BaseDatasetViewSet)
 router.register(r'photos', PhotoViewSet)
 router.register(r'taxonomies', TaxonomyViewSet)
 router.register(r'taxonomy-values', TaxonomyValueViewSet)
-router.register(r'hydro-ptf-models', HydroPtfModelViewSet)
 router.register(r'hydro-ptf-elaborations', HydroPtfElaborationViewSet)
+router.register(r'hydro-ptf-prediction', HydroPtfPredictionViewSet, basename='hydro-ptf-prediction' )
 
 urlpatterns = [
     path('', include(router.urls)),

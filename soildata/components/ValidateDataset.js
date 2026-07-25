@@ -152,6 +152,7 @@ export default function ValidateDataset( { isIndicators, dataset, setDataset }) 
   // points aggregation using sixth decimal place (1 meter) in latitude and longitude
   // variogram data is in simple mercator instead UTM to speed validation
   const aggregatePoints = async () => {
+    console.log ("start aggregate")
     const aggregateIndex = {}
     if ( !workDataset || !workDataset.filter.points || !workDataset.filter.points.features )
       return

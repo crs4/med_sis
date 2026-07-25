@@ -129,23 +129,27 @@ export default function ConfigureDataset( { isIndicators, dataset, setDataset } 
     if ( !_area || !bbox(_area) )
       _area = null
     workDataset.filter.aoi = _area;
-    setWorkDataset(await filtering(workDataset))
+    await filtering(workDataset.points)
     setSelectedArea(_area)
     if ( _area )
         toast.current.show({ severity: 'success', summary: 'Done!', detail: 'Area of Interest selected.'});
     else toast.current.show({ severity: 'error', summary: 'Errors!', detail: 'Wrong Area of Interest selected.'});
   }
 
-  // This sets the dataset's source points (initialization) 
-  const setPoints = (points) => {
-    workDataset.points = points;
-    workDataset.filter.points = points;
+  // This reset the dataset's source points 
+  const resetPoints = () => {
+    workDataset.points = null;
+    workDataset.filter.points = null;
     workDataset.k_params = {
       ...workDataset.k_params,
       epsg:  null,
       points:  null
     }
     workDataset.k_data = null;
+    setProjects([{ descr: "All projects"}]);
+    setMethods([{ descr: "All methods"}]);
+    setSurMethods([{ descr: "All methods"}]);
+    setTypes([{ descr: "All types"}]);
     setWorkDataset(workDataset)
   }
 
@@ -196,15 +200,17 @@ export default function ConfigureDataset( { isIndicators, dataset, setDataset } 
       points:  null
     }
     workDataset.k_data = null;
+    workDataset.report = { "source_type": sourceDS.type };
     if ( sourceDS === null ) 
       workDataset.src_typename = null;
     else {
       workDataset.source = sourceDS.name;
       workDataset.src_typename = 'geonode:' + sourceDS.code;
-      if ( workDataset.context !== ProfileService.DATASET_CONTEXT.SOIL_INDICATOR )
-        await loadPoints('geonode:' + sourceDS.code)
-      else 
-      await loadIndicatorPoints(sourceDS.name, 'geonode:' + sourceDS.code)    
+      if ( workDataset.context === ProfileService.DATASET_CONTEXT.LABDATA_EXTRA_MEASURE )
+        loadExtraMeasureIndicatorPoints( sourceDS.code )
+      else if ( workDataset.context === ProfileService.DATASET_CONTEXT.AOI_SOIL_INDICATOR )
+        await loadAoiIndicatorPoints(sourceDS.name, 'geonode:' + sourceDS.code)
+      else await loadPoints('geonode:' + sourceDS.code)  
     }
     setWorkDataset(workDataset)
     saveWorkDataset()
@@ -262,15 +268,6 @@ export default function ConfigureDataset( { isIndicators, dataset, setDataset } 
     setMethods(lms);
     setSurMethods(sms);
     setTypes(ts)  
-  }
-
-  // This reset the source points dataset
-  const resetPoints = () => {
-    setPoints (null);
-    setProjects([{ descr: "All projects"}]);
-    setMethods([{ descr: "All methods"}]);
-    setSurMethods([{ descr: "All methods"}]);
-    setTypes([{ descr: "All types"}]);
   }
 
   // It aggregates points to manage points with same position
@@ -381,17 +378,18 @@ export default function ConfigureDataset( { isIndicators, dataset, setDataset } 
   // This loads and sets the source points for a specific measure in the 
   // extra labdata measure catalogue dataset using geoserver
   // typename = labdata_extra_geo  
-  const loadExtraMeasureIndicatorPoints = async (indicator) => {
+  const loadExtraMeasureIndicatorPoints = async (measure) => {
     try {
       const token = user.userData.access_token;
       setIsWorking(true);
-      const response = await ProfileService.getExtraLabDataMeasure( indicator.measure, token )
+      const typename = "geonode:extra_labdata_geo"
+      const filter = "&CQL_FILTER=measure%3D"+measure 
+      const response = await ProfileService.getDataset( typename, filter, token ) 
       setIsWorking(false);
       if ( response && response.ok && response.data && response.data.features ){
         const points = response.data; 
-        setPoints (points);
         await extractData (points);
-        setWorkDataset(await filtering(workDataset));
+        filtering(points);
         toast.current.show({ severity: 'success', summary: 'Done!', detail: 'Source points has been loaded.'});
       }
       else {
@@ -538,9 +536,10 @@ export default function ConfigureDataset( { isIndicators, dataset, setDataset } 
         if ( elemA && elemB )
           new_points = elaborateEF(new_points, elemA, elemB )
         else new_points = []
-        setPoints (featureCollection(new_points));
+        console.log('newpoints')
+        console.log(featureCollection(new_points))
         await extractData (featureCollection(new_points));
-        setWorkDataset(await filtering(workDataset));
+        await filtering(new_points);
         toast.current.show({ severity: 'success', summary: 'Done!', detail: 'Source points has been loaded and evaluated.'});
       }
       else {
@@ -562,10 +561,9 @@ export default function ConfigureDataset( { isIndicators, dataset, setDataset } 
       const response = await ProfileService.getDataset( typename, null, token )
       setIsWorking(false);
       if ( response && response.ok && response.data && response.data.features ){
-        const points = response.data; 
-        setPoints (points);
+        const points = response.data;
         await extractData (points);
-        setWorkDataset(await filtering(workDataset));
+        await filtering(points);
         toast.current.show({ severity: 'success', summary: 'Done!', detail: 'Source points has been loaded.'});
       }
       else {
@@ -581,84 +579,86 @@ export default function ConfigureDataset( { isIndicators, dataset, setDataset } 
   }
  
   // This performs filtering using the Filter object
-  const filtering = async ( _workDataset) => {
+  const filtering = async ( _points) => {
+    workDataset.points = _points
     let filtered = []
-    try {
-      for ( let l=0; l < _workDataset.points.features.length; l += 1){
-        let ok = false;
-        let pt = _workDataset.points.features[l];
-        let props = pt.properties;
-        // AOI filter   
-        if ( _workDataset.filter.aoi ){
-          for ( let x=0; x < _workDataset.filter.aoi.features.length; x += 1)
-            if ( booleanPointInPolygon( pt, _workDataset.filter.aoi.features[x] ) )
-              ok = true;
-        }
-        if ( ok && props ){
-          // period filter
-          if (
-            ( _workDataset.filter.from && 
-              ( new Date (_workDataset.filter.from)) >= new Date( props.date ) )  ||
-            ( _workDataset.filter.to && 
-              ( new Date (_workDataset.filter.to)) <= new Date( props.date ) ) ) 
-          { 
-            ok = false
+    if (_points)
+      try {
+        for ( let l=0; l < _points.features.length; l += 1){
+          let ok = false;
+          let pt = _points.features[l];
+          let props = pt.properties;
+          // AOI filter   
+          if ( workDataset.filter.aoi ){
+            for ( let x=0; x < workDataset.filter.aoi.features.length; x += 1)
+              if ( booleanPointInPolygon( pt, workDataset.filter.aoi.features[x] ) )
+                ok = true;
           }
-          
-          // depth filter
-          if ( _workDataset.filter.depth )
-            if ( ( _workDataset.filter.depth === ProfileService.FILTER_DEPTH.DEPTH0_20 ) && ( props.upper > 20 ))
+          if ( ok && props ){
+            // period filter
+            if (
+              ( workDataset.filter.from && 
+                ( new Date (workDataset.filter.from)) >= new Date( props.date ) )  ||
+              ( workDataset.filter.to && 
+                ( new Date (workDataset.filter.to)) <= new Date( props.date ) ) ) 
+            { 
               ok = false
-            else if ( ( _workDataset.filter.depth === ProfileService.FILTER_DEPTH.DEPTH20_50 ) &&
-                      ( props.upper === null || props.upper > 50 ||
-                        ( props.lower != null && props.upper > props.lower ) ||
-                        ( props.lower != null && props.lower < 20 ) ) )
-          { 
-            ok = false
+            }
+            
+            // depth filter
+            if ( ok && workDataset.filter.depth )
+              if ( ( workDataset.filter.depth === ProfileService.FILTER_DEPTH.DEPTH0_20 ) && ( props.upper > 20 ))
+                ok = false
+              else if ( ( workDataset.filter.depth === ProfileService.FILTER_DEPTH.DEPTH20_50 ) &&
+                        ( props.upper === null || props.upper > 50 ||
+                          ( props.lower != null && props.upper > props.lower ) ||
+                          ( props.lower != null && props.lower < 20 ) ) )
+              { 
+                ok = false
+              }
+            // project filter
+            if ( workDataset.filter.project &&  
+                workDataset.filter.project !== props.project &&
+                workDataset.filter.project !== "All projects" )
+            { 
+              ok = false
+            }
+            // point's type filter
+            if ( workDataset.filter.type && 
+                workDataset.filter.type !== props.type &&
+                workDataset.filter.type !== "All types" )
+            { 
+              ok = false
+            }
+            // measure method filter
+            if ( isIndicators && workDataset.filter.method && 
+                workDataset.filter.method !== props.method &&
+                workDataset.filter.method !== "All methods" )
+            { 
+              ok = false
+            }
+            
+            // measure method filter
+            if ( workDataset.filter.surMethod && 
+                workDataset.filter.surMethod !== props.survey_m_id &&
+                workDataset.filter.surMethod !== "All methods" )
+            { 
+              ok = false
+            }   
           }
-          // project filter
-          if ( _workDataset.filter.project &&  
-               _workDataset.filter.project !== props.project &&
-               _workDataset.filter.project !== "All projects" )
-          { 
-            ok = false
-          }
-          // point's type filter
-          if ( _workDataset.filter.type && 
-              _workDataset.filter.type !== props.type &&
-              _workDataset.filter.type !== "All types" )
-          { 
-            ok = false
-          }
-          // measure method filter
-          if ( isIndicators && _workDataset.filter.method && 
-              _workDataset.filter.method !== props.method &&
-              _workDataset.filter.method !== "All methods" )
-          { 
-            ok = false
-          }
-          
-          // measure method filter
-          if ( _workDataset.filter.surMethod && 
-              _workDataset.filter.surMethod !== props.survey_m_id &&
-              _workDataset.filter.surMethod !== "All methods" )
-          { 
-            ok = false
-          }   
+          if (ok)
+            filtered.push(pt)    
         }
-        if (ok)
-          filtered.push(pt)    
-      }
-      _workDataset.filter.points = featureCollection(filtered);
-      const aggregatedPts = await aggregatePoints (_workDataset.filter.points)
-      setMapPoints( aggregatedPts )
-    } 
-    catch (error) {
-      console.log(error)
-      _workDataset.filter.points = null
-      toast.current.show({severity:'error', summary: 'Errors!', detail: 'Errors filtering points' , life: 3000});  
-    } 
-    return _workDataset
+        workDataset.filter.points = featureCollection(filtered);
+        const aggregatedPts = await aggregatePoints (workDataset.filter.points)
+        setMapPoints( aggregatedPts )
+      } 
+      catch (error) {
+        console.log(error)
+        workDataset.filter.points = null
+        toast.current.show({severity:'error', summary: 'Errors!', detail: 'Errors filtering points' , life: 3000});  
+      } 
+      setWorkDataset(workDataset)
   };
   
   // This saves the dataset on backoffice db
@@ -831,7 +831,7 @@ export default function ConfigureDataset( { isIndicators, dataset, setDataset } 
     try { 
       if (workDataset.points) {
         await extractData(workDataset.points)
-        setWorkDataset(await filtering(workDataset));
+        await filtering(workDataset.points);
       };
       if ( workDataset.filter && workDataset.filter.aoi )
         setSelectedArea(workDataset.filter.aoi)
@@ -861,7 +861,7 @@ export default function ConfigureDataset( { isIndicators, dataset, setDataset } 
   }
 
   const refreshMap = async () => { 
-    setWorkDataset(await filtering(workDataset))  
+    filtering(workDataset.points)  
   }
 
   useEffect(() => {

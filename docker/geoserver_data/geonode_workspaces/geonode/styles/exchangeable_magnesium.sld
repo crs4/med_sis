@@ -129,5 +129,5 @@
         </Rule>       
       </FeatureTypeStyle>
     </UserStyle>
-  </NamedLayer>http://localhost/geoserver/web/wicket/bookmarkable/org.geoserver.wms.web.data.StyleEditPage?144&name=exchangeable_magnesium&workspace=geonode#
+  </NamedLayer>
 </StyledLayerDescriptor>

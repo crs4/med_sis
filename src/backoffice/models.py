@@ -1070,7 +1070,6 @@ class LabDataExtraMeasure(models.Model):
     unit = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdataextrameasure_unit_set',  blank=True, null=True)
     upper = models.FloatField( validators=[validate_positive],  db_comment='Sampling upper boundary', blank=True, null=True)
     lower = models.FloatField( validators=[validate_positive],  db_comment='Sampling lower boundary', blank=True, null=True)
-    date = models.DateTimeField( db_comment='Date of the sample', blank=True, null=True )
     value = models.FloatField( db_comment='numeric value of measure', blank=True, null=True )
     
     objects = models.Manager().using('backoffice')
@@ -1079,6 +1078,7 @@ class LabDataExtraMeasure(models.Model):
         managed = True
         db_table = 'labdata_extra_measure'
         db_table_comment = 'Laboratory data of extra measures types not present in labadata'
+        unique_together = (('measure', 'point', 'upper', 'lower'),)
         
 
 ###########################
@@ -1100,70 +1100,36 @@ class Photo(models.Model):
         db_table_comment = 'photos descriptor'
         
 ###########################
-# HydroPTF
+# HydroPTF, training set and elaboration
 ###########################
 
-HYDROPTF_MODEL_STATUSES = [
+HYDROPTF_STATUSES = [
     ("CREATED" , "CREATED"),
     ("IN_PROCESS" , "IN_PROCESS"),
-    ("TRAINED" , "TRAINED"),
+    ("SUCCESS" , "SUCCESS"),
     ("ERRORS" , "ERRORS"),
 ]
-
-HYDROPTF_DATA_STATUSES = [
-    ("CREATED" , "CREATED"),
-    ("IN_PROCESS" , "IN_PROCESS"),
-    ("ELABORATED" , "ELABORATED"),
-    ("ERRORS" , "ERRORS"),
-]
-
-class HydroPtfModel (models.Model):
-    id = models.TextField(primary_key=True, db_comment='Geonode document identifier (number)')
-    title = models.TextField(db_comment='Model title')
-    date = models.DateTimeField( db_comment='Date of the sample', blank=True, null=True )
-    train_data = models.JSONField( db_comment='Training Data')
-    model_data = models.JSONField( db_comment='Result of training')
-    status = models.TextField( choices=HYDROPTF_MODEL_STATUSES, db_comment='Status of the Hydro PTF Model' )
-    
-    objects = models.Manager().using('backoffice')
-    
-    def start_processing(self):
-        """Start training HydroPtf model """
-        from .tasks import process_hydro_ptf_model
-        if self.status == "CREATED": 
-            self.status = "IN_PROCESS"
-        self.save(using='backoffice')
-        # This ensures that the task starts ONLY when the data is actually written to DB.
-        transaction.on_commit(
-            lambda: process_hydro_ptf_model.delay(self.code),
-            using='backoffice')    
-        return True
-    
-    class Meta:
-        managed = True
-        db_table = 'hydroptf_model'
-        db_table_comment = 'hydroptf models'
         
 class HydroPtfElaboration (models.Model):
-    id = models.TextField(primary_key=True, db_comment='Geonode document identifier (number)')
-    title = models.TextField(db_comment='Model title')
-    date = models.DateTimeField( db_comment='Date of the sample', blank=True, null=True )
-    ptfmodel = models.ForeignKey(HydroPtfModel, on_delete=models.CASCADE, related_name='photo_point_set', db_comment='Point soil data identifier') 
-    inputData = models.JSONField( db_comment='Input Data')
-    outputData = models.JSONField( db_comment='Input Data')
-    status = models.TextField( choices=HYDROPTF_DATA_STATUSES, db_comment='Status of the Hydro PTF Elaboration' )
+    id = models.BigAutoField(primary_key=True, serialize=False)
+    title = models.TextField(db_comment='Elaboration title') 
+    date = models.DateTimeField( db_comment='Date of the elaboration' )
+    useBulkDensity = models.BooleanField( db_comment='It indicates the presence of the bulk density in the input data', default=False )
+    input_data = models.JSONField( db_comment='Input Data')
+    output_data = models.JSONField( db_comment='Input Data', blank=True, null=True)
+    status = models.TextField( choices=HYDROPTF_STATUSES, db_comment='Status of the Hydro PTF Elaboration' )
     
     objects = models.Manager().using('backoffice')
     
     def start_processing(self):
         """Start elaboration HydroPtf model """
-        from .tasks import process_hydro_ptf_elaboration
+        from .tasks import process_hydro_ptf
         if self.status == "CREATED": 
             self.status = "IN_PROCESS"
         self.save(using='backoffice')
         # This ensures that the task starts ONLY when the data is actually written to DB.
         transaction.on_commit(
-            lambda: process_hydro_ptf_elaboration.delay(self.code),
+            lambda: process_hydro_ptf.delay(self.id),
             using='backoffice')    
         return True
     class Meta:

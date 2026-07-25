@@ -123,10 +123,6 @@ class DatasetAdmin(admin.ModelAdmin):
 class BaseDatasetAdmin(admin.ModelAdmin):
     search_fields = ( 'name', 'code' )
 
-@admin.register(HydroPtfModel)
-class HydroPtfModelAdmin(admin.ModelAdmin):
-    search_fields = ( 'id', 'date' )
-
 @admin.register(HydroPtfElaboration)
 class HydroPtfElaborationAdmin(admin.ModelAdmin):
     search_fields = ( 'id', 'date' )

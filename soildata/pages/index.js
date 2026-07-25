@@ -1,9 +1,22 @@
+
+/*
+  Copyright (C) 2026 CRS4
+
+  HOME page with links
+  
+  @bobdemo Roberto Demontis demontis@crs4.it
+
+*/
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Card } from 'primereact/card';
 import Image from 'next/image';
 import profileIMG from '../public/img/soil_profile.png'
-import sampleIMG from '../public/img/soil_sample.jpg';
-import indicatorIMG from '../public/img/soil_indicator.jpg';
+import toolsIMG from '../public/img/tools.jpg';
+import indicatorIMG from '../public/img/soil_indicators.png';
+import taxonomiesIMG from '../public/img/taxonomies.jpg';
+import uploadIMG from '../public/img/upload.png';
+import ptfIMG from '../public/img/ptf.png';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useUser } from '../context/user';
@@ -16,55 +29,63 @@ const Home = () => {
   const [points, setPoints] = useState('');
   const [labData, setLabData] = useState('');
   const [indicators, setIndicators] = useState('');
-  const headerP = (
-    <Image alt="Points Data" src={profileIMG} />
+  const headerA = (
+    <Image alt="Upload Soil Data" className="w-full" style="height: 200px;" src={uploadIMG} />
+  );
+  const headerB = (
+    <Image alt="Points Soil Data" className="w-full" style="height: 200px;" src={profileIMG} />
+  );
+  const headerC = (
+    <Image alt="Publish" className="w-full" style="height: 200px;" src={indicatorIMG} />
+  );
+  const headerD = (
+    <Image alt="Taxonomies" className="w-full" style="height: 200px;" src={taxonomiesIMG} />
+  );
+  const headerE = (
+    <Image alt="Tools" className="w-full" style="height: 200px;" src={toolsIMG} />
   );
 
-  const headerS = (
-    <Image alt="Laboratory data" src={sampleIMG} />
+  const headerF = (
+    <Image alt="Tools" className="w-full" style="height: 200px;" src={ptfIMG} />
   );
 
-  const headerI = (
-    <Image alt="Soil Indicators" src={indicatorIMG} />
-  );
-
-  const footerP = (
-    
-    <div className="flex flex-wrap justify-content-center gap-2">
-      
+  const footerA = (
+    <div className="text-overflow-ellipsis">
+      {t('SIS_BACKOFFICE_UPLOAD')}
     </div>
   );
 
-  const footerS = (
-    <div className="flex flex-wrap justify-content-center gap-2">
-      
+  const footerB = (
+    <div className="text-overflow-ellipsis">
+      {t('SIS_BACKOFFICE_POINTS')}   
     </div>
   );
 
-  const footerI = (
-    <div className="flex flex-wrap justify-content-center gap-2">
-        
+  const footerC = (
+    <div className="text-overflow-ellipsis">
+      {t('SIS_BACKOFFICE_PUBLISH')}    
     </div>
   );
 
-  const readNumber = (xml) => {
-    if (!xml)
-      return
-    try {
-      let i = xml.indexOf('numberMatched="');
-      let number = xml.substring(i);
-      i = px.indexOf('"');
-      number = number.substring(0,i)
-      if ( parseInt(number) != NaN )
-        return px;
-      else return '';
-    }
-    catch (e){
-      console.log(e);
-    }  
-    return '';
-  }
+  const footerD = (
+    <div className="text-overflow-ellipsis">
+      {t('SIS_BACKOFFICE_TAXONOMY')}  
+    </div>
+  );
 
+  const footerE = (
+    <div className=" text-overflow-ellipsis">
+        {t('SIS_BACKOFFICE_CONFIGURE')} 
+    </div>
+  );
+
+  const footerF = (
+    <div className=" text-overflow-ellipsis">
+        {t('SIS_BACKOFFICE_HYDROPTF')}  
+    </div>
+  );
+
+  
   useEffect(() => {
     if (  !user.userData || ( user.userData.forbidden !== null && user.userData.forbidden ) )
       router.push(`/401`);
@@ -75,28 +96,34 @@ const Home = () => {
       <div className="layout-dashboard">
         <div className="grid">
           <div className="col text-center justify-content-center m-4 ">
-            <h1 className="text-brown-700">SIS Back Office</h1>
-            <div>SOIL POINT DATA MANAGING TOOLS</div>
+            <h1 className="text-cyan-800">{t('SIS_BACKOFFICE_TITLE')}</h1>
+            <div>{t('SIS_BACKOFFICE_SUBTITLE')}</div>
+            <div className="flex text-xl text-justify w-full m-2 text-cyan-800">
+              <p>{t('SIS_BACKOFFICE_HOME1')}{t('SIS_BACKOFFICE_HOME2')}</p>
+            </div>
           </div>
         </div>  
-        <div className="grid">
-          <div className="col-4 flex justify-center">
-            <Card title={t('POINTS DATA')} subTitle={points + " points"} footer={footerP} header={headerP} className="col-25rem">
-                
-            </Card>
-          </div>
-          <div className="col-4 flex justify-center">
-            <Card  title={t('LABORATORY DATA')} subTitle={labData + " records"}  footer={footerS} header={headerS} className="col-25rem">
-                
-            </Card>
-          </div>
-          <div className="col-4 flex justify-center">
-            <Card  title={t('INDICATORS')} subTitle={indicators + " Soil Indicators"} footer={footerI} header={headerI} className="col-25rem">
-                   
-            </Card>
-          </div>
-        </div>     
-      </div>
+        <div className="grid justify-content-center gap-4">
+          <Card title={t('UPLOAD_TITLE')} footer={footerA} header={headerA} 
+              className="w-20rem h-40rem cursor-pointer" onClick={ () => router.push(`/uploads`)}>
+          </Card>
+          <Card  title={t('POINTS_TITLE')} footer={footerB} header={headerB} 
+            className="w-20rem h-40rem cursor-pointer"  onClick={ () => router.push(`/points`)}>
+          </Card>
+          <Card  title={t('PUBLISHING_TITLE')} footer={footerC} header={headerC} 
+            className="w-20rem h-40rem cursor-pointer" onClick={ () => router.push(`/publish`)}>
+          </Card>
+          <Card  title={t('TAXONOMIES_TITLE')} footer={footerD} header={headerD} 
+            className="w-20rem h-40rem cursor-pointer" onClick={ () => router.push(`/taxonomy`)}>
+          </Card>
+          <Card  title={t('CONFIGURE_TITLE')} footer={footerE} header={headerE} 
+            className="w-20rem h-40rem cursor-pointer" onClick={ () => router.push(`/configure`)}>
+          </Card>
+          <Card  title={t('HYDRO_PTF_TITLE')} footer={footerF} header={headerF} 
+            className="w-20rem h-40rem cursor-pointer" onClick={ () => router.push(`/hydroptf`)}>
+          </Card>
+        </div>
+      </div>          
     );
 };
 

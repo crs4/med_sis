@@ -6,7 +6,7 @@ x-common-django:
   env_file:
     - .env
   volumes:
-    - ./src:/usr/src/s4m_catalogue
+    #- ./src:/usr/src/s4m_catalogue
     - statics:/mnt/volumes/statics
     - geoserver-data-dir:/geoserver_data/data
     - backup-restore:/backup_restore
@@ -18,7 +18,6 @@ x-common-django:
       condition: service_healthy
 
 services:
-
   # Our custom django application. It includes Geonode.
   django:
     << : *default-common-django
@@ -35,7 +34,6 @@ services:
     environment:
       - IS_CELERY=False
     entrypoint: ["/usr/src/s4m_catalogue/entrypoint.sh"]
-    #command: "uwsgi --ini /usr/src/s4m_catalogue/uwsgi.ini"
     command: "python manage.py runserver 0.0.0.0:8000"
     networks:
       - soils4med

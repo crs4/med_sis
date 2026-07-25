@@ -295,7 +295,7 @@ export default function Page()  {
   
   const headerDlg = () => {
     return (
-      <h5 className="w-7 surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2"> {t('CREATE_DATASET')}</h5>
+      <h5 className="w-7 surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2"> {t('DATASETS_CREATE')}</h5>
     )
   }; 
   
@@ -434,7 +434,7 @@ export default function Page()  {
               onClick={() => { setVisibleCreateDlg(false) }}
             />
             <Button
-              label={t('CREATE_DATASET')}
+              label={t('DATASETS_CREATE')}
               icon='pi pi-wrench'
               type='button'
               disabled={ isWorking }

@@ -11,7 +11,8 @@ export const ProfileService = {
     POINTS_SOIL_DATA: "POINTS_SOIL_DATA",
     SOIL_INDICATOR: "SOIL_INDICATOR",
     AOI_SOIL_INDICATOR: "AOI_SOIL_INDICATOR",
-    LABDATA_EXTRA_MEASURE: "LABDATA_EXTRA_MEASURE" 
+    LABDATA_EXTRA_MEASURE: "LABDATA_EXTRA_MEASURE",
+    HYDRO_PTF: "HYDRO_PTF" 
   },
 
   DATASET_STATUSES : {
@@ -36,9 +37,9 @@ export const ProfileService = {
     "POINT_SOIL_DATA_SECTION": "POINT_SOIL_DATA_SECTION"
   },
 
-  async getDataset(typename, bboxFilter, token) { 
+  async getDataset(typename, filter, token) { 
     if ( typename && token ) 
-      return await doFetchGeoserver ( typename, bboxFilter, token );
+      return await doFetchGeoserver ( typename, filter, token );
     else 
       return { ok: false }
   },

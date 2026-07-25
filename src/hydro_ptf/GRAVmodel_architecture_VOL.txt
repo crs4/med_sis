@@ -1,0 +1,6 @@
+MLP Model Architecture:
+Number of layers: 3
+Hidden layer sizes: (5,)
+Activation function: relu
+Solver: adam
+Total parameters: 25

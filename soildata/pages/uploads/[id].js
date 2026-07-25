@@ -38,9 +38,9 @@ export default function Page()  {
         return;
       let response = await UploadService.get(document.cookie,id)
       if ( !response && !response.data )
-        toast.current.show({severity:'error', summary: 'Errors!', detail: 'Errors reading upload ' + id , life: 3000});
+        toast.current.show({severity:'error', summary: t('ERRORS'), detail: t('NO_ERRORS') , life: 3000});
       else { 
-        toast.current.show({severity:'success', summary: 'Success!', detail: 'The upload ' + id + ' has been loaded' , life: 3000});
+        toast.current.show({severity:'success', summary: t('SUCCESS') , detail: t('SUCCESS') , life: 3000});
         setUpload(response.data);
       }
       setLoading(false); 
@@ -50,7 +50,7 @@ export default function Page()  {
     fetchData(id);
   },[user]);  // eslint-disable-line   
 
-  let reportHeaders = ['Element', 'Section', 'Message'];
+  let reportHeaders = [ t('UPLOADS_REPORT_F1'),  t('UPLOADS_REPORT_F2'),  t('UPLOADS_REPORT_F3')];
   
   return (
     <div className="layout-dashboard">
@@ -72,19 +72,19 @@ export default function Page()  {
           />
         </div>
       {(!upload && !loading ) && (
-        <h5 className="font-bold text-cyan-800">No Upload found</h5>
+        <h5 className="font-bold text-cyan-800">{t('EMPTY')}</h5>
       )}
       {(loading) && (
-        <h5 className="font-bold text-cyan-800">Loading Upload Info...</h5>
+        <h5 className="font-bold text-cyan-800">{t('LOADING')}</h5>
       )}
       {(upload && !loading && ( upload.status === UploadService.STATUSES.IN_PROCESS || upload.status === UploadService.STATUSES.UPLOADED) ) && (
-        <h5 className="font-bold text-cyan-800">The Upload is being processed</h5>
+        <h5 className="font-bold text-cyan-800">{t('UPLOADS_IN_PROCESS')}</h5>
       )}
       {(upload && !loading  && upload.status !== UploadService.STATUSES.IN_PROCESS && upload.status !== UploadService.STATUSES.UPLOADED ) && (
         <div className="card text-xl  w-full font-bold text-cyan-800 m-2">
-          <h4> Upload:<span class="text-gray-600"> { upload.title } </span></h4>
+          <h4> Upload:<span class="font-bold text-gray-600"> { upload.title } </span></h4>
           <h4> Date:<span class="text-gray-600"> { upload.date.toString() }</span></h4>
-          <h4> Editor:<span class="text-gray-600"> { upload.editor }</span></h4>
+          <h4><span class="font-italic text-gray-600"> { upload.editor }</span></h4>
         </div>
       )} 
       {(upload && upload.report && upload.report['errors'] && 
@@ -92,7 +92,7 @@ export default function Page()  {
           <ReportTable
             elements={upload.report['errors']}
             headers={reportHeaders}
-            title={'Table of the ' + upload.report['errors'].length + ' errors in upload ' + upload.title }
+            title={ upload.title + ': ' + upload.report['errors'].length + ' ' + t('ERRORS')}
             className='p-mt-4 p-mb-4' />         
       )}
       {(upload && upload.report && upload.report['operations'] && 
@@ -100,7 +100,7 @@ export default function Page()  {
           <ReportTable
             elements={upload.report['operations']}
             headers={reportHeaders}
-            title={'Table of the ' + upload.report['operations'].length + ' operations in upload ' + upload.title  }
+            title={upload.title +': ' + t('UPLOADS_OPERATIONS')  }
             className='p-mt-4 p-mb-4' />  
       )}
       </div>

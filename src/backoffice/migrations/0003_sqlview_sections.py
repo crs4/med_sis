@@ -281,11 +281,11 @@ CREATE OR REPLACE VIEW layer_structure_geo AS
     WHERE t.id = l.point_id and l.id = lr.layer_id;
 ALTER VIEW IF EXISTS layer_structure_geo OWNER TO backoffice_user;
 
-CREATE OR REPLACE VIEW labdata_extra_geo AS
+CREATE OR REPLACE VIEW extra_labdata_geo AS
   SELECT e.id, e.point_id, t.point_type, t.project, t.date, t.survey_m_id, 
-    t.upper, t.lower, e.measure_id as measure, e.method_id as method, e.unit_id as unit, e.value, t.geom
-  FROM labdata_extra_measure e, labdata_geo t
-  WHERE t.id = e.labdata_id;
+    e.upper, e.lower, e.measure_id as measure, e.method_id as method, e.unit_id as unit, e.value, t.geom
+  FROM labdata_extra_measure e, point_general_geo t
+  WHERE t.id = e.point_id;
 ALTER VIEW IF EXISTS labdata_extra_geo OWNER TO backoffice_user; 
 
 CREATE OR REPLACE VIEW active_carbonate AS

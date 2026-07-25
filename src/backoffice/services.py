@@ -1,20 +1,24 @@
+import pandas as pd
+import dill
+import numpy as np
+
 import json
 import requests
 import subprocess
 import time
 from datetime import datetime
 from django.conf import settings
-from .models import XLSxUpload, Dataset, BaseDataset
+from .models import XLSxUpload, Dataset, BaseDataset, HydroPtfElaboration
 import os 
 import re
 import base64
 from osgeo import ogr, osr, gdal
+
 # Enable GDAL/OGR exceptions
 gdal.UseExceptions()
 # GDAL & OGR memory drivers
 GDAL_MEMORY_DRIVER = gdal.GetDriverByName('MEM')
 OGR_MEMORY_DRIVER = ogr.GetDriverByName('MEM')
-
 
 ###### XLSs Upload
 class XLSxUploadService:
@@ -396,18 +400,19 @@ class DatasetService:
             pass
 ############ GENERATE WORK FILES FROM PARAMETERS        
         try :
-            self.report["msgs"].append("Stage1: Temporary folder with data created")
+            self.report["msgs"].append("Stage1: Temporary folder created")
             with open(base_path+"/points.json", "w") as outfile:
                 json.dump(points, outfile)
             with open(base_path+"/aoi.json", "w") as outfile:
                 json.dump(aoi, outfile)
+            self.report["msgs"].append("Stage2: points.json and aoi.json files created")
         except Exception as e:
             self.report["success"] = False
             self.report["msgs"].append("Stage2: errors creating files, exited")
-            self._writeReport(base_path)
+            cmd = f"rm -r {base_path}"
+            subprocess.call([cmd], shell=True) 
             return self.report
-        self.report["msgs"].append("Stage1: points.json and aoi.json files created")
-            
+        
 ############ IF KRIGING IS TRUE GENERATES WORK FILES FROM PARAMETERS          
         try :
             if dataset.kriging:
@@ -417,7 +422,7 @@ class DatasetService:
                     json.dump(k_box, outfile)
                 self.report["msgs"].append("Stage3 (Kriging): k_points.json and k_box.json files created")
                    
-                # Reproject aggregated poimts and change file format
+                # Reproject aggregated poiNts and change file format
                 pointsSHP = os.path.join( base_path, "kpoints.shp")
                 pointsJSON = os.path.join( base_path, "kpoints.json")
                 params = f"ogr2ogr -s_srs 'EPSG:4326' -t_srs '{k_epsg}' {pointsSHP} {pointsJSON}"
@@ -432,7 +437,7 @@ class DatasetService:
                 pathGEOJSON = os.path.join( base_path, "bbox.json")
                 params = f"ogr2ogr -s_srs 'EPSG:4326' -t_srs '{k_epsg}' {pathUTMJSON} {pathGEOJSON}"
                 subprocess.call([params], shell=True)                
-                self.report["msgs"].append("Stage3 (Kriging): k_points.shp, utmaoi.json and utmbbox.json files created")
+                self.report["msgs"].append("Stage4 (Kriging): k_points.shp, utmaoi.json and utmbbox.json files created")
                 with open(base_path+"/utmbbox.json", "r") as file:
                     utmBox = json.load(file)
                     feature = utmBox['features'][0]
@@ -459,6 +464,8 @@ class DatasetService:
         except Exception as e:
             self.report["success"] = False
             self.report["msgs"].append("Stage3 (Kriging): Errors in elaborating kriging interpolation, exited")
+            cmd = f"rm -r {base_path}"
+            subprocess.call([cmd], shell=True) 
             return self.report
 
 ############ IF KRIGING GENERATE AND VALIDATE GEOTIFF          
@@ -475,10 +482,12 @@ class DatasetService:
                 cmd = f"gdalwarp -co 'COMPRESS=LZW' -co 'PREDICTOR=1' -cutline {aoiUTMJSON} -crop_to_cutline -overwrite {output} {output2}"
                 subprocess.call([cmd], shell=True)  
                 self.report["msgs"].append("Stage4 (Kriging): Tiff and Aoi clipped Tiff files created")        
+        
         except Exception as e:
             self.report["success"] = False
             self.report["errors"].append("Stage4 (Kriging): wrong data reading Geotiff, exited")
-            self._writeReport(base_path)
+            cmd = f"rm -r {base_path}"
+            subprocess.call([cmd], shell=True) 
             return self.report
         
 ############ PUBLISHING POINTS DATASET
@@ -501,34 +510,35 @@ class DatasetService:
                 self.report["msgs"].append("Stage5 (Publishing): errors, points dataset not published")
         except Exception as e:
             self.report["success"] = False
-            self.report["msgs"].append("Stage5: errors creating points dataset, exited")
-            self._writeReport(base_path)
+            self.report["msgs"].append("Stage5: errors creating points dataset, exited") 
+            cmd = f"rm -r {base_path}"
+            subprocess.call([cmd], shell=True) 
             return self.report
-############ PUBLISHING AOI DATASET 
-# styles location: /geoserver_data/data/workspaces/geonode/styles/
-# typename of source -> typename.sld         
-        #2nd dataset: area of interest (EPSG:4326) geoJSON base_path+"/"+name+"_aoi.json"
-        try:
+                   
+############ PUBLISHING AGGREGATE POINTS DATASET
+        base_path_sld = '/geoserver_data/data/workspaces/geonode/styles/'
+        #2nd dataset: aggregated points (EPSG:4326) geoJSON base_path+"/"+name+"_points.json"    
+        try :
             url = f"{self.base_url}/api/v2/uploads/upload/"
-            #style = f"/geoserver_data/data/workspaces/geonode/styles/{data.source}.sld"
             files= [
-                ('base_file', ( name + '_aoi.json', open(base_path+'/aoi.json','r'), 'application/json')),
-                ('json_file', ( name + '_aoi.json', open(base_path+'/aoi.json','r'), 'application/json')),
-                ('sld_file',  ( name + '_aoi.sld',  open(base_path_sld+'areas.sld','rb'),'application/octet-stream'))
+                ('base_file', ( name +'_kpoints.json',open(base_path+'/kpoints.json','r'), 'application/json')),
+                ('json_file', ( name +'_kpoints.json',open(base_path+'/kpoints.json','r'), 'application/json')),
+                ('sld_file',  ( name + '_kpoints.sld',  open(base_path_sld+typename+'.sld','rb'),'application/octet-stream'))
             ]
-            geonode_aoi_id = self._manageTask(url,files)
-            if geonode_aoi_id is not None:
-                self.report["msgs"].append("Stage6 (Publishing): AOI dataset published")
-                self.report["aoi"] = geonode_aoi_id
+            geonode_kpoints_id = self._manageTask(url,files)
+            if geonode_kpoints_id is not None:
+                self.report["msgs"].append(f"Stage6 (Publishing): aggregated points dataset published: {geonode_kpoints_id} ")
+                self.report["aggregated"] = geonode_kpoints_id
             else: 
-                self.report["msgs"].append("Stage6 (Publishing): errors, AOI dataset not published")    
+                self.report["msgs"].append("Stage6 (Publishing): errors, aggregated points dataset not published")
         except Exception as e:
             self.report["success"] = False
-            self.report["msgs"].append("Stage6: errors creating aoi dataset, exited")
-            self._writeReport(base_path)
+            self.report["msgs"].append("Stage6: errors creating aggregated points dataset, exited")
+            cmd = f"rm -r {base_path}"
+            subprocess.call([cmd], shell=True) 
             return self.report
         
-############ PUBLISHING INTERPOLATION RASTER DATASET
+########### PUBLISHING INTERPOLATION RASTER DATASET
         #3th dataset: interpolation raster - geotiff base_path+"/"+name+"_prediction.tif"
         try :
             if dataset.kriging:
@@ -539,55 +549,122 @@ class DatasetService:
                 min = stats[0]
                 max = stats[1]
                 style = self._get_style_for_raster(max, min)
-                with open(base_path+"/raster.sld", "w") as outfile:
-                    outfile.write(style)
+                # !!!uploaded sld file doesn't work
+                # #with open(base_path+"/raster.sld", "w") as outfile:
+                #    outfile.write(style)
+                
                 url = f"{self.base_url}/api/v2/uploads/upload/"
                 files= [
+                # !!!uploaded sld file doesn't work
+                #    ('sld_file',  ( name + '_prediction.sld',  open(base_path+'/raster.sld','rb'),'application/octet-stream')),
                     ('base_file', ( name + '_prediction.tif',open(base_path+'/prediction_clip.tif','rb'), 'image/tiff')),
-                    ('tif_file', ( name + '_prediction.tif',open(base_path+'/prediction_clip.tif','rb'), 'image/tiff')),
-                    ('sld_file',  ( name + '_prediction.sld',  open(base_path + '/raster.sld','rb'),'application/octet-stream'))
+                    ('tif_file', ( name + '_prediction.tif',open(base_path+'/prediction_clip.tif','rb'), 'image/tiff'))
                 ]
                 geonode_prediction_id = self._manageTask(url,files)
                 if geonode_prediction_id is not None:
                     self.report["msgs"].append("Stage7 (Kriging - Publishing): interpolation raster dataset published")
+                    self.report["msgs"].append("Proposed style:\n" + style)
                     self.report["raster"] = geonode_prediction_id
                 else: 
                     self.report["msgs"].append("Stage7 (Kriging - Publishing): errors, interpolation raster dataset not published")               
         except Exception as e:
             self.report["success"] = False
             self.report["msgs"].append("Stage7 (Kriging - Publishing): errors creating prediction raster dataset, exited")
-            self._writeReport(base_path)
+            cmd = f"rm -r {base_path}"
+            subprocess.call([cmd], shell=True) 
             return self.report
 
 ############ METADATA geonode_points_id, geonode_aoi_id, geonode_prediction_id
         try:
+            topic = None
+            if dataset.reports["source_type"] is not None :
+                category = dataset.reports["source_type"]
+                if category == "soil_biological_health" : 
+                    topic = { "identifier": "soil_biological_health", "gn_description":"Soil Biological Health" }
+                if category == "soil_physical_health" :
+                    topic = { "identifier": "soil_physical_health", "gn_description":"Soil Physical Health" }
+                if category == "soil_chemical_health" :
+                    topic = { "identifier": "soil_chemical_health", "gn_description":"Soil Chemical Health" }
+                if category == "points_soil_data" : 
+                    topic = { "identifier": "points_soil_data", "gn_description":"Points Soil Data" }
+            
+            ############  FILTERED POINTS            
             url = f"{self.base_url}/api/v2/datasets/{geonode_points_id}"
+            abstract = f"Filtered points of {dataset.name}. Filter: "
+            # filter
+            if dataset.filter["depth"]:
+                if dataset.filter["depth"] == 'DEPTH0_20' :
+                    abstract += f"[depth]: 0 to 20 cm;"
+                else :
+                    if dataset.filter["depth"] == 'DEPTH20_50' :
+                        abstract += f"[depth]: 20 to 50 cm;"
+                    else: abstract += f"[depth]: all;"    
+            else: abstract += f"[depth]: all;"
+            if dataset.filter["from"] is not None:
+                abstract += f"[from date]: {dataset.filter["from"]}; "
+            if dataset.filter["to"] is not None:
+                abstract += f"[to date]: {dataset.filter["to"]}; "
+            if dataset.filter["method"] is not None:
+                abstract += f"[Laboratory method]: {dataset.filter["method"]}; "
+            if dataset.filter["type"] is not None:
+                abstract += f"[point type]: {dataset.filter["type"]}; "
+            if dataset.filter["project"] is not None:
+                abstract += f"[project]: {dataset.filter["project"]}; "
             mdata = {
-                "title": f"{name}-POINTS",
-                "abstract": f"Filter {dataset.id} executed on source {dataset.source} executed in date:{dataset.date}",
-                "category": "geoscientificInformation",
+                "title": f"{name}-FILTERED",
+                "abstract": abstract
             }
-            response = requests.patch( url, data=mdata, headers=self.auth_header, )
+            if topic is not None:
+                mdata["category"] = topic;
+            response = requests.patch( url, data=mdata, headers=self.auth_header )
             if response.status_code >= 200 and response.status_code < 300:
                 self.report["msgs"].append("Stage8 (Metadata - Publishing): metadata for points dataset published")
             else: 
-                self.report["msgs"].append("Stage8 (Metadata - Publishing): metadata not published")
-            
+                self.report["msgs"].append("Stage8 (Metadata - Publishing): metadata not published")  
+        ############  AGGREGATED POINTS            
+            url = f"{self.base_url}/api/v2/datasets/{geonode_kpoints_id}"
+            abstract = f"Aggregated points of {dataset.name}. "
+            mdata = {
+                "title": f"{name}-FILTERED",
+                "abstract": abstract
+            }
+            if topic is not None:
+                mdata["category"] = topic;
+            response = requests.patch( url, data=mdata, headers=self.auth_header )
+            if response.status_code >= 200 and response.status_code < 300:
+                self.report["msgs"].append("Stage9 (Metadata - Publishing): metadata for filtered points dataset published")
+            else: 
+                self.report["msgs"].append("Stage9 (Metadata - Publishing): metadata for filtered points not published")            
+        
+        ############  PREDICTION            
+            url = f"{self.base_url}/api/v2/datasets/{geonode_prediction_id}"
+            abstract = f"Prediction of {dataset.name}. "
+            mdata = {
+                "title": f"{name}-AOI",
+                "abstract": abstract
+            }
+            if topic is not None:
+                mdata["category"] = topic;
+            response = requests.patch( url, data=mdata, headers=self.auth_header )
+            if response.status_code >= 200 and response.status_code < 300:
+                self.report["msgs"].append("Stage10 (Metadata - Publishing): metadata for filtered points dataset published")
+            else: 
+                self.report["msgs"].append("Stage10 (Metadata - Publishing): metadata for filtered points not published")            
+        
         except Exception as e:
             self.report["success"] = False
-            self.report["msgs"].append("Stage8: errors metadata for points dataset not published")
-            self._writeReport(base_path)
-            return self.report
+            self.report["msgs"].append("Errors metadata for datasets not updated")
+            cmd = f"rm -r {base_path}"
+            subprocess.call([cmd], shell=True) 
             
 ############ FINALIZE
+        self.report["success"] = True
+        self.report["msgs"].append("Stage11: datasets successfully published ") 
         cmd = f"rm -r {base_path}"
         subprocess.call([cmd], shell=True) 
-        self.report["success"] = True
-        self.report["msgs"].append("Stage9: datasets successfully published ")
-        self.report["msgs"].append("Stage10: temporary folder removed ")
-        
         return self.report
-           
+ 
+###### BaseDataset Publishing          
 class BaseDatasetService:
     def __init__(self):
         # Reset of report data ( create datasets result )
@@ -653,8 +730,18 @@ class BaseDatasetService:
                             else:
                                 self.report["msgs"].append(f"error writing metadata in the dataset {geonode_dataset['pk']}")
                             self.report["geonode"] = dataset.geonode_id
+                            
+############ CHANGE PERMISSIONS
+                            url = f"{self.base_url}/api/v2/datasets/{geonode_dataset['pk']}/permissions"
+                            payload = json.dumps({ "groups": [ { "id": 4, "permissions": "manage"}]})
+                            response3 = requests.patch( url, json=payload, headers=self.auth_header )
+                            if response3.status_code >= 200 and response2.status_code < 300:
+                                self.report["msgs"].append(f"permissions added to the dataset {geonode_dataset['pk']}")                      
+                            else:
+                                self.report["msgs"].append(f"error writing permissions in the dataset {geonode_dataset['pk']}")                           
                             self.report["success"] = True
                             return self.report
+
                 else  :
                     raise ValueError("Dataset is not IN_PROCESS status")
             else  :
@@ -677,7 +764,7 @@ class HydroPtfModelService:
         # basic authentication  parameters
         self.auth_username = settings.API_USERNAME
         self.auth_password = settings.API_PASSWORD
-        self.auth_header = self._get_basic_auth_header()
+        self.auth_header = self._get_basic_auth_header() 
 
     def _get_basic_auth_header(self):
         """
@@ -686,33 +773,72 @@ class HydroPtfModelService:
         credentials = f"{self.auth_username}:{self.auth_password}"
         encoded_credentials = base64.b64encode(credentials.encode()).decode()
         return {'Authorization': f'Basic {encoded_credentials}'}
-          
-    def process_hydro_ptf_model(self, _id):
-        return 
+   
+    def elaborate_hydro_ptf_model(self, _id):
+        elaboration = HydroPtfElaboration.objects.using('backoffice').get(id=_id)
+        work_dir = '/usr/src/s4m_catalogue/hydro_ptf/'
+        try:
+            if elaboration is not None :
+                if elaboration.status == "IN_PROCESS" :
+                    ## [ { "clay": percentage, "sand": percentage, "org_car": percentage }, .... ]
+                    withBulk = 'GRAV'
+                    if elaboration.useBulkDensity :
+                        withBulk = 'VOL'
+                    input_data = elaboration.input_data
+                    model_path = work_dir + '/' + withBulk + 'final_mlp_model.pkl'
+                    features_processor_path = work_dir + '/' + withBulk + 'feature_preprocessor.pkl'
+                    pot_processor_path = work_dir + '/' + withBulk + 'pot_preprocessor.pkl'
+                    with open(model_path, 'rb') as file:
+                        MLPmodel = dill.load(file)
+                    with open(features_processor_path, 'rb') as file:
+                        feature_preprocessor = dill.load(file)
+                    with open(pot_processor_path, 'rb') as file:
+                        pot_preprocessor = dill.load(file)
+                    x_df = None
+                    if MLPmodel is not None and pot_preprocessor is not None and feature_preprocessor is not None :
+                        self.report["msgs"].append("stage 1: input data loaded")
+                        for d in input_data:
+                            x = np.array([d])
+                            x_repeat = np.repeat(x, 7, axis=0)
+                            x_pdf = pd.DataFrame( columns=["Sample_id", "CLAY", "SAND", "OC", "BD"] , data=x_repeat )
+                            x_pdf["Pot"] = [4, 10, 33, 100, 200, 300, 1500]
+                            if x_df is None:
+                                x_df = x_pdf
+                            else : 
+                                x_df = pd.concat([x_df,x_pdf], ignore_index=True)
+                        self.report["msgs"].append("stage 2: ready")
+                        X_data_features = feature_preprocessor.transform(x_df[['CLAY', 'SAND', 'OC']])
+                        X_data_pot = pot_preprocessor.transform(x_df[['Pot']])
+                        X_data_processed = np.hstack([X_data_features, X_data_pot])
+                        predictions=MLPmodel.predict(X_data_processed)
+                        self.report["msgs"].append("stage 3: calculated")
+                        if elaboration.useBulkDensity :
+                            x_df["Gravimetric"] = np.array(predictions, dtype=float)
+                            x_df["Volumetric"] = np.array(predictions, dtype=float) * np.array(x_df["BD"], dtype=float)
+                        else :
+                            x_df["Gravimetric"] = None
+                            x_df["Volumetric"] = np.array(predictions, dtype=float)
+                        x_df["CLAY"] = np.array(x_df["CLAY"], dtype=float)
+                        x_df["SAND"] = np.array(x_df["SAND"], dtype=float)
+                        x_df["OC"] = np.array(x_df["OC"], dtype=float)
+                        x_df["BD"] = np.array(x_df["BD"], dtype=float)
+                        self.report["msgs"].append("stage 4: finished")
+                        X_dataJson = x_df.to_json (orient='records')
+                        ## [ {"CLAY": ...,"SAND": ...,"OC": ...,"Pot":...,"BD":...,"Gravimetric":...,"Volumetric":...},...]
+                        elaboration.output_data = json.loads(X_dataJson)
+                        elaboration.status = "SUCCESS" 
+                        self.report["msgs"].append("stage 3: The predictions have been calculated. ")
+                        elaboration.report = self.report
+                        elaboration.save(using='backoffice')
+                    else  :
+                        raise ValueError("MLP model not found")
+                else  :
+                    raise ValueError("Dataset is not IN_PROCESS status")
+            else  :
+                raise ValueError("Dataset not found")
+        except Exception as e:
+            self.report["msgs"].append("Error " + str(e))
+            self.report["success"] = False 
+            return self.report
+        
 
-class HydroPtfModelElaboration:
-    def __init__(self):
-        # Reset of report data ( create datasets result )
-        self.report = {
-            "start_time": datetime.now().isoformat(),
-            "msgs": [],
-            "success": True
-        }
-        # base URL of APIs
-        self.base_url = settings.API_BASE_URL
-        # basic authentication  parameters
-        self.auth_username = settings.API_USERNAME
-        self.auth_password = settings.API_PASSWORD
-        self.auth_header = self._get_basic_auth_header()
-
-    def _get_basic_auth_header(self):
-        """
-        Generates the header for basic authentication
-        """
-        credentials = f"{self.auth_username}:{self.auth_password}"
-        encoded_credentials = base64.b64encode(credentials.encode()).decode()
-        return {'Authorization': f'Basic {encoded_credentials}'}
-    
-    def process_hydro_ptf_elaboration(self, _id):
-        return 
-                         

@@ -7,7 +7,6 @@ RUN mkdir -p /usr/src/s4m_catalogue
 RUN apt-get update -y \
     && apt-get install --no-install-recommends curl wget unzip gnupg2 saga locales cron libsqlite3-mod-spatialite -y \
     && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
- 
 # Configure locale
 RUN sed -i -e 's/# C.UTF-8 UTF-8/C.UTF-8 UTF-8/' /etc/locale.gen && \
     locale-gen
@@ -20,8 +19,8 @@ WORKDIR /usr/src/s4m_catalogue
 
 COPY src/wait-for-databases.sh /usr/bin/wait-for-databases
 RUN chmod +x /usr/bin/wait-for-databases
-RUN chmod +x /usr/src/s4m_catalogue/tasks.py &&\
-    chmod +x /usr/src/s4m_catalogue/entrypoint.sh
+RUN chmod +x /usr/src/s4m_catalogue/tasks.py 
+RUN chmod +x /usr/src/s4m_catalogue/entrypoint.sh
 
 COPY src/celery.sh /usr/bin/celery-commands
 RUN chmod +x /usr/bin/celery-commands
@@ -32,8 +31,8 @@ RUN chmod +x /usr/bin/celery-cmd
 RUN python -m pip install -U pip setuptools wheel
 RUN yes w | pip install --src /usr/src -r requirements.txt
 
-RUN apt-get autoremove --purge &&\
-    apt-get clean &&\
+RUN apt-get autoremove --purge && \
+    apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 COPY src/ /usr/src/project/

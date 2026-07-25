@@ -152,7 +152,6 @@ export default function Page( )  {
       const res = await TaxonomyService.listValues(document.cookie, tax.id);
       if ( res.ok  ) {
         setTaxonomy(res.data)
-        console.log(res.data)
         toast.current.show({severity:'success', summary: 'Done!', detail:'Taxonomy '+ tax.id +' has been loaded', life: 3000});
       } 
       else 
@@ -321,7 +320,7 @@ export default function Page( )  {
         )}
         <Button type="button" icon="pi pi-plus" onClick={(e) => { setVisTAdd(true); }} severity="success" rounded></Button>
       </div>
-      <ConfirmDialog id="dlg_remove" group="declarative"  visible={visTRemove} onHide={() => setVisTRemove(false)} message={t("DELETE_TAXONOMY_Q")} 
+      <ConfirmDialog id="dlg_remove" group="declarative"  visible={visTRemove} onHide={() => setVisTRemove(false)} message={t("TAXONOMY_DELETE_Q")} 
         header="Confirmation" icon="pi pi-exclamation-triangle" accept={removeTx} reject={rejectDlg1} />            
       { currentTx && ( 
       <div className="card text-cyan-800 flex w-full shadow-2 flex-column gap-3 justify-content-center m-2">

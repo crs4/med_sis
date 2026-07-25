@@ -17,7 +17,8 @@ import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { ConfirmDialog } from 'primereact/confirmdialog';
 import { Card } from 'primereact/card'; 
-import { Toast } from 'primereact/toast';   
+import { Message } from 'primereact/message';  
+import { Toast } from 'primereact/toast'; 
 
 export default function Page()  {
   const router = useRouter();
@@ -61,7 +62,6 @@ export default function Page()  {
             if (n1 > n2) return 1;
             return 0 
         }));
-        toast.current.show({severity:'success', summary: 'Done!', detail: "Base Datasets descriptors list has been loaded" , life: 3000});
       }
       setIsWorking(false);
     } catch (error) {
@@ -70,11 +70,7 @@ export default function Page()  {
   }
 
   const delay = (ms) => new Promise(res => setTimeout(res, ms));
-
-  const updateState = async () => {
-    fetchData();
-  }
-
+  
   const typeTemplate = (rowData) => {
     if ( rowData.type ) {
       if ( rowData.type === "soil_physical_health" )
@@ -111,7 +107,7 @@ export default function Page()  {
         className="p-mb-2 p-mr-2 m-1"
         disabled={isWorking}
         label={t('CONFIGURE')}
-        onClick={() => configure(rowData)}
+        onClick={() => configure(rowData, true)}
       />
     )}
     { rowData && rowData.geonode_id && rowData.status === 'PUBLISHED' && (
@@ -142,7 +138,7 @@ export default function Page()  {
         tooltipOptions={{ position: 'top' }}
         disabled={isWorking}
         className="m-2"
-        onClick={() => configure(rowData, true)}
+        onClick={() => configure(rowData,  true)}
       />
       )}
       </>
@@ -153,13 +149,13 @@ export default function Page()  {
         className="p-mb-2 p-mr-2 m-1"
         disabled={isWorking}
         label={t('RECONFIGURE')}
-        onClick={() => configure(rowData)}
+        onClick={() => configure(rowData, true)}
       />
     )}
     </>  
   )
 
-  const configure = async (ds, isIndicator) => {
+  const configure = async (ds, refresh) => {
     try {
       ds.status = "CREATED"
       const resp = await ProfileService.update ( document.cookie, ds.code, ds, 'base-datasets' )
@@ -167,20 +163,13 @@ export default function Page()  {
         toast.current.show({severity:'error', summary: 'Errors!', detail: "Errors starting configuration for dataset " + ds.code , life: 3000}); 
       else {
         toast.current.show({severity:'success', summary: 'Done!', detail: "Configuration started for dataset " + ds.code , life: 3000});
-        if ( isIndicator ) {
-          setIndicators(indicators)  
-        }
-        else {
-          setSections(sections)
-        } 
-        return ds;
-      }
-         
+        if ( refresh )
+           fetchData();
+      }     
     } catch (e) {
       console.log(e)
       
     }
-    return null
   }
 
   const configureAll = async () => {
@@ -188,7 +177,7 @@ export default function Page()  {
       setIsWorking(true)
       for ( let i = 0; i < indicators.length; i += 1 ){
         await new Promise(resolve => setTimeout(resolve, 3000)); 
-        await configure( indicators[i] , true );
+        await configure( indicators[i], false );
       }  
       for ( let i = 0; i < sections.length; i += 1 ){
         await new Promise(resolve => setTimeout(resolve, 3000)); 
@@ -217,12 +206,12 @@ export default function Page()  {
         icon="pi pi-replay"
         className="flex bg-primary font-bold border-round m-4"
         disabled={isWorking}
-        onClick={() => updateState()}
+        onClick={() => fetchData()}
         label={t('REFRESH_LIST')}
       />
     </div>
     {( isWorking ) && (
-        <h5 className="font-bold text-cyan-800">The browser is working; do not leave the page. </h5>
+      <Message severity="warn" text="The browser is working; do not leave the page." />
     )}
     <h5 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">{t('SOIL_INDICATOR')} Base Datasets</h5>
     {( indicators ) && (

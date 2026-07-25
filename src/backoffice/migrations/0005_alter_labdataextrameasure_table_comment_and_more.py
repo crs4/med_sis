@@ -16,41 +16,10 @@ class Migration(migrations.Migration):
             name="labdataextrameasure",
             table_comment="Laboratory data of extra measures types not present in labadata",
         ),
-        migrations.AlterUniqueTogether(
-            name="labdataextrameasure",
-            unique_together=set(),
-        ),
-        migrations.AddField(
-            model_name="labdataextrameasure",
-            name="date",
-            field=models.DateTimeField(
-                blank=True, db_comment="Date of the sample", null=True
-            ),
-        ),
-        migrations.AddField(
-            model_name="labdataextrameasure",
-            name="lower",
-            field=models.FloatField(
-                blank=True,
-                db_comment="Sampling lower boundary",
-                null=True,
-                validators=[backoffice.models.validate_positive],
-            ),
-        ),
-        migrations.AddField(
-            model_name="labdataextrameasure",
-            name="upper",
-            field=models.FloatField(
-                blank=True,
-                db_comment="Sampling upper boundary",
-                null=True,
-                validators=[backoffice.models.validate_positive],
-            ),
-        ),
         migrations.AlterField(
             model_name="xlsxupload",
             name="data",
-            field=models.JSONField(db_comment="Upload Json Data"),
+            field=models.JSONField(db_comment="Uploaded Json Data"),
         ),
         migrations.CreateModel(
             name="BaseDataset",

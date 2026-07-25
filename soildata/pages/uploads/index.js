@@ -1,5 +1,13 @@
 "use client"
 
+/*
+  Copyright (C) 2026 CRS4
+
+  UPLOAD Points Soil Data page 
+  
+  @bobdemo Roberto Demontis demontis@crs4.it
+
+*/
 import { UploadService } from '../../service/uploads';
 import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { Button } from 'primereact/button';
@@ -19,31 +27,42 @@ import { useUser } from '../../context/user';
 
 export default function Page()  {
   const t = useTranslations('default');
+  // Filters used in the  uploads list table
   const [filters, setFilters] = useState(null);
-  const [globalFilterValue, setGlobalFilterValue] = useState('');   
+  const [globalFilterValue, setGlobalFilterValue] = useState('');
+  // Working state   
   const [isWorking, setIsWorking] = useState(false);
-  const [current, setCurrent] = useState(null);
-  const [visibleDlg1, setVisibleDlg1] = useState(false);
+  // Loading data state   
   const [loading, setLoading] = useState(true);
+  // Visibility state of the dialog to remove selected upload   
+  const [visibleDlg1, setVisibleDlg1] = useState(false);
+  // Current selection in the  uploads list table
+  const [current, setCurrent] = useState(null);
+  // List of uploads 
   const [uploads, setUploads] = useState(null);
+  
   const router = useRouter();
   const toast = useRef(null);
   const user = useUser();
+  // List of possible values ​​for the status attribute in an upload object 
   const statuses = Object.keys(UploadService.STATUSES);
+  // List of possible types ​​for the type attribute in an upload object 
   const types = Object.keys(UploadService.TYPES);
+  // List of possible values ​​for the action attribute in an upload object 
   const actions = Object.keys(UploadService.ACTIONS);
 
   useEffect(() => {
     if ( !user.userData || ( user.userData.forbidden !== null && user.userData.forbidden ))
       router.push(`/401`);
+    // To load the upload list.
     const fetchData = ( async() => {
       let _data = await UploadService.list(document.cookie)
       if ( !_data || _data.error )
-        toast.current.show({severity:'error', summary: 'Errors!', detail: 'Errors reading uploads' , life: 3000});
+        toast.current.show({severity:'error', summary: 'Errors!', detail:t('LOADING_ERRORS'), life: 3000});
       else if ( !_data.data || !Array.isArray(_data.data) || _data.data.length === 0 ) 
-        toast.current.show({severity:'warn', summary: 'No data!', detail: 'No uploads Found' , life: 3000});
+        toast.current.show({severity:'warn', summary: 'No data!', detail: t('EMPTY') , life: 3000});
       else { 
-        toast.current.show({severity:'success', summary: 'Success!', detail: 'The upload list has been loaded' , life: 3000});
+        toast.current.show({severity:'success', summary: 'Success!', detail: t('LOADED')  , life: 3000});
         setUploads(mapUploads(_data.data));
         initFilters();
       }
@@ -52,14 +71,17 @@ export default function Page()  {
     fetchData();
   },[user]);  // eslint-disable-line
 
+  // To inspect an upload object.
   const goToUpload = (id) => {
     router.push(`/uploads/${id}`);
   };
 
+  // To create a new upload object.
   const openCreate = () => {
     router.push(`/uploads/create`);
   };
 
+  // To open the dialog box that deletes the selected upload object.
   const removeUpload = async (id) => {
     if ( !id || current )
       return;
@@ -68,22 +90,30 @@ export default function Page()  {
     setVisibleDlg1(true);
   };
 
+  // To delete the selected upload object.
   const performRemove = async () => {
     if ( !current )
       return;
     const res = await UploadService.remove(document.cookie,current);
     if ( res.status != 204 && res.status != 202 && res.status != 203 ) {
-        toast.current.show({severity:'Error', summary: 'Error', detail:'Errors deleting Upload ' + current, life: 3000});
+        toast.current.show({severity:'Error', summary: 'Error', detail:t('UPLOADS_ERROR_DELETE'), life: 3000});
     }
     else  {
         setUploads((omp) => (omp.filter((p) => p.id !== current)));
-        toast.current.show({severity:'success', summary: 'Done!', detail:'Upload ' + current +' has been deleted', life: 3000});
+        toast.current.show({severity:'success', summary: 'Done!', detail:t('UPLOADS_OK_DELETE'), life: 3000});
     } 
     initFilters();
     setCurrent(null);
     setIsWorking(false);
   };  
 
+  // to dispose the remove upload dialog
+  const rejectDlg1 = () => {
+    setCurrent(null);
+    setIsWorking(false);
+  };
+
+  // Filters for the uploads list
   const clearFilters = () => {
     initFilters();
   };
@@ -94,31 +124,6 @@ export default function Page()  {
     _filters['global'].value = value;
     setFilters(_filters);
     setGlobalFilterValue(value);
-  };
-
-  const renderHeader = () => {
-    return (
-        <div className="flex justify-content-between">
-            <Button outlined icon="pi pi-filter-slash" label="Clear" onClick={clearFilters} />
-            <span className="p-input-icon-left">
-                <i className="pi pi-search" />
-                <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder={t('SEARCH')} />
-            </span>
-        </div>
-    );
-  };
-
-  const rejectDlg1 = () => {
-    setCurrent(null);
-    setIsWorking(false);
-  };
-
-  const formatDate = (value) => {
-    return value.toLocaleDateString('en-US', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-    });
   };
 
   const initFilters = () => {
@@ -155,45 +160,64 @@ export default function Page()  {
     });
     setGlobalFilterValue('');
   };
-  
-  const dateBodyTemplate = (rowData) => {
-      return formatDate(rowData.date);
-  };
 
   const dateFilterTemplate = (options) => {
       return <Calendar value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" mask="99/99/9999" />;
   };
 
-  const statusBodyTemplate = (rowData) => {
-    console.log('statusBodyTemplate')
-    console.log(rowData)
-    if ( rowData.status === UploadService.STATUSES.IMPORT_SUCCESS )
-      return ( <Tag icon="pi pi-check" severity="success" value="All saved"></Tag>)
-    else if ( rowData.status === UploadService.STATUSES.IMPORT_WITH_ERROR )
-      return ( <Tag icon="pi pi-exclamation-triangle" severity="warning" value="Some Errors"></Tag>)
-    else if ( rowData.status === UploadService.STATUSES.IN_PROCESS )
-      return ( <Tag icon="pi pi-spin pi-cog" severity="info" value="Elaborating"></Tag>)
-    else if ( rowData.status === UploadService.STATUSES.UPLOADED )
-      return ( <Tag icon="pi pi-spin pi-cog" severity="info" value="Waiting"></Tag>)
-    else if ( rowData.status === UploadService.STATUSES.CRITICAL_ERROR )
-      return ( <Tag icon="pi pi-exclamation-triangle" severity="danger" value="Critical error"></Tag>)
+  const statusFilterTemplate = (options) => {
+    return <Dropdown value={options.value} options={statuses} onChange={(e) => options.filterCallback(e.value, options.index)} itemTemplate={statusItemTemplate} placeholder={t('SELECT_PH')}  className="p-column-filter" showClear />;
   };
 
-  const statusFilterTemplate = (options) => {
-    return <Dropdown value={options.value} options={statuses} onChange={(e) => options.filterCallback(e.value, options.index)} itemTemplate={statusItemTemplate} placeholder="Select a Status" className="p-column-filter" showClear />;
+  // Templates for the uploads table 
+  const renderHeader = () => {
+    return (
+        <div className="flex justify-content-between">
+            <Button outlined icon="pi pi-filter-slash" label={t("CLEAR_FILTER")} onClick={clearFilters} />
+            <span className="p-input-icon-left">
+                <i className="pi pi-search" />
+                <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder={t('SEARCH')} />
+            </span>
+        </div>
+    );
+  };
+  
+  const formatDate = (value) => {
+    return value.toLocaleDateString('en-US', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    });
+  };
+
+  const dateBodyTemplate = (rowData) => {
+      return formatDate(rowData.date);
+  };
+
+  const statusBodyTemplate = (rowData) => {
+    if ( rowData.status === UploadService.STATUSES.IMPORT_SUCCESS )
+      return ( <Tag icon="pi pi-check" severity="success" value={t("SUCCESS")}></Tag>)
+    else if ( rowData.status === UploadService.STATUSES.IMPORT_WITH_ERROR )
+      return ( <Tag icon="pi pi-exclamation-triangle" severity="warning" value={t("ERRORS")}></Tag>)
+    else if ( rowData.status === UploadService.STATUSES.IN_PROCESS )
+      return ( <Tag icon="pi pi-spin pi-cog" severity="info" value={t("ELABORATING")}></Tag>)
+    else if ( rowData.status === UploadService.STATUSES.UPLOADED )
+      return ( <Tag icon="pi pi-spin pi-cog" severity="info" value={t("WAITING")}></Tag>)
+    else if ( rowData.status === UploadService.STATUSES.CRITICAL_ERROR )
+      return ( <Tag icon="pi pi-exclamation-triangle" severity="danger" value={t("CRITICAL_ERROR")}></Tag>)
   };
 
   const statusItemTemplate = (option) => {
     if ( option === UploadService.STATUSES.IMPORT_SUCCESS )
-      return ( <Tag severity="success" value="All saved"></Tag>)
+      return ( <Tag severity="success" value={t("SUCCESS")}></Tag>)
     else if ( option === UploadService.STATUSES.IMPORT_WITH_ERROR )
-      return ( <Tag severity="warning" value="Some Errors"></Tag>)
+      return ( <Tag severity="warning" value={t("ERRORS")}></Tag>)
     else if ( option === UploadService.STATUSES.UPLOADED )
-      return ( <Tag severity="info" value="Waiting"></Tag>)
+      return ( <Tag severity="info" value={t("WAITING")}></Tag>)
     else if ( option === UploadService.STATUSES.IN_PROCESS )
-      return ( <Tag severity="info" value="Elaborating"></Tag>)
+      return ( <Tag severity="info" value={t("ELABORATING")}></Tag>)
     else if ( option === UploadService.STATUSES.CRITICAL_ERROR )
-      return ( <Tag severity="danger" value="Critical error"></Tag>)
+      return ( <Tag severity="danger" value={t("CRITICAL_ERROR")}></Tag>)
   };
 
   const operationBodyTemplate = (rowData) => {
@@ -278,9 +302,9 @@ export default function Page()  {
             label={t('NEW_UPLOAD')}
           />
         </div>
-      { uploads && !loading && ( 
+      { !loading && ( 
         <>
-        <ConfirmDialog id="dlg_remove" group="declarative"  visible={visibleDlg1} onHide={() => setVisibleDlg1(false)} message="Are you sure you want to delete xlsx upload?" 
+        <ConfirmDialog id="dlg_remove" group="declarative"  visible={visibleDlg1} onHide={() => setVisibleDlg1(false)} message={t("UPLOADS_DELETE_Q")} 
           header="Confirmation" icon="pi pi-exclamation-triangle" accept={performRemove} reject={rejectDlg1} />
         
         <DataTable
@@ -295,7 +319,7 @@ export default function Page()  {
           filterDisplay="menu"
           loading={loading}
           responsiveLayout="scroll"
-          emptyMessage="No uploads found."
+          emptyMessage={t("EMPTY")}
           header={header}
         >
           <Column header="Identifier" field="id"  filter filterPlaceholder="Search by id" style={{ minWidth: '8rem' }} />
@@ -309,11 +333,8 @@ export default function Page()  {
         </DataTable>
         </>
       )}
-      {(!uploads && !loading ) && (
-          <h5 className="font-bold text-cyan-800">No uploads found</h5>
-      )}
       {(loading ) && (
-          <h5 className="font-bold text-cyan-800">Loading Uploads info...</h5>
+          <h5 className="font-bold text-cyan-800">{t("LOADING")}</h5>
       )}
       </div>
     </div>

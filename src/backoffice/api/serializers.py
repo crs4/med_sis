@@ -507,7 +507,7 @@ class BaseDatasetSerializer(serializers.ModelSerializer):
         """
         # standard update
         instance = super().update(instance, validated_data)
-        
+         
         if 'status' in validated_data:
             # start_processing in models.py controll: 
             # if self.status == "CREATED" --> "IN_PROCESS"
@@ -600,49 +600,15 @@ class TaxonomySerializer(serializers.ModelSerializer):
         fields = '__all__' 
 
 #########################################
-## HYDROPTF 
+## HYDRO PTF MODEL
 #########################################
-
-class HydroPtfModelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = HydroPtfModel
-        fields = '__all__'
-        read_only_fields = ('id',)   
-    
-    def update(self, instance, validated_data):
-        """
-        Override to start elaboration if status or fields are changed
-        """
-        # standard update
-        instance = super().update(instance, validated_data)
-        
-        if 'status' in validated_data:
-            # start_processing in models.py controlla: 
-            # if self.status == "CREATED"  --> "IN_PROCESS"
-            instance.save(using='backoffice')
-            
-            # Avvia il processo
-            started = instance.start_processing()
-            
-            # Opzionale: Loggare se il processo non è partito per qualche motivo
-            if not started:
-                logger.error(
-                    f"Impossible to restart processing for Dataset ID {instance.id}. "
-                    f"Current status: {instance.status}. "
-                    "Check Celery configuration or model constraints."
-                )
-                # Opzionale: Aggiungere un warning nel report dell'oggetto
-                instance.status="ERRORS"
-                instance.save(using='backoffice')
-
-        return instance
 
 class HydroPtfElaborationSerializer(serializers.ModelSerializer):
     class Meta:
         model = HydroPtfElaboration 
         fields = '__all__'
         read_only_fields = ('id',)   
-    
+
     def update(self, instance, validated_data):
         """
         Override to start elaboration if status or fields are changed
@@ -660,7 +626,7 @@ class HydroPtfElaborationSerializer(serializers.ModelSerializer):
             # Opzionale: Loggare se il processo non è partito per qualche motivo
             if not started:
                 logger.error(
-                    f"Impossible to restart processing for Dataset ID {instance.id}. "
+                    f"Impossible to restart processing for Hydro PTF Elaboration ID {instance.id}. "
                     f"Current status: {instance.status}. "
                     "Check Celery configuration or model constraints."
                 )

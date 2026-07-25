@@ -5402,14 +5402,6 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
-                    "labdata",
-                    models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE,
-                        related_name="labdataextrameasure_labdata_set",
-                        to="backoffice.labdata",
-                    ),
-                ),
-                (
                     "point",
                     models.ForeignKey(
                         blank=True,
@@ -5417,6 +5409,24 @@ class Migration(migrations.Migration):
                         on_delete=django.db.models.deletion.CASCADE,
                         related_name="labdataextrameasure_point_set",
                         to="backoffice.pointgeneral",
+                    ),
+                ),
+                (
+                    "upper",
+                    models.FloatField(
+                        blank=True,
+                        db_comment="Sampling upper boundary",
+                        null=True,
+                        validators=[backoffice.models.validate_positive],
+                    ),
+                ),
+                (
+                    "lower",
+                    models.FloatField(
+                        blank=True,
+                        db_comment="Sampling lower boundary",
+                        null=True,
+                        validators=[backoffice.models.validate_positive],
                     ),
                 ),
                 (
@@ -5452,7 +5462,7 @@ class Migration(migrations.Migration):
                 "db_table": "labdata_extra_measure",
                 "db_table_comment": "Laboratory data extra measures",
                 "managed": True,
-                "unique_together": {("measure", "labdata")},
+                "unique_together": {("measure", "point", "upper", "lower")},
             },
         ),
     ]

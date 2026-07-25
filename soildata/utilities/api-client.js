@@ -34,22 +34,21 @@ export const doFetch = async ( base_url, endpoint, id, method, payload, cookie) 
 
 export const doFetchBackOffice = async ( endpoint, id, method, payload, cookie) =>  
 { 
-  console.log(process.env.NEXT_PUBLIC_BACKOFFICE_API_BASE_URL)
   const ep = endpoint;
   if ( !id && !endpoint.includes("/?"))
     ep += '/';
   return doFetch (process.env.NEXT_PUBLIC_BACKOFFICE_API_BASE_URL, ep , id, method, payload, cookie)
 }
 
-export const doFetchGeoserver = async (typename, bboxFilter, token) =>  
+export const doFetchGeoserver = async (typename, filter, token) =>  
 { 
   try { 
     if ( !typename ) 
       return { data: null, ok: false, status: null }
     let url = process.env.NEXT_PUBLIC_GEOSERVER_BASE_URL 
     url += '/ows?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetFeature&outputFormat=application%2Fjson&'
-    if ( bboxFilter )
-      url += bboxFilter + "&"
+    if ( filter )
+      url += filter + "&"
     url += 'typename=' + typename + '&maxFeatures=100000&access_token=' + token;
     let headers = {
       Accept: "application/json"

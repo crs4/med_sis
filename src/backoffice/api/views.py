@@ -13,9 +13,80 @@ import logging
 import traceback
 import time
 import subprocess
+import pandas as pd
+import dill
+import numpy as np
 
 
 logger = logging.getLogger(__name__)
+
+
+class HydroPtfPredictionViewSet (viewsets.ViewSet):
+    """
+    API endpoint to run the Hydro Pedo Transfer Function on demand.
+    """
+    permission_classes = [permissions.IsAdminUser]
+
+    """
+    post request
+    """
+    def create(self, request):
+        #sand percentage
+        sand = request.data.get("sand", "0")
+        #clay percentage
+        clay = request.data.get("clay", "0")
+        #org_car percentage
+        org_car = request.data.get("org_car", "0")
+        
+        bulk_density = request.data.get("bulk_density", None)
+        work_dir = '/usr/src/s4m_catalogue/hydro_ptf/'
+        try:
+            if sand < 0 or sand > 100 or clay < 0 or clay > 100 or org_car < 0 or org_car > 100 or clay + sand > 100 :
+                return Response(
+                    {"result": None},
+                    status=status.HTTP_400_BAD_REQUEST ) 
+            else :
+                withBulk = 'VOL'
+                if bulk_density is None:
+                    withBulk = 'GRAV'
+                modelP_path = work_dir + withBulk + 'final_mlp_model.pkl'
+                features_processor_path = work_dir + withBulk + 'feature_preprocessor.pkl'
+                pot_processor_path = work_dir + withBulk + 'pot_preprocessor.pkl'
+                with open(modelP_path, 'rb') as file:
+                    MLPmodel = dill.load(file)
+                with open(features_processor_path, 'rb') as file:
+                    feature_preprocessor = dill.load(file)
+                with open(pot_processor_path, 'rb') as file:
+                    pot_preprocessor = dill.load(file)
+                if MLPmodel is not None and pot_preprocessor is not None and feature_preprocessor is not None :
+                    pippo = "level2"
+                    x = np.array([[ clay, sand, org_car ]])
+                    x_repeat = np.repeat(x, 7, axis=0)
+                    X_data = pd.DataFrame( columns=["CLAY", "SAND", "OC"] , data=x_repeat)
+                    X_data["Pot"] = [4, 10, 33, 100, 200, 300, 1500]
+                    X_data_features = feature_preprocessor.transform(X_data[['CLAY', 'SAND', 'OC']])
+                    X_data_pot = pot_preprocessor.transform(X_data[['Pot']])
+                    X_data_processed = np.hstack([X_data_features, X_data_pot])
+                    predictions=MLPmodel.predict(X_data_processed)
+                    if bulk_density is not None:
+                        X_data["BD"] = predictions * 0 + bulk_density
+                        X_data["Gravimetric"] = predictions
+                        X_data["Volumetric"] = predictions * bulk_density
+                    else :
+                        X_data["Volumetric"] = predictions
+                    X_dataJson = X_data.to_json (orient='split', index=False)
+                    result_data = json.loads(X_dataJson)
+                    logger.info( f"Success,  predictions are in the result" )
+                    ## {"columns":["CLAY","SAND","OC","Pot","Predictions"],"data":[[..],....]}
+                    return Response( { "result": result_data }, status=status.HTTP_200_OK )
+                else : 
+                    return Response( { "result": None }, status=status.HTTP_500_INTERNAL_SERVER_ERROR ) 
+        except Exception as exc:
+            logger.info( f"Errors executing ptf model {str(exc)}" )
+            logger.info( f"Errors executing ptf model {pippo}" )
+            return Response(
+                { "result": None },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR )
 
 class VariogramViewSet(viewsets.ViewSet):
     """
@@ -93,7 +164,6 @@ class ExtrameasureViewSet(viewsets.ViewSet):
     def list(self, request):
         measures = LabDataExtraMeasure.objects.distinct('measure')
         return Response( { "Measures": measures}, status=status.HTTP_200_OK )
-
 
 class UpdateLayersViewSet(viewsets.ViewSet):
     """
@@ -1245,45 +1315,7 @@ class DatasetViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
     
 #########################################
-## Datasets 
-#########################################   
-class HydroPtfModelViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows you to view and edit HydroPtfModel.
-    """
-    queryset = HydroPtfModel.objects.all() 
-    serializer_class = HydroPtfModelSerializer
-    permission_classes = [permissions.IsAdminUser ]
-    
-    def get_queryset(self):
-        """
-        Filtra 
-        """
-        queryset = Dataset.objects.all()
-        
-        # Status Filter
-        id = self.request.query_params.get('id', None)
-        if id is not None:
-            queryset = queryset.filter(id=id)
-        
-        # Status Filter
-        status = self.request.query_params.get('status', None)
-        if status is not None:
-            queryset = queryset.filter(status=status)
-           
-
-        return queryset
-    
-    def list(self, request):
-        queryset = HydroPtfModel.objects.all()
-        serializer = HydroPtfModelSerializer(queryset, many=True)
-        for item in serializer.data:
-            item.pop('train_data')
-            item.pop('model_data')
-        return Response(serializer.data)
-    
-#########################################
-## Datasets 
+## HYDRO PTF ELABORATIONS 
 #########################################   
 class HydroPtfElaborationViewSet(viewsets.ModelViewSet):
     """
@@ -1294,6 +1326,9 @@ class HydroPtfElaborationViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser ]
     
     def get_queryset(self):
+
+        queryset = HydroPtfElaboration.objects.all()
+
         # Status Filter
         id = self.request.query_params.get('id', None)
         
@@ -1311,7 +1346,7 @@ class HydroPtfElaborationViewSet(viewsets.ModelViewSet):
         queryset = HydroPtfElaboration.objects.all()
         serializer = HydroPtfElaborationSerializer(queryset, many=True)
         for item in serializer.data:
-            item.pop('inputData')
-            item.pop('outputData')
+            item.pop('input_data')
+            item.pop('output_data')
         return Response(serializer.data)
     
