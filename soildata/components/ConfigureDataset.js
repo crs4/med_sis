@@ -253,8 +253,7 @@ export default function ConfigureDataset( { isIndicators, dataset, setDataset } 
         }
       }
       catch (e) {
-        console.log(e)
-        console.log('Errors in feature ' + i) 
+        console.log(e) 
       } 
     }
     if ( tax ) {
@@ -536,8 +535,6 @@ export default function ConfigureDataset( { isIndicators, dataset, setDataset } 
         if ( elemA && elemB )
           new_points = elaborateEF(new_points, elemA, elemB )
         else new_points = []
-        console.log('newpoints')
-        console.log(featureCollection(new_points))
         await extractData (featureCollection(new_points));
         await filtering(new_points);
         toast.current.show({ severity: 'success', summary: 'Done!', detail: 'Source points has been loaded and evaluated.'});

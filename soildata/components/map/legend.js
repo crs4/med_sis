@@ -7,8 +7,6 @@ const MapLegend = ({ legend, data, position }) => {
   const map = useMap();
  
   const renderLegend = (legend) => {
-    console.log('render')
-    console.log(legend)
     if (!legend.elements) {
         return;
     }
@@ -32,7 +30,6 @@ const MapLegend = ({ legend, data, position }) => {
     const elementContainer = L.DomUtil.create('div', 'legend-elements', block);
     
     for ( let e = 0; e < elements.length; e += 1 ) {
-      console.log(elements[e])
       if ( elements[e] )
         addElement(elements[e].html, elements[e].label, elements[e].style, elementContainer);
     };

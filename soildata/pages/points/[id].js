@@ -171,7 +171,6 @@ export default function Page()  {
   const resetInfo = ( async(newData) => {
     setSelected(newData)
     setTaxList(null) 
-    setVisibleInfo(true)
     if ( newData && newData.data && newData.data.taxonomy)  {
       try {
         const taxonomies = await TaxonomyService.listValues ( document.cookie, newData.data.taxonomy )
@@ -184,6 +183,7 @@ export default function Page()  {
       }
     }
     else setTaxList([]);
+    setVisibleInfo(true)    
   })
 
   const resetEdit = ( async(newData) => {
@@ -594,7 +594,7 @@ export default function Page()  {
           {( rowData.data && ( rowData.data.name !== 'id' && rowData.data.name !== 'point' ) ) && (
             <Button type="button" icon="pi pi-pencil" onClick={(e) => { resetEdit(rowData); }} severity="success" rounded></Button>
           )}
-           <Button type="button" icon="pi pi-question" onClick={(e) => { resetInfo(rowData.data); }} rounded></Button> 
+           <Button type="button" icon="pi pi-question" onClick={(e) => { resetInfo(rowData); }} rounded></Button> 
         </div>
       )}
       </>
@@ -684,7 +684,7 @@ export default function Page()  {
                   <Dropdown id="inputValue" value={selectedValue}  onChange={(e) => { setSelectedValue(e.value) }}
                       options={taxList}  optionValue="id" optionLabel="value"
                       placeholder="Select a class" className="w-full md:w-14rem" aria-describedby='descr'/>
-                  <small id={'descr'}> {taxList.find((el) => el.id === selectedValue)?.descr}</small>
+                  <span id={'descr'}> {taxList.find((el) => el.id === selectedValue)?.descr}</span>
                 </>
                 )}
                 {( selected.data.type === 'boolean' ) && (

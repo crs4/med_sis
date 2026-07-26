@@ -1,0 +1,16 @@
+<layer>
+  <name>hydro_ptf_input_data_geo</name>
+  <id>LayerInfoImpl--3f01e0ae:19f9aff0cf7:79ba</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--bb68920:19f114781fa:-7ea0</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--3f01e0ae:19f9aff0cf7:79b9</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-07-25 22:17:59.286 UTC</dateCreated>
+</layer>

@@ -1,0 +1,45 @@
+<featureType>
+  <id>FeatureTypeInfoImpl-3552cef:19f9e5f8cfb:-7fea</id>
+  <name>extra_labdata_geo</name>
+  <nativeName>extra_labdata_geo</nativeName>
+  <namespace>
+    <id>NamespaceInfoImpl-78ff667e:12476299803:-7ffe</id>
+  </namespace>
+  <title>extra_labdata_geo</title>
+  <keywords>
+    <string>features</string>
+    <string>extra_labdata_geo</string>
+  </keywords>
+  <srs>EPSG:404000</srs>
+  <nativeBoundingBox>
+    <minx>-10.0</minx>
+    <maxx>60.0</maxx>
+    <miny>10.0</miny>
+    <maxy>60.0</maxy>
+  </nativeBoundingBox>
+  <latLonBoundingBox>
+    <minx>-10.0</minx>
+    <maxx>60.0</maxx>
+    <miny>10.0</miny>
+    <maxy>60.0</maxy>
+  </latLonBoundingBox>
+  <projectionPolicy>FORCE_DECLARED</projectionPolicy>
+  <enabled>true</enabled>
+  <metadata>
+    <entry key="cachingEnabled">false</entry>
+  </metadata>
+  <store class="dataStore">
+    <id>DataStoreInfoImpl-92bd292:1994dc6abb7:-7fed</id>
+  </store>
+  <serviceConfiguration>false</serviceConfiguration>
+  <simpleConversionEnabled>false</simpleConversionEnabled>
+  <internationalTitle/>
+  <internationalAbstract/>
+  <maxFeatures>0</maxFeatures>
+  <numDecimals>0</numDecimals>
+  <padWithZeros>false</padWithZeros>
+  <forcedDecimal>false</forcedDecimal>
+  <overridingServiceSRS>false</overridingServiceSRS>
+  <skipNumberMatched>false</skipNumberMatched>
+  <circularArcPresent>false</circularArcPresent>
+</featureType>

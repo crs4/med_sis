@@ -164,7 +164,6 @@
     "DS_AOI_SELECTION": "Area of Interest Selection",
     "DS_AREAS": "List of datasets in the catalogue  with 'boundaries' as metadata topic category",
     "DS_FILTERS": "Filters",
-    
     "USER_NAME" : "User Name",
     "USER_EMAIL" : "User Email",
     "SELECT_PTS_SRC":"Select Points Source",
@@ -173,6 +172,7 @@
     "DATASET_CREATE" : "Create new dataset",
     "NEW_VALUE" : "Value", 
     "UPLOADS_LIST" : "List of uploads",
+    "INSPECT_PROFILE" : "Inspect profile", 
     "VALUES" : "Values", 
     "DESCR" : "Description", 
     "FILLED_FIELD" : "Filled fields", 
