@@ -202,7 +202,7 @@ export default function Page( )  {
          ( rowData.uri.startsWith('https://qudt.org/vocab/') || 
            rowData.uri.startsWith('https://glosis-ld.github.io/') ) ) && (
           <div className="flex flex-wrap gap-2">
-            <a href={rowData.uri} >
+            <a href={rowData.uri} target="_blank" >
               <Button type="button" icon="pi pi-book" rounded></Button>
             </a>
           </div>

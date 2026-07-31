@@ -314,7 +314,7 @@ class DatasetService:
             elif color == '#fdae61' : color = '#ffffbf'
             elif color == '#ffffbf' : color = '#abdda4'
             elif color == '#abdda4' : color = '#2b83ba'
-            style += f"                    <ColorMapEntry label=\"{x}\" quantity=\"{x}\" color=\"{color}\"/>\n"
+            style += f"                    <ColorMapEntry label='{x}' quantity='{x}' color='{color}'/>\n"
         style += '                  </ColorMap>\n'
         style += '              </RasterSymbolizer>\n'
         style += '          </Rule>\n'
@@ -400,15 +400,18 @@ class DatasetService:
             pass
 ############ GENERATE WORK FILES FROM PARAMETERS        
         try :
-            self.report["msgs"].append("Stage1: Temporary folder created")
+            msg = {  "stage": 1, "ok" : True, "text" : 'Temporary folder created' }
+            self.report["msgs"].append(msg)
             with open(base_path+"/points.json", "w") as outfile:
                 json.dump(points, outfile)
             with open(base_path+"/aoi.json", "w") as outfile:
                 json.dump(aoi, outfile)
-            self.report["msgs"].append("Stage2: points.json and aoi.json files created")
+            msg = {  "stage": 2, "ok" : True, "text" : 'Filtered Points and Area of Interest created' }
+            self.report["msgs"].append(msg)
         except Exception as e:
             self.report["success"] = False
-            self.report["msgs"].append("Stage2: errors creating files, exited")
+            msg = {  "stage": 2, "ok" : False, "text" : 'errors creating files, exited' }
+            self.report["msgs"].append(msg)
             cmd = f"rm -r {base_path}"
             subprocess.call([cmd], shell=True) 
             return self.report
@@ -420,8 +423,9 @@ class DatasetService:
                     json.dump(k_points, outfile)
                 with open(base_path+"/bbox.json", "w") as outfile:
                     json.dump(k_box, outfile)
-                self.report["msgs"].append("Stage3 (Kriging): k_points.json and k_box.json files created")
-                   
+                msg = {  "stage": 3, "ok" : True, "text" : 'Aggregated Points created' }
+                self.report["msgs"].append(msg)
+                          
                 # Reproject aggregated poiNts and change file format
                 pointsSHP = os.path.join( base_path, "kpoints.shp")
                 pointsJSON = os.path.join( base_path, "kpoints.json")
@@ -437,7 +441,8 @@ class DatasetService:
                 pathGEOJSON = os.path.join( base_path, "bbox.json")
                 params = f"ogr2ogr -s_srs 'EPSG:4326' -t_srs '{k_epsg}' {pathUTMJSON} {pathGEOJSON}"
                 subprocess.call([params], shell=True)                
-                self.report["msgs"].append("Stage4 (Kriging): k_points.shp, utmaoi.json and utmbbox.json files created")
+                msg = {  "stage": 3, "ok" : True, "text" : 'Data for interpolation created' }
+                self.report["msgs"].append(msg)
                 with open(base_path+"/utmbbox.json", "r") as file:
                     utmBox = json.load(file)
                     feature = utmBox['features'][0]
@@ -459,11 +464,13 @@ class DatasetService:
                 saga_cmd += f" -TARGET_USER_SIZE {cell_size} -VAR_MAXDIST {k_maxdist}  -VAR_NSKIP {k_nskip} " 
                 saga_cmd += f" -PREDICTION {predictionGRD} -VARIANCE {varianceGRD} " 
                 subprocess.call([saga_cmd], shell=True)
-                self.report["msgs"].append("Stage3 (Kriging): ordinary kriging")
-                self.report["msgs"].append(f"Stage3 (Kriging): {saga_cmd}")               
+                msg = {  "stage": 3, "ok" : True, "text" : 'Interpolation (Ordinary Kriging) performed' }
+                self.report["msgs"].append(msg)               
         except Exception as e:
             self.report["success"] = False
-            self.report["msgs"].append("Stage3 (Kriging): Errors in elaborating kriging interpolation, exited")
+            msg = {  "stage": 3, "ok" : False, "text" : 'Errors executing interpolation (Ordinary Kriging), exited' }
+            msg = {  "stage": 3, "ok" : False, "text" : saga_cmd }
+            self.report["msgs"].append(msg)
             cmd = f"rm -r {base_path}"
             subprocess.call([cmd], shell=True) 
             return self.report
@@ -480,12 +487,14 @@ class DatasetService:
                 subprocess.call([cmd], shell=True) 
                 
                 cmd = f"gdalwarp -co 'COMPRESS=LZW' -co 'PREDICTOR=1' -cutline {aoiUTMJSON} -crop_to_cutline -overwrite {output} {output2}"
-                subprocess.call([cmd], shell=True)  
-                self.report["msgs"].append("Stage4 (Kriging): Tiff and Aoi clipped Tiff files created")        
-        
+                subprocess.call([cmd], shell=True) 
+                msg = {  "stage": 4, "ok" : True, "text" : 'Tiff raster data created' }
+                self.report["msgs"].append(msg)
+                
         except Exception as e:
             self.report["success"] = False
-            self.report["errors"].append("Stage4 (Kriging): wrong data reading Geotiff, exited")
+            msg = {  "stage": 4, "ok" : False, "text" : 'Errors creating Tiff raster, exited' }
+            self.report["msgs"].append(msg)
             cmd = f"rm -r {base_path}"
             subprocess.call([cmd], shell=True) 
             return self.report
@@ -504,13 +513,16 @@ class DatasetService:
             ]
             geonode_points_id = self._manageTask(url,files)
             if geonode_points_id is not None:
-                self.report["msgs"].append(f"Stage5 (Publishing): points dataset published: {geonode_points_id} ")
+                msg = {  "stage": 5, "ok" : True, "text" : f"Filtered points dataset published, id: {geonode_points_id} " }
+                self.report["msgs"].append(msg)
                 self.report["points"] = geonode_points_id
             else: 
-                self.report["msgs"].append("Stage5 (Publishing): errors, points dataset not published")
+                msg = {  "stage": 5, "ok" : False, "text" : f"Errors, Filtered points dataset not published " }
+                self.report["msgs"].append(msg) 
         except Exception as e:
             self.report["success"] = False
-            self.report["msgs"].append("Stage5: errors creating points dataset, exited") 
+            msg = {  "stage": 5, "ok" : False, "text" : f"Errors, Filtered points dataset not published, exited" }
+            self.report["msgs"].append(msg) 
             cmd = f"rm -r {base_path}"
             subprocess.call([cmd], shell=True) 
             return self.report
@@ -527,13 +539,16 @@ class DatasetService:
             ]
             geonode_kpoints_id = self._manageTask(url,files)
             if geonode_kpoints_id is not None:
-                self.report["msgs"].append(f"Stage6 (Publishing): aggregated points dataset published: {geonode_kpoints_id} ")
+                msg = {  "stage": 6, "ok" : True, "text" : f"Aggregated points dataset published , id: {geonode_kpoints_id} "}
+                self.report["msgs"].append(msg) 
                 self.report["aggregated"] = geonode_kpoints_id
             else: 
-                self.report["msgs"].append("Stage6 (Publishing): errors, aggregated points dataset not published")
+                msg = {  "stage": 6, "ok" : False, "text" : f"Errors, Aggregated points dataset not published " }
+                self.report["msgs"].append(msg) 
         except Exception as e:
             self.report["success"] = False
-            self.report["msgs"].append("Stage6: errors creating aggregated points dataset, exited")
+            msg = {  "stage": 6, "ok" : False, "text" : f"Errors, Aggregated points dataset not published, exited" }
+            self.report["msgs"].append(msg) 
             cmd = f"rm -r {base_path}"
             subprocess.call([cmd], shell=True) 
             return self.report
@@ -562,14 +577,19 @@ class DatasetService:
                 ]
                 geonode_prediction_id = self._manageTask(url,files)
                 if geonode_prediction_id is not None:
-                    self.report["msgs"].append("Stage7 (Kriging - Publishing): interpolation raster dataset published")
-                    self.report["msgs"].append("Proposed style:\n" + style)
+                    msg = {  "stage": 7, "ok" : True, "text" : f"Raster dataset of the interpolation published, id { geonode_prediction_id }" }
+                    self.report["msgs"].append(msg) 
+                    msg = {  "stage": 7, "ok" : True, "text" : f"Style for Raster dataset created see the right panel" }
+                    self.report["msgs"].append(msg) 
+                    self.report["style"] = style
                     self.report["raster"] = geonode_prediction_id
-                else: 
-                    self.report["msgs"].append("Stage7 (Kriging - Publishing): errors, interpolation raster dataset not published")               
+                else:
+                    msg = {  "stage": 7, "ok" : False, "text" : "Errors publishing Raster dataset of the interpolation" }
+                    self.report["msgs"].append(msg) 
         except Exception as e:
             self.report["success"] = False
-            self.report["msgs"].append("Stage7 (Kriging - Publishing): errors creating prediction raster dataset, exited")
+            msg = {  "stage": 7, "ok" : False, "text" : "Errors publishing Raster dataset of the interpolation, exited" }
+            self.report["msgs"].append(msg) 
             cmd = f"rm -r {base_path}"
             subprocess.call([cmd], shell=True) 
             return self.report
@@ -588,78 +608,84 @@ class DatasetService:
                 if category == "points_soil_data" : 
                     topic = { "identifier": "points_soil_data", "gn_description":"Points Soil Data" }
             
-            ############  FILTERED POINTS            
+            ############  FILTERED POINTS
             url = f"{self.base_url}/api/v2/datasets/{geonode_points_id}"
-            abstract = f"Filtered points of {dataset.name}. Filter: "
+            abstract = f"Filtered points of {dataset.name}."
+            filterStr = " Filter: "
             # filter
             if dataset.filter["depth"]:
                 if dataset.filter["depth"] == 'DEPTH0_20' :
-                    abstract += f"[depth]: 0 to 20 cm;"
+                    filterStr += "[depth]: 0 to 20 cm;"
                 else :
                     if dataset.filter["depth"] == 'DEPTH20_50' :
-                        abstract += f"[depth]: 20 to 50 cm;"
-                    else: abstract += f"[depth]: all;"    
-            else: abstract += f"[depth]: all;"
+                        filterStr += "[depth]: 20 to 50 cm;"
+                    else: filterStr += "[depth]: all;"    
+            else: filterStr += "[depth]: all;"
             if dataset.filter["from"] is not None:
-                abstract += f"[from date]: {dataset.filter["from"]}; "
+                filterStr += f"[from date]: {dataset.filter["from"]}; "
             if dataset.filter["to"] is not None:
-                abstract += f"[to date]: {dataset.filter["to"]}; "
+                filterStr += f"[to date]: {dataset.filter["to"]}; "
             if dataset.filter["method"] is not None:
-                abstract += f"[Laboratory method]: {dataset.filter["method"]}; "
+                filterStr += f"[Laboratory method]: {dataset.filter["method"]}; "
             if dataset.filter["type"] is not None:
-                abstract += f"[point type]: {dataset.filter["type"]}; "
+                filterStr += f"[point type]: {dataset.filter["type"]}; "
             if dataset.filter["project"] is not None:
-                abstract += f"[project]: {dataset.filter["project"]}; "
+                filterStr += f"[project]: {dataset.filter["project"]}; "
             mdata = {
                 "title": f"{name}-FILTERED",
-                "abstract": abstract
+                "abstract": abstract + filterStr
             }
             if topic is not None:
-                mdata["category"] = topic;
+                mdata["category"] = topic
             response = requests.patch( url, data=mdata, headers=self.auth_header )
             if response.status_code >= 200 and response.status_code < 300:
-                self.report["msgs"].append("Stage8 (Metadata - Publishing): metadata for points dataset published")
+                msg = {  "stage": 8, "ok" : True, "text" : "Metadata for the filtered points dataset updated" }
             else: 
-                self.report["msgs"].append("Stage8 (Metadata - Publishing): metadata not published")  
+                msg = {  "stage": 8, "ok" : False, "text" : "Warning: Errors, Metadata for the filtered points dataset NOT updated" }
+            self.report["msgs"].append(msg)                               
         ############  AGGREGATED POINTS            
             url = f"{self.base_url}/api/v2/datasets/{geonode_kpoints_id}"
             abstract = f"Aggregated points of {dataset.name}. "
             mdata = {
                 "title": f"{name}-FILTERED",
-                "abstract": abstract
+                "abstract": abstract + filterStr
             }
             if topic is not None:
-                mdata["category"] = topic;
+                mdata["category"] = topic
             response = requests.patch( url, data=mdata, headers=self.auth_header )
             if response.status_code >= 200 and response.status_code < 300:
-                self.report["msgs"].append("Stage9 (Metadata - Publishing): metadata for filtered points dataset published")
+                msg = {  "stage": 8, "ok" : True, "text" : "Metadata for the Aggregated points dataset updated" }
             else: 
-                self.report["msgs"].append("Stage9 (Metadata - Publishing): metadata for filtered points not published")            
-        
+                msg = {  "stage": 8, "ok" : False, "text" : "Warning: Errors updating metadata for the Aggregated points dataset" }
+            self.report["msgs"].append(msg)  
+            
         ############  PREDICTION            
             url = f"{self.base_url}/api/v2/datasets/{geonode_prediction_id}"
-            abstract = f"Prediction of {dataset.name}. "
+            abstract = f"Prediction (Ordinary Kriging) of {dataset.name}.  "
             mdata = {
                 "title": f"{name}-AOI",
-                "abstract": abstract
+                "abstract": abstract + filterStr
             }
             if topic is not None:
-                mdata["category"] = topic;
+                mdata["category"] = topic
             response = requests.patch( url, data=mdata, headers=self.auth_header )
             if response.status_code >= 200 and response.status_code < 300:
-                self.report["msgs"].append("Stage10 (Metadata - Publishing): metadata for filtered points dataset published")
+                msg = {  "stage": 8, "ok" : True, "text" : "Metadata for the Interpolation raster dataset updated" }
             else: 
-                self.report["msgs"].append("Stage10 (Metadata - Publishing): metadata for filtered points not published")            
-        
+                msg = {  "stage": 8, "ok" : False, "text" : "Warning: Errors updating metadata for the Interpolation raster dataset" }
+            self.report["msgs"].append(msg)  
+            
         except Exception as e:
             self.report["success"] = False
-            self.report["msgs"].append("Errors metadata for datasets not updated")
+            msg = {  "stage": 8, "ok" : False, "text" : "Warning: Critical Error updating metadata for datasets" }
+            self.report["msgs"].append(msg)  
             cmd = f"rm -r {base_path}"
             subprocess.call([cmd], shell=True) 
             
 ############ FINALIZE
         self.report["success"] = True
-        self.report["msgs"].append("Stage11: datasets successfully published ") 
+        msg = {  "stage": 9, "ok" : True, "text" : "Datasets successfully published" }
+        self.report["msgs"].append(msg)  
         cmd = f"rm -r {base_path}"
         subprocess.call([cmd], shell=True) 
         return self.report
@@ -720,7 +746,7 @@ class BaseDatasetService:
                         if dataset.type == "points_soil_data" : 
                             topic = { "identifier": "points_soil_data", "gn_description":"Points Soil Data" }
                         if topic:
-                            mdata['category'] = topic;    
+                            mdata['category'] = topic    
                         if geonode_dataset['pk'] is not None:
                             dataset.geonode_id = geonode_dataset['pk']
                             url = f"{self.base_url}/api/v2/datasets/{geonode_dataset['pk']}"

@@ -924,7 +924,7 @@ export default function ConfigureDataset( { isIndicators, dataset, setDataset } 
                   <h5 classname="font-bold text-cyan-800">{t('EMPTY')}</h5>
                 )}
                 { selectedSource && selectedSource.abstract && (
-                  <InputTextarea id="description" value={selectedSource.abstract} disabled rows={5} cols={30} />
+                  <div className="card text-cyan-800"> {selectedSource.abstract} </div>
                 )}
               </div>
               )}

@@ -481,14 +481,14 @@ export default function Page()  {
         <div className="card flex flex-column align-items-center">
           <DataTable
               value={currentData?.output_data}
-              className="p-datatable-gridlines"
+              className="p-datatable-gridlines w-full"
               showGridlines
               disabled={isWorking}
               responsiveLayout="scroll"
               emptyMessage="No results"
               header={renderHeaderBatch}
           >
-            <Column header={t("Identifier")} field="Sample_id" sortable />
+            <Column header={t("IDENTIFIER")} field="Sample_id" sortable />
             <Column header={t("PTF_SAND")} field="SAND" sortable />
             <Column header={t("PTF_CLAY")} field="CLAY" sortable/>
             <Column header={t("PTF_OC")} field="OC" sortable/>
@@ -571,7 +571,7 @@ export default function Page()  {
               disabled={isWorking}
               responsiveLayout="scroll"
               emptyMessage="No results"
-              header={renderHeader}
+              header={renderHeaderSingle}
             >
               <Column header={t("PTF_SAND")} field="SAND"  />
               <Column header={t("PTF_CLAY")} field="CLAY"  />

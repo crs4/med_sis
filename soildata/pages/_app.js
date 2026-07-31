@@ -8,6 +8,7 @@ import 'primereact/resources/primereact.css';
 import '../styles/layout/layout.scss';
 import '../styles/htmllegend/L.Control.HtmlLegend.css';
 import '../styles/mygeoman.css'
+import '../styles/timeline.css'
 
 import {useRouter} from 'next/router';
 

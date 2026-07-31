@@ -310,7 +310,7 @@ ALTER VIEW IF EXISTS photo_geo OWNER TO backoffice_user;
 CREATE OR REPLACE VIEW texture AS
   SELECT 
     l.id, l.point_id, l.point_type, l.date, l.upper, l.lower, l.survey_m_id, l.project, l.horizon, 
-    l.texture_id as value, null as method, 'unitless' AS unit, l.geom
+    l.texture_id as texture, NULL as method, NULL AS unit, l.geom
   FROM labdata_geo l
   WHERE l.texture_id IS NOT NULL;
 ALTER VIEW IF EXISTS texture OWNER TO backoffice_user;

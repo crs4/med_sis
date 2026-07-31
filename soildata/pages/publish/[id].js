@@ -11,6 +11,10 @@ import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
 import { clone, featureCollection } from '@turf/turf';
 
+import { Card } from 'primereact/card';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+import { Timeline } from 'primereact/timeline';
 /*
 * This page allows different actions on soilindicators base datasets 
 * to publish new dataset on MED-SIS for End User
@@ -30,6 +34,7 @@ export default function Page()  {
   const id = router.query.id; /* Id of the new dataset */
   const toast = useRef(null);
   const [loading, setLoading] = useState(false);
+  const [descriptors, setDescriptors] = useState([]);
   
   /* fetch dataset data */
   const fetchDataset = async (id) => {
@@ -38,6 +43,7 @@ export default function Page()  {
       const response = await ProfileService.get( document.cookie, id, 'datasets'  );
       if ( response && response.ok && response.data ){
         const ds = response.data
+        generateDescriptor(ds)
         setDataset (ds);
       }      
     } catch (error) {
@@ -53,6 +59,45 @@ export default function Page()  {
   const reload = () => {
     if (id)
       router.push(`/publish/${id}`);
+  };
+
+  function generateDescriptor ( _dataset) {
+    if ( !_dataset )
+      return null;
+
+    const _descriptors = [
+      { name: "Name", value: _dataset.name },
+      { name: "Owner", value: _dataset.user_email },
+      { name: "Date", value: _dataset.date },
+      { name: "Source", value: _dataset.source },
+    ]
+    if ( _dataset.points)
+      _descriptors.push({ name: "Source points", value: ( _dataset.points.features ? _dataset.points.features.length : 0 ) })
+    if ( _dataset.filter.points)
+      _descriptors.push({ name: "Filtered points", value: ( _dataset.filter.points.features ? _dataset.filter.points.features.length : 0 ) })
+    else
+      _descriptors.push({ name: "Filtered points", value: 0 })
+    if ( _dataset.context !== ProfileService.DATASET_CONTEXT.POINTS_SOIL_DATA && _dataset.k_data ){
+      const len = (_dataset.k_data.features ? _dataset.k_data.features.length : 0);
+      _descriptors.push({ name: "Aggregated points", value: len })  
+    }
+    setDescriptors(_descriptors)
+  }
+
+  const customizedMarker = (item) => {
+    console.log(item)
+    return (
+        <span className="flex w-2rem h-2rem align-items-center justify-content-center text-white border-circle z-1 shadow-1" 
+          style={{ backgroundColor: item.ok? '#55EE55' : '#EE5555' }}>
+            <i className={item.ok? 'pi pi-check' : 'pi pi-times' }></i>
+        </span>
+    );
+  };
+
+  const customizedContent = (item) => {
+    return (
+        <Card> <p> Stage:{item.stage}, {item.text}</p> </Card>
+    );
   };
 
   useEffect(() => {
@@ -95,13 +140,33 @@ return (
     )}
     { dataset && dataset.status === ProfileService.DATASET_STATUSES.PUBLISHED && (
       <>
-      <h5 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">Dataset Publishing Report</h5>
+      <h5 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">Dataset Published</h5>
+      <div className="flex flex-column gap-2 align-content-start text-cyan-800 md:w-6 sm:w-full m-2">
+        <h5 className="flex justify-content-center w-full text-cyan-800">Reports </h5>
+        <DataTable className="font-bold text-cyan-800"  value={descriptors} tableStyle={{ minWidth: '40rem' }}>
+          <Column field="name" header="" style={{ width: '25%' }}></Column>
+          <Column field="value" header=""  className="text-yellow-800" ></Column>
+        </DataTable>
+        <div className="flex flex-row gap-2">
+          <div className="flex flex-column gap-2 min-w-max">
+            <h5 className="flex justify-content-center w-full text-cyan-800">Elaboration flow</h5>
+            <Timeline value={dataset.report?.msgs} align="alternate" className="customized-timeline" marker={customizedMarker} content={customizedContent} />
+          </div>
+          { dataset.report.style &&  (  
+          <div flex flex-column gap-2> 
+            <h5 className="flex justify-content-center w-full text-cyan-800">Proposed Raster Style:</h5>
+            <div className="card flex flex-column gap-1 font-italic">
+              { dataset.report.style }
+              { dataset.report.style.split('\n').forEach ( (e) => ( <span>pippo</span> ) ) }
+            </div>
+          </div>
+          )}  
+        </div>
+      </div>
       </>
     )}  
     { dataset && dataset.status === ProfileService.DATASET_STATUSES.ERRORS && (
-      <>
       <h5 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">Errors generating dataset... </h5>   
-      </>
     )} 
     { dataset && dataset.status === ProfileService.DATASET_STATUSES.IN_PROCESS && (
       <>
@@ -111,7 +176,7 @@ return (
           label={t("REFRESH")}
           icon='pi pi-save'
           type='button'
-          disabled={ loading || !workDataset }
+          disabled={ loading || !dataset }
           className='mt-4 flex'
           onClick={() => { reload() }} 
         />

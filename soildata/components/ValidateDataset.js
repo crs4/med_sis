@@ -75,9 +75,6 @@ export default function ValidateDataset( { isIndicators, dataset, setDataset }) 
       const len = (workDataset.k_data.features ? workDataset.k_data.features.length : 0);
       _descriptors.push({ name: "Aggregated points", value: len })  
     }
-    else {
-      _descriptors.push({ name: "Aggregated points", value: 0 })
-    }
     setDescriptors(_descriptors)
   }
 
@@ -490,7 +487,8 @@ export default function ValidateDataset( { isIndicators, dataset, setDataset }) 
         {( workDataset.k_data && workDataset.k_data.length > 0 ) && (
         <h5 className="col-12 font-bold text-cyan-800 mt-1 mb-1">No filtered points found</h5>          
         )}
-      </Dialog>        
+      </Dialog>
+      { isIndicators && (        
       <Dialog  header={headerTemplate2} visible={visibleAggregated} style={{ width: '50vw' }} 
         onHide={() => {if (!visibleAggregated) return; setVisibleAggregated(false); }} className="surface-200">
           {( workDataset.k_data && workDataset.k_data.features && workDataset.k_data.features.length > 0 ) && (
@@ -508,11 +506,14 @@ export default function ValidateDataset( { isIndicators, dataset, setDataset }) 
           <h5 className="col-12 font-bold text-cyan-800 mt-1 mb-1">Aggregated points not found</h5>          
           )}
       </Dialog>
+      )} 
       <div className="card flex flex-warp text-cyan-800 w-full align-items-center">
+        { isIndicators && (
         <div className="flex flex-column text-cyan-800 md:w-6 sm:w-full">
           <h5 className="flex justify-content-center w-full text-cyan-800">Aggregated Filtered Points Map</h5> 
           <PointsFilterMap points={mapPoints} area={workDataset.filter.aoi}  />
         </div>
+      )} 
         <div className="flex flex-column gap-2 align-content-start text-cyan-800 md:w-6 sm:w-full m-2">
           <h5 className="flex justify-content-center w-full text-cyan-800">Summary of the new Dataset </h5>
           <DataTable className="font-bold text-cyan-800"  value={descriptors} tableStyle={{ minWidth: '40rem' }}>
@@ -574,7 +575,6 @@ export default function ValidateDataset( { isIndicators, dataset, setDataset }) 
         <div className="flex flex-column gap-2 text-cyan-800 md:w-5 sm:w-full">
           <Card title={t('KRIGING_INTERPOLATION')} subTitle={t('KRIGING_INTERPOLATION_SUBTILE')} 
               className="flex flex-column justify-content-center w-full gap-3 text-cyan-800">
-            
             { getOutliers() > 0 && (
             <>
             <h5 className="mt-3 text-cyan-800">
