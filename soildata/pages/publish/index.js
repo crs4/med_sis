@@ -35,6 +35,7 @@ export default function Page()  {
   const [datasets, setDatasets] = useState([]);  
   /* Selected dataset */
   const [selected, setSelected] = useState(null);
+  const [user, setUser] = useState(null);
   /* soilContext of the new dataset */ 
   // -ProfileService.DATASET_CONTEXT.SOIL_INDICATOR
   // -ProfileService.DATASET_CONTEXT.AOI_SOIL_INDICATOR
@@ -62,10 +63,10 @@ export default function Page()  {
     const nowd = formatDate(Date.now())
     return {
       date : nowd,
-      name : user.userData.preferred_username+':'+nowd,
+      name : user.preferred_username + '-dataset-'+nowd,
       points : null, // source points soil data
-      user_email : user.userData.email, 
-      user_name : user.userData.preferred_username, 
+      user_email : user.email, 
+      user_name : user.preferred_username, 
       source : null, // source dataset title
       src_typename : null, // source dataset typename (catalogue layer name )
       filter : {
@@ -369,9 +370,10 @@ export default function Page()  {
   };
   
   const fetchData = async  () => {
-    const user = await UserService.getProfile(document.cookie);
-    if ( !user || ( user.forbidden !== null && user.forbidden) )
-      router.push(`/401`);    
+    const _user = await UserService.getProfile(document.cookie);
+    if ( !_user || ( _user.forbidden !== null && _user.forbidden) )
+      router.push(`/401`);
+    else setUser(_user)    
     setIsWorking(true);
     const response = await ProfileService.list(document.cookie,`datasets`);
     if ( !response || !response.ok )

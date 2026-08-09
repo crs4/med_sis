@@ -79,7 +79,7 @@ export default function Page( )  {
             values = result[key].split(':');
             if ( values.length === 2 && values[0] && values[1] ) {
               v = Math.floor(values[0]);
-              panel += '<span class="font-bold">' + t('Filled') + ': </span>';
+              panel += '<span class="font-bold">' + t('FILLED_FIELD') + ': </span>';
               panel += '<span class="font-bold text-green-500"> ' + v + '%</span>';
               panel += '<span class="font-bold">' + t('ERRORS') +': </span>';
               panel += '<span class="font-bold text-orange-600"> ' + values[1] + '</span>';
@@ -188,7 +188,6 @@ export default function Page( )  {
         return;
       let nu = { ...upload }
       nu.report = {}
-      nu.editor = user.userData.preferred_username
       const response = await UploadService.save(document.cookie, nu);
       if (response && response.ok ) { 
         toast.current.show({severity:'success', summary: t('SUCCESS'), detail: t('DATA_SENT') , life: 3000});

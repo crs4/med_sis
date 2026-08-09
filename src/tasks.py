@@ -246,8 +246,7 @@ def updateadmin(ctx):
         os.environ.get("ADMIN_PASSWORD", "admin"),
         os.environ.get("ADMIN_EMAIL", "admin@example.org"),
         os.environ.get("CHIEFDATA_PASSWORD", "chiefdata"),
-        os.environ.get("CHIEFDATA_EMAIL", "chiefdata@example.org"),
-    
+        os.environ.get("CHIEFDATA_EMAIL", "chiefdata@example.org")
     )
     ctx.run(
         f"source $HOME/.override_env && "
@@ -417,7 +416,6 @@ def _prepare_admin_fixture(admin_password, admin_email, datamanager_password, da
                 "title": "Data Managers",  
                 "slug": "data-managers", 
                 "description": "Soil data managers", 
-                "description_en": "Soil data managers", 
                 "access": "private", 
                 "created": mdext_date, 
                 "last_modified": mdext_date, 
