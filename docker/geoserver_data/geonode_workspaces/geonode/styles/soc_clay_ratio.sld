@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <NamedLayer>
-    <Name>Perennial vegetation cover</Name>
+    <Name>soc_clay_ratio</Name>
     <UserStyle>
-      <Name>Perennial vegetation cover</Name>
-      <Title>Perennial vegetation cover</Title>
+      <Title>Soil structure vulnerability - SOC/clay</Title>
       <FeatureTypeStyle>
         <Rule>
-          <Name>No belowground contribution to soil surface erosion protection</Name>
+          <Name>Poor</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
@@ -16,7 +15,7 @@
               </PropertyIsGreaterThanOrEqualTo>
               <PropertyIsLessThan>
                 <PropertyName>value</PropertyName>
-                <Literal>1</Literal>
+                <Literal>0.077</Literal>
               </PropertyIsLessThan>
             </And>
           </Filter>
@@ -38,17 +37,18 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-        <Rule>
-          <Name>Low belowground contribution to soil surface erosion protection</Name>
+
+	<Rule>
+          <Name>Potential improvement</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
-                <Literal>1</Literal>
+                <Literal>0.077</Literal>
               </PropertyIsGreaterThanOrEqualTo>
               <PropertyIsLessThan>
                 <PropertyName>value</PropertyName>
-                <Literal>10</Literal>
+                <Literal>0.1</Literal>
               </PropertyIsLessThan>
             </And>
           </Filter>
@@ -70,17 +70,20 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-        <Rule>
-          <Name>Moderate belowground contribution to soil surface erosion protection</Name>
+
+
+        
+	<Rule>
+          <Name>Good</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
-                <Literal>10</Literal>
+                <Literal>0.1</Literal>
               </PropertyIsGreaterThanOrEqualTo>
               <PropertyIsLessThan>
                 <PropertyName>value</PropertyName>
-                <Literal>20</Literal>
+                <Literal>0.125</Literal>
               </PropertyIsLessThan>
             </And>
           </Filter>
@@ -102,14 +105,16 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-        <Rule>
-          <Name>High belowground contribution to soil surface erosion protection</Name>
+        
+	<Rule>
+          <Name>Very good</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-             <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>20</Literal>
+           <PropertyIsGreaterThanOrEqualTo>
+              <PropertyName>value</PropertyName>
+                <Literal>0.125</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-             </Filter>
+              
+          </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>
@@ -128,6 +133,7 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
+       
       </FeatureTypeStyle>
     </UserStyle>
   </NamedLayer>

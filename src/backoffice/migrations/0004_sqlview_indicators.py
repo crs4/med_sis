@@ -59,24 +59,15 @@ CREATE OR REPLACE VIEW arsenic AS
    WHERE a.as_value IS NOT NULL;
 ALTER VIEW IF EXISTS arsenic OWNER TO backoffice_user;
 
---5) Available base saturation (BS) exchangeable activity (percentage) 
-CREATE OR REPLACE VIEW base_saturation_exchangeable_activity AS
+--5) Available base saturation (BS) exchangeable acidity (percentage) 
+CREATE OR REPLACE VIEW base_saturation_exchangeable_acidity AS
   SELECT a.id, a.point_id, a.point_type, a.date, a.upper, a.lower, a.survey_m_id, a.horizon, a.project, NULL as method,
-    CASE
-      WHEN  ( b.corine_id IS NOT NULL AND 
-             ( b.corine_id ILIKE 'CORINE:21%' OR 
-               b.corine_id ILIKE 'CORINE:22%' OR 
-               b.corine_id ILIKE 'CORINE:24%' ) ) OR 
-            b.use_id ILIKE 'USE:A%'
-      THEN
-        ( a.ca + a.mg + a.k + a.na ) * 100 / NULLIF( a.cec, 0 ) 
-      ELSE NULL
-    END AS value,
+    ( a.ca + a.mg + a.k + a.na ) * 100 / a.cec AS value,
     'percentage' AS unit, a.geom   
   FROM public.labdata_geo a, public.land_use_geo b
-  WHERE a.point_id = b.id AND a.na is not null AND a.mg is not null AND a.k is not null AND a.ca is not null AND
-        a.cec is not null and a.ca + a.mg + a.k + a.na <= a.cec;
-ALTER VIEW IF EXISTS base_saturation_exchangeable_activity OWNER TO backoffice_user;
+  WHERE a.point_id = b.id AND a.na is not null AND a.mg is not null AND a.k is not null AND a.ca is not null AND a.cec is not null AND (a.ca + a.mg + a.k + a.na <= a.cec) AND
+    ( ( b.corine_id ILIKE 'CORINE:21%' OR b.corine_id ILIKE 'CORINE:22%' OR b.corine_id ILIKE 'CORINE:24%' ) OR b.use_id ILIKE 'USES:A%' );
+ALTER VIEW IF EXISTS base_saturation_exchangeable_acidity OWNER TO backoffice_user;
 
 --6) base saturation (BS) soil_structure (percentage)
 CREATE OR REPLACE VIEW base_saturation_soil_structure AS
@@ -1181,6 +1172,19 @@ CREATE OR REPLACE VIEW hydro_ptf_input_data_geo AS
         org_car <= 1000 and sand <= 100 and clay <= 100 and 
         sand + clay < 100 and sand is not null and clay is not null and org_car is not null;
 ALTER VIEW IF EXISTS hydro_ptf_input_data_geo OWNER TO backoffice_user;
+
+--74) hydro PTF input data 
+CREATE OR REPLACE VIEW soc_clay_ratio AS
+  SELECT
+    a.id as labdata_id, a.point_id, a.point_type,
+    a.date, a.upper, a.lower, a.survey_m_id, a.project,
+    ((a.org_car /10.0)/ a.clay) as value, 
+    'unitless' as unit, a.geom   
+  FROM public.labdata_geo a
+  JOIN public.land_use_geo b ON a.point_id = b.id
+  WHERE
+    a.upper = 0 AND a.org_car is not null AND a.clay > 0 AND ( ((b.corine_id ILIKE 'CORINE:23%' OR b.corine_id ILIKE 'CORINE:33%') OR (b.use_id ILIKE 'USE:H%') OR (b.nc_us_species1 IS NULL AND b.nc_ms_species1 IS NULL AND (b.use_id ILIKE 'USE:P%' OR b.use_id ILIKE 'USE:Y%' OR b.use_id ILIKE 'USE:U%')) ) OR ((b.use_id ILIKE 'USE:A%') OR (b.corine_id ILIKE 'CORINE:21%' OR b.corine_id ILIKE 'CORINE:22%' OR b.corine_id ILIKE 'CORINE:24%' )) );
+ALTER VIEW IF EXISTS soc_clay_ratio OWNER TO backoffice_user;
 
 """
 SQL_DROP = f""" 

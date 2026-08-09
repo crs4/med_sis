@@ -65,15 +65,13 @@ class LayerCoatingsBridgesAdmin(admin.ModelAdmin):
     search_fields = ('id', )
 @admin.register(LayerCarbonates)
 class LayerCarbonatesAdmin(admin.ModelAdmin):
-    search_fields = ('id', )
-    
+    search_fields = ('id', )   
 @admin.register(LayerGypsum)
 class LayerGypsumAdmin(admin.ModelAdmin):
     search_fields = ('id', )
 @admin.register(LayerSecondarySilica)
 class LayerSecondarySilicaAdmin(admin.ModelAdmin):
     search_fields = ('id', )
-
 @admin.register(LayerConsistence)
 class LayerConsistenceAdmin(admin.ModelAdmin):
     search_fields = ('id', )

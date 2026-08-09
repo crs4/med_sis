@@ -23,4 +23,8 @@ The Med-SIS was designed and implemented by <a href="https://www.crs4.it/project
 
 
 ## Quick Docker Start
+To setup your project follow these instructions:
 
+1. Generate the project
+
+ 

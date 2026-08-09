@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <NamedLayer>
-    <Name>n_total</Name>
+    <Name>N tot content (g/Kg)</Name>
     <UserStyle>
-      <Title>N total content (g/Kg)</Title>
+      <Name>N tot content (g/Kg)</Name>
+      <Title>N tot content (g/Kg)</Title>
       <FeatureTypeStyle>
       	<Rule>
           <Name>Poor (for cropland and grassland)</Name>
@@ -38,7 +39,7 @@
           </PointSymbolizer>
         </Rule>
         <Rule>
-          <Name>Moderately supplied (for cropland and grassland)</Name>
+          <Name>Moderate (for cropland and grassland)</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
@@ -68,9 +69,9 @@
               <Size>14</Size>
             </Graphic>
           </PointSymbolizer>
-        </Rule>        
+        </Rule>
         <Rule>
-          <Name>Well supplied (for cropland and grassland)</Name>
+          <Name>Good (for cropland and grassland)</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
@@ -100,7 +101,7 @@
               <Size>14</Size>
             </Graphic>
           </PointSymbolizer>
-        </Rule>	
+        </Rule>
         <Rule>
           <Name>Rich (for cropland and grassland)</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
@@ -132,14 +133,14 @@
               <Size>14</Size>
             </Graphic>
           </PointSymbolizer>
-        </Rule>  
+        </Rule>
         <Rule>
-          <Name>Excessively supplied (for cropland and grassland)</Name>
+          <Name>Excessive (for cropland and grassland)</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-              <PropertyIsGreaterThanOrEqualTo>
+             <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>5</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
+             </PropertyIsGreaterThanOrEqualTo> 
           </Filter>
           <PointSymbolizer>
             <Graphic>
@@ -159,7 +160,7 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-	</FeatureTypeStyle>
+	  </FeatureTypeStyle>
     </UserStyle>
   </NamedLayer>
 </StyledLayerDescriptor>

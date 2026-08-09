@@ -38,7 +38,7 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-	    <Rule>
+		<Rule>
           <Name>Medium</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
@@ -70,7 +70,7 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-	    <Rule>
+		<Rule>
           <Name>High</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
@@ -101,8 +101,10 @@
               <Size>14</Size>
             </Graphic>
           </PointSymbolizer>
-        </Rule>      
-        <Rule>
+        </Rule>
+
+      
+         <Rule>
           <Name>Very high</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <PropertyIsGreaterThanOrEqualTo>
@@ -127,7 +129,7 @@
               <Size>14</Size>
             </Graphic>
           </PointSymbolizer>
-        </Rule>       
+        </Rule>    
       </FeatureTypeStyle>
     </UserStyle>
   </NamedLayer>

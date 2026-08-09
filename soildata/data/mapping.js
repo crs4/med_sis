@@ -38,7 +38,7 @@ const Mapping =  {
         "29" : {"m": "ClimateAndWeather","ep": "climate-and-weathers", "f": "past_weath", "t": "PAST_WEATHER", "n": "Past weather conditions", "lf":  null, "lv": null, "check": "taxonomy"},
         "30" : {"m": "ClimateAndWeather","ep": "climate-and-weathers", "f": "soil_temp", "t": "SOIL_TEMP_REGIME", "n": "Soil temperature regime", "lf":  null, "lv": null, "check": "taxonomy"},
         "31" : {"m": "ClimateAndWeather","ep": "climate-and-weathers", "f": "soil_moist", "t": "SOIL_MOIST_REGIME", "n": "Soil moisture regime", "lf":  null, "lv": null, "check": "taxonomy"},
-        "32" : {"m": "LandUse","ep": "land-uses", "f": "land_use", "t": "USES", "n": "Land Use", "lf":  null, "lv": null, "check": "taxonomy"},
+        "32" : {"m": "LandUse","ep": "land-uses", "f": "use", "t": "USES", "n": "Land Use", "lf":  null, "lv": null, "check": "taxonomy"},
         "33" : {"m": "LandUse","ep": "land-uses", "f": "corine", "t": "CORINE", "n": "Corine class", "lf":  null, "lv": null, "check": "taxonomy"},
         "34" : {"m": "LandUse","ep": "land-uses", "f": "nc_gs_veget1", "t": "VEGETATION_TYPES", "n": "Not Cultivated Vegetation type 1.1 (dominant) in the Ground stratum", "lf":  null	,"lv": null, "check": "taxonomy"},
         "35" : {"m": "LandUse","ep": "land-uses", "f": "nc_gs_veget2", "t": "VEGETATION_TYPES", "n": "Not Cultivated Vegetation type 1.2 in the Ground stratum", "lf":  null	,"lv": null, "check": "taxonomy"},

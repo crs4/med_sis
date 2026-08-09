@@ -4,6 +4,7 @@ from .views import *
 
 
 router = DefaultRouter()
+router.register(r'buser-info', BUserInfoViewSet, basename='buser-info')
 router.register(r'updatelayers', UpdateLayersViewSet, basename='updatelayers')
 router.register(r'variogram', VariogramViewSet, basename='variogram')
 router.register(r'xlsx-uploads', XLSxUploadViewSet)

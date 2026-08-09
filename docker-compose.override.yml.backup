@@ -1,5 +1,5 @@
 # docker-compose.override.yml
-# Riconfigura i servizi per l'ambiente di TEST isolato.
+# Riconfigura i servizi per l'ambiente di TEST isolato su localhost.
 #
 # Viene caricato insieme a docker-compose.yml dallo script restore_e_test.sh
 # che esporta COMPOSE_PROJECT_NAME=s4m_catalogue_test.

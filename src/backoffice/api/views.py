@@ -5,6 +5,10 @@ from django.core.management import call_command
 from rest_framework import viewsets, permissions, status
 from rest_framework import serializers
 from rest_framework.response import Response
+from allauth.account.utils import user_field, user_email, user_username
+
+from geonode.people.models import Profile 
+from django.contrib.auth.models import User
 from backoffice.models import *
 from .serializers import *
 import json
@@ -20,6 +24,29 @@ import numpy as np
 
 logger = logging.getLogger(__name__)
 
+class BUserInfoViewSet (viewsets.ViewSet):
+    """
+    API endpoint to get user INFO (only staff).
+    """
+    permission_classes = [permissions.IsAdminUser]
+
+    def create(self, request):
+        user = request.user
+        groups = [group.name for group in user.groups.all()]
+        if user.is_superuser:
+            groups.append("admin")
+        user_info = {
+            "sub": str(user.id),
+            "name": " ".join([user_field(user, "first_name"), user_field(user, "last_name")]),
+            "given_name": user_field(user, "first_name"),
+            "family_name": user_field(user, "last_name"),
+            "email": user_email(user),
+            "preferred_username": user_username(user),
+            "groups": groups,
+        }
+
+        response = Response(user_info)
+        return response
 
 class HydroPtfPredictionViewSet (viewsets.ViewSet):
     """

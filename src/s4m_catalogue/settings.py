@@ -40,6 +40,8 @@ except ImportError:
 #
 PROJECT_NAME = "s4m_catalogue"
 
+ALLOWED_HOSTS = [ 'soils4med.crs4.it', 'django', 'localhost' ]
+
 # add trailing slash to site url. geoserver url will be relative to this
 if not SITEURL.endswith("/"):
     SITEURL = "{}/".format(SITEURL)
@@ -151,13 +153,6 @@ LOGGING = {
     },
 }
 
-DEFAULT_ANONYMOUS_DOWNLOAD_PERMISSION = ast.literal_eval(
-    os.getenv("DEFAULT_ANONYMOUS_DOWNLOAD_PERMISSION" , "False")
-)
-
-DEFAULT_ANONYMOUS_VIEW_PERMISSION = ast.literal_eval(
-    os.getenv("DEFAULT_ANONYMOUS_VIEW_PERMISSION" , "False")
-)
 
 CENTRALIZED_DASHBOARD_ENABLED = ast.literal_eval(
     os.getenv("CENTRALIZED_DASHBOARD_ENABLED", "False")
@@ -173,10 +168,6 @@ if (
         "task": "geonode_logstash.tasks.dispatch_metrics",
         "schedule": 3600.0,
     }
-
-LDAP_ENABLED = ast.literal_eval(os.getenv("LDAP_ENABLED", "False"))
-if LDAP_ENABLED and "geonode_ldap" not in INSTALLED_APPS:
-    INSTALLED_APPS += ("geonode_ldap",)
 
 # Add your specific LDAP configuration after this comment:
 # https://docs.geonode.org/en/master/advanced/contrib/#configuration
@@ -209,3 +200,4 @@ DATABASE_ROUTERS = ['s4m_catalogue.database_router.BackofficeRouter']
 API_BASE_URL = "http://django:8000"
 API_USERNAME = os.getenv("ADMIN_USERNAME", "admin")
 API_PASSWORD = os.getenv("ADMIN_PASSWORD", "admin")
+

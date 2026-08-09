@@ -50,7 +50,6 @@ coverage.xml
 # Django stuff:
 *.log
 celerybeat-schedule.*
-src/celerybeat-schedule
 
 # Sphinx documentation
 docs/_build/
@@ -61,15 +60,13 @@ target/
 # Downstream Project
 downloaded/
 uploaded/
-backups/*
-!backups/.gitkeep
 static_root/
 development.db
 development.db-journal
 local_settings.py
 
 .idea/
-.vscode/
+/.vscode/
 .vagrant/
 Vagrantfile
 /.env

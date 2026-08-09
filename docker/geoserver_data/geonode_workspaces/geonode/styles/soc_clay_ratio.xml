@@ -1,0 +1,19 @@
+<layer>
+  <name>soc_clay_ratio</name>
+  <id>LayerInfoImpl-7afefdba:19fb290e160:-25d3</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-7afefdba:19fb290e160:-25d1</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-7afefdba:19fb290e160:-25d4</id>
+  </resource>
+  <queryable>true</queryable>
+  <opaque>false</opaque>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2026-08-05 23:12:10.178 UTC</dateCreated>
+  <dateModified>2026-08-05 23:22:30.112 UTC</dateModified>
+</layer>

@@ -18,15 +18,4 @@
 #
 #########################################################################
 
-import os
-
-__version__ = (4, 2, 0, "dev", 0)
-
-
 default_app_config = "s4m_catalogue.apps.AppConfig"
-
-
-def get_version():
-    import s4m_catalogue.version
-
-    return s4m_catalogue.version.get_version(__version__)

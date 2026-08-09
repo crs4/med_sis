@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <NamedLayer>
-    <Name>base_saturation_exchangeable_activity</Name>
+    <Name>base_saturation_exchangeable_acidity</Name>
     <UserStyle>
-      <Title>Base saturation - BS - exchangeable activity (%)</Title>
+      <Title>BS exchangeable acidity (%)</Title>
       <FeatureTypeStyle>
         <Rule>
-          <Name>The most sensitive culture are affected by exchangeable acidity (for cropland only)</Name>
+          <Name>Culture potentially affected by exchangeable acidity (for cropland only)</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
@@ -37,20 +37,21 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
+
         <Rule>
-          <Name>The most sensitive culture are potentially not affected by exchangeable acidity (for cropland only)</Name>
+          <Name>Culture potentially not affected by exchangeable acidity (for cropland only)</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
-	      	  <PropertyIsGreaterThan>
+	      <PropertyIsGreaterThan>
                 <PropertyName>value</PropertyName>
                 <Literal>80</Literal>
-              </PropertyIsGreaterThan>
-	      	  <PropertyIsLessThanOrEqualTo>
+          </PropertyIsGreaterThan>
+	      <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>100</Literal>
               </PropertyIsLessThanOrEqualTo>
-	    	</And>
-          </Filter>
+	    </And>
+           </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>
@@ -69,6 +70,7 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
+       
       </FeatureTypeStyle>
     </UserStyle>
   </NamedLayer>
