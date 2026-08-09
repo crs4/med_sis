@@ -15,7 +15,7 @@ CREATE OR REPLACE VIEW rupture AS
     FROM layer_consistence_geo l
     WHERE l.cement_cls_id IS NOT NULL;
 
-ALTER VIEW IF EXISTS rupture OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS rupture OWNER TO backoffice;
 
 """
 SQL_DROP = f""" 

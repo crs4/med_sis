@@ -35,7 +35,6 @@ const PointsFilterMap = dynamic(() => import("./map/PointsFilterMap"), { ssr:fal
 
 export default function ConfigureDataset( { isIndicators, dataset, setDataset } )  {
   const t = useTranslations('default');
-  const user = useUser();
   const router = useRouter();
   const toast = useRef(null);
   // it manages configuration steps
@@ -717,6 +716,9 @@ export default function ConfigureDataset( { isIndicators, dataset, setDataset } 
       //  ProfileService.DATASET_CONTEXT.POINTS_SOIL_DATA : The values will be loaded from a point soil data section catalogue dataset
       //  ProfileService.DATASET_CONTEXT.SOIL_INDICATOR : The values will be loaded from a soil indictor catalogue dataset 
       //  ProfileService.DATASET_CONTEXT.LABDATA_EXTRA_MEASURE: The values will be filtered from the "labdata_extra_geo" catalogue dataset
+      const user = await UserService.getProfile(document.cookie);
+      if ( !user || ( user.forbidden !== null && user.forbidden) )
+        router.push(`/401`);
       const list = [];  
       if ( dataset.context === ProfileService.DATASET_CONTEXT.AOI_SOIL_INDICATOR ) 
         list = AoiSoilIndicators.datasets 
@@ -862,8 +864,6 @@ export default function ConfigureDataset( { isIndicators, dataset, setDataset } 
   }
 
   useEffect(() => {
-    if ( !user.userData || ( user.userData.forbidden !== null && user.userData.forbidden ))
-      router.push(`/401`);
     if ( workDataset && workDataset.points )
       initializeData()
     fetchData()

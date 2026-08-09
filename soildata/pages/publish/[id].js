@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useRef  } from 'react';
 import { ProfileService } from '../../service/profiles';
-import { userContext, useUser } from '../../context/user';
+import UserService from '../../service/user';
 import ConfigureDataset from '../../components/ConfigureDataset';
 import ValidateDataset from '../../components/ValidateDataset';
 import { useTranslations } from 'next-intl';
@@ -28,7 +28,6 @@ import { Timeline } from 'primereact/timeline';
 */ 
 export default function Page()  {
   const t = useTranslations('default');
-  const user = useUser();
   const router = useRouter();
   const [dataset, setDataset] = useState(null); /* New dataset data */
   const id = router.query.id; /* Id of the new dataset */
@@ -38,6 +37,9 @@ export default function Page()  {
   
   /* fetch dataset data */
   const fetchDataset = async (id) => {
+    const user = await UserService.getProfile(document.cookie);
+    if ( !user || ( user.forbidden !== null && user.forbidden) )
+      router.push(`/401`);    
     setLoading(true)
     try {
       const response = await ProfileService.get( document.cookie, id, 'datasets'  );
@@ -101,11 +103,9 @@ export default function Page()  {
   };
 
   useEffect(() => {
-    if ( !user.userData || ( user.userData.forbidden !== null && user.userData.forbidden) )
-        router.push(`/401`);
     if (id && !dataset)
       fetchDataset(id)
-  },[user, id]);  // eslint-disable-line
+  },[id]);  // eslint-disable-line
 
 return (
   <div className="layout-dashboard">

@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 
 import { ProfileService } from '../../service/profiles';
-import { useUser } from '../../context/user';
+import UserService from '../../service/user';
 import Loading from '../../components/Loading';
 
 import { FilterMatchMode, FilterOperator } from 'primereact/api';
@@ -27,7 +27,6 @@ import { RadioButton } from 'primereact/radiobutton';
 export default function Page()  {
   const router = useRouter();
   const t = useTranslations('default');
-  const user = useUser();
   const toast = useRef(null);
   /* Table of datasets filters  */
   const [filters, setFilters] = useState(null);
@@ -50,8 +49,6 @@ export default function Page()  {
   const goToDataset = (id) => {
     router.push(`/publish/${id}`);
   };
-
-  
 
   const formatDate = (value) => {
     const date = new Date(value).toJSON()
@@ -284,7 +281,6 @@ export default function Page()  {
     setGlobalFilterValue('');
   };
 
-  
   const dateBodyTemplate = (rowData) => {
     return formatDate(rowData.date);
   };
@@ -373,12 +369,15 @@ export default function Page()  {
   };
   
   const fetchData = async  () => {
+    const user = await UserService.getProfile(document.cookie);
+    if ( !user || ( user.forbidden !== null && user.forbidden) )
+      router.push(`/401`);    
     setIsWorking(true);
     const response = await ProfileService.list(document.cookie,`datasets`);
     if ( !response || !response.ok )
       toast.current.show({severity:'error', summary: t('ERRORS'), detail:t('ERRORS_READING_DATASET') , life: 3000});
     else if ( !response.data || !Array.isArray(response.data) || response.data.length === 0 ) 
-      toast.current.show({severity:'warn', summary: t('EMPTY'), detail:t('NO_DATASETS_FOUND') , life: 3000});
+      toast.current.show({severity:'warn', summary: t('EMPTY'), detail:t('EMPTY') , life: 3000});
     else {
       toast.current.show({severity:'success', summary: t('SUCCESS'), detail:t('DATASETS_LOADED') , life: 3000});
       setDatasets(setDates(response.data));
@@ -388,10 +387,8 @@ export default function Page()  {
   }
     
   useEffect(() => {
-    if ( !user.userData || ( user.userData.forbidden !== null && user.userData.forbidden) )
-        router.push(`/401`);
     fetchData(); 
-  },[user]);  // eslint-disable-line
+  },[]);  // eslint-disable-line
 
   return (
   <div className="layout-dashboard">

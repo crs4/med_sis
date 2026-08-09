@@ -1,8 +1,10 @@
-import React, { forwardRef, useImperativeHandle, useContext, useRef } from 'react';
+"use client"
+
+import React, { forwardRef, useImperativeHandle, useEffect, useContext, useRef, useState } from 'react';
 import Link from 'next/link';
 import AppBreadCrumb from './AppBreadCrumb';
 import { LayoutContext } from './context/layoutcontext';
-import { useUser } from '../context/user';
+import UserService from '../service/user';
 import AppSidebar from './AppSidebar';
 import { StyleClass } from 'primereact/styleclass';
 import { useRouter } from 'next/router';
@@ -14,13 +16,26 @@ const AppTopbar = forwardRef((props, ref) => {
     const menubuttonRef = useRef(null);
     const { locale, locales, route } = useRouter();
     const { onMenuToggle, layoutConfig } = useContext(LayoutContext);
-    const { userData } = useUser();
+    const [ userData, setUserData ] = useState(null)
     const otherLocale = locales?.find((cur) => cur !== locale);
     const otherlang = (otherLocale === 'fr'? 'French' : 'Anglais');
 
     useImperativeHandle(ref, () => ({
         menubutton: menubuttonRef.current
     }));
+
+    useEffect(() => {
+        fetchUser();
+      },[]);  // eslint-disable-line
+      
+    const fetchUser = async  () => {
+        try {
+            const user = await UserService.getProfile(document.cookie);
+            setUserData(user)
+        } catch (error) {
+            console.log(error)  
+        }   
+    }
 
     return (
         <div className="layout-topbar">
@@ -61,7 +76,7 @@ const AppTopbar = forwardRef((props, ref) => {
                         <StyleClass nodeRef={btnRef1} selector="@next" enterClassName="hidden" enterActiveClassName="scalein" leaveToClassName="hidden" leaveActiveClassName="fadeout" hideOnOutsideClick="true">
                             <a tabIndex={0} ref={btnRef1}>
                                 <img src='/soildata/img/user-default.png' alt="user" className="profile-image" />
-                                <span className="profile-name">{userData.preferred_username}</span>
+                                <span className="profile-name">{userData?.preferred_username}</span>
                             </a>
                         </StyleClass>
                     </li>

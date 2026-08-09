@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState, useRef  } from 'react';
 
-import { ProfileService } from '../../service/profiles';
+import ProfileService  from '../../service/profiles';
 import { TaxonomyService } from '../../service/taxonomies';
-import { useUser } from '../../context/user';
+import UserService from '../../service/user';
 import Loading from '../../components/Loading';
 
 import { useTranslations } from 'next-intl';
@@ -28,7 +28,6 @@ const MyMap = dynamic(() => import("../../components/map/PointsMap"), { ssr:fals
 export default function Page()  {
   const router = useRouter();
   const t = useTranslations('default');
-  const user = useUser();
   const toast = useRef(null);
   const [pointsGeoJSON, setPointsGeoJSON] = useState(null);
   const [filters, setFilters] = useState(null);
@@ -73,9 +72,10 @@ export default function Page()  {
   }
          
   useEffect(() => {
-    if ( !user.userData || ( user.userData.forbidden !== null && user.userData.forbidden) )
-        router.push(`/401`);
     const fetchData = async  () => {
+      const user = await UserService.getProfile(document.cookie);
+      if ( !user || ( user.forbidden !== null && user.forbidden) )
+        router.push(`/401`);
       const _data = await ProfileService.list(document.cookie,'point-generals');
       if ( !_data || !_data.ok )
         toast.current.show({severity:'error', summary: 'Errors!', detail: 'Errors reading soil data points' , life: 3000});
@@ -109,7 +109,7 @@ export default function Page()  {
     }
     fetchData();
     setLoading(false);  
-  },[user]);  // eslint-disable-line
+  },[]);  // eslint-disable-line
   
   useEffect(() => {
       createGeoJSON ( );

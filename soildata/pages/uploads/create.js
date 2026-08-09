@@ -12,7 +12,7 @@ import { Dialog } from 'primereact/dialog';
 import TaxonomyService from '../../service/taxonomies';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
-import { useUser } from '../../context/user';
+import UserService from '../../service/user';
 import { UploadService } from '../../service/uploads';
 import { createObjects, validateXLSFile } from '../../utilities/xls';
 import ReportTable from '../../components/table/XLSxTable';
@@ -52,8 +52,6 @@ export default function Page( )  {
   const [fileId, setFileId] = useState(null);
   // XLSx file component reference
   const xlsxFile = useRef(null);
-  
-  const user = useUser();
   const toast = useRef(null);
   const t = useTranslations('default');
   const router = useRouter();
@@ -233,6 +231,9 @@ export default function Page( )  {
   
   useEffect(() => {
     const fetchData = ( async() => {
+      const user = await UserService.getProfile(document.cookie);
+      if ( !user || ( user.forbidden !== null && user.forbidden) )
+        router.push(`/401`);    
       let t =  await TaxonomyService.listValues(document.cookie,null)
       if ( !t || ( !t.data || !Array.isArray(t.data) || t.data.length === 0 )) 
         toast.current.show({severity:'warning', summary: t('ERRORS'), detail: t('ERRORS') , life: 5000});
@@ -253,12 +254,8 @@ export default function Page( )  {
       }
       setLoading(false); 
     })
-    if ( !user.userData || ( user.userData.forbidden !== null && user.userData.forbidden ))
-        router.push(`/401`);
-    else {
-      fetchData();
-    }
-  }, [user]); // eslint-disable-line
+    fetchData();
+  }, []); // eslint-disable-line
 
   useEffect(() => {
     if ( uploading ){

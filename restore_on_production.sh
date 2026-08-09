@@ -15,12 +15,12 @@ PG_SUPERUSER="postgres"
 BACKUP_SEARCH_DIR="./backups"
 COMPOSE="docker-compose"
 
-# Production database and owner
+# Production database and owner   in production???????????????
 get_prod_db_owner() {
     case "$1" in
-        "my_geo")      echo "my_geo" ;;
-        "my_geo_data") echo "my_geo_data" ;;
-        "backoffice")  echo "backoffice_user" ;;
+        "my_geo")      echo "s4m_catalogue" ;;
+        "my_geo_data") echo "s4m_catalogue_data" ;;
+        "backoffice")  echo "backoffice" ;;
         *) echo "" ;;
     esac
 }

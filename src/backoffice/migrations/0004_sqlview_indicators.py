@@ -13,7 +13,7 @@ CREATE OR REPLACE VIEW active_carbonate AS
     l.geom
     FROM labdata_geo l
     WHERE l.active_caco3 IS NOT NULL;
-ALTER VIEW IF EXISTS active_carbonate OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS active_carbonate OWNER TO backoffice;
 
 --2) Available Phosphorus  content (mg/Kg)
 CREATE OR REPLACE VIEW available_phosphorus_content AS
@@ -39,7 +39,7 @@ CREATE OR REPLACE VIEW available_phosphorus_content AS
         b.use_id ILIKE 'USE:Y%' OR 
         b.use_id ILIKE 'USE:U%' ) ) 
   ) AND a.p_cont IS NOT NULL AND a.met_p_cont_id = 'P_CONTENT_METHODS:OL';
-ALTER VIEW IF EXISTS available_phosphorus_content OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS available_phosphorus_content OWNER TO backoffice;
 
 --3) Antimony Sb (mg/kg)
 CREATE OR REPLACE VIEW antimony AS
@@ -48,7 +48,7 @@ CREATE OR REPLACE VIEW antimony AS
     l.sb as value, l.met_sb_id as method, 'mg/kg' AS unit, l.geom
   FROM labdata_geo l
   WHERE l.sb IS NOT NULL;
-ALTER VIEW IF EXISTS antimony OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS antimony OWNER TO backoffice;
   
 --4) Arsenic As (mg/kg)
 CREATE OR REPLACE VIEW arsenic AS
@@ -57,7 +57,7 @@ CREATE OR REPLACE VIEW arsenic AS
     a.as_value as value, 'mg/kg' AS unit, a.met_as_id as method, a.geom
    FROM labdata_geo a
    WHERE a.as_value IS NOT NULL;
-ALTER VIEW IF EXISTS arsenic OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS arsenic OWNER TO backoffice;
 
 --5) Available base saturation (BS) exchangeable acidity (percentage) 
 CREATE OR REPLACE VIEW base_saturation_exchangeable_acidity AS
@@ -67,7 +67,7 @@ CREATE OR REPLACE VIEW base_saturation_exchangeable_acidity AS
   FROM public.labdata_geo a, public.land_use_geo b
   WHERE a.point_id = b.id AND a.na is not null AND a.mg is not null AND a.k is not null AND a.ca is not null AND a.cec is not null AND (a.ca + a.mg + a.k + a.na <= a.cec) AND
     ( ( b.corine_id ILIKE 'CORINE:21%' OR b.corine_id ILIKE 'CORINE:22%' OR b.corine_id ILIKE 'CORINE:24%' ) OR b.use_id ILIKE 'USES:A%' );
-ALTER VIEW IF EXISTS base_saturation_exchangeable_acidity OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS base_saturation_exchangeable_acidity OWNER TO backoffice;
 
 --6) base saturation (BS) soil_structure (percentage)
 CREATE OR REPLACE VIEW base_saturation_soil_structure AS
@@ -77,7 +77,7 @@ CREATE OR REPLACE VIEW base_saturation_soil_structure AS
   FROM public.labdata_geo a
   WHERE a.na is not null AND a.mg is not null AND a.k is not null AND a.ca is not null AND
     a.cec is not null and a.ca + a.mg + a.k + a.na <= a.cec;
-ALTER VIEW IF EXISTS base_saturation_soil_structure OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS base_saturation_soil_structure OWNER TO backoffice;
 
 --7) bulk density (BD)  (g/cm3)
 CREATE OR REPLACE VIEW bulk_density AS
@@ -90,7 +90,7 @@ CREATE OR REPLACE VIEW bulk_density AS
     a.geom
   FROM public.labdata_geo a
   WHERE a.bulk_dens IS NOT NULL AND a.texture_id IS NOT NULL;
-ALTER VIEW IF EXISTS bulk_density OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS bulk_density OWNER TO backoffice;
 
 --8) C/N ratio (unitless)
 CREATE OR REPLACE VIEW c_n_ratio AS
@@ -111,7 +111,7 @@ CREATE OR REPLACE VIEW c_n_ratio AS
     END as lu_type
   FROM public.labdata_geo a, public.land_use_geo b
   WHERE a.upper = 0 AND a.point_id = b.id AND a.n_tot is not null AND a.org_car is not null AND a.n_tot > 0;
-ALTER VIEW IF EXISTS c_n_ratio OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS c_n_ratio OWNER TO backoffice;
 
 --9) Cadmium Cd (mg/kg)
 CREATE OR REPLACE VIEW cadmium AS
@@ -119,7 +119,7 @@ CREATE OR REPLACE VIEW cadmium AS
     a.cd as value, a.met_cd_id as method, 'mg/kg' AS unit, a.geom
   FROM labdata_geo a
   WHERE a.cd IS NOT NULL;
-ALTER VIEW IF EXISTS cadmium OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS cadmium OWNER TO backoffice;
 
 --10) carbonate content CaCo3 (percentage)
 CREATE OR REPLACE VIEW carbonate_content AS
@@ -128,7 +128,7 @@ CREATE OR REPLACE VIEW carbonate_content AS
     l.caco3_content as value, l.met_caco3_content_id as method, 'percentage' AS unit, l.geom
   FROM labdata_geo l
   WHERE l.caco3_content IS NOT NULL;
-ALTER VIEW IF EXISTS carbonate_content OWNER TO backoffice_user; 
+ALTER VIEW IF EXISTS carbonate_content OWNER TO backoffice; 
   
 --11) Cation Exchange Capacity (cmol/Kg)
 CREATE OR REPLACE VIEW cation_exchange_capacity AS
@@ -146,7 +146,7 @@ WHERE
         b.corine_id ILIKE 'CORINE:24%' ) ) OR 
     b.use_id ILIKE 'USE:A%' ) AND 
   a.cec IS NOT NULL;
-ALTER VIEW IF EXISTS cation_exchange_capacity OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS cation_exchange_capacity OWNER TO backoffice;
 
 --12) Cation Exchange Capacity / Clay ratio (unitless)
 CREATE OR REPLACE VIEW cec_clay_ratio AS
@@ -155,7 +155,7 @@ CREATE OR REPLACE VIEW cec_clay_ratio AS
     'unitless' as unit, a.geom   
   FROM public.labdata_geo a
   WHERE a.clay is not null and a.cec is not null and a.clay > 0;
-  ALTER VIEW IF EXISTS cec_clay_ratio OWNER TO backoffice_user;
+  ALTER VIEW IF EXISTS cec_clay_ratio OWNER TO backoffice;
 
 --13) Chromium Cr (mg/kg)
 CREATE OR REPLACE VIEW chromium AS
@@ -164,7 +164,7 @@ CREATE OR REPLACE VIEW chromium AS
     l.cr as value, l.met_cr_id as method, 'mg/kg' AS unit, l.geom
   FROM labdata_geo l
   WHERE l.cr IS NOT NULL;
-ALTER VIEW IF EXISTS chromium OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS chromium OWNER TO backoffice;
 
 --14) Cobalt Co (mg/kg)
 CREATE OR REPLACE VIEW cobalt AS
@@ -173,7 +173,7 @@ CREATE OR REPLACE VIEW cobalt AS
     l.co as value, l.met_co_id as method, 'mg/kg' AS unit, l.geom
   FROM labdata_geo l
   WHERE l.co IS NOT NULL;
-ALTER VIEW IF EXISTS cobalt OWNER TO backoffice_user; 
+ALTER VIEW IF EXISTS cobalt OWNER TO backoffice; 
 
 --15) Copper Cu (mg/kg)
 CREATE OR REPLACE VIEW copper AS
@@ -182,7 +182,7 @@ CREATE OR REPLACE VIEW copper AS
     l.cu as value, l.met_cu_id as method, 'mg/kg' AS unit, l.geom
   FROM labdata_geo l
   WHERE l.cu IS NOT NULL;
-ALTER VIEW IF EXISTS copper OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS copper OWNER TO backoffice;
 
 --16) Copper Relative Content (percentage)
 CREATE OR REPLACE VIEW copper_relative_content AS
@@ -191,7 +191,7 @@ CREATE OR REPLACE VIEW copper_relative_content AS
     'percentage' as unit, a.geom  
   FROM public.labdata_geo a
   WHERE a.cu is not null and a.zn is not null and a.pb is not null and (a.cu + a.zn + a.pb) > 0;
-  ALTER VIEW IF EXISTS copper_relative_content OWNER TO backoffice_user;
+  ALTER VIEW IF EXISTS copper_relative_content OWNER TO backoffice;
 
 --17) Crust Cover (percentage)
 CREATE OR REPLACE VIEW crust_cover AS
@@ -203,7 +203,7 @@ CREATE OR REPLACE VIEW crust_cover AS
   JOIN public.surface b ON a.id = b.id
   JOIN public.climate_weather c ON a.id = c.id
 WHERE c.clim_koppen_id IN ('CLIMATE_KOPPEN:BSH', 'CLIMATE_KOPPEN:BSC', 'CLIMATE_KOPPEN:BWH', 'CLIMATE_KOPPEN:BWC') AND b.crust_area IS NOT NULL;
-ALTER VIEW IF EXISTS crust_cover OWNER TO backoffice_user; 
+ALTER VIEW IF EXISTS crust_cover OWNER TO backoffice; 
 
 --18) Cryptogram Cover (percentage)
 CREATE OR REPLACE VIEW cryptogram_cover AS
@@ -230,7 +230,7 @@ CREATE OR REPLACE VIEW cryptogram_cover AS
   'percentage' AS unit,
   ST_SetSRID( ST_MakePoint( a.lon_wgs84, a.lat_wgs84 ), 4326 ) AS geom
 FROM public.point_general a JOIN public.land_use b ON a.id = b.id; 
-ALTER VIEW IF EXISTS cryptogram_cover OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS cryptogram_cover OWNER TO backoffice;
 
 --19) Effective Cation Exchange Capacity (percentage)
 CREATE OR REPLACE VIEW effective_cation_exchange_capacity AS
@@ -257,7 +257,7 @@ CREATE OR REPLACE VIEW effective_cation_exchange_capacity AS
     'percentage' AS unit, a.geom   
   FROM public.labdata_geo a, public.land_use_geo b
   WHERE a.point_id = b.id AND a.ph_h2o is not null AND a.cec is not null AND a.clay > 0;
-ALTER VIEW IF EXISTS effective_cation_exchange_capacity OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS effective_cation_exchange_capacity OWNER TO backoffice;
 
 --20) Electric Conductivity EC (dS/m)
 CREATE OR REPLACE VIEW electric_conductivity AS
@@ -266,7 +266,7 @@ CREATE OR REPLACE VIEW electric_conductivity AS
     a.el_cond AS value, 'dS/m' AS unit, a.met_el_cond_id as method, a.geom
   FROM public.labdata_geo a
   WHERE a.el_cond IS NOT NULL; 
-ALTER VIEW IF EXISTS electric_conductivity OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS electric_conductivity OWNER TO backoffice;
 
 --21) Exchangeable Calcium - Ca  (cmol/Kg)
 CREATE OR REPLACE VIEW exchangeable_calcium AS
@@ -275,7 +275,7 @@ CREATE OR REPLACE VIEW exchangeable_calcium AS
     l.ca as value, l.met_exc_id as method, 'cmol/kg' AS unit, l.geom
   FROM labdata_geo l
   WHERE l.ca IS NOT NULL;
-ALTER VIEW IF EXISTS exchangeable_calcium OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS exchangeable_calcium OWNER TO backoffice;
 
 --22) Exchangeable Magnesium - Mg (cmol/Kg)
 CREATE OR REPLACE VIEW exchangeable_magnesium AS
@@ -284,7 +284,7 @@ CREATE OR REPLACE VIEW exchangeable_magnesium AS
     l.mg as value, l.met_exc_id as method, 'cmol/kg' AS unit, l.geom
   FROM labdata_geo l
   WHERE l.mg IS NOT NULL;
-ALTER VIEW IF EXISTS exchangeable_magnesium OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS exchangeable_magnesium OWNER TO backoffice;
 
 --23) Exchangeable Potassium - K (cmol/Kg)
 CREATE OR REPLACE VIEW exchangeable_potassium AS
@@ -293,7 +293,7 @@ CREATE OR REPLACE VIEW exchangeable_potassium AS
     l.k as value, l.met_exc_id as method, 'cmol/kg' AS unit, l.geom
   FROM labdata_geo l
   WHERE l.k IS NOT NULL;
-ALTER VIEW IF EXISTS exchangeable_potassium OWNER TO backoffice_user; 
+ALTER VIEW IF EXISTS exchangeable_potassium OWNER TO backoffice; 
 
 --24) Exchangeable Potassium (K) potential impact on produvtion (cmol/Kg)
 CREATE OR REPLACE VIEW exchangeable_potassium_potential_impact AS
@@ -304,7 +304,7 @@ CREATE OR REPLACE VIEW exchangeable_potassium_potential_impact AS
     a.geom
 FROM public.labdata_geo a
 WHERE a.k IS NOT NULL AND a.texture_id IS NOT NULL;
-ALTER VIEW IF EXISTS exchangeable_potassium_potential_impact OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS exchangeable_potassium_potential_impact OWNER TO backoffice;
 
 --25) Exchangeable Sodium - Na (cmol/Kg)
 CREATE OR REPLACE VIEW exchangeable_sodium  AS
@@ -313,7 +313,7 @@ CREATE OR REPLACE VIEW exchangeable_sodium  AS
     l.na as value, l.met_exc_id as method, 'cmol/kg' AS unit, l.geom
   FROM labdata_geo l
   WHERE l.na IS NOT NULL;
-ALTER VIEW IF EXISTS exchangeable_sodium OWNER TO backoffice_user; 
+ALTER VIEW IF EXISTS exchangeable_sodium OWNER TO backoffice; 
 
 --26) field capacity (percentage)
 CREATE OR REPLACE VIEW field_capacity AS
@@ -329,7 +329,7 @@ FROM
 WHERE
     ( ( (b.corine_id IS NOT NULL AND (b.corine_id ILIKE 'CORINE:21%' OR b.corine_id ILIKE 'CORINE:22%' OR b.corine_id ILIKE 'CORINE:24%' ) ) OR b.use_id ILIKE 'USE:A%') AND (c.irrigation = 'IRRIGATION_TYPES:GR' OR c.irrigation = 'IRRIGATION_TYPES:SP' OR c.irrigation = 'IRRIGATION_TYPES:DR') )
 AND a.field_cap IS NOT NULL AND a.texture_id IS NOT NULL;
-ALTER VIEW IF EXISTS field_capacity OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS field_capacity OWNER TO backoffice;
 
 --27) gravel (percentage)
 CREATE OR REPLACE VIEW gravel AS
@@ -339,7 +339,7 @@ CREATE OR REPLACE VIEW gravel AS
     a.geom   
   FROM public.labdata_geo a
   WHERE a.upper = 0;
-  ALTER VIEW IF EXISTS gravel OWNER TO backoffice_user;
+  ALTER VIEW IF EXISTS gravel OWNER TO backoffice;
 
 --28) gypsum (percentage)
 CREATE OR REPLACE VIEW gypsum AS
@@ -357,7 +357,7 @@ FROM
           b.corine_id ILIKE 'CORINE:24%' ) ) OR 
       b.use_id ILIKE 'USE:A%' ) AND 
     a.gypsum IS NOT NULL;
-ALTER VIEW IF EXISTS gypsum OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS gypsum OWNER TO backoffice;
 
 --29) Hydraulic conductivity at saturation (ds/m)
 CREATE OR REPLACE VIEW hydraulic_conductivity_at_saturation AS
@@ -366,7 +366,7 @@ CREATE OR REPLACE VIEW hydraulic_conductivity_at_saturation AS
     l.hy_cond as value, l.met_hy_cond_id as method, 'ds/m' AS unit, l.geom
   FROM labdata_geo l
   WHERE l.hy_cond IS NOT NULL;
-ALTER VIEW IF EXISTS hydraulic_conductivity_at_saturation OWNER TO backoffice_user; 
+ALTER VIEW IF EXISTS hydraulic_conductivity_at_saturation OWNER TO backoffice; 
 
 --30) lead - Pb (mg/kg)
 CREATE OR REPLACE VIEW lead AS
@@ -375,7 +375,7 @@ CREATE OR REPLACE VIEW lead AS
     l.pb as value, l.met_pb_id as method, 'mg/kg' AS unit, l.geom
   FROM labdata_geo l
   WHERE l.pb IS NOT NULL;
-ALTER VIEW IF EXISTS lead OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS lead OWNER TO backoffice;
 
 --31) lead_relative_content (percentage)
 CREATE OR REPLACE VIEW lead_relative_content AS
@@ -384,7 +384,7 @@ CREATE OR REPLACE VIEW lead_relative_content AS
     'percentage' as unit, a.geom   
   FROM public.labdata_geo a
   WHERE a.cu is not null and a.zn is not null and a.pb is not null and (a.cu + a.zn + a.pb) > 0;
-  ALTER VIEW IF EXISTS lead_relative_content OWNER TO backoffice_user;
+  ALTER VIEW IF EXISTS lead_relative_content OWNER TO backoffice;
 
 --32) litter_layer_cover (percentage)
 CREATE OR REPLACE VIEW litter_layer_cover AS
@@ -394,7 +394,7 @@ CREATE OR REPLACE VIEW litter_layer_cover AS
     ST_SetSRID( ST_MakePoint( a.lon_wgs84, a.lat_wgs84 ), 4326 ) AS geom
   FROM public.point_general a, public.surface b
   WHERE a.id = b.id AND b.litter_area IS NOT NULL;
-ALTER VIEW IF EXISTS litter_layer_cover OWNER TO backoffice_user; 
+ALTER VIEW IF EXISTS litter_layer_cover OWNER TO backoffice; 
 
 --33) Manganese - Mn (mg/Kg)
 CREATE OR REPLACE VIEW manganese AS
@@ -403,7 +403,7 @@ CREATE OR REPLACE VIEW manganese AS
     l.mn as value, l.met_mn_id as method, 'mg/kg' AS unit, l.geom
   FROM labdata_geo l
   WHERE l.mn IS NOT NULL;
-ALTER VIEW IF EXISTS manganese OWNER TO backoffice_user; 
+ALTER VIEW IF EXISTS manganese OWNER TO backoffice; 
 
 --34) Mercury - Hg (mg/Kg)
 CREATE OR REPLACE VIEW mercury AS
@@ -412,7 +412,7 @@ CREATE OR REPLACE VIEW mercury AS
     l.hg as value, l.met_hg_id as method, 'mg/kg' AS unit, l.geom
   FROM labdata_geo l
   WHERE l.hg IS NOT NULL;
-ALTER VIEW IF EXISTS mercury OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS mercury OWNER TO backoffice;
 
 --35) n_total (g/Kg)
 CREATE OR REPLACE VIEW n_total AS
@@ -437,7 +437,7 @@ CREATE OR REPLACE VIEW n_total AS
                 b.use_id ILIKE 'USE:Y%' OR 
                 b.use_id ILIKE 'USE:U%' ) ) ) AND 
         a.n_tot IS NOT NULL;
-ALTER VIEW IF EXISTS n_total OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS n_total OWNER TO backoffice;
 
 --36) Ammonium ion - nh4 (mg/Kg)
 CREATE OR REPLACE VIEW nh4 AS
@@ -455,7 +455,7 @@ FROM
           b.corine_id ILIKE 'CORINE:24%' ) ) OR 
       b.use_id ILIKE 'USE:A%' ) AND 
     a.nh4 IS NOT NULL;
-ALTER VIEW IF EXISTS nh4 OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS nh4 OWNER TO backoffice;
 
 --37) nichel - Ni (mg/Kg)
 CREATE OR REPLACE VIEW nichel AS
@@ -464,7 +464,7 @@ CREATE OR REPLACE VIEW nichel AS
     l.ni as value, l.met_ni_id as method, 'mg/kg' AS unit, l.geom
   FROM labdata_geo l
   WHERE l.ni IS NOT NULL;
-ALTER VIEW IF EXISTS nichel OWNER TO backoffice_user; 
+ALTER VIEW IF EXISTS nichel OWNER TO backoffice; 
    
 --38) Nitrate ion no3 (mg/Kg)
 CREATE OR REPLACE VIEW no3 AS
@@ -482,7 +482,7 @@ FROM
           b.corine_id ILIKE 'CORINE:24%' ) ) OR 
       b.use_id ILIKE 'USE:A%' ) AND 
     a.no3 IS NOT NULL;
-ALTER VIEW IF EXISTS no3 OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS no3 OWNER TO backoffice;
 
 --39) Organic Carbon (g/kg)
 CREATE OR REPLACE VIEW organic_carbon AS
@@ -491,7 +491,7 @@ CREATE OR REPLACE VIEW organic_carbon AS
     a.org_car as value, 'g/kg' AS unit,  a.met_org_car_id as method, a.geom   
   FROM public.labdata_geo a
   WHERE a.org_car IS NOT NULL;
-ALTER VIEW IF EXISTS organic_carbon OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS organic_carbon OWNER TO backoffice;
 
 --40) Organic Matter (percentage)
 CREATE OR REPLACE VIEW organic_matter AS
@@ -500,7 +500,7 @@ CREATE OR REPLACE VIEW organic_matter AS
     l.org_mat as value, l.met_org_mat_id as method, 'percentage' AS unit, l.geom
   FROM labdata_geo l
   WHERE l.org_mat IS NOT NULL;
-ALTER VIEW IF EXISTS organic_matter OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS organic_matter OWNER TO backoffice;
 
 --41) Oxygen availability for roots (unitless)
 CREATE OR REPLACE VIEW oxygen_availability_for_roots AS 
@@ -534,7 +534,7 @@ CREATE OR REPLACE VIEW oxygen_availability_for_roots AS
     a.geom
   FROM public.labdata_geo a, public.land_use_geo b
   WHERE a.upper = 0 AND a.point_id = b.id;
-ALTER VIEW IF EXISTS d_d0 OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS d_d0 OWNER TO backoffice;
 
 --42) p_p_threshold (unitless)
 CREATE OR REPLACE VIEW p_p_threshold AS
@@ -570,7 +570,7 @@ CREATE OR REPLACE VIEW p_p_threshold AS
        JOIN public.land_use_geo b ON a.point_id = b.id
        LEFT JOIN public.surface_geo c ON a.point_id = c.id
   WHERE a."upper" = 0;
-ALTER VIEW p_p_threshold OWNER TO backoffice_user;
+ALTER VIEW p_p_threshold OWNER TO backoffice;
 
 --43) packing density (g/cm3)
 CREATE OR REPLACE VIEW packing_density AS
@@ -580,7 +580,7 @@ CREATE OR REPLACE VIEW packing_density AS
     a.geom   
   FROM public.labdata_geo a
   WHERE a.bulk_dens is not null AND a.clay is not null;
-ALTER VIEW IF EXISTS packing_density OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS packing_density OWNER TO backoffice;
 
 --44) Perennial vegetation cover ( percentage )
 CREATE OR REPLACE VIEW perennial_vegetation_cover AS
@@ -639,7 +639,7 @@ SELECT id, point_id, point_type, date, NULL AS upper, NULL AS lower, survey_m_id
   'percentage' AS unit,
   geom
 FROM temp_table;
-ALTER VIEW IF EXISTS perennial_vegetation_cover OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS perennial_vegetation_cover OWNER TO backoffice;
 
 --45) pH-H2O bacterial diversity (unitless)
 CREATE OR REPLACE VIEW ph_h2o_bacterial_diversity AS
@@ -648,7 +648,7 @@ CREATE OR REPLACE VIEW ph_h2o_bacterial_diversity AS
     'unitless' AS unit, 
     a.geom   
   FROM public.labdata_geo a;
-  ALTER VIEW IF EXISTS ph_h2o_bacterial_diversity OWNER TO backoffice_user;
+  ALTER VIEW IF EXISTS ph_h2o_bacterial_diversity OWNER TO backoffice;
 
 --46) pH-H2O fungal activity (unitless)
 CREATE OR REPLACE VIEW ph_h2o_fungal AS
@@ -657,7 +657,7 @@ CREATE OR REPLACE VIEW ph_h2o_fungal AS
     'unitless' AS unit, 
     a.geom   
   FROM public.labdata_geo a;
-  ALTER VIEW IF EXISTS ph_h2o_fungal OWNER TO backoffice_user;
+  ALTER VIEW IF EXISTS ph_h2o_fungal OWNER TO backoffice;
 
 --47)  pH-H2O metal toxicity (unitless)
 CREATE OR REPLACE VIEW ph_h2o_metal_toxicity AS
@@ -665,7 +665,7 @@ CREATE OR REPLACE VIEW ph_h2o_metal_toxicity AS
     a.ph_h2o as value, 
     'unitless' AS unit, a.geom   
   FROM public.labdata_geo a;
-  ALTER VIEW IF EXISTS ph_h2o_metal_toxicity OWNER TO backoffice_user;
+  ALTER VIEW IF EXISTS ph_h2o_metal_toxicity OWNER TO backoffice;
 
 --48) pH-H2O microbial carbon (unitless)
 CREATE OR REPLACE VIEW ph_h2o_microbial_carbon AS
@@ -674,7 +674,7 @@ CREATE OR REPLACE VIEW ph_h2o_microbial_carbon AS
     'unitless' AS unit, 
     a.geom   
   FROM public.labdata_geo a;
-  ALTER VIEW IF EXISTS ph_h2o_microbial_carbon OWNER TO backoffice_user;
+  ALTER VIEW IF EXISTS ph_h2o_microbial_carbon OWNER TO backoffice;
 
 --49) pH-H2O microbial diversity (unitless)
 CREATE OR REPLACE VIEW ph_h2o_microbial_diversity AS
@@ -682,7 +682,7 @@ CREATE OR REPLACE VIEW ph_h2o_microbial_diversity AS
     a.ph_h2o as value, 
     'unitless' AS unit, a.geom   
   FROM public.labdata_geo a;
-  ALTER VIEW IF EXISTS ph_h2o_microbial_diversity OWNER TO backoffice_user;
+  ALTER VIEW IF EXISTS ph_h2o_microbial_diversity OWNER TO backoffice;
 
 --50) pH-H2O organic decomposition (unitless)
 CREATE OR REPLACE VIEW ph_h2o_organic_decomposition AS
@@ -691,7 +691,7 @@ CREATE OR REPLACE VIEW ph_h2o_organic_decomposition AS
     'unitless' AS unit,
     a.geom   
   FROM public.labdata_geo a;
-  ALTER VIEW IF EXISTS ph_h2o_organic_decomposition OWNER TO backoffice_user;
+  ALTER VIEW IF EXISTS ph_h2o_organic_decomposition OWNER TO backoffice;
 
 --51) pH-H2O phosphorus (unitless)
 CREATE OR REPLACE VIEW ph_h2o_phosphorus AS
@@ -699,7 +699,7 @@ CREATE OR REPLACE VIEW ph_h2o_phosphorus AS
     a.ph_h2o as value, 
     'unitless' AS unit, a.geom   
   FROM public.labdata_geo a;
-  ALTER VIEW IF EXISTS ph_h2o_phosphorus OWNER TO backoffice_user;
+  ALTER VIEW IF EXISTS ph_h2o_phosphorus OWNER TO backoffice;
 
 --52) pH-H2O plant growth (unitless)
 CREATE OR REPLACE VIEW ph_h2o_plant_growth AS
@@ -716,7 +716,7 @@ CREATE OR REPLACE VIEW ph_h2o_plant_growth AS
           b.corine_id ILIKE 'CORINE:24%' ) ) OR 
       b.use_id ILIKE 'USE:A%' ) AND 
     a.ph_h2o IS NOT NULL;
-  ALTER VIEW IF EXISTS ph_h2o_plant_growth OWNER TO backoffice_user;
+  ALTER VIEW IF EXISTS ph_h2o_plant_growth OWNER TO backoffice;
 
 --53) pH-H2O soil salinity (unitless)
 CREATE OR REPLACE VIEW ph_h2o_soil_salinity AS
@@ -725,7 +725,7 @@ CREATE OR REPLACE VIEW ph_h2o_soil_salinity AS
     'unitless' AS unit, 
     a.geom   
   FROM public.labdata_geo a;
-  ALTER VIEW IF EXISTS ph_h2o_soil_salinity OWNER TO backoffice_user;
+  ALTER VIEW IF EXISTS ph_h2o_soil_salinity OWNER TO backoffice;
 
 --54) pH-H2O som_for_grassland (unitless)
 CREATE OR REPLACE VIEW ph_h2o_som_for_grassland AS
@@ -745,7 +745,7 @@ FROM
           b.use_id ILIKE 'USE:Y%' OR 
           b.use_id ILIKE 'USE:U%' ) ) ) AND 
     a.ph_h2o IS NOT NULL;
-ALTER VIEW IF EXISTS ph_h2o_som_for_grassland OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS ph_h2o_som_for_grassland OWNER TO backoffice;
 
 --55) plant available water capacity (percentage)
 CREATE OR REPLACE VIEW plant_available_water_capacity AS
@@ -778,7 +778,7 @@ CREATE OR REPLACE VIEW plant_available_water_capacity AS
     ( a.awc IS NOT NULL OR 
       ( a.field_cap is not null AND 
         a.wilting_p is not null ) );
-ALTER VIEW IF EXISTS plant_available_water_capacity OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS plant_available_water_capacity OWNER TO backoffice;
 
 --56) relative field capacity (unitless)
 CREATE OR REPLACE VIEW relative_field_capacity AS
@@ -815,7 +815,7 @@ CREATE OR REPLACE VIEW relative_field_capacity AS
   JOIN public.land_use_geo b ON a.point_id = b.id
   JOIN public.surface_geo c ON a.point_id = c.point_id
   WHERE a.field_cap is not null;
-ALTER VIEW IF EXISTS relative_field_capacity OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS relative_field_capacity OWNER TO backoffice;
 
 --57) slake test ('unitless')
 CREATE OR REPLACE VIEW slake_test AS
@@ -824,7 +824,7 @@ CREATE OR REPLACE VIEW slake_test AS
     l.slake_test as value, l.met_slake_test as method, 'unitless' AS unit, l.geom
   FROM labdata_geo l
   WHERE l.slake_test IS NOT NULL;
-ALTER VIEW IF EXISTS slake_test OWNER TO backoffice_user;  
+ALTER VIEW IF EXISTS slake_test OWNER TO backoffice;  
 
 --58) soc stock ('mg.ha^-1')
 CREATE OR REPLACE VIEW soc_stock AS 
@@ -845,7 +845,7 @@ CREATE OR REPLACE VIEW soc_stock AS
     END as lu_type
   FROM public.labdata_geo a, public.land_use_geo b
   WHERE a.upper = 0 AND a.point_id = b.id AND a.gravel is not null AND a.org_car is not null AND a.bulk_dens is not null;
-ALTER VIEW IF EXISTS soc_stock OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS soc_stock OWNER TO backoffice;
 
 --59) sodicity salinity ratio (unitless)
 CREATE OR REPLACE VIEW sodicity_salinity_ratio AS
@@ -873,7 +873,7 @@ WHERE
           a.sol_ca + a.sol_mg > 0 AND 
           a.el_cond > 0.2 AND 
           a.el_cond < 20 ) ) );
-ALTER VIEW IF EXISTS sodicity_salinity_ratio OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS sodicity_salinity_ratio OWNER TO backoffice;
 
 --60) sodium adsorption ratio sodicity (cmol(c)^(1/2).L^(-1/2))
 CREATE OR REPLACE VIEW sodium_adsorption_ratio_sodicity AS
@@ -894,7 +894,7 @@ WHERE
         a.sol_mg IS NOT NULL AND 
         a.sol_ca + a.sol_mg > 0
 	    ) ) ;
-ALTER VIEW IF EXISTS sodium_adsorption_ratio_sodicity OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS sodium_adsorption_ratio_sodicity OWNER TO backoffice;
 
 --61) sodium adsorption ratio toxicity (cmol(c)^(1/2).L^(-1/2))
 CREATE OR REPLACE VIEW sodium_adsorption_ratio_toxicity AS
@@ -926,7 +926,7 @@ CREATE OR REPLACE VIEW sodium_adsorption_ratio_toxicity AS
         a.sol_ca + a.sol_mg > 0
       )
     );
-ALTER VIEW IF EXISTS sodium_adsorption_ratio_toxicity OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS sodium_adsorption_ratio_toxicity OWNER TO backoffice;
 
 --62) sodium exchangeable percentage sodicity (percentage)
 CREATE OR REPLACE VIEW sodium_exchangeable_percentage_sodicity AS
@@ -939,7 +939,7 @@ CREATE OR REPLACE VIEW sodium_exchangeable_percentage_sodicity AS
     a.geom
   FROM public.labdata_geo a
   WHERE a.esp IS NOT NULL OR ( a.na IS NOT NULL AND a.cec > 0 );
-ALTER VIEW IF EXISTS sodium_exchangeable_percentage_sodicity OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS sodium_exchangeable_percentage_sodicity OWNER TO backoffice;
 
 --63) sodium exchangeable percentage waterlogging (percentage)
 CREATE OR REPLACE VIEW sodium_exchangeable_percentage_waterlogging AS
@@ -967,7 +967,7 @@ CREATE OR REPLACE VIEW sodium_exchangeable_percentage_waterlogging AS
       a.clay IS NOT NULL AND 
       a.clay > 0 AND
 	    ( a.esp IS NOT NULL OR ( a.na IS NOT NULL AND a.cec > 0 ) );
-ALTER VIEW IF EXISTS sodium_exchangeable_percentage_waterlogging OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS sodium_exchangeable_percentage_waterlogging OWNER TO backoffice;
 
 --64) soil erodibility by water (Mg.h.MJ^(-1).mm^(-1))
 CREATE OR REPLACE VIEW soil_erodibility_by_water AS
@@ -1004,7 +1004,7 @@ CREATE OR REPLACE VIEW soil_erodibility_by_water AS
   WHERE b.upper = 0 AND b.size1_id is NOT NULL
     AND a.org_car IS NOT NULL AND a.silt IS NOT NULL
     AND a.sand IS NOT NULL AND a.hy_cond IS NOT NULL;
-ALTER VIEW IF EXISTS soil_erodibility_by_water OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS soil_erodibility_by_water OWNER TO backoffice;
 
 --65) soil erodibility by wind (percentage)
 CREATE OR REPLACE VIEW soil_erodibility_by_wind AS
@@ -1027,7 +1027,7 @@ CREATE OR REPLACE VIEW soil_erodibility_by_wind AS
       a.clay > 0 AND 
       a.silt IS NOT NULL AND 
       a.caco3_content IS NOT NULL;
-ALTER VIEW soil_erodibility_by_wind OWNER TO backoffice_user;
+ALTER VIEW soil_erodibility_by_wind OWNER TO backoffice;
 
 --66) surface_compaction_risk (Kg.m^(-2))
 CREATE OR REPLACE VIEW surface_compaction_risk  AS
@@ -1041,7 +1041,7 @@ CREATE OR REPLACE VIEW surface_compaction_risk  AS
     a.geom   
   FROM public.labdata_geo a
   WHERE a.upper = 0 AND a.clay is not null AND a.silt is not null AND a.org_mat is not null;
-ALTER VIEW IF EXISTS surface_compaction_risk OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS surface_compaction_risk OWNER TO backoffice;
 
 --67) Total Iron - Fe (mg/kg)
 CREATE OR REPLACE VIEW total_iron AS
@@ -1050,7 +1050,7 @@ CREATE OR REPLACE VIEW total_iron AS
     l.fe_tot as value, l.met_fe_tot_id as method, 'g/kg' AS unit, l.geom
   FROM labdata_geo l
   WHERE l.fe_tot IS NOT NULL;
-ALTER VIEW IF EXISTS total_iron OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS total_iron OWNER TO backoffice;
    
 --68) Vanadium V (mg/kg)
 CREATE OR REPLACE VIEW vanadium AS
@@ -1059,7 +1059,7 @@ CREATE OR REPLACE VIEW vanadium AS
     l.v as value, l.met_v_id as method, 'mg/kg' AS unit, l.geom
   FROM labdata_geo l
   WHERE l.v IS NOT NULL;
-ALTER VIEW IF EXISTS vanadium OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS vanadium OWNER TO backoffice;
 
 --69) wilting_point (percentage)
 CREATE OR REPLACE VIEW wilting_point AS
@@ -1068,7 +1068,7 @@ CREATE OR REPLACE VIEW wilting_point AS
     l.wilting_p as value, l.met_s_f_w_id as method, 'percentage' AS unit, l.geom
   FROM labdata_geo l
   WHERE l.wilting_p IS NOT NULL;
-ALTER VIEW IF EXISTS wilting_point OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS wilting_point OWNER TO backoffice;
 
 --70) zinc (mg/kg)
 CREATE OR REPLACE VIEW zinc AS
@@ -1077,7 +1077,7 @@ CREATE OR REPLACE VIEW zinc AS
     l.zn as value, l.met_zn_id as method, 'mg/kg' AS unit, l.geom
   FROM labdata_geo l
   WHERE l.zn IS NOT NULL;
-ALTER VIEW IF EXISTS zinc OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS zinc OWNER TO backoffice;
 
 --71) zinc_relative_content (percentage)
 CREATE OR REPLACE VIEW zinc_relative_content AS
@@ -1087,7 +1087,7 @@ CREATE OR REPLACE VIEW zinc_relative_content AS
     a.geom   
   FROM public.labdata_geo a
   WHERE a.cu is not null and a.zn is not null and a.pb is not null and (a.cu + a.zn + a.pb) > 0;
-  ALTER VIEW IF EXISTS zinc_relative_content OWNER TO backoffice_user;
+  ALTER VIEW IF EXISTS zinc_relative_content OWNER TO backoffice;
 
 --72) water_infiltration_potential
 CREATE OR REPLACE VIEW water_infiltration_potential AS
@@ -1158,7 +1158,7 @@ SELECT * FROM (
   FROM temp2_table
 ) a
 WHERE value IS NOT NULL; 
-ALTER VIEW IF EXISTS water_infiltration_potential OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS water_infiltration_potential OWNER TO backoffice;
 
 --73) hydro PTF input data 
 -- sand:percentage, clay:percentage, org_car:percentage, bulk_dens:g/cm3, 
@@ -1171,7 +1171,7 @@ CREATE OR REPLACE VIEW hydro_ptf_input_data_geo AS
   WHERE org_car >= 0 and sand >= 0 and clay >= 0 and 
         org_car <= 1000 and sand <= 100 and clay <= 100 and 
         sand + clay < 100 and sand is not null and clay is not null and org_car is not null;
-ALTER VIEW IF EXISTS hydro_ptf_input_data_geo OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS hydro_ptf_input_data_geo OWNER TO backoffice;
 
 --74) hydro PTF input data 
 CREATE OR REPLACE VIEW soc_clay_ratio AS
@@ -1184,7 +1184,7 @@ CREATE OR REPLACE VIEW soc_clay_ratio AS
   JOIN public.land_use_geo b ON a.point_id = b.id
   WHERE
     a.upper = 0 AND a.org_car is not null AND a.clay > 0 AND ( ((b.corine_id ILIKE 'CORINE:23%' OR b.corine_id ILIKE 'CORINE:33%') OR (b.use_id ILIKE 'USE:H%') OR (b.nc_us_species1 IS NULL AND b.nc_ms_species1 IS NULL AND (b.use_id ILIKE 'USE:P%' OR b.use_id ILIKE 'USE:Y%' OR b.use_id ILIKE 'USE:U%')) ) OR ((b.use_id ILIKE 'USE:A%') OR (b.corine_id ILIKE 'CORINE:21%' OR b.corine_id ILIKE 'CORINE:22%' OR b.corine_id ILIKE 'CORINE:24%' )) );
-ALTER VIEW IF EXISTS soc_clay_ratio OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS soc_clay_ratio OWNER TO backoffice;
 
 """
 SQL_DROP = f""" 

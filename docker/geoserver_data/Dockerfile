@@ -1,5 +1,5 @@
 ARG BASE_IMAGE_VERSION
-FROM geonode/geoserver_data:${BASE_IMAGE_VERSION}
+FROM geonode/geoserver_data:${BASE_IMAGE_VERSION:-2.28.x-latest}
 
 # Copio il workspace geonode in una dir temporanea
 # Struttura attesa nel contesto di build:

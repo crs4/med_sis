@@ -9,6 +9,7 @@
 
 */
 import { UploadService } from '../../service/uploads';
+import UserService from '../../service/user';
 import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { Button } from 'primereact/button';
 import { Calendar } from 'primereact/calendar';
@@ -22,7 +23,6 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import {useTranslations} from 'next-intl';
 import { Toast } from 'primereact/toast';
-import { useUser } from '../../context/user';
 
 
 export default function Page()  {
@@ -43,7 +43,6 @@ export default function Page()  {
   
   const router = useRouter();
   const toast = useRef(null);
-  const user = useUser();
   // List of possible values ​​for the status attribute in an upload object 
   const statuses = Object.keys(UploadService.STATUSES);
   // List of possible types ​​for the type attribute in an upload object 
@@ -52,10 +51,11 @@ export default function Page()  {
   const actions = Object.keys(UploadService.ACTIONS);
 
   useEffect(() => {
-    if ( !user.userData || ( user.userData.forbidden !== null && user.userData.forbidden ))
-      router.push(`/401`);
     // To load the upload list.
     const fetchData = ( async() => {
+      const user = await UserService.getProfile(document.cookie);
+      if ( !user || ( user.forbidden !== null && user.forbidden) )
+        router.push(`/401`);    
       let _data = await UploadService.list(document.cookie)
       if ( !_data || _data.error )
         toast.current.show({severity:'error', summary: 'Errors!', detail:t('LOADING_ERRORS'), life: 3000});
@@ -69,7 +69,7 @@ export default function Page()  {
       setLoading(false); 
     })
     fetchData();
-  },[user]);  // eslint-disable-line
+  },[]);  // eslint-disable-line
 
   // To inspect an upload object.
   const goToUpload = (id) => {
@@ -304,7 +304,7 @@ export default function Page()  {
         </div>
       { !loading && ( 
         <>
-        <ConfirmDialog id="dlg_remove" group="declarative"  visible={visibleDlg1} onHide={() => setVisibleDlg1(false)} message={t("UPLOADS_DELETE_Q")} 
+        <ConfirmDialog id="dlg_remove" group="declarative"  visible={visibleDlg1} onHide={() => setVisibleDlg1(false)} message={t("DELETE_Q")} 
           header="Confirmation" icon="pi pi-exclamation-triangle" accept={performRemove} reject={rejectDlg1} />
         
         <DataTable

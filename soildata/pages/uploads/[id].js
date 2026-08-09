@@ -7,7 +7,7 @@ import dynamic from "next/dynamic"
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
 import { point, featureCollection } from '@turf/turf';
-import { useUser } from '../../context/user';
+import UserService from '../../service/user';
 import ReportTable from '../../components/table/XLSxResultTable';
 import { UploadService } from '../../service/uploads';
 import { TaxonomyService } from '../../service/taxonomies';
@@ -18,8 +18,7 @@ const MyMap = dynamic(() => import("../../components/map/XLSxMap"), { ssr:false 
 export default function Page()  {
   const router = useRouter();
   const t = useTranslations('default');
-  const id = router.query.id
-  const user = useUser();
+  const id = router.query.id;
   const [loading, setLoading] = useState(true);
   const [upload, setUpload] = useState(null);
   const toast = useRef(null); 
@@ -34,6 +33,9 @@ export default function Page()  {
 
   useEffect(() => {
     const fetchData = ( async(id) => {
+      const user = await UserService.getProfile(document.cookie);
+      if ( !user || ( user.forbidden !== null && user.forbidden) )
+        router.push(`/401`);    
       if ( !id )
         return;
       let response = await UploadService.get(document.cookie,id)
@@ -48,7 +50,7 @@ export default function Page()  {
     if ( !user.userData || ( user.userData.forbidden !== null && user.userData.forbidden ))
         router.push(`/401`);
     fetchData(id);
-  },[user]);  // eslint-disable-line   
+  },[]);  // eslint-disable-line   
 
   let reportHeaders = [ t('UPLOADS_REPORT_F1'),  t('UPLOADS_REPORT_F2'),  t('UPLOADS_REPORT_F3')];
   

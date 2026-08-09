@@ -1,10 +1,8 @@
 import AppSubMenu from './AppSubMenu';
-import { useUser } from '../context/user';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 const AppMenu = () => {
-    const { userData } = useUser();
     const router = useRouter();
     const _model = [
         {

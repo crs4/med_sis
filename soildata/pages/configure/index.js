@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useRef  } from 'react';
 
 import { ProfileService } from '../../service/profiles';
-import { useUser } from '../../context/user';
+import UserService from '../../service/user';
 import Loading from '../../components/Loading';
 
 import { useTranslations } from 'next-intl';
@@ -23,23 +23,22 @@ import { Toast } from 'primereact/toast';
 export default function Page()  {
   const router = useRouter();
   const t = useTranslations('default');
-  const user = useUser();
   const toast = useRef(null);
+  const [user, setUser] = useState(null) 
   const [isWorking, setIsWorking] = useState(false);
   const [indicators, setIndicators] = useState([]);
   const [sections, setSections] = useState([]);
 
-  useEffect(() => {
-    // only administrators and data managers
-    if ( !user.userData || ( user.userData.forbidden !== null && user.userData.forbidden) )
-        router.push(`/401`);
-    // fetch soil indicators and points sections lists 
+  useEffect( () => {
     fetchData();
-  },[user]);  // eslint-disable-line
+  },[]);  // eslint-disable-line
   
   const fetchData = async  () => {
-    try {  
-      setIsWorking(true);
+    try { 
+      const user = await UserService.getProfile(document.cookie);
+      if ( !user || ( user.forbidden !== null && user.forbidden) )
+        router.push(`/401`);
+      setIsWorking(true); 
       const _idata = await ProfileService.list(document.cookie,'base-datasets');
       setIsWorking(false);
       if ( !_idata || !_idata.ok || !_idata.data || !Array.isArray(_idata.data) || _idata.data.length === 0 )
@@ -248,7 +247,7 @@ export default function Page()  {
           <Column header="Status" field="status" body={statusTemplate} sortable style={{ minWidth: '10rem' }}   />
           <Column header="Actions" body={actionTemplate} />
         </DataTable>
-    )}    
+    )}
   </div>
   );
 };

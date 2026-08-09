@@ -15,7 +15,7 @@ import { InputTextarea } from 'primereact/inputtextarea';
 import TaxonomyService from '../../service/taxonomies';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
-import { useUser } from '../../context/user';
+import UserService from '../../service/user';
 
 
 export default function Page( )  {
@@ -34,7 +34,6 @@ export default function Page( )  {
   const [newDescr, setNewDescr] = useState(null);
   const [newValue, setNewValue] = useState(null);
   const [newValueDescr, setNewValueDescr] = useState(null);
-  const user = useUser();
   const toast = useRef(null);
   const t = useTranslations('default');
   const router = useRouter();
@@ -165,10 +164,11 @@ export default function Page( )  {
   };
 
   useEffect(() => {
-    if ( !user.userData || ( user.userData.forbidden !== null && user.userData.forbidden ))
-      router.push(`/401`);
     const fetchData = ( async() => {
       try {
+        const user = await UserService.getProfile(document.cookie);
+        if ( !user || ( user.forbidden !== null && user.forbidden) )
+          router.push(`/401`);            
         setLoading(true); 
         let response = await TaxonomyService.list(document.cookie)
         if ( !response || !response.ok )
@@ -185,7 +185,7 @@ export default function Page( )  {
       }
     })
     fetchData();
-  }, [user]); // eslint-disable-line   
+  }, []); // eslint-disable-line   
 
   const headerTemplate1 = () => {
     return  <h5 className="font-bold shadow-1 p-3 bg-cyan-900 text-white" style={{ width: '90%' }}>{t('CREATE_TAXONOMY')}</h5>

@@ -19,12 +19,11 @@ import uploadIMG from '../public/img/upload.png';
 import ptfIMG from '../public/img/ptf.png';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useUser } from '../context/user';
+import UserService from '../service/user';
 import { useRouter } from 'next/router';
 
 const Home = () => {
   const t  = useTranslations('default');
-  const user = useUser();
   const router = useRouter();
   const [points, setPoints] = useState('');
   const [labData, setLabData] = useState('');
@@ -84,13 +83,22 @@ const Home = () => {
         {t('SIS_BACKOFFICE_HYDROPTF')}  
     </div>
   );
-
   
+  const fetchUser = ( async() => {
+    try {
+      const user = await UserService.getProfile(document.cookie);
+      console.log(user)
+      if ( !user || ( user.forbidden !== null && user.forbidden) )
+        router.push(`/401`);
+    }  
+    catch( error ) { 
+      console.log(error)
+    } 
+  }) 
+
   useEffect(() => {
-    if (  !user.userData || ( user.userData.forbidden !== null && user.userData.forbidden ) )
-      router.push(`/401`);
-    
-  },[user]);  // eslint-disable-line
+      fetchUser()       
+  },[]);  // eslint-disable-line
 
   return (
       <div className="layout-dashboard">

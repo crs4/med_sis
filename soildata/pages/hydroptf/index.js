@@ -29,7 +29,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import {useTranslations} from 'next-intl';
 import { Toast } from 'primereact/toast';
-import { useUser } from '../../context/user';
+import UserService from '../../service/user';
 import { validateXLSFilePtfElaboration } from '../../utilities/xls';
 import PtfGraph from '../../components/PtfGraph';
 
@@ -37,7 +37,6 @@ export default function Page()  {
   const t = useTranslations('default');
   const router = useRouter();
   const toast = useRef(null);
-  const user = useUser();
   // run mode (single or batch)
   const [mode, setMode] = useState('single');
   //Single shot inputs 
@@ -83,8 +82,11 @@ export default function Page()  {
   
   // fetch list of elaborations
   const fetchData = async() => {
-    setIsLoading(true);
     try {
+      const user = await UserService.getProfile(document.cookie);
+      if ( !user || ( user.forbidden !== null && user.forbidden) )
+        router.push(`/401`);
+      setIsLoading(true);      
       let _data = await PTFService.list(document.cookie)
       if ( !_data || _data.error )
         toast.current.show({severity:'error', summary: 'Errors!', detail: 'Errors reading PTF batch elaborations' , life: 3000});
@@ -101,10 +103,8 @@ export default function Page()  {
   }
 
   useEffect(() => {
-    if ( !user.userData || ( user.userData.forbidden !== null && user.userData.forbidden ))
-      router.push(`/401`); 
     fetchData();
-  },[user]);  // eslint-disable-line
+  },[]);  // eslint-disable-line
   
   useEffect(() => {
     ( mode === 'single' ) ? openSingleShot() : openBatch()

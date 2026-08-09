@@ -13,7 +13,7 @@ import { Calendar } from 'primereact/calendar';
 import { Checkbox } from 'primereact/checkbox';
 import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
-import { useUser } from '../../context/user';
+import UserService from '../../service/user';
 import { Dialog } from 'primereact/dialog';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Galleria } from 'primereact/galleria';
@@ -32,7 +32,6 @@ export default function Page()  {
   const router = useRouter();
   const t = useTranslations('default');
   const id = router.query.id
-  const user = useUser();
   const toast = useRef(null);
   
   const [saving, setSaving] = useState(false);
@@ -69,10 +68,12 @@ export default function Page()  {
   const [selectedValue, setSelectedValue] = useState(null);
   
   useEffect(() => {
-    if ( !user.userData || ( user.userData.forbidden !== null && user.userData.forbidden ))
-        router.push(`/401`);
     const fetchData = ( async(id) => {
       try {
+        const user = await UserService.getProfile(document.cookie);
+        if ( !user || ( user.forbidden !== null && user.forbidden) )
+          router.push(`/401`);
+              
         setLoading(true);
         let mapping = Mapping['XLS_P:General and Surface'];
         let result = await generatePointTree ( mapping, id, false)
@@ -166,7 +167,7 @@ export default function Page()  {
     })
     if (!pointData || !labData || !layersData || !labExtData ) 
       fetchData(id);
-  },[user]);  // eslint-disable-line
+  },[]);  // eslint-disable-line
 
   const resetInfo = ( async(newData) => {
     setSelected(newData)

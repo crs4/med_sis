@@ -10,7 +10,7 @@ CREATE OR REPLACE VIEW addendum_point_general  AS
   SELECT point_id, count(point_id) as n_layer, concat(horizon) as horizon_designation
   FROM point_layer
   GROUP BY point_id, horizon;
-ALTER VIEW IF EXISTS addendum_point_general OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS addendum_point_general OWNER TO backoffice;
 
 CREATE OR REPLACE VIEW points_geo AS
   SELECT 
@@ -18,7 +18,7 @@ CREATE OR REPLACE VIEW points_geo AS
     gps, elev_m_asl, elev_dem, survey_m_id, project,
     ST_SetSRID( ST_MakePoint(lon_wgs84, lat_wgs84), 4326 ) AS geom
   FROM point_general;
-ALTER VIEW IF EXISTS points_geo OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS points_geo OWNER TO backoffice;
 
   --- General and Surface ---
 CREATE OR REPLACE VIEW point_general_geo AS
@@ -27,42 +27,42 @@ CREATE OR REPLACE VIEW point_general_geo AS
     ST_SetSRID( ST_MakePoint(t.lon_wgs84, t.lat_wgs84), 4326 ) AS geom
   FROM point_general t, addendum_point_general a
   WHERE t.id = a.point_id;
-ALTER VIEW IF EXISTS point_general_geo OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS point_general_geo OWNER TO backoffice;
 
 CREATE OR REPLACE VIEW surface_unevenness_geo AS
   SELECT
     s.*, t.id as point_id, t.point_type, t.project, t.date, t.survey_m_id, t.geom
   FROM point_general_geo t, surface_unevenness s
   WHERE t.surfaceunevenness_id = s.id;
-ALTER VIEW IF EXISTS surface_unevenness_geo OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS surface_unevenness_geo OWNER TO backoffice;
 
 CREATE OR REPLACE VIEW surface_geo AS
   SELECT
     s.*, t.id as point_id, t.point_type, t.project, t.date, t.survey_m_id, t.geom
   FROM point_general_geo t, surface s
   WHERE t.surface_id = s.id;
-ALTER VIEW IF EXISTS surface_geo OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS surface_geo OWNER TO backoffice;
 
 CREATE OR REPLACE VIEW land_use_geo AS
   SELECT
     l.*, t.id as point_id, t.point_type, t.project, t.date, t.survey_m_id, t.geom
   FROM point_general_geo t, land_use l
   WHERE t.landuse_id = l.id;
-ALTER VIEW IF EXISTS land_use_geo OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS land_use_geo OWNER TO backoffice;
 
 CREATE OR REPLACE VIEW climate_weather_geo AS
   SELECT
     c.*, t.id as point_id, t.point_type, t.project, t.date, t.survey_m_id, t.geom
   FROM point_general_geo t, climate_weather c
   WHERE t.climateandweather_id = c.id;
-ALTER VIEW IF EXISTS climate_weather_geo OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS climate_weather_geo OWNER TO backoffice;
 
 CREATE OR REPLACE VIEW landform_topography_geo AS
   SELECT
     c.*, t.id as point_id, t.point_type, t.project, t.date, t.survey_m_id, t.geom
   FROM point_general_geo t, landform_topography c
   WHERE t.landformtopography_id = c.id;
-ALTER VIEW IF EXISTS landform_topography_geo OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS landform_topography_geo OWNER TO backoffice;
 
 --- Laboratory data ---
 CREATE OR REPLACE VIEW labdata_layer AS
@@ -85,7 +85,7 @@ CREATE OR REPLACE VIEW labdata_layer AS
       st_setsrid(st_makepoint(t.lon_wgs84::double precision, t.lat_wgs84::double precision), 4326) AS geom
    FROM point_general t, point_layer pl, lab_data l
   WHERE l.l_number is not null AND t.id = pl.point_id AND pl.labdata_id = l.id;
-ALTER VIEW IF EXISTS labdata_layer OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS labdata_layer OWNER TO backoffice;
 
 CREATE OR REPLACE VIEW labdata_no_layer AS
     SELECT
@@ -107,27 +107,27 @@ CREATE OR REPLACE VIEW labdata_no_layer AS
       st_setsrid(st_makepoint(t.lon_wgs84::double precision, t.lat_wgs84::double precision), 4326) AS geom
    FROM point_general t, lab_data l
   WHERE l.l_number is null AND l.upper is not null AND t.id = l.point_id;
-ALTER VIEW IF EXISTS labdata_no_layer OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS labdata_no_layer OWNER TO backoffice;
 
 CREATE OR REPLACE VIEW labdata_geo AS
    SELECT * from labdata_layer
    UNION 
    SELECT * from labdata_no_layer;
-ALTER VIEW IF EXISTS labdata_geo OWNER TO backoffice_user; 
+ALTER VIEW IF EXISTS labdata_geo OWNER TO backoffice; 
 
 --- Layer descriptions ---
 CREATE OR REPLACE VIEW point_layer_geo AS
     SELECT t.point_type, t.project, t.date, t.survey_m_id, l.*, t.geom
     FROM point_general_geo t, point_layer l
     WHERE t.id = l.point_id;
-ALTER VIEW IF EXISTS point_layer_geo OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS point_layer_geo OWNER TO backoffice;
  
 CREATE OR REPLACE VIEW layer_remants_geo AS
     SELECT t.id as point_id, t.point_type, t.project, t.date, t.survey_m_id,
       l.upper, l.lower, l.id as layer_id, lr.*, t.geom
     FROM point_general_geo t, point_layer l, layer_remnants lr
     WHERE t.id = l.point_id and l.layerremnants_id = lr.id;
-ALTER VIEW IF EXISTS layer_remants_geo OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS layer_remants_geo OWNER TO backoffice;
 
 CREATE OR REPLACE VIEW layer_coarse_fragments_geo AS
     SELECT 
@@ -135,7 +135,7 @@ CREATE OR REPLACE VIEW layer_coarse_fragments_geo AS
       l.upper, l.lower, l.id as layer_id, lr.*, t.geom
     FROM point_general_geo t, point_layer l, layer_coarse_fragments lr
     WHERE t.id = l.point_id and l.layercoarsefragments_id = lr.id;
-ALTER VIEW IF EXISTS layer_coarse_fragments_geo OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS layer_coarse_fragments_geo OWNER TO backoffice;
 
 CREATE OR REPLACE VIEW layer_artefacts_geo AS
     SELECT 
@@ -143,7 +143,7 @@ CREATE OR REPLACE VIEW layer_artefacts_geo AS
       l.upper, l.lower, l.id as layer_id, lr.*, t.geom
     FROM point_general_geo t, point_layer l, layer_artefacts lr
     WHERE t.id = l.point_id and l.layerartefacts_id = lr.id;
-ALTER VIEW IF EXISTS layer_artefacts_geo OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS layer_artefacts_geo OWNER TO backoffice;
 
 CREATE OR REPLACE VIEW layer_cracks_geo AS
     SELECT 
@@ -151,7 +151,7 @@ CREATE OR REPLACE VIEW layer_cracks_geo AS
       l.upper, l.lower, l.id as layer_id,lr.*, t.geom
     FROM point_general_geo t, point_layer l, layer_cracks lr
     WHERE t.id = l.point_id and l.layercracks_id = lr.id;
-ALTER VIEW IF EXISTS layer_cracks_geo OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS layer_cracks_geo OWNER TO backoffice;
   
 CREATE OR REPLACE VIEW layer_matrix_colours_geo AS
     SELECT 
@@ -159,7 +159,7 @@ CREATE OR REPLACE VIEW layer_matrix_colours_geo AS
       l.upper, l.lower, l.id as layer_id, lr.*, t.geom
     FROM point_general_geo t, point_layer l, layer_matrix_colours lr
     WHERE t.id = l.point_id and l.layermatrixcolours_id = lr.id;
-ALTER VIEW IF EXISTS layer_matrix_colours_geo OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS layer_matrix_colours_geo OWNER TO backoffice;
 
 CREATE OR REPLACE VIEW layer_lithogenic_variegates_geo AS
     SELECT 
@@ -167,7 +167,7 @@ CREATE OR REPLACE VIEW layer_lithogenic_variegates_geo AS
       l.upper, l.lower, l.id as layer_id, lr.*, t.geom
     FROM point_general_geo t, point_layer l, layer_lithogenic_variegates lr
     WHERE t.id = l.point_id and l.layerlithogenicvariegates_id = lr.id;
-ALTER VIEW IF EXISTS layer_lithogenic_variegates_geo OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS layer_lithogenic_variegates_geo OWNER TO backoffice;
 
 CREATE OR REPLACE VIEW layer_redoximorphic_geo AS
     SELECT 
@@ -175,7 +175,7 @@ CREATE OR REPLACE VIEW layer_redoximorphic_geo AS
       l.upper, l.lower, l.id as layer_id, lr.*, t.geom
     FROM point_general_geo t, point_layer l, layer_redoximorphic lr
     WHERE t.id = l.point_id and l.layerredoximorphic_id = lr.id;
-ALTER VIEW IF EXISTS layer_redoximorphic_geo OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS layer_redoximorphic_geo OWNER TO backoffice;
 
 CREATE OR REPLACE VIEW layer_coatings_bridges_geo AS
     SELECT 
@@ -183,7 +183,7 @@ CREATE OR REPLACE VIEW layer_coatings_bridges_geo AS
       l.upper, l.lower, l.id as layer_id, lr.*, t.geom
     FROM point_general_geo t, point_layer l, layer_coatings_bridges lr
     WHERE t.id = l.point_id and l.layercoatingsbridges_id = lr.id;
-ALTER VIEW IF EXISTS layer_coatings_bridges_geo OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS layer_coatings_bridges_geo OWNER TO backoffice;
 
 CREATE OR REPLACE VIEW layer_carbonates_geo AS
     SELECT 
@@ -191,7 +191,7 @@ CREATE OR REPLACE VIEW layer_carbonates_geo AS
       l.upper, l.lower, l.id as layer_id, lr.*, t.geom
     FROM point_general_geo t, point_layer l, layer_carbonates lr
     WHERE t.id = l.point_id and l.layercarbonates_id = lr.id;
-ALTER VIEW IF EXISTS layer_carbonates_geo OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS layer_carbonates_geo OWNER TO backoffice;
 
 CREATE OR REPLACE VIEW layer_gypsum_geo AS
     SELECT 
@@ -199,7 +199,7 @@ CREATE OR REPLACE VIEW layer_gypsum_geo AS
       l.upper, l.lower, l.id as layer_id, lr.*, t.geom
     FROM point_general_geo t, point_layer l, layer_gypsum lr
     WHERE t.id = l.point_id and l.layergypsum_id = lr.id;
-ALTER VIEW IF EXISTS layer_gypsum_geo OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS layer_gypsum_geo OWNER TO backoffice;
 
 CREATE OR REPLACE VIEW layer_secondary_silica_geo AS
     SELECT 
@@ -207,7 +207,7 @@ CREATE OR REPLACE VIEW layer_secondary_silica_geo AS
       l.upper, l.lower, l.id as layer_id, lr.*, t.geom
     FROM point_general_geo t, point_layer l, layer_secondary_silica lr
     WHERE t.id = l.point_id and l.layersecondarysilica_id = lr.id;
-ALTER VIEW IF EXISTS layer_secondary_silica_geo OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS layer_secondary_silica_geo OWNER TO backoffice;
 
 CREATE OR REPLACE VIEW layer_consistence_geo AS
     SELECT 
@@ -215,7 +215,7 @@ CREATE OR REPLACE VIEW layer_consistence_geo AS
       l.upper, l.lower, l.id as layer_id, lr.*, t.geom
     FROM point_general_geo t, point_layer l, layer_consistence lr
     WHERE t.id = l.point_id and l.layerconsistence_id = lr.id;
-ALTER VIEW IF EXISTS layer_consistence_geo OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS layer_consistence_geo OWNER TO backoffice;
 
 CREATE OR REPLACE VIEW layer_permafrost_geo AS
     SELECT 
@@ -223,7 +223,7 @@ CREATE OR REPLACE VIEW layer_permafrost_geo AS
       l.upper, l.lower, l.id as layer_id, lr.*, t.geom
     FROM point_general_geo t, point_layer l, layer_permafrost lr
     WHERE t.id = l.point_id and l.layerpermafrost_id = lr.id;
-ALTER VIEW IF EXISTS layer_permafrost_geo OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS layer_permafrost_geo OWNER TO backoffice;
   
 CREATE OR REPLACE VIEW layer_organic_carbon_geo AS
     SELECT 
@@ -231,7 +231,7 @@ CREATE OR REPLACE VIEW layer_organic_carbon_geo AS
       l.upper, l.lower, l.id as layer_id, lr.*, t.geom
     FROM point_general_geo t, point_layer l, layer_organic_carbon lr
     WHERE t.id = l.point_id and l.layerorganiccarbon_id = lr.id;
-ALTER VIEW IF EXISTS layer_organic_carbon_geo OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS layer_organic_carbon_geo OWNER TO backoffice;
 
 CREATE OR REPLACE VIEW layer_roots_geo AS
     SELECT 
@@ -239,7 +239,7 @@ CREATE OR REPLACE VIEW layer_roots_geo AS
       l.upper, l.lower, l.id as layer_id, lr.*, t.geom
     FROM point_general_geo t, point_layer l, layer_roots lr
     WHERE t.id = l.point_id and l.layerroots_id = lr.id;
-ALTER VIEW IF EXISTS layer_roots_geo OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS layer_roots_geo OWNER TO backoffice;
   
 CREATE OR REPLACE VIEW layer_animal_activity_geo AS
     SELECT 
@@ -247,7 +247,7 @@ CREATE OR REPLACE VIEW layer_animal_activity_geo AS
       l.upper, l.lower, l.id as layer_id, lr.*, t.geom
     FROM point_general_geo t, point_layer l, layer_animal_activity lr
     WHERE t.id = l.point_id and l.layeranimalactivity_id = lr.id;
-ALTER VIEW IF EXISTS layer_animal_activity_geo OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS layer_animal_activity_geo OWNER TO backoffice;
 
 CREATE OR REPLACE VIEW layer_human_alterations_geo AS
     SELECT 
@@ -255,7 +255,7 @@ CREATE OR REPLACE VIEW layer_human_alterations_geo AS
       l.upper, l.lower, l.id as layer_id, lr.*, t.geom
     FROM point_general_geo t, point_layer l, layer_human_alterations lr
     WHERE t.id = l.point_id and l.layerhumanalterations_id = lr.id;
-ALTER VIEW IF EXISTS layer_human_alterations_geo OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS layer_human_alterations_geo OWNER TO backoffice;
 
 CREATE OR REPLACE VIEW layer_degree_decomposition_geo AS
     SELECT 
@@ -263,7 +263,7 @@ CREATE OR REPLACE VIEW layer_degree_decomposition_geo AS
       l.upper, l.lower, l.id as layer_id, lr.*, t.geom
     FROM point_general_geo t, point_layer l, layer_degree_decomposition lr
     WHERE t.id = l.point_id and l.layerdegreedecomposition_id = lr.id;
-ALTER VIEW IF EXISTS layer_degree_decomposition_geo OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS layer_degree_decomposition_geo OWNER TO backoffice;
 
 CREATE OR REPLACE VIEW layer_nonmatrix_pore_geo AS
     SELECT 
@@ -271,7 +271,7 @@ CREATE OR REPLACE VIEW layer_nonmatrix_pore_geo AS
       l.upper, l.lower, l.id as layer_id, lr.*, t.geom
     FROM point_general_geo t, point_layer l, layer_nonmatrix_pore lr
     WHERE t.id = l.point_id and l.layernonmatrixpore_id = lr.id;
-ALTER VIEW IF EXISTS layer_nonmatrix_pore_geo OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS layer_nonmatrix_pore_geo OWNER TO backoffice;
 
 CREATE OR REPLACE VIEW layer_structure_geo AS
     SELECT 
@@ -279,14 +279,14 @@ CREATE OR REPLACE VIEW layer_structure_geo AS
       l.upper, l.lower, lr.*, t.geom
     FROM point_general_geo t, point_layer l, layer_structure lr
     WHERE t.id = l.point_id and l.id = lr.layer_id;
-ALTER VIEW IF EXISTS layer_structure_geo OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS layer_structure_geo OWNER TO backoffice;
 
 CREATE OR REPLACE VIEW extra_labdata_geo AS
   SELECT e.id, e.point_id, t.point_type, t.project, t.date, t.survey_m_id, 
     e.upper, e.lower, e.measure_id as measure, e.method_id as method, e.unit_id as unit, e.value, t.geom
   FROM labdata_extra_measure e, point_general_geo t
   WHERE t.id = e.point_id;
-ALTER VIEW IF EXISTS labdata_extra_geo OWNER TO backoffice_user; 
+ALTER VIEW IF EXISTS labdata_extra_geo OWNER TO backoffice; 
 
 CREATE OR REPLACE VIEW active_carbonate AS
   SELECT 
@@ -297,7 +297,7 @@ CREATE OR REPLACE VIEW active_carbonate AS
     l.geom
     FROM labdata_geo l
     WHERE l.active_caco3 IS NOT NULL;
-ALTER VIEW IF EXISTS active_carbonate OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS active_carbonate OWNER TO backoffice;
 
 CREATE OR REPLACE VIEW photo_geo AS
     SELECT 
@@ -305,7 +305,7 @@ CREATE OR REPLACE VIEW photo_geo AS
       l.point_type, l.project, l.date, l.survey_m_id, l.geom
     FROM point_general_geo l, photos p
     WHERE l.id = p.point_id; 
-ALTER VIEW IF EXISTS photo_geo OWNER TO backoffice_user; 
+ALTER VIEW IF EXISTS photo_geo OWNER TO backoffice; 
 
 CREATE OR REPLACE VIEW texture AS
   SELECT 
@@ -313,7 +313,7 @@ CREATE OR REPLACE VIEW texture AS
     l.texture_id as texture, NULL as method, NULL AS unit, l.geom
   FROM labdata_geo l
   WHERE l.texture_id IS NOT NULL;
-ALTER VIEW IF EXISTS texture OWNER TO backoffice_user;
+ALTER VIEW IF EXISTS texture OWNER TO backoffice;
 
 """
 

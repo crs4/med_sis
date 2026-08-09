@@ -103,7 +103,7 @@ def update(ctx):
         "gs_admin_pwd": os.environ.get("GEOSERVER_ADMIN_PASSWORD", "geoserver"),
         "backoffice_db": os.environ.get("BACKOFFICE_DATABASE", "backoffice"),
         "backoffice_db_passwd": os.environ.get("BACKOFFICE_DATABASE_PASSWORD", "backoffice_pwd"),
-        "backoffice_db_user": os.environ.get("BACKOFFICE_DATABASE_USER", "backoffice_user"),
+        "backoffice_db_user": os.environ.get("BACKOFFICE_DATABASE_USER", "backoffice"),
         "override_fn": override_env,
     }
     

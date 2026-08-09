@@ -1,2 +1,2 @@
 ARG BASE_IMAGE_VERSION
-FROM geonode/geoserver:${BASE_IMAGE_VERSION}
+FROM geonode/geoserver:${BASE_IMAGE_VERSION:-2.28.x-latest}
