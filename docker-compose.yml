@@ -101,7 +101,7 @@ services:
       - nginx-certificates:/geonode-certificates
     restart: unless-stopped
     depends_on:
-      geonode:
+      nginx:
         condition: service_healthy
     networks:
       - soils4med
