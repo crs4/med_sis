@@ -1,16 +1,22 @@
 ARG BASE_IMAGE_VERSION
-#### nginx vulnerability -> version 1.31.3 not pesent in geonode
-FROM geonode/nginx:${BASE_IMAGE_VERSION}
-#FROM nginx:${BASE_IMAGE_VERSION}
+#FROM geonode/nginx:1.31.2-latest
+#### nginx vulnerability -> needed version 1.31.3 not present in geonode
+FROM nginx:${BASE_IMAGE_VERSION}
 
-#RUN apt-get update && apt-get install procps -y
+RUN apk update && apk add --no-cache procps inotify-tools openssl
 
 # copy local src inside container
-COPY ./geonode.conf.envsubst /etc/nginx/sites-enabled/
-#COPY ./nginx.https.available.conf.envsubst /etc/nginx/
-#COPY ./nginx.conf.envsubst /etc/nginx/
+ADD ./geonode.conf.envsubst /etc/nginx/sites-enabled/
+ADD ./nginx.conf.envsubst /etc/nginx/nginx.conf
+ADD ./nginx.conf.envsubst /etc/nginx/
+ADD ./nginx.https.available.conf.envsubst /etc/nginx/
 
-#COPY ./docker-entrypoint.sh /
-RUN ls -la  /etc/nginx/
+ADD ./docker-autoreload.sh ./docker-entrypoint.sh /
+RUN chmod +x /docker-autoreload.sh /docker-entrypoint.sh
+# RUN ls -la /
+RUN export PATH=$PATH:/usr/sbin
 
+ENTRYPOINT ["/docker-entrypoint.sh"]
+
+CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
 
