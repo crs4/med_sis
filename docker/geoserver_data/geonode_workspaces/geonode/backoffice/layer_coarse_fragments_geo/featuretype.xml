@@ -11,43 +11,6 @@
     <string>features</string>
     <string>layer_coarse_fragments_geo</string>
   </keywords>
-  <metadataLinks>
-    <metadataLink>
-      <type>other</type>
-      <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=3aa88cfb-a9ec-4cbf-a003-aa48165e938a&amp;outputschema=http%3A%2F%2Fwww.w3.org%2F2005%2FAtom&amp;elementsetname=full</content>
-    </metadataLink>
-    <metadataLink>
-      <type>other</type>
-      <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=3aa88cfb-a9ec-4cbf-a003-aa48165e938a&amp;outputschema=http%3A%2F%2Fgcmd.gsfc.nasa.gov%2FAboutus%2Fxml%2Fdif%2F&amp;elementsetname=full</content>
-    </metadataLink>
-    <metadataLink>
-      <type>other</type>
-      <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=3aa88cfb-a9ec-4cbf-a003-aa48165e938a&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2F2.0.2&amp;elementsetname=full</content>
-    </metadataLink>
-    <metadataLink>
-      <type>other</type>
-      <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=3aa88cfb-a9ec-4cbf-a003-aa48165e938a&amp;outputschema=urn%3Aoasis%3Anames%3Atc%3Aebxml-regrep%3Axsd%3Arim%3A3.0&amp;elementsetname=full</content>
-    </metadataLink>
-    <metadataLink>
-      <type>text/xml</type>
-      <metadataType>FGDC</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=3aa88cfb-a9ec-4cbf-a003-aa48165e938a&amp;outputschema=http%3A%2F%2Fwww.opengis.net%2Fcat%2Fcsw%2Fcsdgm&amp;elementsetname=full</content>
-    </metadataLink>
-    <metadataLink>
-      <type>other</type>
-      <metadataType>other</metadataType>
-      <content>http://localhost/catalogue/csw?request=GetRecordById&amp;service=CSW&amp;version=2.0.2&amp;id=3aa88cfb-a9ec-4cbf-a003-aa48165e938a&amp;outputschema=http%3A%2F%2Fwww.isotc211.org%2F2005%2Fgmd&amp;elementsetname=full</content>
-    </metadataLink>
-    <metadataLink>
-      <type>other</type>
-      <metadataType>other</metadataType>
-      <content>http://localhost/showmetadata/xsl/37</content>
-    </metadataLink>
-  </metadataLinks>
   <srs>EPSG:4326</srs>
   <nativeBoundingBox>
     <minx>-10.0</minx>
@@ -65,7 +28,7 @@
   <enabled>true</enabled>
   <advertised>true</advertised>
   <store class="dataStore">
-    <id>DataStoreInfoImpl-92bd292:1994dc6abb7:-7fed</id>
+    <id>DataStoreInfoImpl--21da8cf8:19fed74b522:-8000</id>
   </store>
   <serviceConfiguration>false</serviceConfiguration>
   <simpleConversionEnabled>false</simpleConversionEnabled>

@@ -1,19 +1,16 @@
 <layer>
-  <name>active_calcium_carbonate</name>
-  <id>LayerInfoImpl--bb68920:19f114781fa:-7ffe</id>
+  <name>active_carbonate</name>
+  <id>LayerInfoImpl--21da8cf8:19fed74b522:-7ffe</id>
   <type>VECTOR</type>
   <defaultStyle>
-    <id>StyleInfoImpl--bb68920:19f114781fa:-7ffa</id>
+    <id>StyleInfoImpl--cad373e:19ff08295c5:-7fff</id>
   </defaultStyle>
   <resource class="featureType">
-    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7fff</id>
+    <id>FeatureTypeInfoImpl--21da8cf8:19fed74b522:-7fff</id>
   </resource>
-  <queryable>true</queryable>
-  <opaque>false</opaque>
   <attribution>
     <logoWidth>0</logoWidth>
     <logoHeight>0</logoHeight>
   </attribution>
-  <dateCreated>2026-06-29 02:48:54.543 UTC</dateCreated>
-  <dateModified>2026-06-29 02:50:06.447 UTC</dateModified>
-</layer>
+  <dateCreated>2026-08-10 20:55:52.437 UTC</dateCreated>
+</layer> 

@@ -6,14 +6,10 @@
     <id>NamespaceInfoImpl-78ff667e:12476299803:-7ffe</id>
   </namespace>
   <title>cec_clay_ratio</title>
-  <abstract>No abstract provided</abstract>
   <keywords>
     <string>features</string>
     <string>cec_clay_ratio</string>
   </keywords>
-  <metadataLinks>
-    
-  </metadataLinks>
   <srs>EPSG:4326</srs>
   <nativeBoundingBox>
     <minx>-10.0</minx>
@@ -31,7 +27,7 @@
   <enabled>true</enabled>
   <advertised>true</advertised>
   <store class="dataStore">
-    <id>DataStoreInfoImpl-92bd292:1994dc6abb7:-7fed</id>
+    <id>DataStoreInfoImpl--21da8cf8:19fed74b522:-8000</id>
   </store>
   <serviceConfiguration>false</serviceConfiguration>
   <simpleConversionEnabled>false</simpleConversionEnabled>

@@ -139,6 +139,7 @@ services:
         condition: service_healthy
     networks:
       - soils4med
+  
   data-dir-conf:
     image: ${COMPOSE_PROJECT_NAME}/geoserver_data:${GEOSERVER_BASE_IMAGE_VERSION}
     build:
@@ -212,9 +213,11 @@ services:
     ports:
       - "3000:3000"
     networks:
-      - soils4med    
-# LUP4LDN netwok
-
+      - soils4med 
+    depends_on:
+      geoserver:
+        condition: service_healthy  
+        
 networks:
   soils4med:
     driver: bridge
