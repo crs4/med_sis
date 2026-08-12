@@ -1,15 +1,15 @@
 <featureType>
   <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7ff2</id>
-  <name>base_saturation_exchangeable_activity</name>
-  <nativeName>base_saturation_exchangeable_activity</nativeName>
+  <name>base_saturation_exchangeable_acidity</name>
+  <nativeName>base_saturation_exchangeable_acidity</nativeName>
   <namespace>
     <id>NamespaceInfoImpl-78ff667e:12476299803:-7ffe</id>
   </namespace>
-  <title>base_saturation_exchangeable_activity</title>
+  <title>base_saturation_exchangeable_acidity</title>
   <abstract>No abstract provided</abstract>
   <keywords>
     <string>features</string>
-    <string>base_saturation_exchangeable_activity</string>
+    <string>base_saturation_exchangeable_acidity</string>
   </keywords>
   <srs>EPSG:4326</srs>
   <nativeBoundingBox>
