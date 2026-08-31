@@ -43,8 +43,7 @@ RUN pip install --no-cache-dir -e .
 RUN pip install --upgrade Django==5.2.17
 
 RUN pip install --upgrade djangorestframework==3.17.2
-
-RUN ls -la fixtures  
+  
 
 EXPOSE 8000
 

@@ -11,10 +11,10 @@ ADD ./nginx.conf.envsubst /etc/nginx/nginx.conf
 ADD ./nginx.conf.envsubst /etc/nginx/
 ADD ./nginx.https.available.conf.envsubst /etc/nginx/
 
- ADD ./docker-autoreload.sh ./docker-entrypoint.sh /
- RUN chmod +x /docker-autoreload.sh /docker-entrypoint.sh
+ADD ./docker-autoreload.sh ./docker-entrypoint.sh /
+RUN chmod +x /docker-autoreload.sh /docker-entrypoint.sh
 # RUN ls -la /
-# RUN export PATH=$PATH:/usr/sbin
+RUN export PATH=$PATH:/usr/sbin
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 

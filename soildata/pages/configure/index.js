@@ -192,6 +192,7 @@ export default function Page()  {
 
   return (
   <div className="layout-dashboard">
+    <Toast ref={toast} />
     <div className="flex flex-row-reverse w-full p-2">
       <Button 
         icon="pi pi-wrench"
@@ -208,8 +209,6 @@ export default function Page()  {
         label={t('REFRESH_LIST')}
       />
     </div>
-    <Toast ref={toast} />
-    
     {( isWorking ) && (
       <Message severity="warn" text="The browser is working; do not leave the page." />
     )}

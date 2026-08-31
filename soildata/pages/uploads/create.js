@@ -79,7 +79,7 @@ export default function Page( )  {
             values = result[key].split(':');
             if ( values.length === 2 && values[0] && values[1] ) {
               v = Math.floor(values[0]);
-              panel += '<span class="font-bold">' + t('FILLED_FIELD') + ': </span>';
+              panel += '<span class="font-bold">' + t('Filled') + ': </span>';
               panel += '<span class="font-bold text-green-500"> ' + v + '%</span>';
               panel += '<span class="font-bold">' + t('ERRORS') +': </span>';
               panel += '<span class="font-bold text-orange-600"> ' + values[1] + '</span>';
