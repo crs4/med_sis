@@ -1,6 +1,6 @@
 "use client"
 
-import { point, featureCollection, feature, toMercator, bbox, bboxPolygon, clone, toWgs84 } from '@turf/turf';
+import { point, featureCollection, toMercator, bbox, bboxPolygon, clone } from '@turf/turf';
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
@@ -9,20 +9,18 @@ import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
 import { Checkbox } from 'primereact/checkbox';
 import { InputNumber } from 'primereact/inputnumber';
-import { Panel } from 'primereact/panel';
 import { Message } from 'primereact/message';
 import { Toast } from 'primereact/toast';
 import { Dropdown } from 'primereact/dropdown';
 import { Dialog } from 'primereact/dialog';
-import { Chart } from 'primereact/chart';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 
-import { useUser } from '../context/user';
 import VariogramGraph from './Variogram';
 
 import ProfileService from '../service/profiles';
-import TaxonomyService from '../service/taxonomies';
+import UserService from '../service/user';
+
 import dynamic from 'next/dynamic'
 
 const PointsFilterMap = dynamic(() => import("./map/PointsFilterMap"), { ssr:false })
@@ -34,7 +32,6 @@ export default function ValidateDataset( { isIndicators, dataset, setDataset }) 
     { name: 'Square', formula: 'a + b * sqrt(x)'}, 
     { name: 'Logarithmic', formula: 'a + b * ln(1 + x)'}
   ]
-  const user = useUser();
   const toast = useRef(null);
   const t = useTranslations('default');
   const router = useRouter();
@@ -455,13 +452,20 @@ export default function ValidateDataset( { isIndicators, dataset, setDataset }) 
     generateDescriptor()
   }
 
+  const fetchData = async  () => {
+    const _user = await UserService.getProfile(document.cookie);
+    if ( !_user || ( _user.forbidden !== null && _user.forbidden) )
+      router.push(`/401`);
+    else {
+      if ( dataset ) 
+        initializeData()
+    }      
+  }
   //OK
   useEffect(() => {
-    if ( !user.userData || ( user.userData.forbidden !== null && user.userData.forbidden ))
-      router.push(`/401`);
-    if ( dataset ) 
-      initializeData()   
-  }, [user]); // eslint-disable-line
+    fetchData();   
+  }, []); // eslint-disable-line
+
 
   return (
     <div className="layout-dashboard">

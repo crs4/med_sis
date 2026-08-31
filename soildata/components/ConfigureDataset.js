@@ -1,30 +1,24 @@
 "use client"
 
-import { point, union, area, clone, bbox, bboxPolygon, feature, featureCollection, booleanIntersects, booleanPointInPolygon } from '@turf/turf';
+import {  union, area, bbox,  feature, featureCollection, booleanPointInPolygon } from '@turf/turf';
 import React, { useState, useEffect, useRef } from 'react';
 
 import { Button } from 'primereact/button';
-import { Paginator } from 'primereact/paginator';
 import { Calendar } from 'primereact/calendar';
-import { Checkbox } from 'primereact/checkbox';
 import { RadioButton } from 'primereact/radiobutton';
 import { Steps } from 'primereact/steps';
 import { FileUpload } from 'primereact/fileupload';
 import { Fieldset } from 'primereact/fieldset';
 import { InputText } from 'primereact/inputtext';
-import { ListBox } from 'primereact/listbox';
-import { Panel } from 'primereact/panel';
 import { Message } from 'primereact/message';
 import { Toast } from 'primereact/toast';
 import { Dropdown } from 'primereact/dropdown';
-import { Dialog } from 'primereact/dialog';
-import { InputTextarea } from "primereact/inputtextarea";
 
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
-import { useUser } from '../context/user';
 import ProfileService from '../service/profiles';
 import TaxonomyService from '../service/taxonomies';
+import UserService from '../service/user';
 import AoiSoilIndicators from '../data/basedatasets';
 import dynamic from "next/dynamic";
 import Loading from './Loading';
@@ -867,7 +861,7 @@ export default function ConfigureDataset( { isIndicators, dataset, setDataset } 
     if ( workDataset && workDataset.points )
       initializeData()
     fetchData()
-  }, [user, dataset]); // eslint-disable-line
+  }, [dataset]); // eslint-disable-line
   
   const aoiSourceTypes = [
     { key: 'custom', name: 'Custom Polygon' },

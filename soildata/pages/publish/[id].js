@@ -9,8 +9,6 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
-import { clone, featureCollection } from '@turf/turf';
-
 import { Card } from 'primereact/card';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
@@ -18,11 +16,11 @@ import { Timeline } from 'primereact/timeline';
 /*
 * This page allows different actions on soilindicators base datasets 
 * to publish new dataset on MED-SIS for End User
-* 1) Select source dataset.
-* 2) Filter source dataset to create new dataset.
+* 1) Select source base dataset.
+* 2) Filter source base dataset to create new dataset.
 * 3) optionally execute a Kriging Interpolation on the new dataset 
 * 4) Publish the new datasets on catalogue. 
-* Finally using Catalogue functionalities you can 
+* 5) Finally using Catalogue functionalities you can 
 * - Edit new dataset metadata 
 * - Manage permissions for the new dataset to permit access to the End User 
 */ 

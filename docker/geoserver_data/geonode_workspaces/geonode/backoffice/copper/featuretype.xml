@@ -1,6 +1,6 @@
 <featureType>
   <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7fbd</id>
-  <name>copper</name>
+  <name>copper</name> 
   <nativeName>copper</nativeName>
   <namespace>
     <id>NamespaceInfoImpl-78ff667e:12476299803:-7ffe</id>
@@ -11,7 +11,6 @@
     <string>features</string>
     <string>copper</string>
   </keywords>
-  </metadataLinks>
   <srs>EPSG:4326</srs>
   <nativeBoundingBox>
     <minx>-10.0</minx>

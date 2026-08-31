@@ -191,7 +191,7 @@ CREATE OR REPLACE VIEW copper_relative_content AS
     'percentage' as unit, a.geom  
   FROM public.labdata_geo a
   WHERE a.cu is not null and a.zn is not null and a.pb is not null and (a.cu + a.zn + a.pb) > 0;
-  ALTER VIEW IF EXISTS copper_relative_content OWNER TO backoffice;
+ALTER VIEW IF EXISTS copper_relative_content OWNER TO backoffice;
 
 --17) Crust Cover (percentage)
 CREATE OR REPLACE VIEW crust_cover AS
