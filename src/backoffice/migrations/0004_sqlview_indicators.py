@@ -1173,7 +1173,7 @@ CREATE OR REPLACE VIEW hydro_ptf_input_data_geo AS
         sand + clay < 100 and sand is not null and clay is not null and org_car is not null;
 ALTER VIEW IF EXISTS hydro_ptf_input_data_geo OWNER TO backoffice;
 
---74) hydro PTF input data 
+--74) soc_clay_ratio 
 CREATE OR REPLACE VIEW soc_clay_ratio AS
   SELECT
     a.id as labdata_id, a.point_id, a.point_type,

@@ -1,177 +1,216 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <NamedLayer>
-    <Name>field_capacity</Name>
+    <Name>Volumetric water content at field capacity (%)</Name>
     <UserStyle>
+      <Name>Volumetric water content at field capacity (%)</Name>
       <Title>Volumetric water content at field capacity (%)</Title>
       <FeatureTypeStyle>
-		<Rule>
+        
+	<Rule>
           <Name>Low (depends of the soil texture for irrigated cropland)</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-	       <Or>
+          
+	     <Or>
+    
+    		<!-- Primo blocco AND -->
     		<And>  
 		     <ogc:PropertyIsEqualTo>
                 	<ogc:PropertyName>texture</ogc:PropertyName>
-                	<Literal>TEXTURE_CLASSES:S</Literal>
-              	     </ogc:PropertyIsEqualTo>	
+                	<Literal>S</Literal>
+              	     </ogc:PropertyIsEqualTo>
+              		
 		     <PropertyIsGreaterThanOrEqualTo>
-                	<PropertyName>value</PropertyName>
-                	<Literal>5</Literal>
-              	     </PropertyIsGreaterThanOrEqualTo>
-             	     <PropertyIsLessThan>
-                	<PropertyName>value</PropertyName>
-                	<Literal>10</Literal>
-             	     </PropertyIsLessThan>
+                			<PropertyName>value</PropertyName>
+                			<Literal>0</Literal>
+              			</PropertyIsGreaterThanOrEqualTo>
+             		      <PropertyIsLessThan>
+                		        <PropertyName>value</PropertyName>
+                			<Literal>10</Literal>
+             		      </PropertyIsLessThan>
 		</And>
+
+
+	<!-- Secondo blocco AND -->
     		<And>  
 		     
 			<ogc:PropertyIsEqualTo>
                 	<ogc:PropertyName>texture</ogc:PropertyName>
-                	<Literal>TEXTURE_CLASSES:LS</Literal>
+                	<Literal>LS</Literal>
               		</ogc:PropertyIsEqualTo>
               		
 		     <PropertyIsGreaterThanOrEqualTo>
                 			<PropertyName>value</PropertyName>
-                			<Literal>5</Literal>
+                			<Literal>0</Literal>
               			</PropertyIsGreaterThanOrEqualTo>
              		      <PropertyIsLessThan>
                 		        <PropertyName>value</PropertyName>
                 			<Literal>16</Literal>
              		      </PropertyIsLessThan>
 		</And>
+
+
+
+	<!-- Terzo blocco AND -->
     		<And>  
 		     
 			<ogc:PropertyIsEqualTo>
                 	<ogc:PropertyName>texture</ogc:PropertyName>
-                	<Literal>TEXTURE_CLASSES:SL</Literal>
+                	<Literal>SL</Literal>
               		</ogc:PropertyIsEqualTo>
               		
 		     <PropertyIsGreaterThanOrEqualTo>
                 			<PropertyName>value</PropertyName>
-                			<Literal>5</Literal>
+                			<Literal>0</Literal>
               			</PropertyIsGreaterThanOrEqualTo>
              		      <PropertyIsLessThan>
                 		        <PropertyName>value</PropertyName>
                 			<Literal>21</Literal>
              		      </PropertyIsLessThan>
 		</And>
+
+
+
+	<!-- Quarto blocco AND -->
     		<And>  
 		    <ogc:PropertyIsEqualTo>
                 	<ogc:PropertyName>texture</ogc:PropertyName>
-                	<Literal>TEXTURE_CLASSES:L</Literal>
+                	<Literal>L</Literal>
               		</ogc:PropertyIsEqualTo>
               	    <PropertyIsGreaterThanOrEqualTo>
                 			<PropertyName>value</PropertyName>
-                			<Literal>5</Literal>
+                			<Literal>0</Literal>
               		    </PropertyIsGreaterThanOrEqualTo>
              		    <PropertyIsLessThan>
                 		        <PropertyName>value</PropertyName>
                 			<Literal>27</Literal>
              		    </PropertyIsLessThan>
 		</And>
+
+
+	<!-- Quinto blocco AND -->
     		<And>  
 		     
 			<ogc:PropertyIsEqualTo>
                 	<ogc:PropertyName>texture</ogc:PropertyName>
-                	<Literal>TEXTURE_CLASSES:SiL</Literal>
+                	<Literal>SiL</Literal>
               		</ogc:PropertyIsEqualTo>
               		
 		     <PropertyIsGreaterThanOrEqualTo>
                 			<PropertyName>value</PropertyName>
-                			<Literal>5</Literal>
+                			<Literal>0</Literal>
               			</PropertyIsGreaterThanOrEqualTo>
              		      <PropertyIsLessThan>
                 		        <PropertyName>value</PropertyName>
                 			<Literal>30</Literal>
              		      </PropertyIsLessThan>
 		</And>
+
+
+	<!-- Sesto blocco AND -->
     		<And>  
 			<ogc:PropertyIsEqualTo>
                 	<ogc:PropertyName>texture</ogc:PropertyName>
-                	<Literal>TEXTURE_CLASSES:SCL</Literal>
+                	<Literal>SCL</Literal>
               		</ogc:PropertyIsEqualTo>
               		
 		     <PropertyIsGreaterThanOrEqualTo>
                 			<PropertyName>value</PropertyName>
-                			<Literal>5</Literal>
+                			<Literal>0</Literal>
               			</PropertyIsGreaterThanOrEqualTo>
              		      <PropertyIsLessThan>
                 		        <PropertyName>value</PropertyName>
                 			<Literal>36</Literal>
              		      </PropertyIsLessThan>
 		</And>
+
+	<!-- Settimo blocco AND -->
     		<And>  
 		    <ogc:PropertyIsEqualTo>
                 	<ogc:PropertyName>texture</ogc:PropertyName>
-                	<Literal>TEXTURE_CLASSES:SC</Literal>
+                	<Literal>SC</Literal>
               		</ogc:PropertyIsEqualTo>
               	    <PropertyIsGreaterThanOrEqualTo>
                 			<PropertyName>value</PropertyName>
-                			<Literal>5</Literal>
+                			<Literal>0</Literal>
               		    </PropertyIsGreaterThanOrEqualTo>
              		    <PropertyIsLessThan>
                 		        <PropertyName>value</PropertyName>
                 			<Literal>32</Literal>
              		    </PropertyIsLessThan>
 		</And>
+
+
+	<!-- Ottavo blocco AND -->
     		<And>  
 		    <ogc:PropertyIsEqualTo>
                 	<ogc:PropertyName>texture</ogc:PropertyName>
-                	<Literal>TEXTURE_CLASSES:CL</Literal>
+                	<Literal>CL</Literal>
               		</ogc:PropertyIsEqualTo>
               	    <PropertyIsGreaterThanOrEqualTo>
                 			<PropertyName>value</PropertyName>
-                			<Literal>5</Literal>
+                			<Literal>0</Literal>
               		    </PropertyIsGreaterThanOrEqualTo>
              		    <PropertyIsLessThan>
                 		        <PropertyName>value</PropertyName>
                 			<Literal>29</Literal>
              		    </PropertyIsLessThan>
 		</And>
+
+
+<!-- Nono blocco AND -->
     		<And>  
 		    <ogc:PropertyIsEqualTo>
                 	<ogc:PropertyName>texture</ogc:PropertyName>
-                	<Literal>TEXTURE_CLASSES:SiCL</Literal>
+                	<Literal>SiCL</Literal>
               		</ogc:PropertyIsEqualTo>
               	    <PropertyIsGreaterThanOrEqualTo>
                 			<PropertyName>value</PropertyName>
-                			<Literal>5</Literal>
+                			<Literal>0</Literal>
               		    </PropertyIsGreaterThanOrEqualTo>
              		    <PropertyIsLessThan>
                 		        <PropertyName>value</PropertyName>
                 			<Literal>28</Literal>
              		    </PropertyIsLessThan>
 		</And>
+
+
+<!-- Decimo blocco AND -->
     		<And>  
 		    <ogc:PropertyIsEqualTo>
                 	<ogc:PropertyName>texture</ogc:PropertyName>
-                	<Literal>TEXTURE_CLASSES:SiC</Literal>
+                	<Literal>SiC</Literal>
               		</ogc:PropertyIsEqualTo>
               	    <PropertyIsGreaterThanOrEqualTo>
                 			<PropertyName>value</PropertyName>
-                			<Literal>5</Literal>
+                			<Literal>0</Literal>
               		    </PropertyIsGreaterThanOrEqualTo>
              		    <PropertyIsLessThan>
                 		        <PropertyName>value</PropertyName>
                 			<Literal>40</Literal>
              		    </PropertyIsLessThan>
 		</And>
+
+
+<!-- Undicesimo blocco AND -->
     		<And>  
 		    <ogc:PropertyIsEqualTo>
                 	<ogc:PropertyName>texture</ogc:PropertyName>
-                	<Literal>TEXTURE_CLASSES:C</Literal>
+                	<Literal>C</Literal>
               		</ogc:PropertyIsEqualTo>
               	    <PropertyIsGreaterThanOrEqualTo>
                 			<PropertyName>value</PropertyName>
-                			<Literal>5</Literal>
+                			<Literal>0</Literal>
               		    </PropertyIsGreaterThanOrEqualTo>
              		    <PropertyIsLessThan>
                 		        <PropertyName>value</PropertyName>
                 			<Literal>40</Literal>
              		    </PropertyIsLessThan>
 		</And>
-	     </Or>
-          </Filter>
+
+	</Or>
+
+        </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>
@@ -190,126 +229,181 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
+
+	
 	<Rule>
           <Name>High (depends of the soil texture for irrigated cropland)</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
+          
 	     <Or>
+    
+    		<!-- Primo blocco AND_2 -->
     		<And>  
 		     <ogc:PropertyIsEqualTo>
-                	 <ogc:PropertyName>texture</ogc:PropertyName>
-                	 <Literal>TEXTURE_CLASSES:S</Literal>
+                	<ogc:PropertyName>texture</ogc:PropertyName>
+                	<Literal>S</Literal>
               	     </ogc:PropertyIsEqualTo>
+              		
 		     <PropertyIsGreaterThanOrEqualTo>
-                	 <PropertyName>value</PropertyName>
-                	 <Literal>10</Literal>
-                     </PropertyIsGreaterThanOrEqualTo>
+                			<PropertyName>value</PropertyName>
+                			<Literal>10</Literal>
+              			</PropertyIsGreaterThanOrEqualTo>
              		      
 		</And>
-   		<And> 
-		    <ogc:PropertyIsEqualTo>
+
+
+	<!-- Secondo blocco AND_2 -->
+    		<And>  
+		     
+			<ogc:PropertyIsEqualTo>
                 	<ogc:PropertyName>texture</ogc:PropertyName>
-                	<Literal>TEXTURE_CLASSES:LS</Literal>
-              	    </ogc:PropertyIsEqualTo>
-              	    <PropertyIsGreaterThanOrEqualTo>
-                	<PropertyName>value</PropertyName>
-                	<Literal>16</Literal>
-              	    </PropertyIsGreaterThanOrEqualTo>
+                	<Literal>LS</Literal>
+              		</ogc:PropertyIsEqualTo>
+              		
+		     <PropertyIsGreaterThanOrEqualTo>
+                			<PropertyName>value</PropertyName>
+                			<Literal>16</Literal>
+              			</PropertyIsGreaterThanOrEqualTo>
              		      
 		</And>
-    		<And> 
-		    <ogc:PropertyIsEqualTo>
+
+
+
+	<!-- Terzo blocco AND_2 -->
+    		<And>  
+		     
+			<ogc:PropertyIsEqualTo>
                 	<ogc:PropertyName>texture</ogc:PropertyName>
-                	<Literal>TEXTURE_CLASSES:SL</Literal>
-              	    </ogc:PropertyIsEqualTo>
-              	    <PropertyIsGreaterThanOrEqualTo>
-                	<PropertyName>value</PropertyName>
-                	<Literal>21</Literal>
-              	    </PropertyIsGreaterThanOrEqualTo>	      
+                	<Literal>SL</Literal>
+              		</ogc:PropertyIsEqualTo>
+              		
+		     <PropertyIsGreaterThanOrEqualTo>
+                			<PropertyName>value</PropertyName>
+                			<Literal>21</Literal>
+              			</PropertyIsGreaterThanOrEqualTo>
+             		      
 		</And>
+
+
+
+	<!-- Quarto blocco AND_2 -->
     		<And>  
 		    <ogc:PropertyIsEqualTo>
                 	<ogc:PropertyName>texture</ogc:PropertyName>
-                	<Literal>TEXTURE_CLASSES:L</Literal>
+                	<Literal>L</Literal>
               		</ogc:PropertyIsEqualTo>
               	    <PropertyIsGreaterThanOrEqualTo>
-                	<PropertyName>value</PropertyName>
-                	<Literal>27</Literal>
-              	    </PropertyIsGreaterThanOrEqualTo>	    
-		</And>
-    		<And>
-		    <ogc:PropertyIsEqualTo>
-                	<ogc:PropertyName>texture</ogc:PropertyName>
-                	<Literal>TEXTURE_CLASSES:SiL</Literal>
-              	    </ogc:PropertyIsEqualTo>
-		    <PropertyIsGreaterThanOrEqualTo>
-                	<PropertyName>value</PropertyName>
-                	<Literal>30</Literal>
-              	    </PropertyIsGreaterThanOrEqualTo>      
-		</And>
-    		<And>  
-		    <ogc:PropertyIsEqualTo>
-                	<ogc:PropertyName>texture</ogc:PropertyName>
-                	<Literal>TEXTURE_CLASSES:SCL</Literal>
-              	    </ogc:PropertyIsEqualTo>
-              	    <PropertyIsGreaterThanOrEqualTo>
-                	<PropertyName>value</PropertyName>
-                	<Literal>36</Literal>
-              	    </PropertyIsGreaterThanOrEqualTo>	      
-		</And>
-    		<And>  
-		    <ogc:PropertyIsEqualTo>
-                	<ogc:PropertyName>texture</ogc:PropertyName>
-                	<Literal>TEXTURE_CLASSES:SC</Literal>
-              	    </ogc:PropertyIsEqualTo>
-              	    <PropertyIsGreaterThanOrEqualTo>
-                	<PropertyName>value</PropertyName>
-                	<Literal>32</Literal>
-                    </PropertyIsGreaterThanOrEqualTo>	    
-		</And>
-    		<And>  
-		    <ogc:PropertyIsEqualTo>
-                	<ogc:PropertyName>texture</ogc:PropertyName>
-                	<Literal>TEXTURE_CLASSES:CL</Literal>
-              	    </ogc:PropertyIsEqualTo>
-              	    <PropertyIsGreaterThanOrEqualTo>
-                	<PropertyName>value</PropertyName>
-                	<Literal>29</Literal>
-              	    </PropertyIsGreaterThanOrEqualTo>    
-		</And>
-    		<And>  
-		    <ogc:PropertyIsEqualTo>
-                	<ogc:PropertyName>texture</ogc:PropertyName>
-                	<Literal>TEXTURE_CLASSES:SiCL</Literal>
-              		</ogc:PropertyIsEqualTo>
-              	    <PropertyIsGreaterThanOrEqualTo>
-                	<PropertyName>value</PropertyName>
-                	<Literal>28</Literal>
-              	    </PropertyIsGreaterThanOrEqualTo>	    
-		</And>
-    		<And>  
-		    <ogc:PropertyIsEqualTo>
-                	<ogc:PropertyName>texture</ogc:PropertyName>
-                	<Literal>TEXTURE_CLASSES:SiC</Literal>
-              	    </ogc:PropertyIsEqualTo>
-              	    <PropertyIsGreaterThanOrEqualTo>
-                    	<PropertyName>value</PropertyName>
-                	<Literal>40</Literal>
-              	    </PropertyIsGreaterThanOrEqualTo>
+                			<PropertyName>value</PropertyName>
+                			<Literal>27</Literal>
+              		    </PropertyIsGreaterThanOrEqualTo>
              		    
 		</And>
+
+
+	<!-- Quinto blocco AND_2 -->
+    		<And>  
+		     
+			<ogc:PropertyIsEqualTo>
+                	<ogc:PropertyName>texture</ogc:PropertyName>
+                	<Literal>SiL</Literal>
+              		</ogc:PropertyIsEqualTo>
+              		
+		     <PropertyIsGreaterThanOrEqualTo>
+                			<PropertyName>value</PropertyName>
+                			<Literal>30</Literal>
+              			</PropertyIsGreaterThanOrEqualTo>
+             		      
+		</And>
+
+
+	<!-- Sesto blocco AND_2 -->
+    		<And>  
+			<ogc:PropertyIsEqualTo>
+                	<ogc:PropertyName>texture</ogc:PropertyName>
+                	<Literal>SCL</Literal>
+              		</ogc:PropertyIsEqualTo>
+              		
+		     <PropertyIsGreaterThanOrEqualTo>
+                			<PropertyName>value</PropertyName>
+                			<Literal>36</Literal>
+              			</PropertyIsGreaterThanOrEqualTo>
+             		      
+		</And>
+
+	<!-- Settimo blocco AND_2 -->
     		<And>  
 		    <ogc:PropertyIsEqualTo>
                 	<ogc:PropertyName>texture</ogc:PropertyName>
-                	<Literal>TEXTURE_CLASSES:C</Literal>
-              	    </ogc:PropertyIsEqualTo>
+                	<Literal>SC</Literal>
+              		</ogc:PropertyIsEqualTo>
               	    <PropertyIsGreaterThanOrEqualTo>
-                	<PropertyName>value</PropertyName>
-                	<Literal>40</Literal>
-              	    </PropertyIsGreaterThanOrEqualTo>
-             	</And>
-	    </Or>
-	</Filter>
-        <PointSymbolizer>
+                			<PropertyName>value</PropertyName>
+                			<Literal>32</Literal>
+              		    </PropertyIsGreaterThanOrEqualTo>
+             		    
+		</And>
+
+
+	<!-- Ottavo blocco AND_2 -->
+    		<And>  
+		    <ogc:PropertyIsEqualTo>
+                	<ogc:PropertyName>texture</ogc:PropertyName>
+                	<Literal>CL</Literal>
+              		</ogc:PropertyIsEqualTo>
+              	    <PropertyIsGreaterThanOrEqualTo>
+                			<PropertyName>value</PropertyName>
+                			<Literal>29</Literal>
+              		    </PropertyIsGreaterThanOrEqualTo>
+             		    
+		</And>
+
+
+<!-- Nono blocco AND_2 -->
+    		<And>  
+		    <ogc:PropertyIsEqualTo>
+                	<ogc:PropertyName>texture</ogc:PropertyName>
+                	<Literal>SiCL</Literal>
+              		</ogc:PropertyIsEqualTo>
+              	    <PropertyIsGreaterThanOrEqualTo>
+                			<PropertyName>value</PropertyName>
+                			<Literal>28</Literal>
+              		    </PropertyIsGreaterThanOrEqualTo>
+             		    
+		</And>
+
+
+<!-- Decimo blocco AND_2 -->
+    		<And>  
+		    <ogc:PropertyIsEqualTo>
+                	<ogc:PropertyName>texture</ogc:PropertyName>
+                	<Literal>SiC</Literal>
+              		</ogc:PropertyIsEqualTo>
+              	    <PropertyIsGreaterThanOrEqualTo>
+                			<PropertyName>value</PropertyName>
+                			<Literal>40</Literal>
+              		    </PropertyIsGreaterThanOrEqualTo>
+             		    
+		</And>
+
+
+<!-- Undicesimo blocco AND_2 -->
+    		<And>  
+		    <ogc:PropertyIsEqualTo>
+                	<ogc:PropertyName>texture</ogc:PropertyName>
+                	<Literal>C</Literal>
+              		</ogc:PropertyIsEqualTo>
+              	    <PropertyIsGreaterThanOrEqualTo>
+                			<PropertyName>value</PropertyName>
+                			<Literal>40</Literal>
+              		    </PropertyIsGreaterThanOrEqualTo>
+             		   
+		</And>
+
+	</Or>
+
+
+        </Filter>
+          <PointSymbolizer>
             <Graphic>
               <Mark>
                 <WellKnownName>circle</WellKnownName>
@@ -327,6 +421,9 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
+
+	
+       
       </FeatureTypeStyle>
     </UserStyle>
   </NamedLayer>

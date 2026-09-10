@@ -1,0 +1,15 @@
+{% extends "people/profile_list.html" %}
+
+{% block body %}
+    {% if request.user.is_staff %}
+        {# If they are staff, render the list as normal #}
+        {{ block.super }}
+    {% else %}
+        {# If they are a standard logged-in user, display a restricted message #}
+        <div class="container" style="margin-top: 50px;">
+            <div class="alert alert-warning">
+                <strong>Access Restricted:</strong> The member directory is private.
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

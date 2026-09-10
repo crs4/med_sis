@@ -24,30 +24,6 @@ import numpy as np
 
 logger = logging.getLogger(__name__)
 
-class BUserInfoViewSet (viewsets.ViewSet):
-    """
-    API endpoint to get user INFO (only staff).
-    """
-    permission_classes = [permissions.IsAdminUser]
-
-    def create(self, request):
-        user = request.user
-        groups = [group.name for group in user.groups.all()]
-        if user.is_superuser:
-            groups.append("admin")
-        user_info = {
-            "sub": str(user.id),
-            "name": " ".join([user_field(user, "first_name"), user_field(user, "last_name")]),
-            "given_name": user_field(user, "first_name"),
-            "family_name": user_field(user, "last_name"),
-            "email": user_email(user),
-            "preferred_username": user_username(user),
-            "groups": groups,
-        }
-
-        response = Response(user_info)
-        return response
-
 class HydroPtfPredictionViewSet (viewsets.ViewSet):
     """
     API endpoint to run the Hydro Pedo Transfer Function on demand.

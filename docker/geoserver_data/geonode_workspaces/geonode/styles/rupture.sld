@@ -12,8 +12,8 @@
           <Filter xmlns="http://www.opengis.net/ogc">
             
               <PropertyIsEqualTo>
-                <PropertyName>cement_cls</PropertyName>
-                <Literal>NOC</Literal>
+                <PropertyName>rupture</PropertyName>
+                <Literal>CEMENTATION_CLASSES:NOC</Literal>
               </PropertyIsEqualTo>
 	      
           </Filter>
@@ -41,16 +41,16 @@
           <Filter xmlns="http://www.opengis.net/ogc">
             <Or>
               <PropertyIsEqualTo>
-                <PropertyName>cement_cls</PropertyName>
-                <Literal>EWC</Literal>
+                <PropertyName>rupture</PropertyName>
+                <Literal>CEMENTATION_CLASSES:EWC</Literal>
               </PropertyIsEqualTo>
 	      <PropertyIsEqualTo>
-                <PropertyName>cement_cls</PropertyName>
-                <Literal>VWC</Literal>
+                <PropertyName>rupture</PropertyName>
+                <Literal>CEMENTATION_CLASSES:VWC</Literal>
               </PropertyIsEqualTo>
               <PropertyIsEqualTo>
-                <PropertyName>cement_cls</PropertyName>
-                <Literal>WEC</Literal>
+                <PropertyName>rupture</PropertyName>
+                <Literal>CEMENTATION_CLASSES:WEC</Literal>
               </PropertyIsEqualTo>
 
             </Or>
@@ -79,12 +79,12 @@
           <Filter xmlns="http://www.opengis.net/ogc">
             <Or>
               <PropertyIsEqualTo>
-                <PropertyName>cement_cls</PropertyName>
-                <Literal>MOC</Literal>
+                <PropertyName>rupture</PropertyName>
+                <Literal>CEMENTATION_CLASSES:MOC</Literal>
               </PropertyIsEqualTo>
 	      <PropertyIsEqualTo>
-                <PropertyName>cement_cls</PropertyName>
-                <Literal>STC</Literal>
+                <PropertyName>rupture</PropertyName>
+                <Literal>CEMENTATION_CLASSES:STC</Literal>
               </PropertyIsEqualTo>
 	                    
             </Or>
@@ -113,12 +113,12 @@
           <Filter xmlns="http://www.opengis.net/ogc">
             <Or>
               <PropertyIsEqualTo>
-                <PropertyName>cement_cls</PropertyName>
-                <Literal>VSC</Literal>
+                <PropertyName>rupture</PropertyName>
+                <Literal>CEMENTATION_CLASSES:VSC</Literal>
               </PropertyIsEqualTo>
 	      <PropertyIsEqualTo>
-                <PropertyName>cement_cls</PropertyName>
-                <Literal>EXC</Literal>
+                <PropertyName>rupture</PropertyName>
+                <Literal>CEMENTATION_CLASSES:EXC</Literal>
               </PropertyIsEqualTo>
 	         
             </Or>

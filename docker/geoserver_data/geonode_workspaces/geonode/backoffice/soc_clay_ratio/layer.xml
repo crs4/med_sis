@@ -1,12 +1,12 @@
 <layer>
-  <name>active_calcium_carbonate</name>
+  <name>soc_clay_ratio</name>
   <id>LayerInfoImpl--bb68920:19f114781fa:-7ffe</id>
   <type>VECTOR</type>
   <defaultStyle>
     <id>StyleInfoImpl--bb68920:19f114781fa:-7ffa</id>
   </defaultStyle>
   <resource class="featureType">
-    <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7fff</id>
+    <id>FeatureTypeInfoImpl-7afefdba:19fb290e160:-25d4</id>
   </resource>
   <queryable>true</queryable>
   <opaque>false</opaque>

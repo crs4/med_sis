@@ -58,7 +58,6 @@ const GeomanControl = ({ toolbarRef, setByBox, setByPoint }) => {
           await map.setByPoint(geojson) 
         map.pm.getGeomanDrawLayers(false).forEach(
           (geomanLayer) => {map.removeLayer(geomanLayer);})
-        console.log('create')
       });
     }, 
   })

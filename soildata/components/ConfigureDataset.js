@@ -31,6 +31,8 @@ export default function ConfigureDataset( { isIndicators, dataset, setDataset } 
   const t = useTranslations('default');
   const router = useRouter();
   const toast = useRef(null);
+  const [user, setUser] = useState(null); 
+  
   // it manages configuration steps
   const [activeIndex, setActiveIndex] = useState(0);
   // working state 
@@ -372,11 +374,10 @@ export default function ConfigureDataset( { isIndicators, dataset, setDataset } 
   // typename = labdata_extra_geo  
   const loadExtraMeasureIndicatorPoints = async (measure) => {
     try {
-      const token = user.userData.access_token;
       setIsWorking(true);
       const typename = "geonode:extra_labdata_geo"
       const filter = "&CQL_FILTER=measure%3D"+measure 
-      const response = await ProfileService.getDataset( typename, filter, token ) 
+      const response = await ProfileService.getDataset( typename, filter, user?.access_token ) 
       setIsWorking(false);
       if ( response && response.ok && response.data && response.data.features ){
         const points = response.data; 
@@ -400,9 +401,8 @@ export default function ConfigureDataset( { isIndicators, dataset, setDataset } 
   // then evaluate the values for the Enrichment Factor Soil Indicator for an chemical element  
   const loadAoiIndicatorPoints = async (indicator, typename) => {
     try {
-      const token = user.userData.access_token;
       setIsWorking(true);
-      const response = await ProfileService.getDataset(  typename, null, token )
+      const response = await ProfileService.getDataset(  typename, null, user?.access_token )
       setIsWorking(false);
       if ( response && response.ok && response.data && response.data.features ){
         const labdata_points = response.data;
@@ -546,9 +546,8 @@ export default function ConfigureDataset( { isIndicators, dataset, setDataset } 
   // This loads and sets the source points from a catalogue dataset
   const loadPoints = async (typename) => {
     try {
-      const token = user.userData.access_token;
       setIsWorking(true);
-      const response = await ProfileService.getDataset( typename, null, token )
+      const response = await ProfileService.getDataset( typename, null, user?.access_token )
       setIsWorking(false);
       if ( response && response.ok && response.data && response.data.features ){
         const points = response.data;
@@ -710,10 +709,12 @@ export default function ConfigureDataset( { isIndicators, dataset, setDataset } 
       //  ProfileService.DATASET_CONTEXT.POINTS_SOIL_DATA : The values will be loaded from a point soil data section catalogue dataset
       //  ProfileService.DATASET_CONTEXT.SOIL_INDICATOR : The values will be loaded from a soil indictor catalogue dataset 
       //  ProfileService.DATASET_CONTEXT.LABDATA_EXTRA_MEASURE: The values will be filtered from the "labdata_extra_geo" catalogue dataset
-      const user = await UserService.getProfile(document.cookie);
-      if ( !user || ( user.forbidden !== null && user.forbidden) )
+      const _user = await UserService.getProfile(document.cookie);
+      if ( !_user || !_user.access_token || ( _user.forbidden !== null && _user.forbidden) )
         router.push(`/401`);
-      const list = [];  
+      const list = [];
+      setUser(_user) 
+      console.log(_user) 
       if ( dataset.context === ProfileService.DATASET_CONTEXT.AOI_SOIL_INDICATOR ) 
         list = AoiSoilIndicators.datasets 
       else if ( dataset.context === ProfileService.DATASET_CONTEXT.POINTS_SOIL_DATA ||
@@ -1050,7 +1051,7 @@ export default function ConfigureDataset( { isIndicators, dataset, setDataset } 
             )}  
           </Fieldset>
           { workDataset && workDataset.points && (
-          <AoiSelectionMap  token={user.userData.access_token} areasTypeName={areasTypeName} points={workDataset.points} area={selectedArea} setAoi={setAoi} />
+          <AoiSelectionMap  token={user?.access_token} areasTypeName={areasTypeName} points={workDataset.points} area={selectedArea} setAoi={setAoi} />
           )} 
           <div class="flex justify-content-center w-full m-3">
             <Button

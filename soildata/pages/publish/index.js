@@ -290,12 +290,6 @@ export default function Page()  {
       return <Calendar value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" mask="99/99/9999" />;
   };
   
-  const headerDlg = () => {
-    return (
-      <h5 className="w-7 surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2"> {t('DATASETS_CREATE')}</h5>
-    )
-  }; 
-  
   const actionsTemplate = (rowData) => (  
     <>
     <Button icon="pi pi-folder-open"

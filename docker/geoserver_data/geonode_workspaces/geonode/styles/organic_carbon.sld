@@ -6,11 +6,12 @@
       <Name>Organic Carbon content (g/kg)</Name>
       <Title>Organic Carbon content (g/kg)</Title>
       <FeatureTypeStyle>
-		    <Rule>
-          <Name>Very low SOC and low potential of soil ecosystem functions</Name>
+        
+	<Rule>
+          <Name>Very low to low SOC and low potential of soil ecosystem services</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
-	    	  <PropertyIsGreaterThanOrEqualTo>
+	      <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>0</Literal>
               </PropertyIsGreaterThanOrEqualTo>
@@ -38,8 +39,10 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-		    <Rule>
-          <Name>Low SOC and low potential of soil ecosystem functions</Name>
+
+
+	<Rule>
+          <Name>Medium SOC and low potential of soil ecosystem services</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
 	      
@@ -71,18 +74,22 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-		    <Rule>
-          <Name>High SOC and low potential of soil ecosystem functions</Name>
+
+
+	<Rule>
+          <Name>High SOC and low potential of soil ecosystem services</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
+	      
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>9</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-	      	  <PropertyIsLessThan>
+	      <PropertyIsLessThan>
                 <PropertyName>value</PropertyName>
                 <Literal>13.6</Literal>
               </PropertyIsLessThan>
+
             </And>
           </Filter>
           <PointSymbolizer>
@@ -103,19 +110,25 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-		    <Rule>
-          <Name>Very high SOC and low potential of soil ecosystem functions</Name>
+
+
+	<Rule>
+          <Name>Very high SOC and low potential of soil ecosystem services</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-            <And>
+              <And>
+	      
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>13.6</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-	      	  <PropertyIsLessThan>
+	      <PropertyIsLessThan>
                 <PropertyName>value</PropertyName>
                 <Literal>20</Literal>
               </PropertyIsLessThan>
-            </And> 
+
+            </And>
+
+	     
           </Filter>
           <PointSymbolizer>
             <Graphic>
@@ -135,8 +148,10 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-		    <Rule>
-          <Name>Very high SOC and medium potential of soil ecosystem functions</Name>
+
+
+	<Rule>
+          <Name>Very high SOC and medium potential of soil ecosystem services</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
 	      
@@ -168,13 +183,17 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-		    <Rule>
-          <Name>Very high SOC and high potential of soil ecosystem functions</Name>
-          <Filter xmlns="http://www.opengis.net/ogc">         	     
+
+
+	<Rule>
+          <Name>Very high SOC and high potential of soil ecosystem services</Name>
+          <Filter xmlns="http://www.opengis.net/ogc">
+           	     
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>50</Literal>
-              </PropertyIsGreaterThanOrEqualTo>           
+              </PropertyIsGreaterThanOrEqualTo>
+             
           </Filter>
           <PointSymbolizer>
             <Graphic>
@@ -193,7 +212,9 @@
               <Size>14</Size>
             </Graphic>
           </PointSymbolizer>
-        </Rule>      
+        </Rule>
+
+       
       </FeatureTypeStyle>
     </UserStyle>
   </NamedLayer>

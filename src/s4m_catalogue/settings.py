@@ -174,6 +174,11 @@ if (
 INSTALLED_APPS += ("backoffice",)
 INSTALLED_APPS += ("django_extensions",)
 
+# Restrict Profile access
+MIDDLEWARE += (
+    's4m_catalogue.middleware.RestrictProfileMiddleware',
+)
+
 # REST_FRAMEWORK = {
 #    'DEFAULT_AUTHENTICATION_CLASSES': [
 #        'rest_framework.authentication.SessionAuthentication',

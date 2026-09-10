@@ -6,7 +6,7 @@
       <Title>Oxygen availability for roots (D/D0)</Title>
       <FeatureTypeStyle>   
 	    <Rule>
-          <Name>Low (soil easily aerated optimal for most of plant growth) - for cropland and grassland - only in topsoils</Name>
+          <Name>Low (soil easily aerated optimal for most of plant growth) </Name>
           <Filter xmlns="http://www.opengis.net/ogc">
 	       <And>
               <PropertyIsGreaterThanOrEqualTo>
@@ -39,7 +39,7 @@
         </Rule>
 
         <Rule>
-          <Name>Medium (potential beginning of O2 turnover depletion and nitrate reduction rate potentially increase facilitating potentially root growth) - for cropland and grassland - only in topsoils</Name>
+          <Name>Medium (potential beginning of O2 turnover depletion and nitrate reduction rate potentially increase facilitating potentially root growth)</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
 	   <And>
               <PropertyIsGreaterThanOrEqualTo>
@@ -74,7 +74,7 @@
         </Rule>
 
 <Rule>
-          <Name>Good (very low O2 turnover)  - for cropland and grassland - only in topsoils</Name>
+          <Name>Good (very low O2 turnover)</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
 	    <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>

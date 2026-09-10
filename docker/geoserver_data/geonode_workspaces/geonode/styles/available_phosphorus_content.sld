@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <NamedLayer>
-    <Name>available_phosphorus_content</Name>
+       <Name>Available Phosphorus (P) content (mg/kg)</Name>
     <UserStyle>
-      <Title>Available Phosphorus P content (mg/kg)</Title>
+      <Name>labdata_p_cont</Name>
+      <Title>Available Phosphorus (P) content (mg/kg)</Title>
       <FeatureTypeStyle>
         <Rule>
-          <Name>Low (Olsen extract only for cropland and grassland)</Name>
+          <Name>Too low (Olsen method only for cropland and grassland)</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
@@ -15,7 +16,7 @@
               </PropertyIsGreaterThanOrEqualTo>
               <PropertyIsLessThan>
                 <PropertyName>value</PropertyName>
-                <Literal>8</Literal>
+                <Literal>10</Literal>
               </PropertyIsLessThan>
             </And>
           </Filter>
@@ -36,18 +37,53 @@
               <Size>14</Size>
             </Graphic>
           </PointSymbolizer>
-        </Rule>	
+        </Rule>
+
+	
 	<Rule>
-          <Name>Sufficient (Olsen extract only for cropland and grassland)</Name>
+          <Name>Sufficient (Olsen method only for cropland and grassland)</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
-                <Literal>8</Literal>
+                <Literal>10</Literal>
               </PropertyIsGreaterThanOrEqualTo>
               <PropertyIsLessThan>
                 <PropertyName>value</PropertyName>
                 <Literal>30</Literal>
+              </PropertyIsLessThan>
+            </And>
+          </Filter>
+          <PointSymbolizer>
+            <Graphic>
+              <Mark>
+                <WellKnownName>circle</WellKnownName>
+                <Fill>
+                  <CssParameter name="fill">#7551e0</CssParameter>
+                  <CssParameter name="fill-opacity">1</CssParameter>
+                </Fill>
+                <Stroke>
+                  <CssParameter name="stroke">#777777</CssParameter>
+                  <CssParameter name="stroke-width">2</CssParameter>
+                  <CssParameter name="stroke-opacity">1</CssParameter>
+                </Stroke>
+              </Mark>
+              <Size>14</Size>
+            </Graphic>
+          </PointSymbolizer>
+        </Rule>
+
+	<Rule>
+          <Name>Medium (Olsen method only for cropland and grassland)</Name>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <And>
+              <PropertyIsGreaterThanOrEqualTo>
+                <PropertyName>value</PropertyName>
+                <Literal>30</Literal>
+              </PropertyIsGreaterThanOrEqualTo>
+              <PropertyIsLessThan>
+                <PropertyName>value</PropertyName>
+                <Literal>45</Literal>
               </PropertyIsLessThan>
             </And>
           </Filter>
@@ -69,12 +105,47 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
+
 	<Rule>
-          <Name>High (Olsen extract only for cropland and grassland)</Name>
+          <Name>High (Olsen method only for cropland and grassland)</Name>
+          <Filter xmlns="http://www.opengis.net/ogc">
+            <And>
+              <PropertyIsGreaterThanOrEqualTo>
+                <PropertyName>value</PropertyName>
+                <Literal>45</Literal>
+              </PropertyIsGreaterThanOrEqualTo>
+              <PropertyIsLessThan>
+                <PropertyName>value</PropertyName>
+                <Literal>70</Literal>
+              </PropertyIsLessThan>
+            </And>
+          </Filter>
+          <PointSymbolizer>
+            <Graphic>
+              <Mark>
+                <WellKnownName>circle</WellKnownName>
+                <Fill>
+                  <CssParameter name="fill">#2649F7</CssParameter>
+                  <CssParameter name="fill-opacity">1</CssParameter>
+                </Fill>
+                <Stroke>
+                  <CssParameter name="stroke">#777777</CssParameter>
+                  <CssParameter name="stroke-width">2</CssParameter>
+                  <CssParameter name="stroke-opacity">1</CssParameter>
+                </Stroke>
+              </Mark>
+              <Size>14</Size>
+            </Graphic>
+          </PointSymbolizer>
+        </Rule>
+
+
+	<Rule>
+          <Name>Very high (Olsen method only for cropland and grassland)</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
-                <Literal>30</Literal>
+                <Literal>70</Literal>
               </PropertyIsGreaterThanOrEqualTo>
             </Filter>
           <PointSymbolizer>

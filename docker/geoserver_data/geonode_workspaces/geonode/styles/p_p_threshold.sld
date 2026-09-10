@@ -7,7 +7,7 @@
       <FeatureTypeStyle>
         
 	<Rule>
-          <Name>Potential positive impact on productivity following phosphorus fertilizers - for cropland in rainfed system and grassland and P Olsen method only</Name>
+          <Name>Potential positive impact on productivity following phosphorus fertilizers </Name>
           <Filter xmlns="http://www.opengis.net/ogc">
 	   <And>
               <PropertyIsGreaterThanOrEqualTo>
@@ -40,7 +40,7 @@
         </Rule>
 
         <Rule>
-          <Name>Potential non responsive impact on productivity following phosphorus fertilizers - for cropland in rainfed system and grassland and P Olsen method only</Name>
+          <Name>Potential non responsive impact on productivity following phosphorus fertilizers</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
 	   <And>
               <PropertyIsGreaterThanOrEqualTo>
@@ -72,7 +72,7 @@
           </PointSymbolizer>
         </Rule>
         <Rule>
-          <Name>Potential leaching risk - for cropland in rainfed system and grassland and P Olsen method only</Name>
+          <Name>Potential leaching risk </Name>
           <Filter xmlns="http://www.opengis.net/ogc">
 	     <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>

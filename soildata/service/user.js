@@ -1,9 +1,9 @@
-import { doFetchBackOffice }  from '../utilities/api-client';
+import { doFetch }  from '../utilities/api-client';
 
 export const UserService = {
     async getProfile(ck) { 
         if ( ck ) { 
-            const response = await doFetchBackOffice ( 'buser-info', null, 'POST', {}, ck );
+            const response = await doFetch (process.env.NEXT_PUBLIC_CATALOGUE_BASE_URL + 'api/v2', 'userinfo' , null, 'GET', null, ck)
             if ( !response || !response.ok )
                 return null
             else {

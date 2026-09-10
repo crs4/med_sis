@@ -3,7 +3,7 @@
   <NamedLayer>
     <Name>soc_clay_ratio</Name>
     <UserStyle>
-      <Title>Soil structure vulnerability - SOC/clay</Title>
+      <Title>Soil structure vulnerability - SOC/Clay</Title>
       <FeatureTypeStyle>
         <Rule>
           <Name>Poor</Name>

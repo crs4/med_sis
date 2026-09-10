@@ -49,9 +49,9 @@ export const doFetchGeoserver = async (typename, filter, token) =>
     url += '/ows?SERVICE=WFS&VERSION=1.3.0&REQUEST=GetFeature&outputFormat=application%2Fjson&'
     if ( filter )
       url += filter + "&"
-    url += 'typename=' + typename + '&maxFeatures=100000&access_token=' + token;
+    url += 'typename=' + typename + '&maxFeatures=100000&access_token=' + token ;
     let headers = {
-      Accept: "application/json"
+      Accept: "application/json",
     };
     let response = await fetch( url, { method: 'GET', headers: headers } )
     if ( !response || !response.ok ) {

@@ -2,7 +2,7 @@
   @Author: Roberto Demontis 
 */
 
-import doFetch, { doFetchBackOffice, doFetchCatalogue, doFetchGeoserver }  from '../utilities/api-client';
+import { doFetchBackOffice }  from '../utilities/api-client';
 
 export const PTFService = {
 

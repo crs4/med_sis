@@ -19,7 +19,7 @@
 #########################################################################
 
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, re_path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls.i18n import i18n_patterns
@@ -40,11 +40,16 @@ base_urlpatterns = [
 ]
 """
 
+
 # Combina gli URL di GeoNode con i nostri URL base
 urlpatterns =  geonode_urlpatterns
 
 # Aggiungi gli URL delle API
 urlpatterns += api_urlpatterns
+
+#API_LOCKDOWN True
+#LOCKDOWN_GEONODE True
+#REGISTRATION_OPEN False
 
 # Aggiungi gli URL per i file statici e media in modalità DEBUG
 if settings.DEBUG:
