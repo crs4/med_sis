@@ -417,7 +417,7 @@ export default function Page( )  {
         </div>    
       )}
       </Dialog>          
-      <h4 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">{t("UPLOADS_TITLE")}</h4>
+      <h4 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">{t("NEW_UPLOAD")}</h4>
       <div className="card text-cyan-800 w-full shadow-2">
         <div className="flex flex-row-reverse w-full p-2">
           <Button 
@@ -428,7 +428,7 @@ export default function Page( )  {
             label={t('UPLOADS_LIST')}
           />
         </div>
-        <Panel header={t('UPLOAD_HELP')} toggleable collapsed>
+        <Panel header={t('UPLOAD_HELP')} toggleable >
           <div><Message className="p-inline-message p-component p-inline-message-info font-bold block" severity="info" text={t('UPLOADS_MSG1')}/></div>
           <ol>
             <li><Message className="p-inline-message p-component p-inline-message-info font-bold block" severity="info" text={t('UPLOADS_MSG2')}/></li>

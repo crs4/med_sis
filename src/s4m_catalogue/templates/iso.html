@@ -1,0 +1,38 @@
+{% extends "geonode_base.html" %}
+
+{% load i18n %}
+{% block title %} {% trans "Help" %} — {{ block.super }} {% endblock %}
+
+{% block body_outer %}
+<div class="page-header">
+  <h2>{% trans "Iso28258" %}</h2>
+</div>
+
+<p style="text-align: justify;"><strong>{{ "Introduction"|upper }}</strong></hp>
+<p style="text-align: justify;"> ...to add</p>
+<p style="text-align: justify;"> ...to add</p>
+
+<p style="text-align: justify;"><strong>{{ "API endpoints"|upper }}</strong></hp>
+<p style="text-align: justify;"> ...to add</p>
+<div class="col-md-4">
+  <ul class="list-group">
+    <li class="list-group-item"><a href="/api/backoffice/">1111</a></li>
+    <li class="list-group-item"><a href="/api/backoffice/">222222</a></li>
+    <li class="list-group-item"><a href="/api/backoffice/">33333333333</a></li>
+    <li class="list-group-item"><a href="/api/backoffice/">4444444444444</a></li>
+  </ul>
+</div>
+ 
+
+<div class="m-8">
+  <img src="/static/img/about_footer.png" />
+</div>
+<div class="m-8">
+  <p style="text-align: left;">Prof. Claudio Zucca, PhD</p>
+  <p style="text-align: left;">Dept. of Agricultural Sciences - Delegate for International relationships</p>
+  <p style="text-align: left;">University of Sassari</p>
+  <p style="text-align: left;">Dipartimento di Agraria</p>
+  <p style="text-align: left;">Viale Italia 39, 07100-Sassari, Italia</p>
+  <p style="text-align: left;">Tel. Office 0039 079 229268 - Cell 0039 3292604269</p>
+</div>
+{% endblock %}

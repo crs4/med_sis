@@ -1,0 +1,47 @@
+{% extends "geonode_base.html" %}
+
+{% load i18n %}
+{% block title %} {% trans "Help" %} — {{ block.super }} {% endblock %}
+
+{% block body_outer %}
+<div class="page-header">
+  <h2>{% trans "Help" %}</h2>
+</div>
+
+<p style="text-align: justify;"><strong>{{ "Introduction"|upper }}</strong></hp>
+<p style="text-align: justify;"> ...to add</p>
+<p style="text-align: justify;"> ...to add</p>
+
+<p style="text-align: justify;"><strong>{{ "Manuals"|upper }}</strong></hp>
+<p style="text-align: justify;"> ...to add</p>
+<div class="col-md-4">
+  <ul class="list-group">
+    <li class="list-group-item"><a href="/static/doc/MED-SIS-Manual-Generic_User.pdf">User Manual</a></li>
+    <li class="list-group-item"><a href="/static/doc/MED-SIS_Manual_Data_Managers.pdf">Data Manager Manual</a></li>
+    <li class="list-group-item"><a href="/static/doc/MED-SIS-Manual-Point_Soil_Data.pdf">Point Soil Data Description</a></li>
+    <li class="list-group-item"><a href="/static/doc/MED-SIS-Manual-Soil_Indicators.pdf">Soil Indicators Description</a></li>
+  </ul>
+</div>
+
+<p style="text-align: justify;"><strong>{{ "XLSx Templates"|upper }}</strong></hp>
+<p style="text-align: justify;"> ...to add</p>
+<div class="col-md-4">
+<ul class="list-group">
+    <li class="list-group-item"><a href="/static/doc/MED_SIS-Manual_Soil_Data_and_Genealogy_Template_Guidelines.pdf">Point Soil Data XLSx Template Guidelines</a></li>
+    <li class="list-group-item"><a href="/static/doc/MED-SIS-TEMPLATE_POINT_SOIL_DATA.xlsx">Point Soil Data XLSx Template</a></li>
+    <li class="list-group-item"><a href="/static/doc/MED-SIS-TEMPLATE_PTF_INPUT_DATA.xlsx">Pedo Transfer Function - Input Data XLSx Template</a></li>
+  </ul>
+</div>  
+
+<div class="m-8">
+  <img src="/static/img/about_footer.png" />
+</div>
+<div class="m-8">
+  <p style="text-align: left;">Prof. Claudio Zucca, PhD</p>
+  <p style="text-align: left;">Dept. of Agricultural Sciences - Delegate for International relationships</p>
+  <p style="text-align: left;">University of Sassari</p>
+  <p style="text-align: left;">Dipartimento di Agraria</p>
+  <p style="text-align: left;">Viale Italia 39, 07100-Sassari, Italia</p>
+  <p style="text-align: left;">Tel. Office 0039 079 229268 - Cell 0039 3292604269</p>
+</div>
+{% endblock %}

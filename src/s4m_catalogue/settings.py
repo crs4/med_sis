@@ -42,9 +42,13 @@ PROJECT_NAME = "s4m_catalogue"
 
 ALLOWED_HOSTS = [ 'soils4med.crs4.it', 'django', 'localhost' ]
 
+
 # add trailing slash to site url. geoserver url will be relative to this
 if not SITEURL.endswith("/"):
     SITEURL = "{}/".format(SITEURL)
+
+
+
 
 SITENAME = os.getenv("SITENAME", "S4M Catalogue")
 

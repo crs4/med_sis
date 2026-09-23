@@ -6,11 +6,9 @@ import { useRouter } from 'next/router';
 import dynamic from "next/dynamic"
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
-import { point, featureCollection } from '@turf/turf';
 import UserService from '../../service/user';
 import ReportTable from '../../components/table/XLSxResultTable';
 import { UploadService } from '../../service/uploads';
-import { TaxonomyService } from '../../service/taxonomies';
 
 
 const MyMap = dynamic(() => import("../../components/map/XLSxMap"), { ssr:false })
@@ -31,6 +29,7 @@ export default function Page()  {
     router.push(`/uploads/create`);
   };
 
+  // It loads the upload properties and report
   useEffect(() => {
     const fetchData = ( async(id) => {
       const user = await UserService.getProfile(document.cookie);
@@ -52,6 +51,7 @@ export default function Page()  {
     fetchData(id);
   },[]);  // eslint-disable-line   
 
+  // It creates the headers for the report
   let reportHeaders = [ t('UPLOADS_REPORT_F1'),  t('UPLOADS_REPORT_F2'),  t('UPLOADS_REPORT_F3')];
   
   return (

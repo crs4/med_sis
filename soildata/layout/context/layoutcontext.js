@@ -132,7 +132,6 @@ export const LayoutProvider = (props) => {
                     <meta name="viewport" content="initial-scale=1, width=device-width" />
                     <meta property="og:type" content="website"></meta>
                     <meta property="og:title" content="Soil4Med Back-Office"></meta>
-                    <meta property="og:url" content="https://soils4med.crs4.it/soildata"></meta>
                     <meta property="og:description" content="Soils4Med tool for soils data management" />
                     <meta property="og:image" content="/soildata/img/logo-dark.png"></meta>
                     <meta property="og:ttl" content="604800"></meta>

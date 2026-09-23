@@ -338,7 +338,7 @@ export default function Page( )  {
           <Column field="id"  header={(<span className='text-xl font-bold'>{t('ID')}</span>)}></Column>
           <Column field="value"  header={(<span className='text-xl font-bold'>{t('CLASS')}</span>)}></Column>
           <Column field="descr"  header={(<span className='text-xl font-bold'>{t('DESCRIPTION')}</span>)}></Column>
-          <Column field="uri" body={uriTemplate} header={(<span className='text-xl font-bold'>{t('URI')}</span>)}></Column>
+          <Column field="uri" body={uriTemplate} header={(<span className='text-xl font-bold'>URI</span>)}></Column>
         </DataTable>
         )}
         <ConfirmDialog id="dlg_remove2" group="declarative"  visible={visCRemove} onHide={() => setVisCRemove(false)} message={t("DELETE_ENTRY_Q")} 

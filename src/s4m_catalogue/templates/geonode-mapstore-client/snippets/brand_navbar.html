@@ -8,169 +8,155 @@
 </head>
 {% endblock %}
 
-{% if request.path == '/' %}
-    <div class="s4m-background home">
-        <img src="{% static 'img/soils-background7.jpg' %}" style="height:350px;">
-    </div>     
-    <nav id="gn-brand-navbar" class="gn-menu gn-menu-symmetric home">
-{% else %}  
-    <div class="s4m-background">
-        <img src="{% static 'img/soils-background7.jpg' %}" style="height:130px;">
-    </div>
-    <nav id="gn-brand-navbar" class="gn-menu gn-menu-symmetric">
-{% endif %}
-        <div class="gn-menu-container">
-            <div class="gn-menu-content">               
-                {% block left_menu %}
-                <div class="gn-menu-content-left">
-                    <ul class="gn-menu-list s4m-menu">
-                        <li>
-                            <a href="/">
-                                <img src="{% static 'img/home2.png' %}">
-                                <img src="{% static 'img/logo.png' %}">
-                            </a>
+<div class="s4m-background home">
+    <img src="{% static 'img/soils-background7.jpg' %}" style="height:330px;">
+</div>     
+<nav id="gn-brand-navbar" class="gn-menu gn-menu-symmetric home">
+<div class="gn-menu-container">
+    <div class="gn-menu-content">               
+        {% block left_menu %}
+        <div class="gn-menu-content-left">
+            <ul class="gn-menu-list s4m-menu">
+                <li>
+                    <a href="/">
+                        <img src="{% static 'img/home2.png' %}" style="max-height: 1.5rem;">
+                        <img src="{% static 'img/logo.png' %}" style="max-height: 1.5rem;">
+                    </a>
+                    <a href="https://prima-med.org/">
+                        <img src="{% static 'img/prima-eu.png' %}" style="max-height: 1.5rem;">
+                    </a>
+                </li>
+            </ul>                 
+        </div>
+        {% endblock %}
+        
+        {% block right_menu %}
+        <div class="gn-menu-content-right">
+            <ul class="gn-menu-list s4m-menu-right" style="display: flex; align-items: center; gap: 15px; list-style: none; margin: 0; padding: 0;">
+                <li>    
+                    {% if not request.user.is_authenticated %}
+                    <a id="sign-in" href="/account/login/?next=%2F" class="nav-link btn btn-primary" style="border-radius: 1.5rem; background-color: #1c67b6; padding: 0.4rem 1rem; display: flex; align-items: center; border: none;">
+                        <img src="{% static 'img/login.svg' %}" style="width: 1.2rem; height: 1.2rem; object-fit: contain;">
+                    </a> 
+                    {% else %} 
+                        {% include 'geonode-mapstore-client/snippets/partials/logout.html'%}
+                    {% endif %}    
+                </li>
+            </ul>
+        </div>
+        {% endblock %}
+        
+        {% block center_menu %}
+        <div class="gn-menu-content-center">
+            <div class="jumbotron">
+                <h1 class="home">Soils<span>4</span>Med</h1>
+                <p class="home" style="margin: 0px; font-weight: 500; text-align: center;"><span>S</span>oils <span>I</span>nformation <span>S</span>ystem</p>
+            </div>
+            <div class="s4m-search-container">
+                {% include './search_bar.html' with search_bar_id='gn-search-bar' %}
+            </div>           
+            <div class="s4m-icon-row">
+                <ul class="gn-menu-list">
+                    <ul class="s4m-menu" style="list-style: none;">
+                        <li class="s4m-menu-item" style="--s4m-menu-icon-bg: rgb(180, 120, 69);">
+                            <div class="s4m-menu-icon">
+                                <a href="/catalogue/#/?f=dataset&f=map&filter%7Bkeywords.slug.in%7D=soil_map">
+                                    <img src="{% static 'img/maps.svg' %}">
+                                </a>
+                            </div>
+                            <div class="s4m-menu-label" style="font-weight: 600;">
+                                {% if LANGUAGE == 'fr-fr' %} Carte <br/>de sols {% elif LANGUAGE == 'it-it' %} Carta <br/>del suolo {% elif LANGUAGE == 'es-es' %} Mapa <br/>de suelos {% else %} Soil <br/>Maps {% endif %}
+                            </div>
                         </li>
-                    </ul>                 
-                </div>
-                {% endblock %}
-                
-                {% block right_menu %}
-                <div class="gn-menu-content-right">
-                    <ul class="gn-menu-list s4m-menu-right" style="display: flex; align-items: center; gap: 15px; list-style: none; margin: 0; padding: 0;">
-                       <li>    
-                            {% if not request.user.is_authenticated %}
-                            <a id="sign-in" href="/account/login/?next=%2F" class="nav-link btn btn-primary" style="border-radius: 1.5rem; background-color: #1c67b6; padding: 0.4rem 1rem; display: flex; align-items: center; border: none;">
-                                <img src="{% static 'img/login.svg' %}" style="width: 1.2rem; height: 1.2rem; object-fit: contain;">
-                            </a> 
-                            {% else %} 
-                                {% include 'geonode-mapstore-client/snippets/partials/logout.html'%}
-                            {% endif %}    
+                        <li class="s4m-menu-item" style="--s4m-menu-icon-bg: rgb(46 155 81);">
+                            <div class="s4m-menu-icon">
+                                <a href="/catalogue/#/?f=dataset&f=map&filter%7Bcategory.identifier%7D=points_soil_data">
+                                    <img src="{% static 'img/pedology_white.png' %}">
+                                </a>
+                            </div>
+                            <div class="s4m-menu-label" style="font-weight: 600;">
+                                {% if LANGUAGE == 'fr-fr' %} Données <br/>Ponctuelles {% elif LANGUAGE == 'it-it' %} Dati <br/>Puntuali {% elif LANGUAGE == 'es-es' %} Datos <br/>Puntuales {% else %} Point <br/>Soil Data {% endif %}
+                            </div>
+                        </li>
+                        <li class="s4m-menu-item" style="--s4m-menu-icon-bg: rgb(180, 120, 69);">
+                            <div class="s4m-menu-icon">
+                                <a href="/catalogue/#/?f=dataset&f=map&filter%7Bcategory.identifier%7D=soil_chemical_health">
+                                    <img src="{% static 'img/chemical.png' %}">
+                                </a>
+                            </div>
+                            <div class="s4m-menu-label" style="font-weight: 600;">
+                            {% if LANGUAGE == 'fr-fr' %}Santé <br/>chimique {% elif LANGUAGE == 'it-it' %}Salute <br/>chimica {% elif LANGUAGE == 'es-es' %}Salud <br/>química {% else %} Chemical<br/>Health {% endif %}
+                            </div>
+                        </li>
+                        <li class="s4m-menu-item" style="--s4m-menu-icon-bg: rgb(46 155 81);">
+                            <div class="s4m-menu-icon">
+                                <a href="/catalogue/#/?f=dataset&f=map&filter%7Bcategory.identifier%7D=soil_physical_health">
+                                    <img src="{% static 'img/physical.png' %}">
+                                </a>
+                            </div>
+                            <div class="s4m-menu-label" style="font-weight: 600;">
+                            {% if LANGUAGE == 'fr-fr' %}Santé <br/>physique {% elif LANGUAGE == 'it-it' %}Salute <br/>fisica {% elif LANGUAGE == 'es-es' %}Salud <br/>física {% else %} Physical <br/>Health {% endif %}
+                            </div>
+                        </li>
+                        <li class="s4m-menu-item" style="--s4m-menu-icon-bg: rgb(180, 120, 69);">
+                            <div class="s4m-menu-icon">
+                                <a href="/catalogue/#/?f=dataset&f=map&filter%7Bcategory.identifier%7D=soil_biological_health">
+                                    <img src="{% static 'img/biological.png' %}">
+                                </a>
+                            </div>
+                            <div class="s4m-menu-label" style="font-weight: 600;">
+                            {% if LANGUAGE == 'fr-fr' %}Santé <br/>biologique {% elif LANGUAGE == 'it-it' %}Salute <br/>biologica {% elif LANGUAGE == 'es-es' %}Salud <br/>biológica {% else %} Biological<br/>Health {% endif %}
+                            </div>
+                        </li>
+                        <li class="s4m-menu-item" style="--s4m-menu-icon-bg: rgb(46 155 81);">
+                            <div class="s4m-menu-icon">
+                                <a href="/catalogue/#/?f=dataset&f=map&filter%7Bkeywords.slug.in%7D=other_map">
+                                    <img src="{% static 'img/maps.svg' %}">
+                                </a>
+                            </div>
+                            <div class="s4m-menu-label" style="font-weight: 600;">
+                            {% if LANGUAGE == 'fr-fr' %} D'autres <br/>cartes {% elif LANGUAGE == 'it-it' %} Altre <br/>mappe {% elif LANGUAGE == 'es-es' %} Otros <br/>mapas {% else %} Other <br/>Maps {% endif %}
+                            </div>
+                        </li>
+                        <li class="s4m-menu-item" style="--s4m-menu-icon-bg: rgb(180, 120, 69);">
+                            <div class="s4m-menu-icon">
+                                <a href="/catalogue/#/?f=document&filter%7Bkeywords.slug.in%7D=manual">
+                                    <img src="{% static 'img/help.svg' %}">
+                                </a>
+                            </div>
+                            <div class="s4m-menu-label" style="font-weight: 600;">
+                            {% if LANGUAGE == 'fr-fr' %} Manuels <br/>d'aide {% elif LANGUAGE == 'it-it' %} Manuali <br/>di aiuto {% elif LANGUAGE == 'es-es' %} Manuales <br/>de ayuda {% else %} Help <br/>manuals {% endif %}
+                            </div>
                         </li>
                     </ul>
-                </div>
-                {% endblock %}
-                
-                {% block center_menu %}
-                <div class="gn-menu-content-center">
-                    {% if request.path == '/' %}  
-                    <div class="jumbotron">
-                        <h1 class="home">Soils<span>4</span>Med</h1>
-                        <p class="home" style="margin: 0px; font-weight: 500; text-align: center;"><span>S</span>oils <span>I</span>nformation <span>S</span>ystem</p>
-                    </div>
-                    {% endif %}
-                    
-                    <div class="s4m-search-container">
-                        {% include './search_bar.html' with search_bar_id='gn-search-bar' %}
-                    </div>
-                    
-                    {% if request.path == '/' %}
-                    <div class="s4m-icon-row">
-                        <ul class="gn-menu-list">
-                            <ul class="s4m-menu" style="list-style: none;">
-                                <li class="s4m-menu-item" style="--s4m-menu-icon-bg: rgb(180, 120, 69);">
-                                    <div class="s4m-menu-icon">
-                                        <a href="/catalogue/#/?f=dataset&f=map&filter%7Bkeywords.slug.in%7D=soil_map">
-                                            <img src="{% static 'img/maps.svg' %}">
-                                        </a>
-                                    </div>
-                                    <div class="s4m-menu-label" style="font-weight: 600;">
-                                        {% if LANGUAGE == 'fr-fr' %} Carte <br/>de sols {% elif LANGUAGE == 'it-it' %} Carta <br/>del suolo {% elif LANGUAGE == 'es-es' %} Mapa <br/>de suelos {% else %} Soil <br/>Maps {% endif %}
-                                    </div>
-                                </li>
-                                <li class="s4m-menu-item" style="--s4m-menu-icon-bg: rgb(46 155 81);">
-                                    <div class="s4m-menu-icon">
-                                        <a href="/catalogue/#/?f=dataset&f=map&filter%7Bcategory.identifier%7D=points_soil_data">
-                                            <img src="{% static 'img/pedology_white.png' %}">
-                                        </a>
-                                    </div>
-                                    <div class="s4m-menu-label" style="font-weight: 600;">
-                                        {% if LANGUAGE == 'fr-fr' %} Données <br/>Ponctuelles {% elif LANGUAGE == 'it-it' %} Dati <br/>Puntuali {% elif LANGUAGE == 'es-es' %} Datos <br/>Puntuales {% else %} Point <br/>Soil Data {% endif %}
-                                    </div>
-                                </li>
-                                <li class="s4m-menu-item" style="--s4m-menu-icon-bg: rgb(180, 120, 69);">
-                                    <div class="s4m-menu-icon">
-                                        <a href="/catalogue/#/?f=dataset&f=map&filter%7Bcategory.identifier%7D=soil_chemical_health">
-                                            <img src="{% static 'img/chemical.png' %}">
-                                        </a>
-                                    </div>
-                                    <div class="s4m-menu-label" style="font-weight: 600;">
-                                    {% if LANGUAGE == 'fr-fr' %}Santé <br/>chimique {% elif LANGUAGE == 'it-it' %}Salute <br/>chimica {% elif LANGUAGE == 'es-es' %}Salud <br/>química {% else %} Chemical<br/>Health {% endif %}
-                                    </div>
-                                </li>
-                                <li class="s4m-menu-item" style="--s4m-menu-icon-bg: rgb(46 155 81);">
-                                    <div class="s4m-menu-icon">
-                                        <a href="/catalogue/#/?f=dataset&f=map&filter%7Bcategory.identifier%7D=soil_physical_health">
-                                            <img src="{% static 'img/physical.png' %}">
-                                        </a>
-                                    </div>
-                                    <div class="s4m-menu-label" style="font-weight: 600;">
-                                    {% if LANGUAGE == 'fr-fr' %}Santé <br/>physique {% elif LANGUAGE == 'it-it' %}Salute <br/>fisica {% elif LANGUAGE == 'es-es' %}Salud <br/>física {% else %} Physical <br/>Health {% endif %}
-                                    </div>
-                                </li>
-                                <li class="s4m-menu-item" style="--s4m-menu-icon-bg: rgb(180, 120, 69);">
-                                    <div class="s4m-menu-icon">
-                                        <a href="/catalogue/#/?f=dataset&f=map&filter%7Bcategory.identifier%7D=soil_biological_health">
-                                            <img src="{% static 'img/biological.png' %}">
-                                        </a>
-                                    </div>
-                                    <div class="s4m-menu-label" style="font-weight: 600;">
-                                    {% if LANGUAGE == 'fr-fr' %}Santé <br/>biologique {% elif LANGUAGE == 'it-it' %}Salute <br/>biologica {% elif LANGUAGE == 'es-es' %}Salud <br/>biológica {% else %} Biological<br/>Health {% endif %}
-                                    </div>
-                                </li>
-                                <li class="s4m-menu-item" style="--s4m-menu-icon-bg: rgb(46 155 81);">
-                                    <div class="s4m-menu-icon">
-                                        <a href="/catalogue/#/?f=dataset&f=map&filter%7Bkeywords.slug.in%7D=other_map">
-                                            <img src="{% static 'img/maps.svg' %}">
-                                        </a>
-                                    </div>
-                                    <div class="s4m-menu-label" style="font-weight: 600;">
-                                    {% if LANGUAGE == 'fr-fr' %} D'autres <br/>cartes {% elif LANGUAGE == 'it-it' %} Altre <br/>mappe {% elif LANGUAGE == 'es-es' %} Otros <br/>mapas {% else %} Other <br/>Maps {% endif %}
-                                    </div>
-                                </li>
-                                <li class="s4m-menu-item" style="--s4m-menu-icon-bg: rgb(180, 120, 69);">
-                                    <div class="s4m-menu-icon">
-                                        <a href="/catalogue/#/?f=document&filter%7Bkeywords.slug.in%7D=manual">
-                                            <img src="{% static 'img/help.svg' %}">
-                                        </a>
-                                    </div>
-                                    <div class="s4m-menu-label" style="font-weight: 600;">
-                                    {% if LANGUAGE == 'fr-fr' %} Manuels <br/>d'aide {% elif LANGUAGE == 'it-it' %} Manuali <br/>di aiuto {% elif LANGUAGE == 'es-es' %} Manuales <br/>de ayuda {% else %} Help <br/>manuals {% endif %}
-                                    </div>
-                                </li>
-                            </ul>
-                        </ul>
-                    </div>
-                    {% endif %}
-                </div> 
-                {% endblock %} 
+                </ul>
             </div>
-        </div>
-    </nav> 
-{% if request.path != '/' %}    
-    <nav class="s4m-blue-navbar">
-        <div class="s4m-blue-left">
-            <ul>
-                <li><a href="/catalogue/#/">{% trans "All resources" %}</a></li>
-                <li><a href="/catalogue/#/?f=dataset">{% trans "Datasets" %}</a></li>
-                <li><a href="/catalogue/#/?f=map">{% trans "Maps" %}</a></li>
-                <li><a href="/catalogue/#/?f=document">{% trans "Documents" %}</a></li>
-                <li><a href="/catalogue/#/?f=geostory">{% trans "GeoStories" %}</a></li>
-                <li><a href="/catalogue/#/?f=dashboard">{% trans "Dashboards" %}</a></li>
-            </ul>
-        </div>
-       <div class="s4m-blue-right">
-            <ul>
-                <li class="dropdown-container">
-                    <div class="dropdown">
-                        <button class="dropdown-toggle s4m-nav-btn" type="button" data-toggle="dropdown">{% trans "About" %} <span class="caret"></span></button>
-                        <ul class="dropdown-menu">
-                            <li><a href="/people/">{% trans "People" %}</a></li>
-                            <li><a href="/groups/">{% trans "Groups" %}</a></li>
-                        </ul>
-                    </div>
-                </li>
-                {% include './language_selector.html' with variant='primary' align_right=True %}
-            </ul>
-        </div>
-    </nav>
-{% endif %} 
+        </div> 
+        {% endblock %} 
+    </div>
+</div>
+</nav> 
+<nav class="s4m-blue-navbar s4m-blue-navbar-top">
+    <div class="s4m-blue-left">
+        <ul>
+            <li><a href="/catalogue/#/">{% trans "All resources" %}</a></li>
+            <li><a href="/catalogue/#/?f=dataset">{% trans "Datasets" %}</a></li>
+            <li><a href="/catalogue/#/?f=map">{% trans "Maps" %}</a></li>
+            <li><a href="/catalogue/#/?f=document">{% trans "Documents" %}</a></li>
+            <li><a href="/catalogue/#/?f=geostory">{% trans "GeoStories" %}</a></li>
+            <li><a href="/catalogue/#/?f=dashboard">{% trans "Dashboards" %}</a></li>
+        </ul>
+    </div>
+    <div class="s4m-blue-right">
+        <ul>
+            <li>
+                <a href="/about/">
+                    {% trans "About" %}
+                </a>
+            </li>
+            
+            {% include './language_selector.html' with variant='primary' align_right=True %}
+        </ul>
+    </div>
+</nav>
+

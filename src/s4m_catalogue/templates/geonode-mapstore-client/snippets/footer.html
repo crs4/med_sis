@@ -4,8 +4,23 @@
 {% get_current_language as LANGUAGE %}
 <footer class="gn-footer">
     <ul>
-        <li><a href="https://geonode.org/" class="nav-link">
-            <span>Geonode.org</span>
+        <li><a href="/about/" class="nav-link">
+            <span>
+                {% if LANGUAGE == 'fr-fr' %} &Agrave; propos  
+                {% elif LANGUAGE == 'it-it' %} A proposito
+                {% elif LANGUAGE == 'es-es' %} Acerca de  
+                {% else  %} About
+                {% endif %}
+            </span>    
+        </a></li>
+        <li><a href="/help/" class="nav-link">
+            <span>
+                {% if LANGUAGE == 'fr-fr' %} Manuels  
+                {% elif LANGUAGE == 'it-it' %} Manuali
+                {% elif LANGUAGE == 'es-es' %} Manuales  
+                {% else  %} Manuals
+                {% endif %}
+            </span>
         </a></li>
         <li><a href="/privacy_cookies/" class="nav-link">
             <span>
@@ -25,14 +40,10 @@
                 {% endif %}
             </span>
         </a></li>
-        <li><a href="/about/" class="nav-link">
+        <li><a href="/iso28258/" class="nav-link">
             <span>
-                {% if LANGUAGE == 'fr-fr' %} &Agrave; propos  
-                {% elif LANGUAGE == 'it-it' %} A proposito
-                {% elif LANGUAGE == 'es-es' %} Acerca de  
-                {% else  %} About
-                {% endif %}
-            </span>    
+                iso28258
+            </span>
         </a></li>
     </ul>
 </footer>

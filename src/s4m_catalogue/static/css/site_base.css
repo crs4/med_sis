@@ -26,6 +26,11 @@ header .s4m-background.home {
     filter: drop-shadow(#000 0px 0px 0.75rem);
 }
 
+.msgapi #gn-brand-navbar img {
+    max-height: 1.8rem;
+    width: auto;
+}
+
 #gn-brand-navbar{
     position: absolute;
     top: 25px;
@@ -129,7 +134,9 @@ header .s4m-background.home {
     text-align: center;
     font-weight: 600;
     text-shadow: 2px 2px 4px darkblue;
-    margin-bottom: 0;
+    margin-top: 2.5rem;
+    margin-top: 0;
+    font-size: 50px;
 }
 
 .gn-menu-content-center h1.home span, 
@@ -172,8 +179,8 @@ ul.s4m-menu {
 
 /* ICON RESIZING TO FIT INTO THE WAVE */
 .home ul.s4m-menu {
-    font-size: 1.7em; /* Reduced from 2.0em. Also scales down the circles */
-    gap: 1.6rem; /* Less space between circles */
+    font-size: 1.4em; /* Reduced from 2.0em. Also scales down the circles */
+    gap: 1.4rem; /* Less space between circles */
 }
 
 .s4m-menu-item {
@@ -197,7 +204,7 @@ ul.s4m-menu {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto;
+    margin: -4px;
     border: 0.2em solid var(--s4m-menu-icon-bg);
     border-bottom-color: transparent;
     border-left-color: transparent;
@@ -263,14 +270,14 @@ ul.s4m-menu {
 
 .gn-menu-content-left {
     position: absolute;
-    left: 2rem;
-    top: 1rem;
+    left: 1rem;
+    top: 0.5rem;
 }
 
 .gn-menu-content-right {
     position: absolute;
-    right: 2rem;
-    top: 1rem;
+    right: 1rem;
+    top: 0.5rem;
     z-index: 1000;
 }
 

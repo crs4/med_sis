@@ -43,7 +43,6 @@ export default function Page()  {
   const [soilContext, setSoilContext] = useState(null);
   
   const [visibleRemoveDlg, setVisibleRemoveDlg] = useState(false);
-  const [visibleCloneDlg, setVisibleCloneDlg] = useState(false);
   const [visibleCreateDlg, setVisibleCreateDlg] = useState(false);
   const [isWorking, setIsWorking] = useState(false);
   
@@ -119,64 +118,6 @@ export default function Page()  {
     setIsWorking(false);
     setSelected(null);
     initFilters();  
-  };
-
-  /* This start cloning dataset */
-  const cloneDataset = async (id) => {
-    if ( !id || isWorking )
-      return;
-    const req = datasets.filter( (e) => e.id === id )
-    if ( req[0] ) {
-      setSelected(id);
-      setVisibleCloneDlg(true);
-    }
-    else toast.current.show({severity:'error', summary: 'Error', detail:'Errors dataset data not found', life: 3000}); 
-  };
-
-  /* This clones a dataset */
-  const performClone = async () => {
-    if ( !selected )
-      return;
-    setIsWorking(true);
-    try {
-      const response = await ProfileService.get( document.cookie, selected, 'datasets' );
-      if ( response && response.ok && response.data ) {
-        const nowd = formatDate(Date.now())
-        // old field not modified:
-        //   source, src_typename : the source dataset
-        //   filter : point filters  
-        //   kriging, k_params : kriging configuration
-        //   context : the context of dataset 
-        //            - Point soil data section
-        //            - Soil indicator
-        //            - Aoi soil indicator
-        let dataset = {
-          ...response.data, 
-          date : nowd,
-          name : user.userData.preferred_username+':'+nowd,
-          user_name : user.userData.preferred_username,
-          user_email : user.userData.email, 
-          points : null, // original geo points not filtered, reload
-          k_variogram : null, // semi-variogram data
-          k_data : null, // aggregated geo filtered points
-          report : null,  // final publication report with geonode ids
-          status : ProfileService.DATASET_STATUSES.CREATED
-        }
-        
-        const response = await ProfileService.save( document.cookie, dataset, 'datasets' );
-        if ( response.ok ) {
-          toast.current.show({severity:'success', summary: 'Done!', detail:'dataset ' + response.data.id + ' has been created', life: 3000});
-          fetchData()
-        }
-        else 
-          toast.current.show({severity:'error', summary: 'Error', detail:'Errors creating dataset', life: 3000});
-      }
-    } catch (e) { 
-      toast.current.show({severity:'error', summary: 'Error', detail:'Something went wrong', life: 3000});
-    } 
-    setIsWorking(false);
-    setSelected(null);
-    initFilters();   
   };
 
   /* This start deleting a dataset */ 
@@ -301,14 +242,6 @@ export default function Page()  {
       onClick={() => goToDataset(rowData.id)}
       aria-controls={visibleCreateDlg ? 'Show the request data' : null}
       aria-expanded={visibleCreateDlg ? true : false}
-    />
-    <Button icon="pi pi-clone"
-      className="mr-2 mb-2"
-      label=""
-      disabled={isWorking}
-      tooltip={t('CLONE_DATASET')}
-      tooltipOptions={{ position: 'top' }}
-      onClick={() => cloneDataset(rowData.id)}
     />
     <Button icon="pi pi-times"
       className="p-button-danger mb-2 mr-2"
@@ -438,9 +371,6 @@ export default function Page()  {
         </div>    
       </Dialog>
 
-      <ConfirmDialog id="dlg_create" group="declarative"  visible={visibleCloneDlg} onHide={() => setVisibleCloneDlg(false)} 
-          message="Are you sure you want to create the cloned dataset?" 
-          header="Confirmation" icon="pi pi-plus" accept={performClone} reject={rejectDlg} />
       <ConfirmDialog id="dlg_remove" group="declarative"  visible={visibleRemoveDlg} onHide={() => setVisibleRemoveDlg(false)} 
           message="Are you sure you want to delete the Dataset? (Note: this doesn't remove the dataset in the catalogue.)" 
           header="Confirmation" icon="pi pi-exclamation-triangle" accept={performRemove} reject={rejectDlg} />

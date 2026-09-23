@@ -7,12 +7,15 @@ import ConfigureDataset from '../../components/ConfigureDataset';
 import ValidateDataset from '../../components/ValidateDataset';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
+import { Panel } from 'primereact/panel';
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Timeline } from 'primereact/timeline';
+import { Message } from 'primereact/message';
+
 /*
 * This page allows different actions on soilindicators base datasets 
 * to publish new dataset on MED-SIS for End User
@@ -32,6 +35,7 @@ export default function Page()  {
   const toast = useRef(null);
   const [loading, setLoading] = useState(false);
   const [descriptors, setDescriptors] = useState([]);
+  const [filters, setFilters] = useState([]);
   
   /* fetch dataset data */
   const fetchDataset = async (id) => {
@@ -84,6 +88,29 @@ export default function Page()  {
     setDescriptors(_descriptors)
   }
 
+  function generateFilters ( _dataset) {
+    if ( !_dataset )
+      return null;
+
+    const _filters = [
+      { name: "Name", value: _dataset.name },
+      { name: "Owner", value: _dataset.user_email },
+      { name: "Date", value: _dataset.date },
+      { name: "Source", value: _dataset.source },
+    ]
+    if ( _dataset.points)
+      _descriptors.push({ name: "Source points", value: ( _dataset.points.features ? _dataset.points.features.length : 0 ) })
+    if ( _dataset.filter.points)
+      _descriptors.push({ name: "Filtered points", value: ( _dataset.filter.points.features ? _dataset.filter.points.features.length : 0 ) })
+    else
+      _descriptors.push({ name: "Filtered points", value: 0 })
+    if ( _dataset.context !== ProfileService.DATASET_CONTEXT.POINTS_SOIL_DATA && _dataset.k_data ){
+      const len = (_dataset.k_data.features ? _dataset.k_data.features.length : 0);
+      _descriptors.push({ name: "Aggregated points", value: len })  
+    }
+    setDescriptors(_descriptors)
+  }
+
   const customizedMarker = (item) => {
     console.log(item)
     return (
@@ -108,6 +135,23 @@ export default function Page()  {
 return (
   <div className="layout-dashboard">
     <Toast ref={toast} />
+    <Panel header={t('UPLOAD_HELP')} toggleable >
+      <div><Message className="p-inline-message p-component p-inline-message-info font-bold block" severity="info" text={t('PUBLISHING_MSG1')}/></div>
+      <ol>
+        <li><Message className="p-inline-message p-component p-inline-message-info font-bold block" severity="info" text={t('PUBLISHING_MSG2')}/></li>
+        <li><Message className="p-inline-message p-component p-inline-message-info font-bold block" severity="info" text={t('PUBLISHING_MSG3')}/></li>
+        <li><Message className="p-inline-message p-component p-inline-message-info font-bold block" severity="info" text={t('PUBLISHING_MSG4')}/></li>
+        <li><Message className="p-inline-message p-component p-inline-message-info font-bold block" severity="info" text={t('PUBLISHING_MSG5')}/></li>
+        <li><Message className="p-inline-message p-component p-inline-message-info font-bold block" severity="info" text={t('PUBLISHING_MSG6')}/></li>
+        <ul>
+        <li><Message className="p-inline-message p-component p-inline-message-success font-bold block" severity="success" text={t('PUBLISHING_MSG7')}/></li>
+        <li><Message className="p-inline-message p-component p-inline-message-success font-bold block" severity="success" text={t('PUBLISHING_MSG8')}/></li>
+        <li><Message className="p-inline-message p-component p-inline-message-success font-bold block" severity="success" text={t('PUBLISHING_MSG9')}/></li>
+        </ul>
+        <li><Message className="p-inline-message p-component p-inline-message-success font-bold block" severity="info" text={t('PUBLISHING_MSG10')}/></li>        
+        <li><Message className="p-inline-message p-component p-inline-message-warning font-bold block" severity="warn" text={t('PUBLISHING_MSG11')}/></li>        
+      </ol>    
+    </Panel>
     <div className="card flex flex-reverse w-full m-4"> 
       <Button icon="pi pi-plus" className="mr-2 mb-2" label="List of Dataset" disabled={loading}
         tooltip={t('DATASET_LIST')} tooltipOptions={{ position: 'top' }}
@@ -145,20 +189,16 @@ return (
           <Column field="name" header="" style={{ width: '25%' }}></Column>
           <Column field="value" header=""  className="text-yellow-800" ></Column>
         </DataTable>
-        <div className="flex flex-row gap-2">
-          <div className="flex flex-column gap-2 min-w-max">
-            <h5 className="flex justify-content-center w-full text-cyan-800">Elaboration flow</h5>
-            <Timeline value={dataset.report?.msgs} align="alternate" className="customized-timeline" marker={customizedMarker} content={customizedContent} />
-          </div>
-          { dataset.report.style &&  (  
-          <div flex flex-column gap-2> 
+        <DataTable className="font-bold text-cyan-800"  value={filters} tableStyle={{ minWidth: '40rem' }}>
+          <Column field="name" header="" style={{ width: '25%' }}></Column>
+          <Column field="value" header=""  className="text-yellow-800" ></Column>
+        </DataTable>
+        <div flex flex-column gap-2> 
             <h5 className="flex justify-content-center w-full text-cyan-800">Proposed Raster Style:</h5>
             <div className="card flex flex-column gap-1 font-italic">
               { dataset.report.style }
-              { dataset.report.style.split('\n').forEach ( (e) => ( <span>pippo</span> ) ) }
+              { dataset.report.style.split('\n').forEach ( (e) => ( <p>pippo</p> ) ) }
             </div>
-          </div>
-          )}  
         </div>
       </div>
       </>

@@ -24,6 +24,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls.i18n import i18n_patterns
 from geonode.urls import urlpatterns as geonode_urlpatterns
+from django.views.generic import TemplateView
 
 
 # URL per le API (non soggetti a i18n)
@@ -59,9 +60,10 @@ if settings.DEBUG:
 
 """
 # You can register your own urlpatterns here
+"""    
+
 urlpatterns = [
-    url(r'^/?$',
-        homepage,
-        name='home'),
- ] + urlpatterns
-"""
+    re_path(r"^iso28258/$", TemplateView.as_view(template_name="iso.html"), name="iso28258"),
+    re_path(r"^data_policy/$", TemplateView.as_view(template_name="data-policy.html"), name="data_policy"),
+] + urlpatterns
+

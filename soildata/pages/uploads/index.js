@@ -3,7 +3,7 @@
 /*
   Copyright (C) 2026 CRS4
 
-  UPLOAD Points Soil Data page 
+  UPLOAD lists page 
   
   @bobdemo Roberto Demontis demontis@crs4.it
 
