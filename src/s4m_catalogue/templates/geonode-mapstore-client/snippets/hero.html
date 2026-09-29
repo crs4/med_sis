@@ -1,5 +1,154 @@
 {% load static %}
 {% load i18n %}
 {% get_current_language as LANGUAGE %}
+{% load base_tags %}
+{% load markdownify %}
+{% block extra_style %}
+    <style>
+        #gn-hero {
+            background-image: url("{% static 'img/soils-backgroundMini.jpg' %}");
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-color: transparent;
+        }
 
+        @media (min-width: 600px) {
+            #gn-hero .cat_icons {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                font-weight: 700;
+                align-items: center;
+                width: 100%;
+                font-size: 1.4rem;
+                background-color: transparent;
+            }
+            #gn-hero h1.home { 
+                color: rgb(213, 149, 89);
+                text-align: center;
+                font-weight: 700;
+                text-shadow: 2px 2px 4px darkblue;
+                margin-top: 1rem;
+                font-size: 5rem;
+            }
+            #gn-hero span.home { 
+                color: rgb(42, 185, 13);
+                text-align: center;
+                font-weight: 700;
+                text-shadow: 2px 2px 4px darkblue;
+                margin-top: 1rem;
+                font-size: 5rem;
+            }
+            #gn-hero p.home { 
+                color: rgb(42, 185, 13);
+                text-align: center;
+                font-weight: 700;
+                text-shadow: 2px 2px 4px darkblue;
+                margin-top: 1rem;
+                font-size: 3rem;
+            }
+        }
+
+        @media only screen and (max-width: 600px)  {
+            #gn-hero .cat_icons {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                font-weight: 700;
+                align-items: center;
+                width: 100%;
+                font-size: 1.0rem;
+                background-color: transparent;
+            }
+            #gn-hero h1.home { 
+                color: rgb(213, 149, 89);
+                text-align: center;
+                font-weight: 700;
+                text-shadow: 2px 2px 4px darkblue;
+                margin-top: 1rem;
+                font-size: 3rem;
+            }
+            #gn-hero span.home { 
+                color: rgb(42, 185, 13);
+                text-align: center;
+                font-weight: 700;
+                text-shadow: 2px 2px 4px darkblue;
+                margin-top: 1rem;
+                font-size: 3rem;
+            }
+            #gn-hero p.home { 
+                color: rgb(42, 185, 13);
+                text-align: center;
+                font-weight: 700;
+                text-shadow: 2px 2px 4px darkblue;
+                margin-top: 1rem;
+                font-size: 2rem;
+            }
+        }       
+    </style>
+
+{% endblock %}
+<div id="gn-hero" class="gn-hero">
+    <div class="jumbotron">
+        <h1 class="home">Soils<span class="home">4</span>Med</h1>
+        <p class="home">Soils Information System</p>
+        <div class="cat_icons">
+            <ul class="gn-menu-list">
+                <ul class="s4m-menu" style="list-style: none; display:flex; flex-wrap: wrap;">
+                    <li class="s4m-menu-item" style="--s4m-menu-icon-bg: rgb(180, 120, 69);">
+                        <div class="s4m-menu-icon">
+                            <a href="/catalogue/#/?f=dataset&f=map&filter%7Bkeywords.slug.in%7D=soil_map" >
+                                <img src="{% static 'img/maps.svg' %}">
+                            </a>
+                        </div>
+                        <div class="s4m-menu-label" style="font-weight: 600;">
+                            {% if LANGUAGE == 'fr-fr' %} Carte <br/>de sols {% elif LANGUAGE == 'it-it' %} Carta <br/>del suolo {% elif LANGUAGE == 'es-es' %} Mapa <br/>de suelos {% else %} Soil <br/>Maps {% endif %}
+                        </div>
+                    </li>
+                    <li class="s4m-menu-item" style="--s4m-menu-icon-bg: rgb(46 155 81);">
+                        <div class="s4m-menu-icon">
+                            <a href="/catalogue/#/?f=dataset&f=map&filter%7Bcategory.identifier%7D=points_soil_data" >
+                                <img src="{% static 'img/pedology_white.png' %}">
+                            </a>
+                        </div>
+                        <div class="s4m-menu-label" style="font-weight: 600;">
+                            {% if LANGUAGE == 'fr-fr' %} Données <br/>Ponctuelles {% elif LANGUAGE == 'it-it' %} Dati <br/>Puntuali {% elif LANGUAGE == 'es-es' %} Datos <br/>Puntuales {% else %} Point <br/>Soil Data {% endif %}
+                        </div>
+                    </li>
+                    <li class="s4m-menu-item" style="--s4m-menu-icon-bg: rgb(180, 120, 69);">
+                        <div class="s4m-menu-icon">
+                            <a href="/catalogue/#/?f=dataset&f=map&filter%7Bcategory.identifier%7D=soil_chemical_health">
+                                <img src="{% static 'img/chemical.png' %}">
+                            </a>
+                        </div>
+                        <div class="s4m-menu-label" style="font-weight: 600;">
+                        {% if LANGUAGE == 'fr-fr' %}Santé <br/>chimique {% elif LANGUAGE == 'it-it' %}Salute <br/>chimica {% elif LANGUAGE == 'es-es' %}Salud <br/>química {% else %} Chemical<br/>Health {% endif %}
+                        </div>
+                    </li>
+                    <li class="s4m-menu-item" style="--s4m-menu-icon-bg: rgb(46 155 81);">
+                        <div class="s4m-menu-icon">
+                            <a href="/catalogue/#/?f=dataset&f=map&filter%7Bcategory.identifier%7D=soil_physical_health">
+                                <img src="{% static 'img/physical.png' %}">
+                            </a>
+                        </div>
+                        <div class="s4m-menu-label" style="font-weight: 600;">
+                        {% if LANGUAGE == 'fr-fr' %}Santé <br/>physique {% elif LANGUAGE == 'it-it' %}Salute <br/>fisica {% elif LANGUAGE == 'es-es' %}Salud <br/>física {% else %} Physical <br/>Health {% endif %}
+                        </div>
+                    </li>
+                    <li class="s4m-menu-item" style="--s4m-menu-icon-bg: rgb(180, 120, 69);">
+                        <div class="s4m-menu-icon">
+                            <a href="/catalogue/#/?f=dataset&f=map&filter%7Bcategory.identifier%7D=soil_biological_health">
+                                <img src="{% static 'img/biological.png' %}">
+                            </a>
+                        </div>
+                        <div class="s4m-menu-label" style="font-weight: 600;">
+                        {% if LANGUAGE == 'fr-fr' %}Santé <br/>biologique {% elif LANGUAGE == 'it-it' %}Salute <br/>biologica {% elif LANGUAGE == 'es-es' %}Salud <br/>biológica {% else %} Biological<br/>Health {% endif %}
+                        </div>
+                    </li>
+                </ul>
+            </ul>    
+        </div>
+    </div>
+</div>
 
