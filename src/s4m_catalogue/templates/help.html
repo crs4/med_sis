@@ -1,42 +1,165 @@
 {% extends "geonode_base.html" %}
-
+{% load static %}
 {% load i18n %}
-{% block title %} {% trans "Help" %} — {{ block.super }} {% endblock %}
+{% load client_lib_tags %}
+{% get_current_language as LANGUAGE %}
+
+{% block title %} 
+  {% if LANGUAGE == 'it-it' %} Guida &#038; Manuali
+  {% elif LANGUAGE == 'fr-fr' %} Aide &#038; Manuels 
+  {% elif LANGUAGE == 'es-es' %} Ayuda &#038; Manuales
+  {% else %} Help &#038; Manuals {% endif %}
+  - {{ block.super }} 
+{% endblock %}
 
 {% block body_outer %}
 <div class="page-header">
-  <h2>{% trans "Help" %}</h2>
+  <h2 style="color:rgb(125, 56, 7)">
+    {% if LANGUAGE == 'it-it' %} Guida &#038; Manuali
+    {% elif LANGUAGE == 'fr-fr' %} Aide &#038; Manuels
+    {% elif LANGUAGE == 'es-es' %} Ayuda &#038; Manuales
+    {% else %} Help &#038; Manuals {% endif %}
+  </h2>
 </div>
+<div class="row">
+  <div class="col-md-8">
+    <p class="lead">
+      {% if LANGUAGE == 'it-it' %} Questa pagina fornisce informazioni utili su come utilizzare il MED SIS. &Egrave; possibile utilizzare i link nella barra laterale per scaricare un manuale in formato PDF o un modello XLSX.
+      {% elif LANGUAGE == 'fr-fr' %} Cette page fournit des informations utiles sur l'utilisation du MED SIS. Vous pouvez utiliser les liens de la barre lat&eacute;rale pour t&eacute;l&eacute;charger un manuel au format PDF ou un mod&egrave;le au format XLSX.
+      {% elif LANGUAGE == 'es-es' %} Esta p&aacute;gina ofrece informaci&oacute;n &uacute;til sobre c&oacute;mo utilizar el MED SIS. Puede utilizar los enlaces de la barra lateral para descargar un archivo PDF o una plantilla XLSX.
+      {% else %} This page provides helpful information about how to use the MED SIS. You can use the sidebar links to download a manual in pdf format or a XLSx template.
+      {% endif %}
+    </p>
+    <h4 style="font-weight: 700;">{{ "Generic Users"|upper }}</h4>
+    <p>
+      {% if LANGUAGE == 'it-it' %} Il file <a href="/static/doc/MED-SIS-Manual-Generic_User.pdf">MED-SIS-Manual-Generic_User.pdf</a> contiene il manuale dell'utente generico del MED-SIS (in inglese) che descrive come utilizzare il Soil Information System.
+      {% elif LANGUAGE == 'fr-fr' %} Le fichier <a href="/static/doc/MED-SIS-Manual-Generic_User.pdf">MED-SIS-Manual-Generic_User.pdf</a> contient le manuel d'utilisation g&eacute;n&eacute;rique de MED-SIS (en anglais), qui d&eacute;crit le fonctionnement du syst&egrave;me d'information sur les sols (Soil Information System).
+      {% elif LANGUAGE == 'es-es' %} El archivo <a href="/static/doc/MED-SIS-Manual-Generic_User.pdf">MED-SIS-Manual-Generic_User.pdf</a> contiene el manual de usuario gen&eacute;rico de MED-SIS (en ingl&eacute;s), que describe c&oacute;mo utilizar el Sistema de Información de Suelos.
+      {% else %} The file <a href="/static/doc/MED-SIS-Manual-Generic_User.pdf">MED-SIS-Manual-Generic_User.pdf</a> contains the generic MED-SIS user manual (in English), which describes how to use the Soil Information System.
+      {% endif %}
+    </p>    
+    <p>
+      {% if LANGUAGE == 'it-it' %} MED-SIS &egrave; essenzialmente un catalogo di risorse di dati sul suolo che il personale di MED-SIS pu&ograve; scegliere di condividere o meno con l'utente.
+      {% elif LANGUAGE == 'fr-fr' %} MED-SIS est essentiellement un catalogue de ressources de donn&eacute;es sur les sols que le personnel de MED-SIS peut choisir de partager ou non avec l'utilisateur.
+      {% elif LANGUAGE == 'es-es' %} MED-SIS es esencialmente un cat&aacute;logo de recursos de datos de suelos que el personal de MED-SIS puede optar por compartir o no con el usuario.
+      {% else %} MED-SIS is essentially a catalogue of soil data resources that the MED-SIS staff may or may not share with the user.
+      {% endif %}
+    </p>
+    <p>
+      {% if LANGUAGE == 'it-it' %} Una risorsa di dati sul suolo pu&ograve; essere un dataset, una mappa, un documento, una geostoria o una dashboard .
+      {% elif LANGUAGE == 'es-es' %} Un recurso de datos de suelos puede ser un conjunto de datos, un mapa, un documento, una geohistoria o un panel de control que el personal de MED-SIS comparte con los usuarios.
+      {% elif LANGUAGE == 'fr-fr' %} Une ressource de donn&eacute;es sur les sols peut &ecirc;tre un jeu de donn&eacute;es, une carte, un document, une g&eacute;ohistoire ou un tableau de bord que l'&eacute;quipe de MED-SIS partage avec les utilisateurs.
+      {% else %} A soil data resource can be a dataset, a map, a document, a geoStory or a dashboard that MED-SIS staff shares with users.
+      {% endif %}
+    </p>
+    <ul>
+      <li>
+        {% if LANGUAGE == 'it-it' %} I dataset sono risorse geospaziali che possono essere archiviate, gestite, visualizzate e condivise tramite la piattaforma. Un dataset rappresenta tipicamente uno strato informativo spaziale.
+        {% elif LANGUAGE == 'fr-fr' %} Les jeux de donn&eacute;es sont des ressources g&eacute;ospatiales qui peuvent &ecirc;tre stock&eacute;es, g&eacute;r&eacute;es, visualis&eacute;es et partag&eacute;es via la plateforme. Un jeu de donn&eacute;es repr&eacute;sente g&eacute;n&eacute;ralement une couche spatiale.
+        {% elif LANGUAGE == 'es-es' %} Los conjuntos de datos son recursos geoespaciales que pueden almacenarse, gestionarse, visualizarse y compartirse a trav&eacute;s de la plataforma. Por lo general, un conjunto de datos representa una capa espacial.  
+        {% else %} Dataset are geospatial resources that can be stored, managed, visualized, and shared through the platform. A dataset typically represents a spatial layer
+        {% endif %} 
+      </li>
+      <li>
+        {% if LANGUAGE == 'it-it' %} Le mappe sono composizioni o visualizzazioni realizzate a partire da uno o pi &uacute; dataset.
+        {% elif LANGUAGE == 'fr-fr' %} Les cartes sont des compositions ou des visualisations &eacute;labor&eacute;es &agrave; partir d'un ou plusieurs jeux de donn&eacute;es.
+        {% elif LANGUAGE == 'es-es' %} Los mapas son composiciones o visualizaciones creadas a partir de uno o varios conjuntos de datos.
+        {% else %} Maps are compositions or visualizations built from one or more datasets
+        {% endif %}
+      </li>  
+      <li>
+        {% if LANGUAGE == 'it-it' %} I Documenti sono file non spaziali come PDF (report, studi), documenti Word, fogli di calcolo Excel, immagini e presentazioni.
+        {% elif LANGUAGE == 'fr-fr' %} Les documents sont des fichiers non spatiaux tels que des PDF (rapports, &eacute;tudes), des documents Word, des feuilles de calcul Excel, des images et des pr&eacute;sentations.
+        {% elif LANGUAGE == 'es-es' %} Los documentos son archivos no espaciales, tales como PDF (informes, estudios), documentos de Word, hojas de c&aacute;lculo de Excel, im&aacute;genes y presentaciones.
+        {% else %} Documents are non-spatial files such as PDFs (reports, studies), Word documents, Excel spreadsheets, images, and presentations.
+        {% endif %}
+      </li>
+      <li>
+        {% if LANGUAGE == 'it-it' %} Le GeoStory sono una tipologia di contenuto speciale utilizzata per creare narrazioni interattive che combinano mappe e contenuti multimediali.
+        {% elif LANGUAGE == 'fr-fr' %} Les GeoStories sont un type de contenu sp&eacute;cifique utilis&eacute; pour cr&eacute;er des r&eacute;cits interactifs combinant cartes et contenus multim&eacute;dias.
+        {% elif LANGUAGE == 'es-es' %} Las GeoStories son un tipo de contenido especial utilizado para crear narrativas interactivas que combinan mapas y contenido multimedia.
+        {% else %} GeoStories are a special content type used to create interactive narratives that combine maps and multimedia content.
+        {% endif %}
+      </li>
+      <li>
+        {% if LANGUAGE == 'it-it' %} Le dashboard sono pagine interattive utilizzate per visualizzare e analizzare dati geospaziali tramite grafici, widget e mappe.
+        {% elif LANGUAGE == 'fr-fr' %} Les tableaux de bord sont des pages interactives utilis&eacute;es pour visualiser et analyser des donn&eacute;es g&eacute;ospatiales au moyen de graphiques, de widgets et de cartes. 
+        {% elif LANGUAGE == 'es-es' %} Los paneles son p&aacute;ginas interactivas que se utilizan para visualizar y analizar datos geoespaciales mediante gr&aacute;ficos, widgets y mapas.
+        {% else %} Dashboards are interactive pages used to visualize and analyze geospatial data through charts, widgets, and maps.
+        {% endif %} 
+      </li>
+    </ul>
+    <h4 style="font-weight: 700;">{{ "MED-SIS Staff"|upper }}</h4>
+    <p>
+      {% if LANGUAGE == 'it-it' %} Il file <a href="/static/doc/MED-SIS-Manual-Data_Managers.pdf">MED-SIS-Manual-Data_Managers.pdf</a> contiene il manuale per lo staff del MED-SIS (in inglese) che descrive come gestire, creare, caricare e gestire i dati sul suolo nel Soil Information System.
+      {% elif LANGUAGE == 'fr-fr' %} Le fichier <a href="/static/doc/MED-SIS-Manual-Data_Managers.pdf">MED-SIS-Manual-Data_Managers.pdf</a> contient le manuel destiné au personnel de MED-SIS (en anglais) ; il décrit comment gérer, créer et charger les données sur les sols dans le Soil Information System.
+      {% elif LANGUAGE == 'es-es' %} El archivo <a href="/static/doc/MED-SIS-Manual-Data_Managers.pdf">MED-SIS-Manual-Data_Managers.pdf</a> contiene el manual para el personal de MED-SIS (en inglés), el cual describe cómo gestionar, crear y cargar datos de suelos en el Sistema de Información de Suelos.
+      {% else %} The file <a href="/static/doc/MED-SIS-Manual-Data_Managers.pdf">MED-SIS-Manual-Data_Managers.pdf</a> contains the manual for MED-SIS staff (in English), which describes how to manage, create, and upload soil data within the Soil Information System.
+      {% endif %}
+    </p> 
+    <h4 style="font-weight: 700;">{{ "Point Soil Data"|upper }}</h4>
+    <p>
+      {% if LANGUAGE == 'it-it' %} Il file <a href="/static/doc/MED-SIS-Manual-Point_Soil_Data.pdf">MED-SIS-Manual-Point_Soil_Data.pdf</a> contiene il manuale (in inglese) che descrive i dataset "Point_Soil_Data" i dati puntuali sul suolo (profili e campioni) presenti nel Soil Information System.
+      {% elif LANGUAGE == 'fr-fr' %} Le fichier <a href="/static/doc/MED-SIS-Manual-Point_Soil_Data.pdf">MED-SIS-Manual-Point_Soil_Data.pdf</a> contient le manuel (en anglais) décrivant les jeux de données « Point_Soil_Data » — les données ponctuelles sur le sol (profils et échantillons) présentes dans le Soil Information System.
+      {% elif LANGUAGE == 'es-es' %} El archivo <a href="/static/doc/MED-SIS-Manual-Point_Soil_Data.pdf">MED-SIS-Manual-Point_Soil_Data.pdf</a> contiene el manual (en inglés) que describe los conjuntos de datos «Point_Soil_Data»: datos de suelo basados ​​en puntos (perfiles y muestras) contenidos en el Sistema de Información de Suelos.
+      {% else %} The file <a href="/static/doc/MED-SIS-Manual-Point_Soil_Data.pdf">MED-SIS-Manual-Point_Soil_Data.pdf</a> contains the manual (in English) describing the "Point_Soil_Data" datasets: point-based soil data (profiles and samples) contained in the Soil Information System.
+      {% endif %}
+    </p>
+    <h4 style="font-weight: 700;">{{ "Soil Indicators"|upper }}</h4>
+    <p>
+      {% if LANGUAGE == 'it-it' %} Il file <a href="/static/doc/MED-SIS-Manual-Soil_Indicators.pdf">MED-SIS-Manual-Soil_Indicators.pdf</a> contiene il manuale (in inglese) che descrive i dataset "Point_Soil_Data" i dati puntuali sul suolo (profili e campioni) presenti nel Soil Information System.
+      {% elif LANGUAGE == 'fr-fr' %} Le fichier <a href="/static/doc/MED-SIS-Manual-Soil_Indicators.pdf">MED-SIS-Manual-Soil_Indicators.pdf</a> contient le manuel (en anglais) décrivant les jeux de données « Point_Soil_Data » — les données ponctuelles sur le sol (profils et échantillons) présentes dans le Soil Information System.
+      {% elif LANGUAGE == 'es-es' %} El archivo <a href="/static/doc/MED-SIS-Manual-Soil_Indicators.pdf">MED-SIS-Manual-Soil_Indicators.pdf</a> contiene el manual (en inglés) que describe los conjuntos de datos «Point_Soil_Data»: datos de suelo basados ​​en puntos (perfiles y muestras) contenidos en el Sistema de Información de Suelos.
+      {% else %} The file <a href="/static/doc/MED-SIS-Manual-Soil_Indicators.pdf">MED-SIS-Manual-Soil_Indicators.pdf</a> contains the manual (in English) describing the "Point_Soil_Data" datasets: point-based soil data (profiles and samples) contained in the Soil Information System.
+      {% endif %}
+    </p>
+    <h4 style="font-weight: 700;">{{ "ISO 28258"|upper }}</h4>
+    <p>
+      {% if LANGUAGE == 'it-it' %} Il file <a href="/static/doc/MED-SIS-Manual-ISO_28258.pdf">MED-SIS-Manual-ISO_28258.pdf</a> contiene il manuale (in inglese) che descrive le api per accedere e scaricare i dati del suolo del progetto Soils4Med nello standard ISO 28258.
+      {% elif LANGUAGE == 'fr-fr' %} Le fichier <a href="/static/doc/MED-SIS-Manual-ISO_28258.pdf">MED-SIS-Manual-ISO_28258.pdf</a> contient le manuel (en anglais) décrivant les API permettant d'accéder aux données pédologiques du projet Soils4Med et de les télécharger au format de la norme ISO 28258.
+      {% elif LANGUAGE == 'es-es' %} El archivo <a href="/static/doc/MED-SIS-Manual-ISO_28258.pdf">MED-SIS-Manual-ISO_28258.pdf</a> contiene el manual (en inglés) que describe las API para acceder y descargar los datos de suelo del proyecto Soils4Med conforme a la norma ISO 28258.
+      {% else %} The file <a href="/static/doc/MED-SIS-Manual-ISO_28258.pdf">MED-SIS-Manual-ISO_28258.pdf</a> contains the manual (in English) describing the APIs for accessing and downloading Soils4Med project soil data in the ISO 28258 standard.
+      {% endif %}
+    </p> 
+  </div>
+  <div class="col-md-4">
+    <ul class="list-group">
+      <li class="list-group-item"><h3>{% if LANGUAGE == 'it-it' %} Manuali {% elif LANGUAGE == 'fr-fr' %} Manuales {% elif LANGUAGE == 'es-es' %} Manuales {% else %} Manuals{% endif %}</h3></li>
+      <li class="list-group-item"><a href="{% static 'doc/MED-SIS-Manual-Generic_User.pdf' %}">MED-SIS-Manual-Generic_User.pdf</a></li>
+      <li class="list-group-item"><a href="{% static 'doc/MED-SIS-Manual-Data_Managers.pdf' %}">MED-SIS-Manual-Data_Managers.pdf</a></li>
+      <li class="list-group-item"><a href="{% static 'doc/MED-SIS-Manual-Soil_Indicators.pdf' %}">MED-SIS-Manual-Soil_Indicators.pdf</a></li>
+      <li class="list-group-item"><a href="{% static 'doc/MED-SIS-Manual-Points_Soil_Data.pdf' %}">MED-SIS-Manual-Points_Soil_Data.pdf</a></li>
+      <li class="list-group-item"><a href="{% static 'doc/MED-SIS-Manual-ISO_28258.pdf' %}">MED-SIS-Manual-ISO_28256.pdf</a></li>
+      <li class="list-group-item"><h3>Videos</h3></li>
+      <li class="list-group-item"><a href="{% static 'doc/MED-SIS_VIDEO_Istallation.mp4' %}">MED-SIS Installation</a></li>
+      <li class="list-group-item"><a href="{% static 'doc/MED-SIS_VIDEO_Dataset.mp4' %}">Dataset Resource Management</a></li>
+      <li class="list-group-item"><a href="{% static 'doc/MED-SIS_VIDEO_Map.mp4' %}">Map Resource Management </a></li>
+      <li class="list-group-item"><a href="{% static 'doc/MED-SIS_VIDEO_Back_Office_Configuration.mp4' %}">Back Office Configuration</a></li>
+      <li class="list-group-item"><a href="{% static 'doc/MED-SIS_VIDEO_Back_Office_Uploads.mp4' %}">Back_Office Soil Data Uploads</a></li>
+      <li class="list-group-item"><a href="{% static 'doc/MED-SIS_VIDEO_Back_Office_Publishing_1.mp4' %}">Back Office Soil Data Publishing Part 1 </a></li>
+      <li class="list-group-item"><a href="{% static 'doc/MED-SIS_VIDEO_Back_Office_Publishing_2.mp4' %}">Back Office Soil Data Publishing Part 2 </a></li>
+      <li class="list-group-item"><a href="{% static 'doc/MED-SIS_VIDEO_Back_Office_Publishing_3.mp4' %}">Back Office Soil Data Publishing Part 3 </a></li>
+      <li class="list-group-item"><a href="{% static 'doc/MED-SIS_VIDEO_Back_Office_HydroPTF_1.mp4' %}">Back Office Hydro PTF part 1 </a></li>
+      <li class="list-group-item"><a href="{% static 'doc/MED-SIS_VIDEO_Back_Office_HydroPTF_2.mp4' %}">Back Office Hydro PTF part 2 </a></li>
 
-<p style="text-align: justify;"><strong>{{ "Introduction"|upper }}</strong></hp>
-<p style="text-align: justify;"> ...to add</p>
-<p style="text-align: justify;"> ...to add</p>
-
-<p style="text-align: justify;"><strong>{{ "Manuals"|upper }}</strong></hp>
-<p style="text-align: justify;"> ...to add</p>
-<div class="col-md-4">
-  <ul class="list-group">
-    <li class="list-group-item"><a href="/static/doc/MED-SIS-Manual-Generic_User.pdf">User Manual</a></li>
-    <li class="list-group-item"><a href="/static/doc/MED-SIS_Manual_Data_Managers.pdf">Data Manager Manual</a></li>
-    <li class="list-group-item"><a href="/static/doc/MED-SIS-Manual-Point_Soil_Data.pdf">Point Soil Data Description</a></li>
-    <li class="list-group-item"><a href="/static/doc/MED-SIS-Manual-Soil_Indicators.pdf">Soil Indicators Description</a></li>
-  </ul>
+      <li class="list-group-item"><h3>XLSx templates</h3></li>
+      <li class="list-group-item"><a href="{% static 'doc/MED_SIS-Manual_Point_Soil_Data_Template_Guidelines.pdf' %}">Point Soil Data XLSx Template Guidelines</a></li>
+      <li class="list-group-item"><a href="{% static 'doc/MED-SIS-TEMPLATE_POINT_SOIL_DATA.xlsx' %}">Point Soil Data XLSx Template</a></li>
+      <li class="list-group-item"><a href="{% static 'doc/MED-SIS-TEMPLATE_PROJECTS.xlsx' %}">Point Soil Data Project XLSx Template</a></li>
+      <li class="list-group-item"><a href="{% static 'doc/MED-SIS-TEMPLATE_PHOTOS.xlsx' %}">Point Soil Data Photos XLSx Template</a></li>
+      <li class="list-group-item"><a href="{% static 'doc/MED-SIS-TEMPLATE_PTF_INPUT_DATA.xlsx' %}">PTF input Data XLSx Template</a></li>
+    </ul>
+  </div>
 </div>
-
-<p style="text-align: justify;"><strong>{{ "XLSx Templates"|upper }}</strong></hp>
-<p style="text-align: justify;"> ...to add</p>
-<div class="col-md-4">
-<ul class="list-group">
-    <li class="list-group-item"><a href="/static/doc/MED_SIS-Manual_Soil_Data_and_Genealogy_Template_Guidelines.pdf">Point Soil Data XLSx Template Guidelines</a></li>
-    <li class="list-group-item"><a href="/static/doc/MED-SIS-TEMPLATE_POINT_SOIL_DATA.xlsx">Point Soil Data XLSx Template</a></li>
-    <li class="list-group-item"><a href="/static/doc/MED-SIS-TEMPLATE_PTF_INPUT_DATA.xlsx">Pedo Transfer Function - Input Data XLSx Template</a></li>
-  </ul>
-</div>  
-
-<div class="m-8">
-  <img src="/static/img/about_footer.png" />
+<div>
+  <h2 style="color:rgb(125, 56, 7)"> 
+    {% if LANGUAGE == 'it-it' %} Contatto
+    {% elif LANGUAGE == 'fr-fr' %} Contact 
+    {% elif LANGUAGE == 'es-es' %} Contacto
+    {% else %} Contact {% endif %}
+  </h2>
 </div>
-<div class="m-8">
+<div>
   <p style="text-align: left;">Prof. Claudio Zucca, PhD</p>
   <p style="text-align: left;">Dept. of Agricultural Sciences - Delegate for International relationships</p>
   <p style="text-align: left;">University of Sassari</p>

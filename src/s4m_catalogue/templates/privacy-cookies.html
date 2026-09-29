@@ -5,19 +5,25 @@
 
 {% block body_outer %}
 <div class="page-header">
-  <h2>{% trans "My Privacy &#038; Cookies Policy" %}</h2>
+  <h2 style="color:rgb(125, 56, 7)">{% trans "My Privacy &#038; Cookies Policy" %}</h2>
 </div>
-<!--<p class="lead">{% trans "Privacy &#038; Cookies Policy." %}</p> -->
-<p style="text-align: justify;"><strong>{{ "Introduction"|upper }}</strong></hp>
-<p style="text-align: justify;">This site agrees to respect the privacy of Website users in accordance with applicable data protection regulations, particularly EU Regulation 2016/679 (the "GDPR") and any subsequent amendments or related legislation.</p>
+<p class="lead">
+  {% if LANGUAGE == 'it-it' %} Il presente sito si impegna a rispettare la privacy degli utenti del sito web in conformità con le normative vigenti in materia di protezione dei dati, in particolare con il Regolamento UE 2016/679 (il "GDPR") e con eventuali successive modifiche o normative correlate.
+  {% elif LANGUAGE == 'fr-fr' %} Ce site s'engage &agrave; respecter la vie priv&eacute;e des utilisateurs du site Internet, conform&eacute;ment aux r&eacute;glementations applicables en matière de protection des donn&eacute;es, notamment le R&oacute;glement europ&egrave;en 2016/679 (le « RGPD ») ainsi que toute modification ult&egrave;rieure ou l&egrave;gislation connexe.
+  {% elif LANGUAGE == 'es-es' %} Este sitio se compromete a respetar la privacidad de los usuarios del sitio web de conformidad con la normativa aplicable en materia de protección de datos, en particular el Reglamento (UE) 2016/679 (el «RGPD») y cualesquiera modificaciones posteriores o legislación conexa.
+  {% else %} This site agrees to respect the privacy of Website users in accordance with applicable data protection regulations, particularly EU Regulation 2016/679 (the "GDPR") and any subsequent amendments or related legislation.
+  {% endif %}
+</p>
+    
+<h4 style="font-weight: 700;">{{ "Introduction"|upper }}</h4>
 <p style="text-align: justify;">This document ("Privacy & Cookies Policy") provides information on the processing of personal data collected through this Website (hereinafter "Website") and constitutes information to data subjects in accordance with the aforementioned regulations. Within specific areas of the Website that collect personal information, additional specific notices may be published. The following information applies only to this Website and not to other websites accessed via links.</p>
-<p style="text-align: justify;"><strong>{{ "1. Data Controller"|upper }}</strong></p>
+<h4 style="font-weight: 700;">{{ "1. Data Controller"|upper }}</h4>
 <p style="text-align: justify;">The Data Controller is [COMPANY NAME], registered at [FULL ADDRESS]; Tel. [PHONE NUMBER]; e-mail: [EMAIL ADDRESS].
   [IF APPLICABLE: The Data Protection Officer (DPO) can be contacted at: [DPO EMAIL/CONTACT DETAILS]].
 </p>
-<p style="text-align: justify;"><strong>{{ "2. Categories of Personal Data Processed"|upper }}</strong>
+<h4 style="font-weight: 700;">{{ "2. Categories of Personal Data Processed"|upper }}</h4>
 <p style="text-align: justify;">The following data may be subject to processing:</p>
-<p style="text-align: justify;"><strong>2.1 Browsing Data</strong></p>
+<h4 style="font-weight: 500;">{{ "2.1 Browsing Data"|upper }}</h4>
 <p style="text-align: justify;">The processing of personal data of users who visit only the Website (without sending communications or using reserved areas) is limited to navigation data, which is necessary for the operation of IT systems responsible for the management of the Website and Internet communication protocols. This category includes IP addresses, device domain, operating system parameters used to connect to the Website, and other technical data.
   The Company collects these and other data (such as the number of visits and time spent on the Website) for statistical purposes and in anonymous form to monitor the operation of the Website and improve its functionality. While this information is not collected to identify users, by its nature, it could potentially allow identification through processing and association with data held by third parties.
 </p>
