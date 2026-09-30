@@ -7,9 +7,9 @@ SQL_CREATE = f"""
 --- general: 6 datasets, horizons: 21 datasets, labdata: 1 datasets, extra labdata: 1 dataset  
 
 CREATE OR REPLACE VIEW addendum_point_general  AS 
-  SELECT point_id, count(point_id) as n_layer, concat(horizon) as horizon_designation
+  SELECT point_id, count(point_id) as n_layer, string_agg(horizon, '_' ORDER BY number) as horizon_designation
   FROM point_layer
-  GROUP BY point_id, horizon;
+  GROUP BY point_id;
 ALTER VIEW IF EXISTS addendum_point_general OWNER TO backoffice;
 
 CREATE OR REPLACE VIEW points_geo AS
