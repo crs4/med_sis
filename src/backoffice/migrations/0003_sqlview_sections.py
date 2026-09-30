@@ -117,9 +117,13 @@ ALTER VIEW IF EXISTS labdata_geo OWNER TO backoffice;
 
 --- Layer descriptions ---
 CREATE OR REPLACE VIEW point_layer_geo AS
-    SELECT t.point_type, t.project, t.date, t.survey_m_id, l.*, t.geom
+    SELECT t.point_type, t.project, t.date, t.survey_m_id, l.*, t.geom,
+    CASE 
+    WHEN l.lower is not null and l.upper is not null AND l.upper < l.lower THEN l.lower - l.upper
+    ELSE null 
+    END as tickness
     FROM point_general_geo t, point_layer l
-    WHERE t.id = l.point_id;
+    WHERE t.id = l.point_id; 
 ALTER VIEW IF EXISTS point_layer_geo OWNER TO backoffice;
  
 CREATE OR REPLACE VIEW layer_remants_geo AS

@@ -272,6 +272,7 @@ class Surface(models.Model):
 class SurfaceUnevenness(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')
     position = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='surfaceunevenness_position_set',  blank=True, null=True)
+    nat_type = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='surfaceunevenness_nat_type_set',  blank=True, null=True)
     nat_avg_h = models.FloatField( validators=[validate_positive], blank=True, null=True)
     nat_elev = models.FloatField( validators=[validate_positive], blank=True, null=True)
     nat_dist = models.FloatField( validators=[validate_positive], blank=True, null=True)
@@ -465,6 +466,8 @@ class LayerRemnants(models.Model):
         
 class LayerCoarseFragments(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')
+    abundance = models.FloatField( blank=True, null=True, validators=[validate_percentage], db_comment='Report the total percentage of the volume occupied by coarse fragments.')
+    free_pore = models.FloatField( blank=True, null=True, validators=[validate_percentage], db_comment='Free large pores between coarse fragments  by volume [percentage]')
     litho_type1 = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='layercoarsefragments_litho_type1_set',  blank=True, null=True)
     litho_type2 = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='layercoarsefragments_litho_type2_set',  blank=True, null=True)
     litho_type3 = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='layercoarsefragments_litho_type3_set',  blank=True, null=True)
