@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from 'primereact/button';
-import { Panel } from 'primereact/panel';
 import { ConfirmDialog } from 'primereact/confirmdialog';
 import { Toast } from 'primereact/toast';
 import { Dropdown } from 'primereact/dropdown';
@@ -101,10 +100,10 @@ export default function Page( )  {
       if ( !currentCl || isWorking )
         return;
       setIsWorking(true)
-      const res = await TaxonomyService.deleteClassification(document.cookie, currentCl.id);
+      const res = await TaxonomyService.deleteClassification(document.cookie, currentCl);
       if ( res.ok  ) {
-        toast.current.show({severity:'success', summary: 'Done!', detail:'Taxonomy class '+id+' has been deleted', life: 3000});
-        let _t = taxonomy.filter((cl) => cl.id !== currentCl.id);
+        toast.current.show({severity:'success', summary: 'Done!', detail:'Taxonomy class '+currentCl+' has been deleted', life: 3000});
+        let _t = taxonomy.filter((cl) => cl.id !== currentCl);
         setTaxonomy(_t) 
       } 
       else 
@@ -114,8 +113,7 @@ export default function Page( )  {
       toast.current.show({severity:'error', summary: 'Error', detail:'Something went wrong', life: 3000});
     }
     setCurrentCl(null);
-    setIsWorking(false);
-    initFilters();   
+    setIsWorking(false);   
   };
 
   const removeTx = async () => {
@@ -125,19 +123,18 @@ export default function Page( )  {
       setIsWorking(true)
       const res = await TaxonomyService.deleteTaxonomy(document.cookie, currentTx.id);
       if ( res.ok  ) {
-        toast.current.show({severity:'success', summary: 'Done!', detail:'Taxonomy class '+id+' has been deleted', life: 3000});
+        toast.current.show({severity:'success', summary: 'Done!', detail:'Taxonomy class '+currentTx.id+' has been deleted', life: 3000});
         let _t = taxonomies.filter((tx) => tx.id !== currentTx.id);
         setTaxonomies(_t) 
       } 
       else 
-        toast.current.show({severity:'error', summary: 'Error', detail:'Errors deleting taxonomy class', life: 3000});
+        toast.current.show({severity:'error', summary: t('ERRORS'), detail: t('ERRORS'), life: 3000});
     } 
     catch (e) { 
-      toast.current.show({severity:'error', summary: 'Error', detail:'Something went wrong', life: 3000});
+      toast.current.show({severity:'error', summary: t('ERRORS'), detail: t('ERRORS'), life: 3000});
     }
     setCurrentTx(null);
-    setIsWorking(false);
-    initFilters();   
+    setIsWorking(false);  
   };
 
   const loadTx = async (tax) => {
@@ -154,11 +151,11 @@ export default function Page( )  {
         toast.current.show({severity:'success', summary: 'Done!', detail:'Taxonomy '+ tax.id +' has been loaded', life: 3000});
       } 
       else 
-        toast.current.show({severity:'error', summary: 'Error', detail:'Errors loading taxonomy', life: 3000});
+        toast.current.show({severity:'error', summary: t('ERRORS'), detail: t('ERRORS'), life: 3000});
     } 
     catch (e) { 
       console.log(e)
-      toast.current.show({severity:'error', summary: 'Error', detail:'Something went wrong', life: 3000});
+      toast.current.show({severity:'error', summary: t('ERRORS'), detail: t('ERRORS'), life: 3000});
     }
     setIsWorking(false);
   };
@@ -172,14 +169,14 @@ export default function Page( )  {
         setLoading(true); 
         let response = await TaxonomyService.list(document.cookie)
         if ( !response || !response.ok )
-          toast.current.show({severity:'error', summary: 'Errors!', detail: 'Errors loading taxonomies' , life: 3000});
+          toast.current.show({severity:'error', summary: t('ERRORS'), detail: t('ERRORS') , life: 3000});
         else if ( response.data && !Array.isArray(response.data) || response.data.length === 0 ) 
-          toast.current.show({severity:'warning', summary: 'No data!', detail: 'No data found' , life: 3000});
+          toast.current.show({severity:'warning', summary: t('EMPTY'), detail: t('EMPTY') , life: 3000});
         else {        
           setTaxonomies(response.data);
         }
       } catch (error) {
-        toast.current.show({severity:'danger', summary: 'Errors!', detail: 'System Error!' , life: 3000}); 
+        toast.current.show({severity:'danger', summary: t('ERRORS'), detail: t('ERRORS') , life: 3000}); 
       } finally {
         setLoading(false); 
       }
@@ -192,7 +189,7 @@ export default function Page( )  {
   };
 
   const headerTemplate2 = () => {
-    return  <h5 className="font-bold shadow-1 p-3 bg-cyan-900 text-white" style={{ width: '90%' }}>{t('ADD_CLASS')}</h5>
+    return  <h5 className="font-bold shadow-1 p-3 bg-cyan-900 text-white" style={{ width: '90%' }}>{t('ADD_ENTRY')}</h5>
   };
   
   const uriTemplate = (rowData) => {
@@ -216,7 +213,7 @@ export default function Page( )  {
         <>
         {( currentTx?.custom ) && (
           <div className="flex flex-wrap gap-2">
-            <Button type="button" icon="pi pi-trash" onClick={(e) => { setVisCRemove(true);}} severity="danger" rounded></Button>
+            <Button type="button" icon="pi pi-trash" onClick={(e) => { setCurrentCl(rowData.id);setVisCRemove(true);}} severity="danger" rounded></Button>
           </div>
         )}
         </>
@@ -316,22 +313,27 @@ export default function Page( )  {
              optionLabel="id" placeholder="Choose the taxonomy" filter filterDelay={400} className="w-full md:w-30rem font-bold text-cyan-800" />
                           
         { currentTx && currentTx.custom && ( 
-          <Button type="button" icon="pi pi-trash" onClick={(e) => { setVisTRemove(true); }} severity="danger" rounded></Button>
+          <Button type="button" icon="pi pi-trash" hover={t('DELETE')} onClick={(e) => { setVisTRemove(true); }} severity="danger" rounded></Button>
         )}
-        <Button type="button" icon="pi pi-plus" onClick={(e) => { setVisTAdd(true); }} severity="success" rounded></Button>
+        <Button type="button" icon="pi pi-plus" hover={t('ADD_ENTRY')} onClick={(e) => { setVisTAdd(true); }} severity="success" rounded></Button>
       </div>
-      <ConfirmDialog id="dlg_remove" group="declarative"  visible={visTRemove} onHide={() => setVisTRemove(false)} message={t("TAXONOMY_DELETE_Q")} 
-        header="Confirmation" icon="pi pi-exclamation-triangle" accept={removeTx} reject={rejectDlg1} />            
+      <ConfirmDialog id="dlg_remove" group="declarative"  visible={visTRemove} onHide={() => setVisTRemove(false)} message={t("DELETE_Q")} 
+        header="Confirmation" icon="pi pi-exclamation-triangle" accept={removeTx} reject={rejectDlg1} />
+      <ConfirmDialog id="dlg_remove2" group="declarative"  visible={visCRemove} onHide={() => setVisCRemove(false)} message={t("DELETE_Q")} 
+        header="Confirmation" icon="pi pi-exclamation-triangle" accept={removeCl} reject={rejectDlg2} />             
       { currentTx && ( 
       <div className="card text-cyan-800 flex w-full shadow-2 flex-column gap-3 justify-content-center m-2">
         <h5 className="w-full font-bold text-cyan-800 p-3 shadow-2">TAXONOMY: 
           <span className="font-bold text-green-800">{ currentTx?.id}</span>
-          {t('LIST_OF_VALUES')}
         </h5>
+        
         <span className="font-italic m-3">{ currentTx?.descr }</span>
         { currentTx && currentTx.custom && ( 
           <Button className="w-15rem m-3" type="button" icon="pi pi-plus" label="Add a new entry" onClick={(e) => { setVisCAdd(true); }} severity="success" rounded></Button>
         )}
+        <h5 className="w-full font-bold text-cyan-800 p-3 shadow-2"> 
+          {t('LIST_OF_VALUES')}
+        </h5>
         { taxonomy && (
         <DataTable value={taxonomy} className="mt-4" tableStyle={{ minWidth: '50rem' }}>
           <Column body={actionTemplate}  />
@@ -341,8 +343,7 @@ export default function Page( )  {
           <Column field="uri" body={uriTemplate} header={(<span className='text-xl font-bold'>URI</span>)}></Column>
         </DataTable>
         )}
-        <ConfirmDialog id="dlg_remove2" group="declarative"  visible={visCRemove} onHide={() => setVisCRemove(false)} message={t("DELETE_ENTRY_Q")} 
-          header="Confirmation" icon="pi pi-exclamation-triangle" accept={removeCl} reject={rejectDlg2} />                     
+                         
       </div>
       )}  
     </div>

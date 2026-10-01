@@ -21,15 +21,17 @@ export default function Page()  {
   const [upload, setUpload] = useState(null);
   const toast = useRef(null); 
 
+  // go to list of uploads 
   const openList = () => {
     router.push(`/uploads`);
   };
 
+   // go to "New upload" page
   const openCreate = () => {
     router.push(`/uploads/create`);
   };
 
-  // It loads the upload properties and report
+  // fetch properties and report data
   useEffect(() => {
     const fetchData = ( async(id) => {
       const user = await UserService.getProfile(document.cookie);
@@ -46,12 +48,10 @@ export default function Page()  {
       }
       setLoading(false); 
     })
-    if ( !user.userData || ( user.userData.forbidden !== null && user.userData.forbidden ))
-        router.push(`/401`);
     fetchData(id);
   },[]);  // eslint-disable-line   
 
-  // It creates the headers for the report
+  // the headers for the report
   let reportHeaders = [ t('UPLOADS_REPORT_F1'),  t('UPLOADS_REPORT_F2'),  t('UPLOADS_REPORT_F3')];
   
   return (
@@ -70,7 +70,7 @@ export default function Page()  {
             icon="pi pi-download"
             className="flex bg-primary font-bold border-round mr-3"
             onClick={() => openCreate()}
-            label={t('CREATE_UPLOAD')}
+            label={t('NEW_UPLOAD')}
           />
         </div>
       {(!upload && !loading ) && (

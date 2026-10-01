@@ -71,17 +71,17 @@ export default function Page()  {
     fetchData();
   },[]);  // eslint-disable-line
 
-  // To inspect an upload object.
+  // Go to list page.
   const goToUpload = (id) => {
     router.push(`/uploads/${id}`);
   };
 
-  // To create a new upload object.
+  // Go to new upload page.
   const openCreate = () => {
     router.push(`/uploads/create`);
   };
 
-  // To open the dialog box that deletes the selected upload object.
+  // it opens the remove upload dialog box.
   const removeUpload = async (id) => {
     if ( !id || current )
       return;
@@ -90,30 +90,30 @@ export default function Page()  {
     setVisibleDlg1(true);
   };
 
-  // To delete the selected upload object.
+  // It removes the upload object.
   const performRemove = async () => {
     if ( !current )
       return;
     const res = await UploadService.remove(document.cookie,current);
     if ( res.status != 204 && res.status != 202 && res.status != 203 ) {
-        toast.current.show({severity:'Error', summary: 'Error', detail:t('UPLOADS_ERROR_DELETE'), life: 3000});
+        toast.current.show({severity:'Error', summary: 'Error', detail:t('DELETING_ERRORS'), life: 3000});
     }
     else  {
         setUploads((omp) => (omp.filter((p) => p.id !== current)));
-        toast.current.show({severity:'success', summary: 'Done!', detail:t('UPLOADS_OK_DELETE'), life: 3000});
+        toast.current.show({severity:'success', summary: 'Done!', detail:t('DELETED'), life: 3000});
     } 
     initFilters();
     setCurrent(null);
     setIsWorking(false);
   };  
 
-  // to dispose the remove upload dialog
+  // It disposes the remove upload dialog
   const rejectDlg1 = () => {
     setCurrent(null);
     setIsWorking(false);
   };
 
-  // Filters for the uploads list
+  // -- Filters for the uploads list
   const clearFilters = () => {
     initFilters();
   };
@@ -168,6 +168,7 @@ export default function Page()  {
   const statusFilterTemplate = (options) => {
     return <Dropdown value={options.value} options={statuses} onChange={(e) => options.filterCallback(e.value, options.index)} itemTemplate={statusItemTemplate} placeholder={t('SELECT_PH')}  className="p-column-filter" showClear />;
   };
+  // End filters block --------------------------------------
 
   // Templates for the uploads table 
   const renderHeader = () => {
@@ -182,6 +183,7 @@ export default function Page()  {
     );
   };
   
+  // Templates for the list table
   const formatDate = (value) => {
     return value.toLocaleDateString('en-US', {
         day: '2-digit',
@@ -250,6 +252,7 @@ export default function Page()  {
 
   const header = renderHeader();
 
+  // End templates------------------------------
   const mapUploads = (data) => {
     return [...(data || [])].map((d) => {
         d.date = new Date(d.date);

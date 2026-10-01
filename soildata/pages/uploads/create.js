@@ -56,12 +56,12 @@ export default function Page( )  {
   const t = useTranslations('default');
   const router = useRouter();
   
-  // To return to the uploads list
+  // Go to list
   const openList = () => {
     router.push(`/uploads`);
   };
 
-  // to create Popup Content for the validated points
+  // Popup Content for the validated points
   function createPopupContent (code, result) {
     let panel = '<div><span class="font-bold">No data</span></div>';
     if ( !result || !code )
@@ -96,7 +96,7 @@ export default function Page( )  {
     return panel;  
   }
 
-  // to create the GeoJSON for the validated points 
+  // It creates the GeoJSON for the validated points 
   const createGeoJSON = ( data_sheets, data_report ) => {
     const sheetname = UploadService.TYPES[upload.type].sheets[0]
     const data_sheet = data_sheets[ sheetname ]
@@ -136,7 +136,7 @@ export default function Page( )  {
     }  
   } 
  
-  // to validate XLSx file content 
+  // Validate XLSx file content 
   const validateFile = async (files) => {
     if ( !upload )
       return   
@@ -181,7 +181,7 @@ export default function Page( )  {
     setValidating(false);
   }
 
-  // Send the data to the backend 
+  // Send data to the backend 
   const saveData = async () => {
     try {
       if ( !upload || !uploading )
