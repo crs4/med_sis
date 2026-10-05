@@ -40,9 +40,9 @@ RUN chmod +x /usr/src/s4m_catalogue/tasks.py /usr/src/s4m_catalogue/entrypoint.s
 
 RUN pip install --no-cache-dir -e .
 
-RUN pip install --upgrade Django==5.2.17
+#RUN pip install --upgrade Django==5.2.17
 
-RUN pip install --upgrade djangorestframework==3.17.2
+#RUN pip install --upgrade djangorestframework==3.17.2
   
 
 EXPOSE 8000
