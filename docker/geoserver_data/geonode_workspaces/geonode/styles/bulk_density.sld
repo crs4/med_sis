@@ -87,7 +87,7 @@
     						<And>  
 								<ogc:PropertyIsEqualTo>
 									<ogc:PropertyName>texture</ogc:PropertyName>
-									<Literal>TEXTURE_CLASSES:Si</Literal>
+									<Literal>TEXTURE_CLASSES:SI</Literal>
 								</ogc:PropertyIsEqualTo>
 								<PropertyIsGreaterThanOrEqualTo>
 									<PropertyName>value</PropertyName>
@@ -103,11 +103,11 @@
 								<Or>
 									<ogc:PropertyIsEqualTo>
 										<ogc:PropertyName>texture</ogc:PropertyName>
-										<Literal>TEXTURE_CLASSES:SiL</Literal>
+										<Literal>TEXTURE_CLASSES:SIL</Literal>
 									</ogc:PropertyIsEqualTo>
 									<ogc:PropertyIsEqualTo>
 										<ogc:PropertyName>texture</ogc:PropertyName>
-										<Literal>TEXTURE_CLASSES:SiCL</Literal>
+										<Literal>TEXTURE_CLASSES:SICL</Literal>
 									</ogc:PropertyIsEqualTo>
 								</Or>
 								<PropertyIsGreaterThanOrEqualTo>
@@ -128,7 +128,7 @@
 									</ogc:PropertyIsEqualTo>
 									<ogc:PropertyIsEqualTo>
 										<ogc:PropertyName>texture</ogc:PropertyName>
-										<Literal>TEXTURE_CLASSES:SiC</Literal>
+										<Literal>TEXTURE_CLASSES:SIC</Literal>
 									</ogc:PropertyIsEqualTo>
 									<And>
 										<ogc:PropertyIsEqualTo>
@@ -157,7 +157,7 @@
               					</PropertyIsGreaterThanOrEqualTo>
              		      		<PropertyIsLessThan>
                 		        	<PropertyName>value</PropertyName>
-                					<Literal>1.3</Literal>
+                					<Literal>1.1</Literal>
              		      		</PropertyIsLessThan>
 							</And>
 						</Or>
@@ -261,7 +261,7 @@
 							<And>  
 								<ogc:PropertyIsEqualTo>
 									<ogc:PropertyName>texture</ogc:PropertyName>
-									<Literal>TEXTURE_CLASSES:Si</Literal>
+									<Literal>TEXTURE_CLASSES:SI</Literal>
 								</ogc:PropertyIsEqualTo>
 								<PropertyIsGreaterThanOrEqualTo>
 									<PropertyName>value</PropertyName>
@@ -277,11 +277,11 @@
 								<Or>
 									<ogc:PropertyIsEqualTo>
 										<ogc:PropertyName>texture</ogc:PropertyName>
-										<Literal>TEXTURE_CLASSES:SiL</Literal>
+										<Literal>TEXTURE_CLASSES:SIL</Literal>
 									</ogc:PropertyIsEqualTo>
 									<ogc:PropertyIsEqualTo>
 										<ogc:PropertyName>texture</ogc:PropertyName>
-										<Literal>TEXTURE_CLASSES:SiCL</Literal>
+										<Literal>TEXTURE_CLASSES:SICL</Literal>
 									</ogc:PropertyIsEqualTo>
 								</Or>
 								<PropertyIsGreaterThanOrEqualTo>
@@ -394,7 +394,7 @@
 							<And>  
 								<ogc:PropertyIsEqualTo>
 									<ogc:PropertyName>texture</ogc:PropertyName>
-									<Literal>TEXTURE_CLASSES:Si</Literal>
+									<Literal>TEXTURE_CLASSES:SI</Literal>
 								</ogc:PropertyIsEqualTo>
 								<PropertyIsGreaterThanOrEqualTo>
 									<PropertyName>value</PropertyName>
@@ -410,11 +410,11 @@
 								<Or>
 									<ogc:PropertyIsEqualTo>
 										<ogc:PropertyName>texture</ogc:PropertyName>
-										<Literal>TEXTURE_CLASSES:SiL</Literal>
+										<Literal>TEXTURE_CLASSES:SIL</Literal>
 									</ogc:PropertyIsEqualTo>
 									<ogc:PropertyIsEqualTo>
 										<ogc:PropertyName>texture</ogc:PropertyName>
-										<Literal>TEXTURE_CLASSES:SiCL</Literal>
+										<Literal>TEXTURE_CLASSES:SICL</Literal>
 									</ogc:PropertyIsEqualTo>
 								</Or>
 								<PropertyIsGreaterThanOrEqualTo>
@@ -515,7 +515,7 @@
 							<And>  
 								<ogc:PropertyIsEqualTo>
 									<ogc:PropertyName>texture</ogc:PropertyName>
-									<Literal>TEXTURE_CLASSES:Si</Literal>
+									<Literal>TEXTURE_CLASSES:SI</Literal>
 								</ogc:PropertyIsEqualTo>
 								<PropertyIsGreaterThanOrEqualTo>
 									<PropertyName>value</PropertyName>
@@ -527,11 +527,11 @@
 								<Or>
 									<ogc:PropertyIsEqualTo>
 										<ogc:PropertyName>texture</ogc:PropertyName>
-										<Literal>TEXTURE_CLASSES:SiL</Literal>
+										<Literal>TEXTURE_CLASSES:SIL</Literal>
 									</ogc:PropertyIsEqualTo>
 									<ogc:PropertyIsEqualTo>
 										<ogc:PropertyName>texture</ogc:PropertyName>
-										<Literal>TEXTURE_CLASSES:SiCL</Literal>
+										<Literal>TEXTURE_CLASSES:SICL</Literal>
 									</ogc:PropertyIsEqualTo>
 								</Or>
 								<PropertyIsGreaterThanOrEqualTo>
@@ -548,7 +548,7 @@
 									</ogc:PropertyIsEqualTo>
 									<ogc:PropertyIsEqualTo>
 										<ogc:PropertyName>texture</ogc:PropertyName>
-										<Literal>TEXTURE_CLASSES:SiC</Literal>
+										<Literal>TEXTURE_CLASSES:SIC</Literal>
 									</ogc:PropertyIsEqualTo>
 									<And>
 										<ogc:PropertyIsEqualTo>
