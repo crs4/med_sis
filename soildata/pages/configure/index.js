@@ -4,21 +4,15 @@ import React, { useEffect, useState, useRef  } from 'react';
 
 import { ProfileService } from '../../service/profiles';
 import UserService from '../../service/user';
-import Loading from '../../components/Loading';
 
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 
 import { Button } from 'primereact/button';
-import { Calendar } from 'primereact/calendar';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
-import { Dropdown } from 'primereact/dropdown';
-import { InputText } from 'primereact/inputtext';
-import { ConfirmDialog } from 'primereact/confirmdialog';
-import { Card } from 'primereact/card'; 
 import { Message } from 'primereact/message';  
-import { Toast } from 'primereact/toast'; 
+import { Toast } from 'primereact/toast';  
 
 export default function Page()  {
   const router = useRouter();
@@ -42,7 +36,7 @@ export default function Page()  {
       const _idata = await ProfileService.list(document.cookie,'base-datasets');
       setIsWorking(false);
       if ( !_idata || !_idata.ok || !_idata.data || !Array.isArray(_idata.data) || _idata.data.length === 0 )
-        toast.current.show({severity:'error', summary: 'No data!', detail: 'Base datasets descriptors not found' , life: 3000});
+        toast.current.show({severity:'error', summary: t('EMPTY'), detail: "" , life: 3000});
       else { 
         const _indicators = _idata.data.filter((d) => d.type !== 'points_soil_data');
         const _sections = _idata.data.filter((d) => d.type === 'points_soil_data');
@@ -123,7 +117,7 @@ export default function Page()  {
       { rowData && rowData.type !== 'points_soil_data' && (
       <Button 
         icon="pi pi-replay"
-        tooltip={t('RECONFIGURE')}
+        tooltip={t('CONFIGURE_REPUBLISH')}
         tooltipOptions={{ position: 'top' }}
         disabled={isWorking}
         className="m-2"
@@ -133,7 +127,7 @@ export default function Page()  {
       { rowData && rowData.type === 'points_soil_data' && (
       <Button 
         icon="pi pi-replay"
-        tooltip={t('RECONFIGURE')}
+        tooltip={t('CONFIGURE_REPUBLISH')}
         tooltipOptions={{ position: 'top' }}
         disabled={isWorking}
         className="m-2"
@@ -159,9 +153,9 @@ export default function Page()  {
       ds.status = "CREATED"
       const resp = await ProfileService.update ( document.cookie, ds.code, ds, 'base-datasets' )
       if ( !resp || resp.status < 200 || resp.status >= 300  )
-        toast.current.show({severity:'error', summary: 'Errors!', detail: "Errors starting configuration for dataset " + ds.code , life: 3000}); 
+        toast.current.show({severity:'error', summary: t('ERRORS'), detail: t('CONFIGURE_ERRORS') + ds.code , life: 3000}); 
       else {
-        toast.current.show({severity:'success', summary: 'Done!', detail: "Configuration started for dataset " + ds.code , life: 3000});
+        toast.current.show({severity:'success', summary:  t('SUCCESS'), detail: t('CONFIGURE_STARTED') + ds.code , life: 3000});
         if ( refresh )
            fetchData();
       }     
@@ -193,6 +187,8 @@ export default function Page()  {
   return (
   <div className="layout-dashboard">
     <Toast ref={toast} />
+    <div><Message className="p-inline-message p-component p-inline-message-info font-bold block" severity="info" text={t('CONFIGURE_INTRO')}/></div>
+    
     <div className="flex flex-row-reverse w-full p-2">
       <Button 
         icon="pi pi-wrench"
@@ -210,7 +206,7 @@ export default function Page()  {
       />
     </div>
     {( isWorking ) && (
-      <Message severity="warn" text="The browser is working; do not leave the page." />
+      <Message severity="warn" text={t('CONFIGURE_MSG')} />
     )}
     <h5 className="w-full surface-200 font-bold text-cyan-800 p-3 mb-3 shadow-2">{t('SOIL_INDICATOR')} Base Datasets</h5>
     {( indicators ) && (

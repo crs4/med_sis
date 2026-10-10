@@ -1,12 +1,12 @@
 <featureType>
-  <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7ed1</id>
+  <id>FeatureTypeInfoImpl--558694fa:1a1265fe309:-7fed</id>
   <name>ph_h2o_metal_toxicity</name>
   <nativeName>ph_h2o_metal_toxicity</nativeName>
   <namespace>
     <id>NamespaceInfoImpl-78ff667e:12476299803:-7ffe</id>
   </namespace>
-  <title>ph_h2o_metal_toxicity</title>
-  <abstract>No abstract provided</abstract>
+  <title>pH-H2O metal toxicity</title>
+  <abstract>pH (H2O) related to toxicity of heavy metals dissolution</abstract>
   <keywords>
     <string>features</string>
     <string>ph_h2o_metal_toxicity</string>

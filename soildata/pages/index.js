@@ -107,7 +107,8 @@ const Home = () => {
             <h1 className="text-cyan-800">{t('SIS_BACKOFFICE_TITLE')}</h1>
             <div>{t('SIS_BACKOFFICE_SUBTITLE')}</div>
             <div className="flex text-xl text-justify w-full m-2 text-cyan-800">
-              <p>{t('SIS_BACKOFFICE_HOME1')}{t('SIS_BACKOFFICE_HOME2')}</p>
+              <p>{t('SIS_BACKOFFICE_HOME1')}</p>
+              <p>{t('SIS_BACKOFFICE_HOME2')}</p>
             </div>
           </div>
         </div>  
