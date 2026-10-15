@@ -229,7 +229,7 @@ class XLSxUploadService:
                 #202 is a preliminary ok without returned object
                 #203 ok the proxy erased the returned object
                 #204 ok updated/deleted without returned object
-                if response.status_code < 200 or response.status_code > 299:
+                if operation != 'DELETE' and (response.status_code < 200 or response.status_code > 299) :
                     errors = 'data error'
                     res = response.json()
                     if  res and res['errors'] :
