@@ -55,6 +55,7 @@
     "DELETE_Q": "Are you sure you want to remove the element",
     "DELETE_SAMPLE": "Delete Sample",
     "DELETE_UPLOAD": "Delete XLSx Upload",
+    "DELETE_DESCR": "For each item in the upload the system tries to delete it in the database. If the item does not exist, it throws an error. This operation requires only a list of codes in the first column of the first sheet of the XLSX file. USE WITH CAUTION: it deletes all data associated with the codes in the list.",
     "DELETED": "data has been deleted",
     "DELETING_ERRORS": "Errors deleting data",
     "DEPTH": "Filtering by depth",

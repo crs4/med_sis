@@ -68,7 +68,8 @@ UPLOAD_TYPES = [
 UPLOAD_OPERATION = [
     ("POST" , "Create new data"),
     ("PUT" , "Replace data"),
-    ("PATCH" , "Partial data update")
+    ("PATCH" , "Partial data update"),
+    ("DELETE" , "Delete data")
 ]
 
 class XLSxUpload(models.Model):
@@ -129,8 +130,8 @@ class Project(models.Model):
 ### Point General - "General and Surface" sheet
 class LandformTopography(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')
-    grad_ups = models.FloatField( validators=[validate_percentage], blank=True, null=True, db_comment='Ground surface upslope inclination with respect to the horizontal plane. If the profile lies on a flat surface, the gradient is 0%. ')
-    grad_downs = models.FloatField( validators=[validate_percentage], blank=True, null=True, db_comment='Ground surface downslope inclination with respect to the horizontal plane. If the profile lies on a flat surface, the gradient is 0%. ')
+    grad_ups = models.FloatField( validators=[validate_percentage], blank=True, null=True, db_comment='Ground surface upslope inclination with respect to the horizontal plane. If the profile lies on a flat surface, the gradient is 0 percentage. ')
+    grad_downs = models.FloatField( validators=[validate_percentage], blank=True, null=True, db_comment='Ground surface downslope inclination with respect to the horizontal plane. If the profile lies on a flat surface, the gradient is 0 percentage. ')
     slope_asp = models.FloatField( validators=[validate_positive], blank=True, null=True, db_comment='If the profile lies on a slope, report the compass direction that the slope faces, viewed downslope; e.g., 225°')
     slope_shp = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='landformtopography_slope_shp_set',  blank=True, null=True, db_comment='If the profile lies on a slope, report the slope shape in 2 directions: up-/downslope (perpendicular to the elevation contour, i.e. the vertical curvature) and across slope (along the elevation contour, i.e. the horizontal curvature); e.g., Linear (L), Convex (V) or Concave (C).')
     position = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='landformtopography_position_set',  blank=True, null=True, db_comment='If the profile lies in an uneven terrain, report the profile position.')
@@ -337,7 +338,7 @@ class LabData(models.Model):
     lower = models.FloatField( validators=[validate_positive],  db_comment='Sampling lower boundary' , blank=True, null=True)
     horizon = models.TextField( db_comment='Horizon sequence code', blank=True, null=True)
     l_number = models.FloatField( validators=[validate_positive],  db_comment='Layer Number' , blank=True, null=True)
-    gravel = models.FloatField( validators=[validate_percentage],  db_comment='Gravel content (%)' , blank=True, null=True)
+    gravel = models.FloatField( validators=[validate_percentage],  db_comment='Gravel content (percentage)' , blank=True, null=True)
     cls_sys =  models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdata_cls_sys_set',  db_comment='Classification system used for texture of fine earth', blank=True, null=True)
     texture = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdata_texture_set',  db_comment='texture class', blank=True, null=True)      
     sand = models.FloatField( validators=[validate_percentage], db_comment='Sand  (percentage of the fine earth)', blank=True, null=True)
@@ -579,7 +580,7 @@ class LayerRedoximorphic(models.Model):
     red_inner = models.FloatField( validators=[validate_percentage], blank=True, null=True)
     red_outer = models.FloatField( validators=[validate_percentage], blank=True, null=True)
     red_random = models.FloatField( validators=[validate_percentage], blank=True, null=True)
-    abund_oxi = models.FloatField( validators=[validate_percentage], db_comment='Abundance of cemented oximorphic features, by volume [%]', blank=True, null=True)
+    abund_oxi = models.FloatField( validators=[validate_percentage], db_comment='Abundance of cemented oximorphic features, by volume [percentage]', blank=True, null=True)
     clr1_munsell_m = models.TextField(blank=True, null=True)
     clr1_munsell_d = models.TextField(blank=True, null=True)
     clr1_substance = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='layerredoximorphic_clr1_substance_set',   blank=True, null=True)
@@ -634,7 +635,7 @@ class LayerCoatingsBridges(models.Model):
     class Meta:
         managed = True
         db_table = 'layer_coatings_bridges'
-        db_table_comment = 'Report the abundance of clay coatings in % of the surfaces of soil aggregates, coarse fragments and/or biopore walls clay bridges between sand grains in % of involved sand grains.'
+        db_table_comment = 'Report the abundance of clay coatings in percentage of the surfaces of soil aggregates, coarse fragments and/or biopore walls clay bridges between sand grains in percentage of involved sand grains.'
                   
 class LayerCarbonates(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')
@@ -861,7 +862,7 @@ class PointLayer(models.Model):
     upper = models.FloatField( validators=[validate_positive], db_comment='upper depth in cm',blank=True, null=True)
     lower = models.FloatField( validators=[validate_positive], db_comment='lower depth in cm',blank=True, null=True)
     lower_bound = models.TextField(db_comment='layer lower boundary ', blank=True, null=True )
-    hom_part = models.FloatField( validators=[validate_percentage], blank=True, null=True, db_comment='Described parts, by exposed area [%]')
+    hom_part = models.FloatField( validators=[validate_percentage], blank=True, null=True, db_comment='Described parts, by exposed area [percentage]')
     hom_alluvt = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='pointLayer_hom_alluvt_set',  blank=True, null=True, db_comment='Layer composed of several strata of alluvial sediments or of tephra')
     wat_satur = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='pointLayer_wat_satur_set',  blank=True, null=True, db_comment='Types of water saturation')
     wat_status = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='pointLayer_wat_status_set',  blank=True, null=True, db_comment='Soil water status')
@@ -871,7 +872,7 @@ class PointLayer(models.Model):
     wind = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='pointLayer_wind_set',  blank=True, null=True, db_comment='Wind deposition')
     tex_cls = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='pointLayer_tex_cls_set',  blank=True, null=True, db_comment='Texture class') 
     tex_subcls = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='pointLayer_tex_subcls_set',  blank=True, null=True, db_comment='Texture subclass')
-    struct_w_s = models.FloatField( validators=[validate_percentage], blank=True, null=True, db_comment='Structure Wedge-shaped aggregates tilted between ≥ 10° and ≤ 60° from the horizontal: abundance, by volume [%]')
+    struct_w_s = models.FloatField( validators=[validate_percentage], blank=True, null=True, db_comment='Structure Wedge-shaped aggregates tilted between ≥ 10° and ≤ 60° from the horizontal: abundance, by volume [percentage]')
     rh_value = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='pointLayer_rh_value_set',  blank=True, null=True, db_comment='Rh Value')
     weathering = models.FloatField( validators=[validate_percentage], blank=True, null=True, db_comment='Initial weathering abundance')
     sol_salts = models.FloatField( validators=[validate_percentage], blank=True, null=True, db_comment='ECSE [dS m-1m-1]')
@@ -886,11 +887,11 @@ class PointLayer(models.Model):
     pack_dens = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='pointLayer_pack_dens_set',  blank=True, null=True, db_comment='Estimate the packing density using a knife with a blade approx. 10 cm long')
     parent_mat = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='pointLayer_parent_mat_set',  blank=True, null=True, db_comment='Report the parent material. Use the help of a geological map.')
     coars_text = models.FloatField( validators=[validate_percentage], blank=True, null=True, db_comment='the percentage (by exposed area) occupied by coarser-textured parts of any orientation (vertical, horizontal, inclined) having a width of ≥ 0.5 cm')
-    coars_text_v_tongues = models.FloatField( validators=[validate_percentage], blank=True, null=True, db_comment='the percentage (by exposed area) occupied by continuous vertical tongues of coarser-textured parts with a horizontal extension of ≥ 1 cm (if these tongues are absent, report 0%)')
-    coars_text_depth = models.FloatField( validators=[validate_percentage], blank=True, null=True, db_comment='the depth range in cm, where these tongues cover ≥ 10% of the exposed area (if they extend across several layers, the length is only reported in the description of that layer, where they start at the layer’s upper limit).')
+    coars_text_v_tongues = models.FloatField( validators=[validate_percentage], blank=True, null=True, db_comment='the percentage (by exposed area) occupied by continuous vertical tongues of coarser-textured parts with a horizontal extension of ≥ 1 cm (if these tongues are absent, report 0 percentage)')
+    coars_text_depth = models.FloatField( validators=[validate_percentage], blank=True, null=True, db_comment='the depth range in cm, where these tongues cover ≥ 10 percentage of the exposed area (if they extend across several layers, the length is only reported in the description of that layer, where they start at the layer’s upper limit).')
     coars_text_h_area = models.FloatField( validators=[validate_percentage], blank=True, null=True, db_comment='In the middle of the layer, prepare a horizontal surface, 50 cm x 50 cm, and report the percentage (by horizontal area covered) of the coarser-textured parts.')
-    stress_fts_pressfaces = models.FloatField( validators=[validate_percentage], blank=True, null=True, db_comment='Pressure faces in % of the surfaces of soil aggregates')
-    stress_fts_slicksides = models.FloatField( validators=[validate_percentage], blank=True, null=True, db_comment='Slickensides in % of the surfaces of soil aggregates.')
+    stress_fts_pressfaces = models.FloatField( validators=[validate_percentage], blank=True, null=True, db_comment='Pressure faces in percentage of the surfaces of soil aggregates')
+    stress_fts_slicksides = models.FloatField( validators=[validate_percentage], blank=True, null=True, db_comment='Slickensides in percentage of the surfaces of soil aggregates.')
     ribbonl_acc_substances = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='pointLayer_ribbonl_acc_substances_set', blank=True, null=True)
     ribbonl_acc_number = models.IntegerField(blank=True, null=True)
     ribbonl_acc_comb_thick = models.FloatField( validators=[validate_positive], blank=True, null=True, db_comment='If there are 2 or more ribbon-like accumulations in one layer, report the number of the accumulations and their combined thickness in cm')

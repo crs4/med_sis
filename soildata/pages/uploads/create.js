@@ -381,7 +381,7 @@ export default function Page( )  {
         </div>
         </>
       )}
-      {(uploadType && uploadType === UploadService.TYPES.XLS_EL) && ( 
+      {(uploadType && uploadType === UploadService.TYPES.XLS_EM) && ( 
         <>
         <div className="m-4 font-bold text-cyan-800">
           <h4>{t("EXTRA_LABORATORY_DATA")}</h4>       
@@ -405,6 +405,7 @@ export default function Page( )  {
             <li>{UploadService.ACTIONS['POST'].label}: {t("POST_DESCR")}</li>
             <li>{UploadService.ACTIONS['PUT'].label}: {t("PUT_DESCR")}</li>
             <li>{UploadService.ACTIONS['PATCH'].label}: {t("PATCH_DESCR")}</li>
+            <li>{UploadService.ACTIONS['DELETE'].label}: {t("DELETE_DESCR")}</li>
           </ul>
         </div>
       )}

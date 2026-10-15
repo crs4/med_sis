@@ -111,7 +111,7 @@ LOGGING = {
             "class": "django.utils.log.AdminEmailHandler",
         },
         "celery_file": {
-            "level": "DEBUG",
+            "level": "ERROR",
             "class": "logging.handlers.WatchedFileHandler",
             "filename": os.getenv("CELERY__LOG_FILE", "/var/log/celery.log"),
             "formatter": "verbose",
@@ -120,7 +120,7 @@ LOGGING = {
     "loggers": {
         "django": {
             "handlers": ["console"],
-            "level": "DEBUG",
+            "level": "ERROR",
         },
         "geonode": {
             "handlers": ["console"],
@@ -140,15 +140,15 @@ LOGGING = {
         },
         "celery": {
             "handlers": ["console"],
-            "level": "DEBUG",
+            "level": "ERROR",
         },
         "mapstore2_adapter.plugins.serializers": {
             "handlers": ["console"],
-            "level": "DEBUG",
+            "level": "ERROR",
         },
         "geonode_logstash.logstash": {
             "handlers": ["console"],
-            "level": "DEBUG",
+            "level": "ERROR",
         },
         "backoffice": {
             "handlers": ["celery_file", "console"],

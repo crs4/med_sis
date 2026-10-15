@@ -241,7 +241,7 @@ export default function Page()  {
           <Column header="Abstract" field="abstract" style={{ minWidth: '20rem' }} />
           <Column header="Category" field="type" body={typeTemplate} style={{ minWidth: '10rem' }}   />
           <Column header="Status" field="status" body={statusTemplate} sortable style={{ minWidth: '10rem' }}   />
-          <Column header="Actions" body={actionTemplate} />
+          <Column header="Actions" body={actionTemplate} style={{ minWidth: '10rem' }} />
         </DataTable>
     )}
   </div>

@@ -21,7 +21,8 @@ export const UploadService = {
   ACTIONS : {
     POST :  {  name : "POST", label : 'CREATE IF NOT EXIST'},
     PUT :   {  name : "PUT", label : 'REPLACE IF EXIST'}, 
-    PATCH : { name : "PATCH", label : 'UPDATE IF EXIST'}     
+    PATCH : { name : "PATCH", label : 'UPDATE IF EXIST'},
+    DELETE :  {  name : "DELETE", label : 'DELETE IF EXIST'},     
   },
 
   GET_TYPES_ARRAY() {

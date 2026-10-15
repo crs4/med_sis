@@ -205,17 +205,20 @@ class XLSxUploadService:
                         json=item,
                         headers=self.auth_header
                     )
-                else :
-                    if operation == 'PATCH' : 
-                        response = requests.patch(f"{endpoint}{_id}/", 
-                            data=item,
-                            headers=self.auth_header
-                        )
-                    else: 
-                        response = requests.put(f"{endpoint}{_id}/", 
-                            data=item,
-                            headers=self.auth_header
-                        )    
+                if operation == 'PATCH' : 
+                    response = requests.patch(f"{endpoint}{_id}/", 
+                        data=item,
+                        headers=self.auth_header
+                    )
+                if operation == 'PUT' :
+                    response = requests.put(f"{endpoint}{_id}/", 
+                        data=item,
+                        headers=self.auth_header
+                    ) 
+                if operation == 'DELETE' : 
+                    response = requests.delete(f"{endpoint}{_id}/", 
+                        headers=self.auth_header
+                    )                                 
                 operation_result = {
                     "model": model_name,
                     "element": _id,
@@ -759,12 +762,14 @@ class BaseDatasetService:
                             
 ############ CHANGE PERMISSIONSapi/v2/resources/
                             url = f"{self.base_url}/api/v2/resources/{geonode_dataset['pk']}/permissions"
-                            payload = json.dumps({ "groups": [ { "id": 4, "permissions": "manage"}]})
+                            payload = { "organizations": [{ "id": 4, "title": "Soil Data Managers", "name": "data-managers", "permissions": "manage"} ]}
                             response3 = requests.patch( url, json=payload, headers=self.auth_header )
-                            if response3.status_code >= 200 and response2.status_code < 300:
-                                self.report["msgs"].append(f"permissions added to the dataset {geonode_dataset['pk']}")                      
+                            if response3.status_code >= 200 and response3.status_code < 300:
+                                self.report["msgs"].append(f"permissions added to the dataset {geonode_dataset['pk']}")                     
                             else:
-                                self.report["msgs"].append(f"error writing permissions in the dataset {geonode_dataset['pk']}")                           
+                                self.report["msgs"].append(f"error writing permissions in the dataset {geonode_dataset['pk']}")
+                                self.report["msgs"].append(f"status {response3.status_code}")
+                                self.report["msgs"].append(f"payload {payload}")                             
                             self.report["success"] = True
                             return self.report
 

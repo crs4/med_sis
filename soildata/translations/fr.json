@@ -55,6 +55,7 @@
     "DELETE_Q": "Êtes-vous sûr de vouloir supprimer cet élément ?",
     "DELETE_SAMPLE": "Supprimer l'échantillon",
     "DELETE_UPLOAD": "Supprimer le fichier XLSX téléchargé",
+    "DELETE_DESCR": "Pour chaque élément du fichier téléchargé, le système tente de le supprimer de la base de données. Si l'élément n'existe pas, une erreur est générée. Cette opération ne nécessite qu'une liste de codes figurant dans la première colonne de la première feuille du fichier XLSX. À UTILISER AVEC PRÉCAUTION : cela supprime toutes les données associées aux codes de la liste.",
     "DELETED": "Données supprimées",
     "DELETING_ERRORS": "Erreurs lors de la suppression des données",
     "DEPTH": "Filtrage par profondeur",

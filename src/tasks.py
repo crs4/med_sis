@@ -414,7 +414,7 @@ def _prepare_admin_fixture(admin_password, admin_email, datamanager_password, da
         {   
             "fields": {
                 "group": 4, 
-                "title": "Data Managers",  
+                "title": "Soil Data Managers",  
                 "slug": "data-managers", 
                 "description": "Soil data managers", 
                 "access": "private", 
