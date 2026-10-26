@@ -25,7 +25,6 @@
                     {% if request.user.is_superuser %}
                         <li><a href="/admin/">{% trans "Admin" %}</a></li>
                         <li><a href="{{ settings.GEOSERVER_WEB_UI_LOCATION }}">{% trans "GeoServer" %}</a></li>
-                        <li><a href="/soildata/">Back Office</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="/people/">{% trans "People" %}</a></li>
                         <li><a href="/groups/">{% trans "Groups" %}</a></li>
@@ -35,6 +34,7 @@
                         <li><a href="/groups/create/" >{% trans "Create group" %}</a></li>
                         <li role="separator" class="divider"></li>
                     {% endif %}
+                    <li><a href="/soildata/">Back Office</a></li>
                     <li><a  href="/help/">{% trans "Help" %}</a></li>
                     <li role="separator" class="divider"></li>
                 {% endif %}
