@@ -37,18 +37,88 @@ class TaxonomyValue(models.Model):
     value = models.TextField(db_comment='Taxonomy value')
     descr = models.TextField( db_comment='Taxonomy value\'s description', null=True, blank=True)
     uri = models.TextField( db_comment='uri to a controlled vocubolary entry', null=True, blank=True)
+    class ValueRole(models.TextChoices):
+        CONCEPT = "concept", "Concept"
+        NO_DATA = "no_data", "No data"
+        UNKNOWN = "unknown", "Unknown"
+        OTHER = "other", "Other"
+
+    role = models.CharField(max_length=20, choices=ValueRole.choices, default=ValueRole.CONCEPT)
 
     objects = models.Manager().using('backoffice')
     class Meta:
         managed = True
         db_table = 'taxonomy_value'
         db_table_comment = 'Taxonomy\'s values '
-        permissions = (
-            ('view', 'can view data'),
-            ('add', 'can add data'),
-            ('change', 'can change data'),
-            ('delete', 'can delete data'),
-        )
+        
+# Semantic vocabulary extension. Existing WRB taxonomy APIs remain unchanged.
+class VocabularyTerm(models.Model):
+    uri = models.URLField(max_length=1000)
+    vocabulary = models.CharField(max_length=100)
+    version = models.CharField(max_length=40)
+    label = models.TextField(blank=True)
+    description = models.TextField(blank=True)
+    source_type = models.CharField(max_length=100, blank=True)
+
+    objects = models.Manager().using('backoffice')
+
+    class Meta:
+        db_table = 'vocabulary_term'
+        constraints = [models.UniqueConstraint(fields=['uri', 'version'], name='uq_vocab_term_uri_version')]
+
+
+class VocabularyMapping(models.Model):
+    class Relation(models.TextChoices):
+        EXACT = 'exactMatch', 'Exact match'
+        CLOSE = 'closeMatch', 'Close match'
+        BROAD = 'broadMatch', 'Broad match'
+        NARROW = 'narrowMatch', 'Narrow match'
+        RELATED = 'relatedMatch', 'Related match'
+
+    class Status(models.TextChoices):
+        PROPOSED = 'proposed', 'Proposed'
+        VERIFIED = 'verified', 'Verified'
+        REJECTED = 'rejected', 'Rejected'
+
+    taxonomy_value = models.ForeignKey(TaxonomyValue, on_delete=models.CASCADE, related_name='vocabulary_mappings')
+    external_term = models.ForeignKey(VocabularyTerm, on_delete=models.PROTECT, related_name='medsis_mappings')
+    relation = models.CharField(max_length=20, choices=Relation.choices)
+    status = models.CharField(max_length=20, choices=Status.choices, default=Status.PROPOSED)
+    notes = models.TextField(blank=True)
+
+    objects = models.Manager().using('backoffice')
+
+    class Meta:
+        db_table = 'taxonomy_value_mapping'
+        constraints = [models.UniqueConstraint(fields=['taxonomy_value', 'external_term', 'relation'], name='uq_taxval_external_relation')]
+
+
+class Procedure(models.Model):
+    # A reusable step can have no TaxonomyValue. A full MED-SIS method normally has one.
+    taxonomy_value = models.OneToOneField(TaxonomyValue, on_delete=models.PROTECT, null=True, blank=True, related_name='procedure')
+    uri = models.URLField(max_length=1000, unique=True)
+    label = models.TextField()
+    description = models.TextField(blank=True)
+
+    objects = models.Manager().using('backoffice')
+
+    class Meta:
+        db_table = 'medsis_procedure'
+
+
+class ProcedureStep(models.Model):
+    procedure = models.ForeignKey(Procedure, on_delete=models.CASCADE, related_name='steps')
+    step = models.ForeignKey(Procedure, on_delete=models.PROTECT, related_name='used_in')
+    position = models.PositiveIntegerField()
+
+    objects = models.Manager().using('backoffice')
+
+    class Meta:
+        db_table = 'medsis_procedure_step'
+        ordering = ['position']
+        constraints = [models.UniqueConstraint(fields=['procedure', 'position'], name='uq_medsis_proc_step_position')]
+
+
 ###########################
 ## XLSx Uploads
 ###########################

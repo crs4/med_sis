@@ -184,19 +184,23 @@ export default function Page()  {
     } 
   }
 
-  return (
-  <div className="layout-dashboard">
-    <Toast ref={toast} />
-    <div><Message className="p-inline-message p-component p-inline-message-info font-bold block" severity="info" text={t('CONFIGURE_INTRO')}/></div>
-    
-    <div className="flex flex-row-reverse w-full p-2">
-      <Button 
+  /* memory problems in celery  
+  <Button 
         icon="pi pi-wrench"
         className="flex bg-primary font-bold border-round m-4"
         disabled={isWorking}
         onClick={() => configureAll()}
         label={t('CONFIGURE_ALL_LAYERS')}
       />
+  */    
+
+  return (
+  <div className="layout-dashboard">
+    <Toast ref={toast} />
+    <div><Message className="p-inline-message p-component p-inline-message-info font-bold block" severity="info" text={t('CONFIGURE_INTRO')}/></div>
+    
+    <div className="flex flex-row-reverse w-full p-2">
+      
       <Button 
         icon="pi pi-replay"
         className="flex bg-primary font-bold border-round m-4"
