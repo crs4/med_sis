@@ -47,7 +47,7 @@ ALLOWED_HOSTS = [ 'soils4med.crs4.it', 'django', 'localhost' ]
 if not SITEURL.endswith("/"):
     SITEURL = "{}/".format(SITEURL)
 
-
+BACKOFFICE_API_BASE_URL = SITEURL + 'api/backoffice/'
 
 
 SITENAME = os.getenv("SITENAME", "S4M Catalogue")

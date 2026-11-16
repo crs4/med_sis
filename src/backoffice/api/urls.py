@@ -82,11 +82,18 @@ router.register(r'hydro-ptf-prediction', HydroPtfPredictionViewSet, basename='hy
 
 urlpatterns = [
     path('ldobservation/<str:profile_id>/land-use/', ldviews.LandUseObservationView.as_view(), name='ld-land-use-observation',),
+    path('ldplots/', ldviews.LDPlotListView.as_view(), name='ld-plot-list',),
     path('ldplot/<str:plot_id>/', ldviews.LDPlotView.as_view(), name='ld-plot',),
     path('ldprofile/<str:profile_id>/', ldviews.LDProfileView.as_view(), name='ld-profile',),
     path('ldhorizon/<str:horizon_id>/', ldviews.LDHorizonView.as_view(), name="ldhorizon",),
     path('ldlayer/<str:layer_id>/', ldviews.LDLayerView.as_view(), name='ldlayer',),
-    path('ldobservation/<str:labdata_id>/ph-h2o/', ldviews.LDPHObservationView.as_view(), name='ld-ph-h2o-observation',
-),
+    path('ldobservation/<str:labdata_id>/<str:parameter>/', ldviews.LDLabObservationView.as_view(), name='ld-lab-observation',),
+    path('property/<str:code>/', ldviews.LDPropertyView.as_view(), name='ld-property',),
+    path('procedures/<str:taxonomy_id>/<str:code>', ldviews.LDProcedureView.as_view(), name='ld-procedure',),
+    path('ldhorizonobservation/<str:horizon_id>/<str:parameter>/', ldviews.LDHorizonObservationView.as_view(), name='ld-horizon-observation',),
+    path('ldprofiles/', ldviews.LDProfileListView.as_view(), name='ld-profile-list',),
+    path('ldhorizons/', ldviews.LDHorizonListView.as_view(), name='ld-horizon-list',),
+    path('ldlayers/', ldviews.LDLayerListView.as_view(), name='ld-layer-list',),
+    path('ldobservations/', ldviews.LDObservationListView.as_view(), name='ld-observation-list',),
     path('', include(router.urls)),
 ]

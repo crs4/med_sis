@@ -66,7 +66,6 @@ class VocabularyTerm(models.Model):
         db_table = 'vocabulary_term'
         constraints = [models.UniqueConstraint(fields=['uri', 'version'], name='uq_vocab_term_uri_version')]
 
-
 class VocabularyMapping(models.Model):
     class Relation(models.TextChoices):
         EXACT = 'exactMatch', 'Exact match'
@@ -92,7 +91,6 @@ class VocabularyMapping(models.Model):
         db_table = 'taxonomy_value_mapping'
         constraints = [models.UniqueConstraint(fields=['taxonomy_value', 'external_term', 'relation'], name='uq_taxval_external_relation')]
 
-
 class Procedure(models.Model):
     # A reusable step can have no TaxonomyValue. A full MED-SIS method normally has one.
     taxonomy_value = models.OneToOneField(TaxonomyValue, on_delete=models.PROTECT, null=True, blank=True, related_name='procedure')
@@ -105,7 +103,28 @@ class Procedure(models.Model):
     class Meta:
         db_table = 'medsis_procedure'
 
+class ProcedureMapping(models.Model):
+    taxonomy_value = models.ForeignKey(
+        TaxonomyValue,
+        on_delete=models.CASCADE,
+        related_name='procedure_mappings',
+    )
 
+    procedure = models.ForeignKey(
+        Procedure,
+        on_delete=models.CASCADE,
+        related_name='taxonomy_mappings',
+    )
+
+    class Meta:
+        db_table = 'medsis_procedure_mapping'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['taxonomy_value', 'procedure'],
+                name='unique_taxonomy_procedure_mapping',
+            )
+        ]
+        
 class ProcedureStep(models.Model):
     procedure = models.ForeignKey(Procedure, on_delete=models.CASCADE, related_name='steps')
     step = models.ForeignKey(Procedure, on_delete=models.PROTECT, related_name='used_in')
@@ -118,6 +137,17 @@ class ProcedureStep(models.Model):
         ordering = ['position']
         constraints = [models.UniqueConstraint(fields=['procedure', 'position'], name='uq_medsis_proc_step_position')]
 
+class Property(models.Model):
+    uri = models.URLField(max_length=1000, unique=True)
+    code = models.CharField(max_length=100, unique=True)
+    label = models.TextField()
+    description = models.TextField(blank=True)
+    glosis_class = models.URLField(max_length=1000)
+
+    objects = models.Manager().using('backoffice')
+
+    class Meta:
+        db_table = 'medsis_property'
 
 ###########################
 ## XLSx Uploads
@@ -440,7 +470,7 @@ class LabData(models.Model):
     acidity = models.FloatField( db_comment='Soil acidity: Exchangeable Al (meq/100g)', blank=True, null=True)
     met_acidity = models.TextField(db_comment='Method used for Soil acidity: Exchangeable Al (meq/100g)', blank=True, null=True)
     ph_h2o = models.FloatField( db_comment='pH (H2O)', blank=True, null=True)
-    met_ph_h20 = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdata_met_ph_h20_set',  db_comment='Method used for pH (H2O)', blank=True, null=True)
+    met_ph_h2o = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdata_met_ph_h20_set',  db_comment='Method used for pH (H2O)', blank=True, null=True, db_column='met_ph_h20_id')
     ph_kcl = models.FloatField( db_comment='pH (KCl)', blank=True, null=True)
     met_ph_kcl = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdata_met_ph_kcl_set',  db_comment='Method used for pH (KCl)', blank=True, null=True)
     ph_ccl = models.FloatField( db_comment='pH (CaCl2)', blank=True, null=True)
@@ -960,8 +990,8 @@ class PointLayer(models.Model):
     coars_text_v_tongues = models.FloatField( validators=[validate_percentage], blank=True, null=True, db_comment='the percentage (by exposed area) occupied by continuous vertical tongues of coarser-textured parts with a horizontal extension of ≥ 1 cm (if these tongues are absent, report 0 percentage)')
     coars_text_depth = models.FloatField( validators=[validate_percentage], blank=True, null=True, db_comment='the depth range in cm, where these tongues cover ≥ 10 percentage of the exposed area (if they extend across several layers, the length is only reported in the description of that layer, where they start at the layer’s upper limit).')
     coars_text_h_area = models.FloatField( validators=[validate_percentage], blank=True, null=True, db_comment='In the middle of the layer, prepare a horizontal surface, 50 cm x 50 cm, and report the percentage (by horizontal area covered) of the coarser-textured parts.')
-    stress_fts_pressfaces = models.FloatField( validators=[validate_percentage], blank=True, null=True, db_comment='Pressure faces in percentage of the surfaces of soil aggregates')
-    stress_fts_slicksides = models.FloatField( validators=[validate_percentage], blank=True, null=True, db_comment='Slickensides in percentage of the surfaces of soil aggregates.')
+    stress_fts_pressfaces = models.FloatField( validators=[validate_percentage], blank=True, null=True, db_comment='Pressure faces in  percentage of the surfaces of soil aggregates')
+    stress_fts_slicksides = models.FloatField( validators=[validate_percentage], blank=True, null=True, db_comment='Slickensides in  percentage of the surfaces of soil aggregates.')
     ribbonl_acc_substances = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='pointLayer_ribbonl_acc_substances_set', blank=True, null=True)
     ribbonl_acc_number = models.IntegerField(blank=True, null=True)
     ribbonl_acc_comb_thick = models.FloatField( validators=[validate_positive], blank=True, null=True, db_comment='If there are 2 or more ribbon-like accumulations in one layer, report the number of the accumulations and their combined thickness in cm')
