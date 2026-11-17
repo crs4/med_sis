@@ -203,7 +203,8 @@ def fixtures(ctx):
         f"python manage.py loaddata initial_data.json --settings={settings} && "
         f"python manage.py loaddata /usr/src/s4m_catalogue/fixtures/s4m_keys.json --settings={settings} && "
         f"python manage.py loaddata --app backoffice --database backoffice taxonomies.json --settings={settings} && "
-        f"python manage.py loaddata --app backoffice --database backoffice basedatasets.json --settings={settings} "
+        f"python manage.py loaddata --app backoffice --database backoffice basedatasets.json --settings={settings} && "
+        f"python manage.py loaddata --app backoffice --database backoffice iso_mapping.json --settings={settings} "
     )
     ctx.run(base_cmd, pty=True)
 

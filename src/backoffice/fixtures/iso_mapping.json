@@ -1,0 +1,6055 @@
+[{
+  "model": "backoffice.vocabularyterm",
+  "pk": 1,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/acidityExchangeableProcedure-ExchAcid_ph0-kcl1m",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "ExchAcid_ph0-kcl1m",
+    "description": "Exch acidity (H+Al) unbuffered, in 1 M KCl extract",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 2,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/acidityExchangeableProcedure-ExchAcid_ph0-nh4cl",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "ExchAcid_ph0-nh4cl",
+    "description": "Exch acidity (H+Al) unbuffered, in 0.05-0.1 M NH4Cl extract",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 3,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/acidityExchangeableProcedure-ExchAcid_ph0-unkn",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "ExchAcid_ph0-unk",
+    "description": "Exch acidity (H+Al) unbuffered, in unknown extract",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 4,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/acidityExchangeableProcedure-ExchAcid_ph7-caoac",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "ExchAcid_ph7-caoac",
+    "description": "Exch acidity (H+Al) buffered at pH 7, in 1M Ca-acetate extract",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 5,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/acidityExchangeableProcedure-ExchAcid_ph7-unkn",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "ExchAcid_ph7-unk",
+    "description": "Exch acidity (H+Al) buffered at pH 7, in unknown extract",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 6,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/acidityExchangeableProcedure-ExchAcid_ph8-bacl2tea",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "ExchAcid_ph8-bacl2tea",
+    "description": "Exch (extractable / potential) acidity (Al) buffered at pH 8.0-8.5, in 1 M BaCl2 - TEA",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 7,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/acidityExchangeableProcedure-ExchAcid_ph8-unkn",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "ExchAcid_ph8-unk",
+    "description": "Exch (extractable / potential) acidity (Al) buffered at pH 8.0-8.5, in unknown extract",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 8,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/availableWaterHoldingCapacityProcedure-PAWHC_calcul-fc100wp",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "PAWHC_calcul-fc100wp",
+    "description": "Plant available water holding capacity of the soil fine earth fraction, calculated with field capacity defined at 100 cm (pF 2.0)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 9,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/availableWaterHoldingCapacityProcedure-PAWHC_calcul-fc200wp",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "PAWHC_calcul-fc200wp",
+    "description": "Plant available water holding capacity of the soil fine earth fraction, calculated with field capacity defined at 200 cm (pF 2.3)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 10,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/availableWaterHoldingCapacityProcedure-PAWHC_calcul-fc300wp",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "PAWHC_calcul-fc300wp",
+    "description": "Plant available water holding capacity of the soil fine earth fraction, calculated with field capacity defined at 300 cm (pF 2.5)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 11,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/baseSaturationProcedure-BSat_calcul-cec",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "BSat_calcul-cec",
+    "description": "Sum of exchangeable bases (Ca++, Mg++, K+, Na+) as percentage of CEC (method specified with CEC and ExchBases)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 12,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/baseSaturationProcedure-BSat_calcul-ecec",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "BSat_calcul-ecec",
+    "description": "Sum of exchangeable bases (Ca++, Mg++, K+, Na+) as percentage of EffCEC (method specified with EffCEC and ExchBases)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 13,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/bulkDensityFineEarthProcedure-BlkDensF_fe-cl-fc",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "BlkDensF_fe-cl-fc",
+    "description": "Fine earth. Clod samples (natural clods or reconstituted from < 2mm sample), at field capacity (0.33 bar, 33 kPa, 330 cm, pF 2.5), corrected for coarse fragments if any",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 14,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/bulkDensityFineEarthProcedure-BlkDensF_fe-cl-od",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "BlkDensF_fe-cl-od",
+    "description": "Fine earth. Clod samples (natural clods or reconstituted from < 2mm sample), at oven dry, corrected for coarse fragments if any",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 15,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/bulkDensityFineEarthProcedure-BlkDensF_fe-cl-unkn",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "BlkDensF_fe-cl-unk",
+    "description": "Fine earth. Clod samples (natural clods or reconstituted from < 2mm sample), at unknown humidity, corrected for coarse fragments if any",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 16,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/bulkDensityFineEarthProcedure-BlkDensF_fe-co-fc",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "BlkDensF_fe-co-fc",
+    "description": "Fine earth. Core sampling (pF rings), at field capacity (0.33 bar, 33 kPa, 336 cm, pF 2.5), corrected for coarse fragments if any",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 17,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/bulkDensityFineEarthProcedure-BlkDensF_fe-co-od",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "BlkDensF_fe-co-od",
+    "description": "Fine earth. Core sampling (pF rings), at oven dry, corrected for coarse fragments if any",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 18,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/bulkDensityFineEarthProcedure-BlkDensF_fe-co-unkn",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "BlkDensF_fe-co-unk",
+    "description": "Fine earth. Core sampling (pF rings), at unknown humidity, corrected for coarse fragments if any",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 19,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/bulkDensityFineEarthProcedure-BlkDensF_fe-rpl-unkn",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "BlkDensF_fe-rpl-unk",
+    "description": "Fine earth. Excavation and replacement (i.e. soils too fragile to remove a stable sample) e.g. by auger, at unknown humidity, corrected for coarse fragments if any",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 20,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/bulkDensityFineEarthProcedure-BlkDensF_fe-unkn",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "BlkDensF_fe-unk",
+    "description": "Fine earth. Type of sample unknown, at unknown humidity, corrected for coarse fragments if any",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 21,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/bulkDensityFineEarthProcedure-BlkDensF_fe-unkn-fc",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "BlkDensF_fe-unkn-fc",
+    "description": "Fine earth. Type of sample unknown, at field capacity (0.33 bar, 33 kPa, 330 cm, pF 2.5), corrected for coarse fragments if any",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 22,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/bulkDensityFineEarthProcedure-BlkDensF_fe-unkn-od",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "BlkDensF_fe-unkn-od",
+    "description": "Fine earth. Type of sample unknown, at oven dry, corrected for coarse fragments if any",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 23,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/bulkDensityWholeSoilProcedure-BlkDensW_we-cl-fc",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "BlkDensW_we-cl-fc",
+    "description": "Whole earth. Clod samples (natural clods), at field capacity (0.33 bar, 33 kPa, 330 cm, pF 2.5), not corrected for coarse fragments if any",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 24,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/bulkDensityWholeSoilProcedure-BlkDensW_we-cl-od",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "BlkDensW_we-cl-od",
+    "description": "Whole earth. Clod samples (natural clods), at oven dry, not corrected for coarse fragments if any",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 25,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/bulkDensityWholeSoilProcedure-BlkDensW_we-cl-unkn",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "BlkDensW_we-cl-unk",
+    "description": "Whole earth. Clod samples (natural clods), at unknown humidity, not corrected for coarse fragments if any",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 26,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/bulkDensityWholeSoilProcedure-BlkDensW_we-co-fc",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "BlkDensW_we-co-fc",
+    "description": "Whole earth. Core sampling (pF rings), at field capacity (0.33 bar, 33 kPa, 336 cm, pF 2.5), not corrected for coarse fragments if any",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 27,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/bulkDensityWholeSoilProcedure-BlkDensW_we-co-od",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "BlkDensW_we-co-od",
+    "description": "Whole earth. Core sampling (pF rings), at oven dry, not corrected for coarse fragments if any",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 28,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/bulkDensityWholeSoilProcedure-BlkDensW_we-co-unkn",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "BlkDensW_we-co-unk",
+    "description": "Whole earth. Core sampling (pF rings), at unknown humidity, not corrected for coarse fragments if any",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 29,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/bulkDensityWholeSoilProcedure-BlkDensW_we-rpl-unkn",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "BlkDensW_we-rpl-unk",
+    "description": "Whole earth. Excavation and replacement (i.e. soils too fragile to remove a stable sample) e.g. by auger, at unknown humidity, not corrected for coarse fragments if any",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 30,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/bulkDensityWholeSoilProcedure-BlkDensW_we-unkn",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "BlkDensW_we-unk",
+    "description": "Whole earth. Type of sample unknown, at unknown humidity, not corrected for coarse fragments if any",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 31,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/carbonInorganicProcedure-InOrgC_calcul-caco3",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "InOrgC_calcul-caco3",
+    "description": "Indirect estimate from total carbonate equivalent, with a factor of 0.12 (molar weights: CaCO3 100g/mol, C 12g/mol)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 32,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/carbonInorganicProcedure-InOrgC_calcul-tc-oc",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "InOrgC_calcul-tc-oc",
+    "description": "Indirect estimate (total carbon minus organic carbon = inorganic carbon)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 33,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/carbonOrganicProcedure-OrgC_acid-dc",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "OrgC_acid-dc",
+    "description": "Acidified dry combustion or dry oxidation methods (after removal of carbonates)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 34,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/carbonOrganicProcedure-OrgC_acid-dc-ht",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "OrgC_acid-dc-ht",
+    "description": "Acidified. Dry combustion at 1200 C and colometric CO2 measurement (Schlichting et al. 1995)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 35,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/carbonOrganicProcedure-OrgC_acid-dc-ht-analyser",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "OrgC_acid-dc-ht-analyser",
+    "description": "Acidified. Furnace combustion (e.g., LECO combustion analyzer, Dumas method)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 36,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/carbonOrganicProcedure-OrgC_acid-dc-lt",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "OrgC_acid-dc-lt",
+    "description": "Acidified. Dry combustion at 500 C",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 37,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/carbonOrganicProcedure-OrgC_acid-dc-lt-loi",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "OrgC_acid-dc-lt-loi",
+    "description": "Acidified. Loss on ignition (NL)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 38,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/carbonOrganicProcedure-OrgC_acid-dc-mt",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "OrgC_acid-dc-mt",
+    "description": "Acidified. Dry combustion at 840 C",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 39,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/carbonOrganicProcedure-OrgC_acid-dc-spec",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "OrgC_acid-dc-spec",
+    "description": "Spectrally measured and converted to Acidified dry combustion or dry oxidation methods (after removal of carbonates)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 40,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/carbonOrganicProcedure-OrgC_calcul-tc-ic",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "OrgC_calcul-tc-ic",
+    "description": "Calculated as total carbon minus inorganic carbon",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 41,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/carbonOrganicProcedure-OrgC_dc",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "OrgC_dc",
+    "description": "Unacidified. Dry combustion or dry oxidation methods (without prior removal of carbonates)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 42,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/carbonOrganicProcedure-OrgC_dc-ht",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "OrgC_dc-ht",
+    "description": "Unacidified. Dry combustion at high temperature (e.g. 1200 C and colometric CO2 measurement (Schlichting et al. 1995)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 43,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/carbonOrganicProcedure-OrgC_dc-ht-analyser",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "OrgC_dc-ht-analyser",
+    "description": "Unacidified. Dry combustion by furnace (e.g., LECO combustion analyzer, Dumas method). Is total Carbon?",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 44,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/carbonOrganicProcedure-OrgC_dc-lt",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "OrgC_dc-lt",
+    "description": "Unacidified. Dry combustion at low temperature e.g. 500 C",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 45,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/carbonOrganicProcedure-OrgC_dc-lt-loi",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "OrgC_dc-lt-loi",
+    "description": "Unacidified. Loss on ignition (NL) is total Organic Carbon",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 46,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/carbonOrganicProcedure-OrgC_dc-mt",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "OrgC_dc-mt",
+    "description": "Unacidified. Dry combustion at medium temperature e.g. 840 C",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 47,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/carbonOrganicProcedure-OrgC_dc-spec",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "OrgC_dc-spec",
+    "description": "Spectrally measured and converted to Unacidified Dry combustion or dry oxidation methods",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 48,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/carbonOrganicProcedure-OrgC_wc",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "OrgC_wc",
+    "description": "Wet oxidation or wet combustion methods",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 49,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/carbonOrganicProcedure-OrgC_wc-cro3-jackson",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "OrgC_wc-cro3-jackso",
+    "description": "Wet oxidation according to Jackson (1958) with chromic acid digestion",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 50,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/carbonOrganicProcedure-OrgC_wc-cro3-kalembra",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "OrgC_wc-cro3-kalembra",
+    "description": "Wet oxidation according to Kalembra and Jenkinson (1973) with acid dichromate",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 51,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/carbonOrganicProcedure-OrgC_wc-cro3-knopp",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "OrgC_wc-cro3-knopp",
+    "description": "Wet oxidation according to Knopp with chromic acid and gravimetric determination of CO2",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 52,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/carbonOrganicProcedure-OrgC_wc-cro3-kurmies",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "OrgC_wc-cro3-kurmies",
+    "description": "Wet oxidation according to Kurmies with K2Cr2O7+H2SO4",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 53,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/carbonOrganicProcedure-OrgC_wc-cro3-nelson",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "OrgC_wc-cro3-nelso",
+    "description": "Wet oxidation according to Nelson and Sommers (1996)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 54,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/carbonOrganicProcedure-OrgC_wc-cro3-nrcs6a1c",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "OrgC_wc-cro3-nrcs6a1c",
+    "description": "Wet oxidation according to USDA-NRCS method 6A1c with acid dichromate digestion, FeSO4 titration, automatic titrator",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 55,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/carbonOrganicProcedure-OrgC_wc-cro3-tiurin",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "OrgC_wc-cro3-tiuri",
+    "description": "Wet oxidation according to Tiurin with K-dichromate",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 56,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/carbonOrganicProcedure-OrgC_wc-cro3-walkleyblack",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "OrgC_wc-cro3-walkleyblack",
+    "description": "Walkley-Black method (chromic acid digestion)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 57,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/carbonTotalProcedure-TotC_calcul-ic-oc",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "TotC_calcul-ic-oc",
+    "description": "Calculated as sum of inorganic carbon and organic carbon",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 58,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/carbonTotalProcedure-TotC_dc-ht",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "TotC_dc-ht",
+    "description": "Unacidified dry combustion at high temperature (950-1400 C). Total Carbon",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 59,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/carbonTotalProcedure-TotC_dc-ht-analyser",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "TotC_dc-ht-analyser",
+    "description": "Unacidified dry combustion at high temperature (950-1400 C). Total Carbon (USDA-NRCS method 6A), LECO analyzer at 1140 C",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 60,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/carbonTotalProcedure-TotC_dc-ht-spec",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "TotC_dc-ht-spec",
+    "description": "Spectrally measured and converted to Unacidified dry combustion at high temperature (950-1400 C).",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 61,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/carbonTotalProcedure-TotC_dc-mt",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "TotC_dc-mt",
+    "description": "Unacidified dry combustion at medium temperature (550-950 C).",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 62,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/cationExchangeCapacitySoilProcedure-CEC_ph-unkn-cacl2",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CEC_ph-unkn-cacl2",
+    "description": "CEC at unknown buffer, in 0.1 M CaCl2 exchange solution",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 63,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/cationExchangeCapacitySoilProcedure-CEC_ph-unkn-lioac",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CEC_ph-unkn-lioac",
+    "description": "CEC at unknown buffer, in 0.5 M Li-acetate exchange solution",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 64,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/cationExchangeCapacitySoilProcedure-CEC_ph-unkn-m3",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CEC_ph-unkn-m3",
+    "description": "CEC at unknown buffer, in Mehlich III exchange solution",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 65,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/cationExchangeCapacitySoilProcedure-CEC_ph0-ag-thioura",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CEC_ph0-ag-thioura",
+    "description": "CEC unbuffered at pH of the soil, in 0.01 M Ag-thioura exchange solution",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 66,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/cationExchangeCapacitySoilProcedure-CEC_ph0-bacl2",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CEC_ph0-bacl2",
+    "description": "CEC unbuffered at pH o the soil, in 0.5 M BaCl2 exchange solution (0.1.1.0 M)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 67,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/cationExchangeCapacitySoilProcedure-CEC_ph0-cohex",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CEC_ph0-cohex",
+    "description": "CEC unbuffered at pH of the soil, in Cobalt(III) hexamine chloride solution 0,0166M (Cohex) [Co[NH3]6]Cl3 ), ISO 23470 (2007)  exchange solution",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 68,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/cationExchangeCapacitySoilProcedure-CEC_ph0-kcl",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CEC_ph0-kcl",
+    "description": "CEC unbuffered at pH of the soil, in 1 M KCl exchange solution",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 69,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/cationExchangeCapacitySoilProcedure-CEC_ph0-nh4cl",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CEC_ph0-nh4cl",
+    "description": "CEC unbuffered at pH of the soil, in 1 M NH4-chloride exchange solution (0.2-1.0 M)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 70,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/cationExchangeCapacitySoilProcedure-CEC_ph0-nh4oac",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CEC_ph0-nh4oac",
+    "description": "CEC unbuffered at pH of the soil, in 1 M NH4-acetate (NH4OAc) exchange solution (0.25-1.0 M)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 71,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/cationExchangeCapacitySoilProcedure-CEC_ph0-unkn",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CEC_ph0-unk",
+    "description": "CEC unbuffered at pH of the soil, in unknown exchange solution",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 72,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/cationExchangeCapacitySoilProcedure-CEC_ph7-edta",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CEC_ph7-edta",
+    "description": "CEC buffered at pH 7, in 0.1 M Li-EDTA exchange solution",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 73,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/cationExchangeCapacitySoilProcedure-CEC_ph7-nh4oac",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CEC_ph7-nh4oac",
+    "description": "CEC buffered at pH 7, in 1 M NH4-acetate (NH4OAc) exchange solution (0.25-1.0 M)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 74,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/cationExchangeCapacitySoilProcedure-CEC_ph7-unkn",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CEC_ph7-unk",
+    "description": "CEC buffered at pH 7, in unknown exchange solution",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 75,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/cationExchangeCapacitySoilProcedure-CEC_ph8-bacl2tea",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CEC_ph8-bacl2tea",
+    "description": "CEC buffered at pH 8.0-8.5, in 0.5 M BaCl2-TEA exchange solution (0.1.1.0 M)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 76,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/cationExchangeCapacitySoilProcedure-CEC_ph8-baoac",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CEC_ph8-baoac",
+    "description": "CEC buffered at pH 8.0-8.5, in 0.5 M Ba-acetate exchange solution",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 77,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/cationExchangeCapacitySoilProcedure-CEC_ph8-licl2tea",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CEC_ph8-licl2tea",
+    "description": "CEC buffered at pH 8.0-8.5, in 0.5 M Li-chloride - TEA exchange solution",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 78,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/cationExchangeCapacitySoilProcedure-CEC_ph8-naoac",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CEC_ph8-naoac",
+    "description": "CEC buffered at pH 8.0-8.5, in 1 M Na-acetate exchange solution",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 79,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/cationExchangeCapacitySoilProcedure-CEC_ph8-nh4oac",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CEC_ph8-nh4oac",
+    "description": "CEC buffered at pH 8.0-8.5, in 1 M NH4-acetate exchange solution (0.25-1.0 M)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 80,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/cationExchangeCapacitySoilProcedure-CEC_ph8-unkn",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CEC_ph8-unk",
+    "description": "CEC buffered at pH 8.0-8.5, in unknown exchange solution",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 81,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/coarseFragmentsProcedure-CrsFrg_fld",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CrsFrg_fld",
+    "description": "Particles > 2 mm observed in the field. May include concretions and very hard aggregates",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 82,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/coarseFragmentsProcedure-CrsFrg_fldcls",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CrsFrg_fldcls",
+    "description": "Particles > 2 mm observed in the field and calculated from class values. May include concretions and very hard aggregates",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 83,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/coarseFragmentsProcedure-CrsFrg_lab",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CrsFrg_lab",
+    "description": "Particles > 2 mm measured in laboratory (sieved after light pounding). May include concretions and very hard aggregates",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 84,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/effectiveCecProcedure-EffCEC_calcul-b",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "EffCEC_calcul-b",
+    "description": "Sum of exchangeable bases (Ca, Mg, K, Na) without exchangeable acidity (H+Al), see ExchBases and ExchAcids for methods",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 85,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/effectiveCecProcedure-EffCEC_calcul-ba",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "EffCEC_calcul-ba",
+    "description": "Sum of exchangeable bases (Ca, Mg, K, Na) plus exchangeable acidity (H+Al), see ExchBases and ExchAcids for methods",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 86,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/electricalConductivityProcedure-EC_ratio1-1",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "EC_ratio1-1",
+    "description": "Elec. conductivity at 1:1 soil/water ratio",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 87,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/electricalConductivityProcedure-EC_ratio1-10",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "EC_ratio1-10",
+    "description": "Elec. conductivity at 1:10 soil/water ratio",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 88,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/electricalConductivityProcedure-EC_ratio1-2",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "EC_ratio1-2",
+    "description": "Elec. conductivity at 1:2 soil/water ratio",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 89,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/electricalConductivityProcedure-EC_ratio1-2.5",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "EC_ratio1-2.5",
+    "description": "Elec. conductivity at 1:2.5 soil/water ratio",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 90,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/electricalConductivityProcedure-EC_ratio1-5",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "EC_ratio1-5",
+    "description": "Elec. conductivity at 1:5 soil/water ratio",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 91,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/electricalConductivityProcedure-ECe_sat",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "ECe_sat",
+    "description": "Elec. conductivity in saturated paste (ECe)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 92,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/exchangeableBasesProcedure-ExchBases_ph-unkn-edta",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "ExchBases_ph-unkn-edta",
+    "description": "Exch bases (Ca, Mg, K, Na) unknown buffer, in EDTA solution",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 93,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/exchangeableBasesProcedure-ExchBases_ph-unkn-m3",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "ExchBases_ph-unkn-m3",
+    "description": "Exch bases (Ca, Mg, K, Na) unknown buffer, in Mehlich3 solution with extractable ppm assumed exchangeable cmolc/kg",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 94,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/exchangeableBasesProcedure-ExchBases_ph-unkn-m3-spec",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "ExchBases_ph-unkn-m3-spec",
+    "description": "Exch bases (Ca, Mg, K, Na) spectrally measured and converted to, unknown buffer, in Mehlich3 solution with extractable ppm assumed exchangeable cmolc/kg",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 95,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/exchangeableBasesProcedure-ExchBases_ph0-cohex",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "ExchBases_ph0-cohex",
+    "description": "Exch bases (Ca, Mg, K, Na) unbuffered, in Cobalt(III) hexamine chloride solution 0,0166M (Cohex) [Co[NH3]6]Cl3 ), ISO 23470 (2007)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 96,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/exchangeableBasesProcedure-ExchBases_ph0-nh4cl",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "ExchBases_ph0-nh4cl",
+    "description": "Exch bases (Ca, Mg, K, Na) unbuffered, in 1 M NH4Cl (0.05-1.0 m?)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 97,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/exchangeableBasesProcedure-ExchBases_ph7-nh4oac",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "ExchBases_ph7-nh4oac",
+    "description": "Exch bases (Ca, Mg, K, Na) buffered at pH 7, in 1M NH4OAc",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 98,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/exchangeableBasesProcedure-ExchBases_ph7-nh4oac-aas",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "ExchBases_ph7-nh4oac-aas",
+    "description": "Exch bases (Ca, Mg, K, Na) buffered at pH 7, in 1M NH4OAc, Ca and Mg with AAS (Atomic Absorption Spectrometry)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 99,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/exchangeableBasesProcedure-ExchBases_ph7-nh4oac-fp",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "ExchBases_ph7-nh4oac-fp",
+    "description": "Exch bases (Ca, Mg, K, Na) buffered at pH 7, in 1M NH4OAc, K and Na with FP (Flame Photometry)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 100,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/exchangeableBasesProcedure-ExchBases_ph7-unkn",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "ExchBases_ph7-unk",
+    "description": "Exch bases (Ca, Mg, K, Na) buffered at pH 7, in unknown solution",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 101,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/exchangeableBasesProcedure-ExchBases_ph8-bacl2tea",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "ExchBases_ph8-bacl2tea",
+    "description": "Exch bases (Ca, Mg, K, Na) buffered at pH 8.0-8.5, in 0.5 M BaCl2 - TEA solution",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 102,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/exchangeableBasesProcedure-ExchBases_ph8-unkn",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "ExchBases_ph8-unk",
+    "description": "Exch bases (Ca, Mg, K, Na) buffered at pH 8.0-8.5, in unknown solution",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 103,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/extractableElementsProcedure-Extr_ap14",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Extr_ap14",
+    "description": "Method of Saunders and Metelerkamp (anion-exch. resin). Particularly used for available P.",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 104,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/extractableElementsProcedure-Extr_ap15",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Extr_ap15",
+    "description": "Method of Hunter (1975) modified after ISFEI method. Particularly used for available P.",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 105,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/extractableElementsProcedure-Extr_ap20",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Extr_ap20",
+    "description": "Olsen (not acid soils) resp. Bray I (acid soils). Particularly used for available P.",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 106,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/extractableElementsProcedure-Extr_ap21",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Extr_ap21",
+    "description": "Olsen (if pH > 7) resp. Mehlich (if pH < 7). Particularly used for available P.",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 107,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/extractableElementsProcedure-Extr_c6h8o7-reeuwijk",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Extr_c6h8o7-reeuwijk",
+    "description": "Complexation with citric acid (van Reeuwijk). Particularly used for available P.",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 108,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/extractableElementsProcedure-Extr_cacl2",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Extr_cacl2",
+    "description": "CaCl2. Particularly used for soluble P.",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 109,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/extractableElementsProcedure-Extr_capo4",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Extr_capo4",
+    "description": "Ca phosphate. Particularly used for available S.",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 110,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/extractableElementsProcedure-Extr_dtpa",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Extr_dtpa",
+    "description": "DiethyneleTriaminePentaAcetic acid (DTPA) method",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 111,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/extractableElementsProcedure-Extr_edta",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Extr_edta",
+    "description": "EthyleneDiamineTetraAcetic acid (EDTA) method",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 112,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/extractableElementsProcedure-Extr_h2so4-truog",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Extr_h2so4-truog",
+    "description": "Method of Truog (dilute H2SO4). Particularly used for available P.",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 113,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/extractableElementsProcedure-Extr_hcl-h2so4-nelson",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Extr_hcl-h2so4-nelso",
+    "description": "Method of Nelson (dilute HCl/H2SO4). Particularly used for available P.",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 114,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/extractableElementsProcedure-Extr_hcl-nh4f-bray1",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Extr_hcl-nh4f-bray1",
+    "description": "Method of Bray I  (dilute HCl/NH4F). Particularly used for available P.",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 115,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/extractableElementsProcedure-Extr_hcl-nh4f-bray2",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Extr_hcl-nh4f-bray2",
+    "description": "Method of Bray II (dilute HCl/NH4F). Particularly used for available P.",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 116,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/extractableElementsProcedure-Extr_hcl-nh4f-kurtz-bray",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Extr_hcl-nh4f-kurtz-bray",
+    "description": "Method of Kurtz-Bray I (0.025 M HCl + 0.03 M NH4F). Particularly used for available P.",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 117,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/extractableElementsProcedure-Extr_hno3",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Extr_hno3",
+    "description": "Nitric acid (HNO3) method",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 118,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/extractableElementsProcedure-Extr_hotwater",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Extr_hotwater",
+    "description": "Hot water. Particularly used for available B",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 119,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/extractableElementsProcedure-Extr_m1",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Extr_m1",
+    "description": "Mehlich1 method",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 120,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/extractableElementsProcedure-Extr_m2",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Extr_m2",
+    "description": "Mehlich2 method",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 121,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/extractableElementsProcedure-Extr_m3",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Extr_m3",
+    "description": "Mehlich3 method (extractant 0.2 N CH3COOH + 0.25 N NH4NO3 + 0.015 N NH4F + 0.013 N HNO3 + 0.001 M EDTA)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 122,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/extractableElementsProcedure-Extr_m3-spec",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Extr_m3-spec",
+    "description": "Spectrally measured and converted to Mehlich3 method (extractant 0.2 N CH3COOH + 0.25 N NH4NO3 + 0.015 N NH4F + 0.013 N HNO3 + 0.001 M EDTA)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 123,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/extractableElementsProcedure-Extr_nahco3-olsen",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Extr_nahco3-ols",
+    "description": "Method of Olsen (0.5 M Sodium Bicarbonate (NaHCO3) extraction at pH8.5). Particularly used for available P.",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 124,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/extractableElementsProcedure-Extr_nahco3-olsen-dabin",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Extr_nahco3-olsen-dabi",
+    "description": "Method of Olsen, modified by Dabin (ORSTOM). Particularly used for available P.",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 125,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/extractableElementsProcedure-Extr_naoac-morgan",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Extr_naoac-morga",
+    "description": "Method of Morgan (Na-acetate/acetic acid). Particularly used for available P.",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 126,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/extractableElementsProcedure-Extr_nh4-co3-2-ambic1",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Extr_nh4-co3-2-ambic1",
+    "description": "Ambic1 method (ammonium bicarbonate) (South Africa). Particularly used for available P.",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 127,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/extractableElementsProcedure-Extr_nh4ch3ch-oh-cooh-leuven",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Extr_nh4ch3ch-oh-cooh-leuv",
+    "description": "NH4-lactate extraction method (KU-Leuven). Particularly used for available P.",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 128,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/gypsumProcedure-CaSO4_gy01",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaSO4_gy01",
+    "description": "Dissolved in water and precipitated by acetone",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 129,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/gypsumProcedure-CaSO4_gy02",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaSO4_gy02",
+    "description": "Differ. between Ca-conc. in sat. extr. and Ca-conc. in 1/50 s/w solution",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 130,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/gypsumProcedure-CaSO4_gy03",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaSO4_gy03",
+    "description": "Calculated from conductivity of successive dilutions",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 131,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/gypsumProcedure-CaSO4_gy04",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaSO4_gy04",
+    "description": "In 0.1 M Na3-EDTA-/- turbidimetric (Begheijn, 1993)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 132,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/gypsumProcedure-CaSO4_gy05",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaSO4_gy05",
+    "description": "Gravimetric after dissolution in 0.2 N HCl (USSR-method)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 133,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/gypsumProcedure-CaSO4_gy06",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaSO4_gy06",
+    "description": "Total-S, using LECO furnace, minus easily soluble MgSO4 and Na2SO4",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 134,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/gypsumProcedure-CaSO4_gy07",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaSO4_gy07",
+    "description": "Schleiff method, electrometric",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 135,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/hydraulicConductivityProcedure-KSat_calcul-ptf",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "KSat_calcul-ptf",
+    "description": "Saturated hydraulic conductivity.",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 136,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/hydraulicConductivityProcedure-KSat_calcul-ptf-genuchten",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "KSat_calcul-ptf-genucht",
+    "description": "Saturated and not saturated hydraulic conductivity.",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 137,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/hydraulicConductivityProcedure-KSat_calcul-ptf-saxton",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "KSat_calcul-ptf-saxto",
+    "description": "Saturated hydraulic conductivity.",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 138,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/hydraulicConductivityProcedure-Ksat_bhole",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Ksat_bhol",
+    "description": "Saturated hydraulic conductivity. Bore hole method",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 139,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/hydraulicConductivityProcedure-Ksat_column",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Ksat_colum",
+    "description": "Saturated hydraulic conductivity. Permeability in cm/hr determined in column filled with fine earth fraction",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 140,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/hydraulicConductivityProcedure-Ksat_dblring",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Ksat_dblring",
+    "description": "Saturated hydraulic conductivity. Double ring method",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 141,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/hydraulicConductivityProcedure-Ksat_invbhole",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Ksat_invbhol",
+    "description": "Saturated hydraulic conductivity. Inverse bore hole method",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 142,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/moistureContentProcedure-VMC_calcul-ptf",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "VMC_calcul-ptf",
+    "description": "Calculated by PTF",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 143,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/moistureContentProcedure-VMC_calcul-ptf-brookscorey",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "VMC_calcul-ptf-brookscorey",
+    "description": "Calculated by PTF of brooks - corey",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 144,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/moistureContentProcedure-VMC_d",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "VMC_d",
+    "description": "Volumetric moisture content in disturbed samples",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 145,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/moistureContentProcedure-VMC_d-cl",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "VMC_d-cl",
+    "description": "Pressure-plate extraction, disturbed -clod- samples (wt%) * density",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 146,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/moistureContentProcedure-VMC_d-cl-ww",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "VMC_d-cl-ww",
+    "description": "Pressure-plate extraction, disturbed -clod- samples (wt%) * density on weight/weight basis; to be converted to v/v (with BD at appropriate humidity)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 147,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/moistureContentProcedure-VMC_d-ww",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "VMC_d-ww",
+    "description": "Volumetric moisture content in disturbed samples on weight/weight basis to be converted to v/v (with BD at appropriate humidity)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 148,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/moistureContentProcedure-VMC_ud",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "VMC_ud",
+    "description": "Undisturbed samples",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 149,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/moistureContentProcedure-VMC_ud-cl",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "VMC_ud-cl",
+    "description": "Natural clod",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 150,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/moistureContentProcedure-VMC_ud-co",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "VMC_ud-co",
+    "description": "Volumetric moisture content in undisturbed samples (pF rings cores)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 151,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/nitrogenTotalProcedure-TotalN_bremner",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "TotalN_bremner",
+    "description": "Total N (Bremner, 1965, p. 1162-1164)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 152,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/nitrogenTotalProcedure-TotalN_calcul",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "TotalN_calcul",
+    "description": "OC * 1.72 / 20 (gives C/N=11.6009)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 153,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/nitrogenTotalProcedure-TotalN_calcul-oc10",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "TotalN_calcul-oc10",
+    "description": "Calculated from OrgC and C/N ratio of 10",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 154,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/nitrogenTotalProcedure-TotalN_dc",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "TotalN_dc",
+    "description": "Dry combustion",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 155,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/nitrogenTotalProcedure-TotalN_dc-ht-dumas",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "TotalN_dc-ht-dumas",
+    "description": "Dry combustion at 800-1000 C celcius (Dumas method)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 156,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/nitrogenTotalProcedure-TotalN_dc-ht-leco",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "TotalN_dc-ht-leco",
+    "description": "Element analyzer (LECO analyzer), Dry Combustion",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 157,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/nitrogenTotalProcedure-TotalN_dc-spec",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "TotalN_dc-spec",
+    "description": "Spectrally measured and converted to N by dry combustion",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 158,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/nitrogenTotalProcedure-TotalN_h2so4",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "TotalN_h2so4",
+    "description": "H2SO4",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 159,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/nitrogenTotalProcedure-TotalN_kjeldahl",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "TotalN_kjeldahl",
+    "description": "Method of Kjeldahl (digestion)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 160,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/nitrogenTotalProcedure-TotalN_kjeldahl-nh4",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "TotalN_kjeldahl-nh4",
+    "description": "Kjeldahl, and ammonia distillation",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 161,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/nitrogenTotalProcedure-TotalN_nelson",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "TotalN_nelso",
+    "description": "Nelson and Sommers, 1980",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 162,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/nitrogenTotalProcedure-TotalN_tn04",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "TotalN_tn04",
+    "description": "Dry combustion using a CN-corder and cobalt oxide or copper oxide as an oxidation accelerator (Tanabe and Araragi, 1970)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 163,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/nitrogenTotalProcedure-TotalN_tn06",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "TotalN_tn06",
+    "description": "Continuous flow analyser after digestion with H2SO4/salicyclic acid/H2O2/Se",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 164,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/nitrogenTotalProcedure-TotalN_tn08",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "TotalN_tn08",
+    "description": "Sample digested by sulphuric acid, distillation of released ammonia, back titration against sulpuric acid",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 165,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/organicMatterProcedure-FulAcidC_unkn",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "FulAcidC_unk",
+    "description": "Fulvic acid carbon_unknown method",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 166,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/organicMatterProcedure-HumAcidC_unkn",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "HumAcidC_unk",
+    "description": "Humic acid carbon_unknown method",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 167,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/organicMatterProcedure-OrgM_calcul-oc1.73",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "OrgM_calcul-oc1.73",
+    "description": "Organic carbon * 1,73",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 168,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/organicMatterProcedure-TotHumC_unkn",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "TotHumC_unk",
+    "description": "Total humic carbon_unknown method",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 169,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pHProcedure-pHCaCl2",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pHCaCl2",
+    "description": "pHCaCl2 (soil reaction) in a soil/CaCl2 solution (0.01-1 M)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 170,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pHProcedure-pHCaCl2_ratio1-1",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pHCaCl2_ratio1-1",
+    "description": "pHCaCl2 (soil reaction) in 1:1 soil/1 M CaCl2 solution (1 M)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 171,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pHProcedure-pHCaCl2_ratio1-10",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pHCaCl2_ratio1-10",
+    "description": "pHCaCl2 (soil reaction) in 1:10 soil/CaCl2 solution (0.01-1 M)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 172,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pHProcedure-pHCaCl2_ratio1-2",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pHCaCl2_ratio1-2",
+    "description": "pHCaCl2 (soil reaction) in 1:2 soil/CaCl2 solution (0.01-1 M)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 173,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pHProcedure-pHCaCl2_ratio1-2.5",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pHCaCl2_ratio1-2.5",
+    "description": "pHCaCl2 (soil reaction) in 1:2.5 soil/CaCl2 solution (0.01-1 M)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 174,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pHProcedure-pHCaCl2_ratio1-5",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pHCaCl2_ratio1-5",
+    "description": "pHCaCl2 (soil reaction) in 1:5 soil/CaCl2 solution (0.01-1 M)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 175,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pHProcedure-pHCaCl2_sat",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pHCaCl2_sat",
+    "description": "pHCaCl2 (soil reaction) in saturated paste",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 176,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pHProcedure-pHH2O",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pHH2O",
+    "description": "pHH2O (soil reaction) in a soil/water solution",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 177,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pHProcedure-pHH2O_ratio1-1",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pHH2O_ratio1-1",
+    "description": "pHH2O (soil reaction) in 1:1 soil/water solution",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 178,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pHProcedure-pHH2O_ratio1-10",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pHH2O_ratio1-10",
+    "description": "pHH2O (soil reaction) in 1:10 soil/water solution",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 179,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pHProcedure-pHH2O_ratio1-2",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pHH2O_ratio1-2",
+    "description": "pHH2O (soil reaction) in 1:2 soil/water solution",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 180,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pHProcedure-pHH2O_ratio1-2.5",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pHH2O_ratio1-2.5",
+    "description": "pHH2O (soil reaction) in 1:2.5 soil/water solution",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 181,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pHProcedure-pHH2O_ratio1-5",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pHH2O_ratio1-5",
+    "description": "pHH2O (soil reaction) in 1:5 soil/water solution",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 182,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pHProcedure-pHH2O_sat",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pHH2O_sat",
+    "description": "pHH2O (soil reaction) in water saturated paste",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 183,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pHProcedure-pHH2O_unkn-spec",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pHH2O_unkn-spec",
+    "description": "Spectrally measured and converted to pHH2O (soil reaction) in unknown soil/water solution",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 184,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pHProcedure-pHKCl",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pHKCl",
+    "description": "pHKCl (soil reaction) in a soil/KCl solution (0.01-1 M)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 185,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pHProcedure-pHKCl_ratio1-1",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pHKCl_ratio1-1",
+    "description": "pHKCl (soil reaction) in 1:1 soil/KCl solution (1 M)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 186,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pHProcedure-pHKCl_ratio1-10",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pHKCl_ratio1-10",
+    "description": "pHKCl (soil reaction) in 1:10 soil/KCl solution (0.01-1 M)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 187,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pHProcedure-pHKCl_ratio1-2",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pHKCl_ratio1-2",
+    "description": "pHKCl (soil reaction) in 1:2 soil/KCl solution (0.01-1 M)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 188,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pHProcedure-pHKCl_ratio1-2.5",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pHKCl_ratio1-2.5",
+    "description": "pHKCl (soil reaction) in 1:2.5 soil/KCl solution (0.01-1 M)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 189,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pHProcedure-pHKCl_ratio1-5",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pHKCl_ratio1-5",
+    "description": "pHKCl (soil reaction) in 1:5 soil/KCl solution (0.01-1 M)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 190,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pHProcedure-pHKCl_sat",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pHKCl_sat",
+    "description": "pHKCl (soil reaction) in saturated paste",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 191,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pHProcedure-pHNaF",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pHNaF",
+    "description": "pHNaF (soil reaction) in a soil/NaF solution (0.01-1 M)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 192,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pHProcedure-pHNaF_ratio1-1",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pHNaF_ratio1-1",
+    "description": "pHNaF (soil reaction) in 1:1 soil/NaF solution (1 M)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 193,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pHProcedure-pHNaF_ratio1-10",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pHNaF_ratio1-10",
+    "description": "pHNaF (soil reaction) in 1:10 soil/NaF solution (0.01-1 M)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 194,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pHProcedure-pHNaF_ratio1-2",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pHNaF_ratio1-2",
+    "description": "pHNaF (soil reaction) in 1:2 soil/NaF solution (0.01-1 M)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 195,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pHProcedure-pHNaF_ratio1-2.5",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pHNaF_ratio1-2.5",
+    "description": "pHNaF (soil reaction) in 1:2.5 soil/NaF solution (0.01-1 M)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 196,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pHProcedure-pHNaF_ratio1-5",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pHNaF_ratio1-5",
+    "description": "pHNaF (soil reaction) in 1:5 soil/NaF solution (0.01-1 M)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 197,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pHProcedure-pHNaF_sat",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pHNaF_sat",
+    "description": "pHNaF (soil reaction) in saturated paste",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 198,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pSAProcedure-beaker-disp",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "beaker-dispersion",
+    "description": "Particle size analysis with beaker method with appropriate dispersion of the primary particles and pretreatment to remove cementing particles (organic matter, carbonates)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 199,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pSAProcedure-beaker-disp-spec",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "beaker-dispersion-spectral",
+    "description": "Spectrally predicted based on measurments with the beaker method with appropriate dispersion of the primary particles and pretreatment to remove cementing particles (organic matter, carbonates)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 200,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pSAProcedure-beaker-nodisp",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "beaker-no_dispersion",
+    "description": "Particle size analysis with beaker method with no dispersion of the primary particlesand pretreatment to remove cementing particles (organic matter, carbonates)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 201,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pSAProcedure-beaker-nodisp-spec",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "beaker-no_dispersion-spectral",
+    "description": "Spectrally predicted based on measurments with the beaker method with no dispersion of the primary particles and pretreatment to remove cementing particles (organic matter, carbonates)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 202,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pSAProcedure-beaker-unkdisp",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "beaker-unknown_dispersion",
+    "description": "Particle size analysis with beaker method unknown dispersion of the primary particles and pretreatment to remove cementing particles (organic matter, carbonates)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 203,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pSAProcedure-beaker-unkdisp-spec",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "beaker-unknown_dispersion-spectral",
+    "description": "Spectrally predicted based on measurments with the beaker method unknown dispersion of the primary particles and pretreatment to remove cementing particles (organic matter, carbonates)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 204,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pSAProcedure-fldest",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "field estimate",
+    "description": "Field estimate of the particle size distribution, typically done by hand",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 205,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pSAProcedure-hydrometer-disp",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "hydrometer (bouyoucos)-dispersion",
+    "description": "Particle size analysis with hydrometer (bouyoucos) method with appropriate dispersion of the primary particles and pretreatment to remove cementing particles (organic matter, carbonates)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 206,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pSAProcedure-hydrometer-disp-spec",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "hydrometer (bouyoucos)-dispersion-spectral",
+    "description": "Spectrally predicted based on measurments with the hydrometer (bouyoucos) method with appropriate dispersion of the primary particles and pretreatment to remove cementing particles (organic matter, carbonates)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 207,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pSAProcedure-hydrometer-nodisp",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "hydrometer (bouyoucos)-no_dispersion",
+    "description": "Particle size analysis with hydrometer (bouyoucos) method with no dispersion of the primary particles and removal of cementing particles (organic matter, carbonates)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 208,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pSAProcedure-hydrometer-nodisp-spec",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "hydrometer (bouyoucos)-no_dispersion-spectral",
+    "description": "Spectrally predicted based on measurments with the hydrometer (bouyoucos) method with no dispersion of the primary particles and pretreatment to remove cementing particles (organic matter, carbonates)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 209,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pSAProcedure-hydrometer-unkdisp",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "hydrometer (bouyoucos)-unknown_dispersion",
+    "description": "Particle size analysis with hydrometer (bouyoucos) method unknown dispersion of the primary particles and pretreatment to remove cementing particles (organic matter, carbonates)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 210,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pSAProcedure-hydrometer-unkdisp-spec",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "hydrometer (bouyoucos)-unknown_dispersion-spectral",
+    "description": "Spectrally predicted based on measurments with the hydrometer (bouyoucos) method unknown dispersion of the primary particles and pretreatment to remove cementing particles (organic matter, carbonates)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 211,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pSAProcedure-laser-disp",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "laser diffraction-dispersion",
+    "description": "Particle size analysis with laser diffraction with appropriate disperson of the primary particles and pretreatment to remove cementing particles (organic matter, carbonates)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 212,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pSAProcedure-laser-disp-spec",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "laser diffraction-dispersion-spectral",
+    "description": "Spectrally predicted based on measurments with laser diffraction analysis with appropriate disperson of the primary particles and pretreatment to remove cementing particles (organic matter, carbonates)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 213,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pSAProcedure-laser-nodisp",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "laser diffraction-no_dispersion",
+    "description": "Particle size analysis with laser diffraction with no dispersion of the primary particles and pretreatment to remove cementing particles (organic matter, carbonates)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 214,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pSAProcedure-laser-nodisp-spec",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "laser diffraction-no_dispersion-spectral",
+    "description": "Spectrally predicted based on measurments with laser diffraction analysis with no dispersion of the primary particles and pretreatment to remove cementing particles (organic matter, carbonates)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 215,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pSAProcedure-laser-unkdisp",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "laser diffraction-unknown_dispersion",
+    "description": "Particle size analysis with laser diffraction with unknown dispersion of the primary particles and pretreatment to remove cementing particles (organic matter, carbonates)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 216,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pSAProcedure-laser-unkdisp-spec",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "laser diffraction-unknown_dispersion-spectral",
+    "description": "Spectrally predicted based on measurments with laser diffraction analysis with unknown dispersion of the primary particles and pretreatment to remove cementing particles (organic matter, carbonates)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 217,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pSAProcedure-pipette-disp",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pipette-dispersion",
+    "description": "Particle size analysis with pipette method with appropriate dispersion of the primary particles and pretreatment to remove cementing particles (organic matter, carbonates)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 218,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pSAProcedure-pipette-disp-spec",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pipette-dispersion-spectral",
+    "description": "Spectrally predicted based on measurments with the pipette method with appropriate dispersion of the primary particles and pretreatment to remove cementing particles (organic matter, carbonates)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 219,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pSAProcedure-pipette-nodisp",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pipette-no_dispersion",
+    "description": "Particle size analysis with pipette method with no dispersion of the primary particles and pretreatment to remove cementing particles (organic matter, carbonates)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 220,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pSAProcedure-pipette-nodisp-spec",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pipette-no_dispersion-spectral",
+    "description": "Spectrally predicted based on measurments with the pipette method with no dispersion of the primary particles and pretreatment to remove cementing particles (organic matter, carbonates)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 221,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pSAProcedure-pipette-unkdisp",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pipette-unknown_dispersion",
+    "description": "Particle size analysis with pipette method unknown dispersion of the primary particles and pretreatment to remove cementing particles (organic matter, carbonates)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 222,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/pSAProcedure-pipette-unkdisp-spec",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "pipette-unknown_dispersion-spectral",
+    "description": "Spectrally predicted based on measurments with the pipette method unknown dispersion of the primary particles and pretreatment to remove cementing particles (organic matter, carbonates)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 223,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/phosphorusRetentionProcedure-RetentP_blakemore",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "RetentP_blakemor",
+    "description": "P retention at ~pH4.6  (acc. Blakemore 1987)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 224,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/phosphorusRetentionProcedure-RetentP_unkn-spec",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "RetentP_unkn-spec",
+    "description": "Spectrally measured and converted to P retention (P buffer index)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 225,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/porosityProcedure-Poros_calcul-pf0",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Poros_calcul-pf0",
+    "description": "Porosity calculated from volumetric moisture content at pF 0 (1 cm)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 226,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/solubleSaltsProcedure-SlbAn_calcul-unkn",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "SlbAn_calcul-unk",
+    "description": "Sum of soluble anions (Cl, SO4, HCO2, CO3, NO3, F)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 227,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/solubleSaltsProcedure-SlbCat_calcul-unkn",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "SlbCat_calcul-unk",
+    "description": "Sum of soluble cations (Ca, Mg, K, Na)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 228,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/textureSumProcedure-SumTxtr_calcul",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "SumTxtr_calcul",
+    "description": "Calculated sum of sand, silt and clay fractions",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 229,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalCarbonateEquivalentProcedure-CaCO3_acid-ch3cooh-dc",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaCO3_acid-ch3cooh-dc",
+    "description": "Dissolution of carbonates by Acetic acid [CH3COOH], external heat (dry combustion)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 230,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalCarbonateEquivalentProcedure-CaCO3_acid-ch3cooh-nodc",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaCO3_acid-ch3cooh-nodc",
+    "description": "Dissolution of carbonates by Acetic acid [CH3COOH], no external (no dry combustion)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 231,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalCarbonateEquivalentProcedure-CaCO3_acid-ch3cooh-unkn",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaCO3_acid-ch3cooh-unk",
+    "description": "Dissolution of carbonates by Acetic acid [CH3COOH], external heat unknown",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 232,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalCarbonateEquivalentProcedure-CaCO3_acid-dc",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaCO3_acid-dc",
+    "description": "Dissolution of carbonates by acid, external heat (dry combustion)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 233,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalCarbonateEquivalentProcedure-CaCO3_acid-h2so4-dc",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaCO3_acid-h2so4-dc",
+    "description": "Dissolution of carbonates by Sulfuric acid [H2SO4], external heat (dry combustion)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 234,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalCarbonateEquivalentProcedure-CaCO3_acid-h2so4-nodc",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaCO3_acid-h2so4-nodc",
+    "description": "Dissolution of carbonates by Sulfuric acid [H2SO4], no external (no dry combustion)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 235,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalCarbonateEquivalentProcedure-CaCO3_acid-h2so4-unkn",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaCO3_acid-h2so4-unk",
+    "description": "Dissolution of carbonates by Sulfuric acid [H2SO4], external heat unknown",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 236,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalCarbonateEquivalentProcedure-CaCO3_acid-h3po4-dc",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaCO3_acid-h3po4-dc",
+    "description": "Dissolution of carbonates by Phosphoric acid [H3PO4], external heat (dry combustion)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 237,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalCarbonateEquivalentProcedure-CaCO3_acid-h3po4-nodc",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaCO3_acid-h3po4-nodc",
+    "description": "Dissolution of carbonates by Phosphoric acid [H3PO4], no external (no dry combustion)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 238,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalCarbonateEquivalentProcedure-CaCO3_acid-h3po4-unkn",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaCO3_acid-h3po4-unk",
+    "description": "Dissolution of carbonates by Phosphoric acid [H3PO4], external heat unknown",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 239,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalCarbonateEquivalentProcedure-CaCO3_acid-hcl-dc",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaCO3_acid-hcl-dc",
+    "description": "Dissolution of carbonates by Hydrochloric acid [HCl], or Perchloric acid [HClO4], external heat (dry combustion)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 240,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalCarbonateEquivalentProcedure-CaCO3_acid-hcl-nodc",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaCO3_acid-hcl-nodc",
+    "description": "Dissolution of carbonates by Hydrochloric acid [HCl], or Perchloric acid [HClO4], no external (no dry combustion)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 241,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalCarbonateEquivalentProcedure-CaCO3_acid-hcl-unkn",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaCO3_acid-hcl-unk",
+    "description": "Dissolution of carbonates by Hydrochloric acid [HCl], or Perchloric acid [HClO4], external heat unknown",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 242,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalCarbonateEquivalentProcedure-CaCO3_acid-nodc",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaCO3_acid-nodc",
+    "description": "Dissolution of carbonates by acid, no external (no dry combustion)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 243,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalCarbonateEquivalentProcedure-CaCO3_acid-unkn",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaCO3_acid-unk",
+    "description": "Dissolution of carbonates by acid, external heat unknown",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 244,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalCarbonateEquivalentProcedure-CaCO3_ca01",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaCO3_ca01",
+    "description": "Method of Scheibler (volumetric)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 245,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalCarbonateEquivalentProcedure-CaCO3_ca02",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaCO3_ca02",
+    "description": "Method of Wesemael",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 246,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalCarbonateEquivalentProcedure-CaCO3_ca03",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaCO3_ca03",
+    "description": "Method of Piper (HCl)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 247,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalCarbonateEquivalentProcedure-CaCO3_ca04",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaCO3_ca04",
+    "description": "Calcimeter method (volumetric after adition of dilute acid)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 248,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalCarbonateEquivalentProcedure-CaCO3_ca05",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaCO3_ca05",
+    "description": "Gravimetric (USDA Agr. Hdbk 60-/- method Richards et al., 1954)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 249,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalCarbonateEquivalentProcedure-CaCO3_ca06",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaCO3_ca06",
+    "description": "H3PO4 acid at 80C, conductometric in NaOH (Schlichting & Blume, 1966)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 250,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalCarbonateEquivalentProcedure-CaCO3_ca07",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaCO3_ca07",
+    "description": "Pressure calcimeter (Nelson, 1982)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 251,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalCarbonateEquivalentProcedure-CaCO3_ca08",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaCO3_ca08",
+    "description": "Bernard calcimeter (Total CaCO3)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 252,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalCarbonateEquivalentProcedure-CaCO3_ca09",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaCO3_ca09",
+    "description": "Carbonates: H3PO4 treatment at 80 deg. C and CO2 measurement like TOC (OC13), transformation into CaCO3 (Schlichting et al. 1995)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 253,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalCarbonateEquivalentProcedure-CaCO3_ca10",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaCO3_ca10",
+    "description": "CaCO3 Equivalent, CO2 evolution after HCl treatment. Gravimetric",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 254,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalCarbonateEquivalentProcedure-CaCO3_ca11",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaCO3_ca11",
+    "description": "Black, 1965-HCl",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 255,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalCarbonateEquivalentProcedure-CaCO3_ca12",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaCO3_ca12",
+    "description": "Treatment with H2SO4 N/2 acid followed by titration with NaOH N/2 in presence of an indicator",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 256,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalCarbonateEquivalentProcedure-CaCO3_calcul-tc-oc",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "CaCO3_calcul-tc-oc",
+    "description": "Indirect estimate: inorganic carbon divided by 0.12 (computed as total carbon minus organic carbon)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 257,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalElementsProcedure-Total_h2so4",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Total_h2so4",
+    "description": "Total P-/- colorimetric in H2SO4-Se-Salicylic acid digest( sulfuric acid) Particularly used for Total P.",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 258,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalElementsProcedure-Total_hcl",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Total_hcl",
+    "description": "HCl extraction. Particularly used for Total P.",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 259,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalElementsProcedure-Total_hcl-aquaregia",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Total_hcl-aquaregia",
+    "description": "Hydrocloric (HCl) extraction in nitric/perchloric acid mixture (totals) aqua regia",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 260,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalElementsProcedure-Total_hclo4",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Total_hclo4",
+    "description": "Perchloric acid percolation. Particularly used for Total P.",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 261,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalElementsProcedure-Total_hno3-aquafortis",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Total_hno3-aquafortis",
+    "description": "Nitric acid attack. Particularly used for Total P.",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 262,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalElementsProcedure-Total_nh4-6mo7o24",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Total_nh4-6mo7o24",
+    "description": "COLORIMETRIC VANADATE MOLYBDATE. Particularly used for Total P.",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 263,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalElementsProcedure-Total_tp03",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Total_tp03",
+    "description": "reagent of Baeyens. Precipitation in form of Phosphomolybdate. Particularly used for Total P.",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 264,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalElementsProcedure-Total_tp04",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Total_tp04",
+    "description": "acid fleischman. Particularly used for Total P.",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 265,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalElementsProcedure-Total_tp05",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Total_tp05",
+    "description": "8 M HCl extraction. Particularly used for Total P.",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 266,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalElementsProcedure-Total_tp06",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Total_tp06",
+    "description": "Molybdenum blue method, using ascorbic acid as reductant after heating of soil to 550 C and extraction with 6M sulphuric acid. Particularly used for Total P.",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 267,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalElementsProcedure-Total_tp07",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Total_tp07",
+    "description": "1:1 H2SO4 : HNO3. Particularly used for Total P.",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 268,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalElementsProcedure-Total_tp08",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Total_tp08",
+    "description": "After Nitric acid attack (boiling with HNO3), colometric determination (method of Duval).. Particularly used for Total P.",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 269,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalElementsProcedure-Total_tp09",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Total_tp09",
+    "description": "Walker and Adams, 1958. Particularly used for Total P.",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 270,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalElementsProcedure-Total_tp10",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Total_tp10",
+    "description": "Colorimetric, unspecified extract",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 271,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalElementsProcedure-Total_unkn",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Total_unk",
+    "description": "Unspecified method",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 272,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalElementsProcedure-Total_xrd",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Total_xrd",
+    "description": "XRD",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 273,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalElementsProcedure-Total_xrf",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Total_xrf",
+    "description": "XRF",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 274,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalElementsProcedure-Total_xrf-p",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Total_xrf-p",
+    "description": "PXRF",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 275,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/procedure/totalElementsProcedure-Total_xtf-t",
+    "vocabulary": "glosis-proc",
+    "version": "2.0.0",
+    "label": "Total_xtf-t",
+    "description": "TXRF",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 276,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-A",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Crop agriculture (cropping)",
+    "description": "Land-use classification of main class Crop agriculture (cropping)",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 277,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-AA",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Annual field cropping",
+    "description": "Land-use classification of main class Crop agriculture and of subclass Annual field cropping",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 278,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-AA1",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Shifting cultivation",
+    "description": "Land-use classification of main class Crop agriculture and of subclass Annual field cropping and of type Shifting cultivation",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 279,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-AA2",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Fallow system cultivation",
+    "description": "Land-use classification of main class Crop agriculture and of sub-class Annual field cropping and of type Fallow system cultivation",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 280,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-AA3",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Ley system cultivation",
+    "description": "Land-use classification of main class Crop agriculture and of subclass Annual field cropping and of type Ley system cultivation",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 281,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-AA4",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Rainfed arable cultivation",
+    "description": "Land-use classification of main class Crop agriculture and of subclass Annual field cropping and of type Rainfed arable cultivation",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 282,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-AA5",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Wet rice cultivation",
+    "description": "Land-use classification of mainclass Crop agriculture and of class Annual field cropping and of type Wet rice cultivation",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 283,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-AA6",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Irrigated cultivation",
+    "description": "Land-use classification of main class Crop agriculture and of subclass Annual field cropping and of type Irrigated cultivation",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 284,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-AP",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Perennial field cropping",
+    "description": "Land-use classification of main class Crop agriculture and of subclass Perennial field cropping",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 285,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-AP1",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Non-irrigated cultivation",
+    "description": "Land-use classification of main class Crop agriculture and of subclass Perennial field cropping and of type Non-irrigated cultivation",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 286,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-AP2",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Irrigated cultivation",
+    "description": "Land-use classification of main class Crop agriculture and of subclass Perennial field cropping and of type Irrigated cultivation",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 287,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-AT",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Tree and shrub cropping",
+    "description": "Land-use classification of main class Crop agriculture and of subclass Tree and shrub cropping",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 288,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-AT1",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Non-irrigated tree crop cultivation",
+    "description": "Land-use classification of main class Crop agriculture and of subclass Tree and shrub cropping and of type Non-irrigated shrub crop cultivation",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 289,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-AT2",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Irrigated tree crop cultivation",
+    "description": "Land-use classification of main class Crop agriculture and of subclass Tree and shrub cropping and of type Irrigated tree crop cultivation",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 290,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-AT3",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Non-irrigated shrub crop cultivation",
+    "description": "Land-use classification of main class Crop agriculture and of subclass Tree and shrub cropping and of type Non-irrigated shrub crop cultivation",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 291,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-AT4",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Irrigated shrub crop cultivation",
+    "description": "Land-use classification of main class Crop agriculture and of subclass Tree and shrub cropping and of type Irrigated shrub crop cultivation",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 292,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-F",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "F = Forestry",
+    "description": "Land-use classification of main class Forestry",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 293,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-FN",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Natural forest and woodland",
+    "description": "Land-use classification of main class Forestry and of subclass Natural forest and woodland",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 294,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-FN1",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Selective felling",
+    "description": "Land-use classification of main class Forestry and of subclass Natural forest and woodland and of type Selective felling",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 295,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-FN2",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Clear felling",
+    "description": "Land-use classification of main class Forestry and of subclass Natural forest and woodland and of type Clear felling",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 296,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-FP",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Plantation forestry",
+    "description": "Land-use classification of main class Forestry and of subclass Plantation forestry",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 297,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-H",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Animal husbandry",
+    "description": "Land-use classification of main class Animal husbandry",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 298,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-HE",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Extensive grazing",
+    "description": "Land-use classification of main class Animal husbandry and of subclass Extensive grazing",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 299,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-HE1",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Nomadism",
+    "description": "Land-use classification of main class Animal husbandry and of subclass Extensive grazing and of type Nomadism",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 300,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-HE2",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Semi-nomadism",
+    "description": "Land-use classification of main class Animal husbandry and of subclass Extensive grazing and of type Semi-nomadism",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 301,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-HE3",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Ranching",
+    "description": "Land-use classification of main class Animal husbandry and of subclass Extensive grazing and of type Ranching",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 302,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-HI",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Intensive grazing",
+    "description": "Land-use classification of main class Animal husbandry and of subclass Intensive grazing",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 303,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-HI1",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Animal production",
+    "description": "Land-use classification of main class Animal husbandry and of subclass Intensive grazing and of type Animal production",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 304,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-HI2",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Dairying",
+    "description": "Land-use classification of main class Animal husbandry and of subclass Intensive grazing and of type Dairying",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 305,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-M",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "M = Mixed farming",
+    "description": "Land-use classification of main class Mixed farming",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 306,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-MF",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Agroforestry",
+    "description": "Land-use classification of main class Mixed farming and of subclass Agroforestry",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 307,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-MP",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Agropastoralism",
+    "description": "Land-use classification of main class Mixed farming and of subclass Agropastoralism",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 308,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-Oi",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Other land uses",
+    "description": "Land-use classification of main class Other land uses",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 309,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-P",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "P = Nature protection",
+    "description": "Land-use classification of main class Nature protection",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 310,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-PD",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Degradation control",
+    "description": "Land-use classification of main class Nature protection and of subclass Degradation control",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 311,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-PD1",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Without interference",
+    "description": "Land-use classification of main class Nature protection and of subclass Degradation control and of type Without interference",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 312,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-PD2",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "With interference",
+    "description": "Land-use classification of main class Nature protection and of subclass Degradation control and of type With interference",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 313,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-PN",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Nature and game preservation",
+    "description": "Land-use classification of main class Nature protection and of subclass Nature and game preservation",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 314,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-PN1",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Reserves",
+    "description": "Land-use classification of main class Nature protection and of subclass Nature and game preservationand of type Reserves",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 315,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-PN2",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Parks",
+    "description": "Land-use classification of main class Nature protection and of subclass Nature and game preservation and of type Parks",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 316,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-PN3",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Wildlife management",
+    "description": "Land-use classification of main class Nature protection and of subclass Nature and game preservation and of type Wildlife management",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 317,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-S",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "S = Settlement, industry",
+    "description": "Land-use classification of main class Settlement, industry",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 318,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-SC",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Recreational use",
+    "description": "Land-use classification of main class Settlement, industry and of subclass Recreational use",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 319,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-SD",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Disposal sites",
+    "description": "Land-use classification of main class Settlement, industry and of subclass Disposal sites",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 320,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-SI",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Industrial use",
+    "description": "Land-use classification of main class Settlement, industry and of subclass Industrial use",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 321,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-SR",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Residential use",
+    "description": "Land-use classification of main class Settlement or industry and of subclass Residential use",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 322,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-ST",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Transport",
+    "description": "Land-use classification of main class Settlement, industry and of subclass Transport",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 323,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-SX",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Excavations",
+    "description": "Land-use classification of main class Settlement, industry and of subclass Excavations",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 324,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-U",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Not used and not managed",
+    "description": "Land-use classification of main class Not used and not managed",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularyterm",
+  "pk": 325,
+  "fields": {
+    "uri": "http://w3id.org/glosis/model/codelists/landUseClassValueCode-Y",
+    "vocabulary": "glosis-results-landUseClass",
+    "version": "1.9.9",
+    "label": "Military area",
+    "description": "Land-use classification of main class Military area",
+    "source_type": "skos:Concept"
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 1,
+  "fields": {
+    "taxonomy_value": "BULK_DENSITY_METHODS:CM",
+    "external_term": 18,
+    "relation": "closeMatch",
+    "status": "rejected",
+    "notes": "Importazione Step 2b; proposta non approvata | CSV review_status=v2_partial_candidate | URI proposto di nomenclatura precedente: non usarlo senza conferma; verificare alternativa glosis-proc. | Indica campione core, ma non distingue fine earth/whole soil né umidità; alternativa whole-soil da verificare."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 2,
+  "fields": {
+    "taxonomy_value": "BULK_DENSITY_METHODS:EM",
+    "external_term": 19,
+    "relation": "closeMatch",
+    "status": "rejected",
+    "notes": "Importazione Step 2b; proposta non approvata | CSV review_status=v2_partial_candidate | URI proposto di nomenclatura precedente: non usarlo senza conferma; verificare alternativa glosis-proc. | Excavation/replacement: da verificare se il metodo originale include replacement e se fine earth."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 3,
+  "fields": {
+    "taxonomy_value": "BULK_DENSITY_METHODS:LM",
+    "external_term": 15,
+    "relation": "closeMatch",
+    "status": "rejected",
+    "notes": "Importazione Step 2b; proposta non approvata | CSV review_status=v2_partial_candidate | URI proposto di nomenclatura precedente: non usarlo senza conferma; verificare alternativa glosis-proc. | Clod method: manca distinzione fine earth/whole soil e stato idrico."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 4,
+  "fields": {
+    "taxonomy_value": "CEC_CA_MG_NA_K_METHODS:AA",
+    "external_term": 73,
+    "relation": "closeMatch",
+    "status": "verified",
+    "notes": "Importazione Step 2b; proposta non approvata | CSV review_status=v2_partial_candidate | Mapping originale conservato come annotazione; non è un URI GloSIS verificato. | NH4OAc presente; pH 7 non specificato da MED-SIS: non assegnare come exactMatch."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 5,
+  "fields": {
+    "taxonomy_value": "CEC_CA_MG_NA_K_METHODS:ME",
+    "external_term": 64,
+    "relation": "closeMatch",
+    "status": "verified",
+    "notes": "Importazione Step 2b; proposta non approvata | CSV review_status=v2_partial_candidate | URI proposto di nomenclatura precedente: non usarlo senza conferma; verificare alternativa glosis-proc. | Il codice GloSIS è specifico per CEC in Mehlich III; MED-SIS dice solo Mehlich Extraction."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 6,
+  "fields": {
+    "taxonomy_value": "EL_CONDUCTIVITY_PH_METHODS:OF",
+    "external_term": 90,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "Importazione Step 2b; proposta non approvata | CSV review_status=v2_present_context_required | Conducibilità elettrica in acqua 1:5; URI documentato v1.5.1. | La tassonomia MED-SIS combina EC e pH: il candidato riguarda solo EC; per pH usare procedure pH specifiche. Saturated paste ≠ necessariamente ECe."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 7,
+  "fields": {
+    "taxonomy_value": "EL_CONDUCTIVITY_PH_METHODS:OO",
+    "external_term": 86,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "Importazione Step 2b; proposta non approvata | CSV review_status=v2_present_context_required | Conducibilità elettrica in acqua 1:1; URI documentato v1.5.1. | La tassonomia MED-SIS combina EC e pH: il candidato riguarda solo EC; per pH usare procedure pH specifiche. Saturated paste ≠ necessariamente ECe."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 8,
+  "fields": {
+    "taxonomy_value": "EL_CONDUCTIVITY_PH_METHODS:OP",
+    "external_term": 89,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "Importazione Step 2b; proposta non approvata | CSV review_status=v2_present_context_required | Conducibilità elettrica in acqua 1:2.5; URI documentato v1.5.1. | La tassonomia MED-SIS combina EC e pH: il candidato riguarda solo EC; per pH usare procedure pH specifiche. Saturated paste ≠ necessariamente ECe."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 9,
+  "fields": {
+    "taxonomy_value": "EL_CONDUCTIVITY_PH_METHODS:OT",
+    "external_term": 88,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "Importazione Step 2b; proposta non approvata | CSV review_status=v2_present_context_required | Conducibilità elettrica in acqua 1:2; URI documentato v1.5.1. | La tassonomia MED-SIS combina EC e pH: il candidato riguarda solo EC; per pH usare procedure pH specifiche. Saturated paste ≠ necessariamente ECe."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 10,
+  "fields": {
+    "taxonomy_value": "EL_CONDUCTIVITY_PH_METHODS:SP",
+    "external_term": 91,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "Importazione Step 2b; proposta non approvata | CSV review_status=v2_present_context_required | Conducibilità elettrica su estratto di pasta satura; URI documentato v1.5.1. | La tassonomia MED-SIS combina EC e pH: il candidato riguarda solo EC; per pH usare procedure pH specifiche. Saturated paste ≠ necessariamente ECe."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 11,
+  "fields": {
+    "taxonomy_value": "EXCHANGEABLE_CATIONS_METHODS:AA",
+    "external_term": 97,
+    "relation": "closeMatch",
+    "status": "verified",
+    "notes": "Importazione Step 2b; proposta non approvata | CSV review_status=v2_partial_candidate | URI proposto di nomenclatura precedente: non usarlo senza conferma; verificare alternativa glosis-proc. | Verificare tipo di cationi, pH e soluzione prima di usare."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 12,
+  "fields": {
+    "taxonomy_value": "EXCHANGEABLE_CATIONS_METHODS:ME",
+    "external_term": 121,
+    "relation": "closeMatch",
+    "status": "verified",
+    "notes": "Importazione Step 2b; proposta non approvata | CSV review_status=v2_partial_candidate | URI proposto di nomenclatura precedente: non usarlo senza conferma; verificare alternativa glosis-proc. | Mehlich Extraction non precisa I/II/III: candidato non assegnabile direttamente."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 13,
+  "fields": {
+    "taxonomy_value": "FE_TOT_METHODS:XRF",
+    "external_term": 273,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "Importazione Step 2b; proposta non approvata | CSV review_status=v2_present_semantic_review | XRF; URI documentato in glosis_procedure v1.5.1. | XRF è attestato per Total Elements; confermare che il protocollo Fe totale corrisponda."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 14,
+  "fields": {
+    "taxonomy_value": "GYPSUM_CONTENT_METHODS:AT",
+    "external_term": 128,
+    "relation": "closeMatch",
+    "status": "verified",
+    "notes": "Importazione Step 2b; proposta non approvata | CSV review_status=v2_partial_candidate | URI proposto di nomenclatura precedente: non usarlo senza conferma; verificare alternativa glosis-proc. | Precipitazione con acetone, ma non documenta titolazione EDTA Holmgren."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 15,
+  "fields": {
+    "taxonomy_value": "MN_ZN_CU_METHODS:DF",
+    "external_term": 110,
+    "relation": "closeMatch",
+    "status": "verified",
+    "notes": "Importazione Step 2b; proposta non approvata | CSV review_status=v2_partial_candidate | URI proposto di nomenclatura precedente: non usarlo senza conferma; verificare alternativa glosis-proc. | GloSIS descrive l’estrazione DTPA, non la successiva determinazione FAAS."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 16,
+  "fields": {
+    "taxonomy_value": "MN_ZN_CU_METHODS:DIA",
+    "external_term": 110,
+    "relation": "closeMatch",
+    "status": "verified",
+    "notes": "Importazione Step 2b; proposta non approvata | CSV review_status=v2_partial_candidate | URI proposto di nomenclatura precedente: non usarlo senza conferma; verificare alternativa glosis-proc. | GloSIS descrive l’estrazione DTPA, non la successiva determinazione ICP-AES."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 17,
+  "fields": {
+    "taxonomy_value": "MN_ZN_CU_METHODS:DIM",
+    "external_term": 110,
+    "relation": "closeMatch",
+    "status": "verified",
+    "notes": "Importazione Step 2b; proposta non approvata | CSV review_status=v2_partial_candidate | URI proposto di nomenclatura precedente: non usarlo senza conferma; verificare alternativa glosis-proc. | GloSIS descrive l’estrazione DTPA, non la successiva determinazione ICP-MS."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 18,
+  "fields": {
+    "taxonomy_value": "MN_ZN_CU_METHODS:EF",
+    "external_term": 111,
+    "relation": "closeMatch",
+    "status": "verified",
+    "notes": "Importazione Step 2b; proposta non approvata | CSV review_status=v2_partial_candidate | URI proposto di nomenclatura precedente: non usarlo senza conferma; verificare alternativa glosis-proc. | GloSIS descrive l’estrazione EDTA, non la successiva determinazione FAAS."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 19,
+  "fields": {
+    "taxonomy_value": "MN_ZN_CU_METHODS:NAIA",
+    "external_term": 117,
+    "relation": "closeMatch",
+    "status": "verified",
+    "notes": "Importazione Step 2b; proposta non approvata | CSV review_status=v2_partial_candidate | URI proposto di nomenclatura precedente: non usarlo senza conferma; verificare alternativa glosis-proc. | GloSIS descrive l’estrazione HNO3, non la successiva determinazione ICP-AES."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 20,
+  "fields": {
+    "taxonomy_value": "MN_ZN_CU_METHODS:NAIM",
+    "external_term": 117,
+    "relation": "closeMatch",
+    "status": "verified",
+    "notes": "Importazione Step 2b; proposta non approvata | CSV review_status=v2_partial_candidate | URI proposto di nomenclatura precedente: non usarlo senza conferma; verificare alternativa glosis-proc. | GloSIS descrive l’estrazione HNO3, non la successiva determinazione ICP-MS."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 21,
+  "fields": {
+    "taxonomy_value": "PB_HG_CD_NI_CR_AS_CO_V_METHODS:NAF",
+    "external_term": 117,
+    "relation": "closeMatch",
+    "status": "verified",
+    "notes": "Importazione Step 2b; proposta non approvata | CSV review_status=v2_partial_candidate | URI proposto di nomenclatura precedente: non usarlo senza conferma; verificare alternativa glosis-proc. | Estrazione HNO3, ma GloSIS non specifica FAAS."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 22,
+  "fields": {
+    "taxonomy_value": "PB_HG_CD_NI_CR_AS_CO_V_METHODS:NAIA",
+    "external_term": 117,
+    "relation": "closeMatch",
+    "status": "verified",
+    "notes": "Importazione Step 2b; proposta non approvata | CSV review_status=v2_partial_candidate | URI proposto di nomenclatura precedente: non usarlo senza conferma; verificare alternativa glosis-proc. | Estrazione HNO3, ma GloSIS non specifica ICP-AES."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 23,
+  "fields": {
+    "taxonomy_value": "PB_HG_CD_NI_CR_AS_CO_V_METHODS:NAIM",
+    "external_term": 117,
+    "relation": "closeMatch",
+    "status": "verified",
+    "notes": "Importazione Step 2b; proposta non approvata | CSV review_status=v2_partial_candidate | URI proposto di nomenclatura precedente: non usarlo senza conferma; verificare alternativa glosis-proc. | Estrazione HNO3, ma GloSIS non specifica ICP-MS."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 24,
+  "fields": {
+    "taxonomy_value": "P_AVAILABLE_METHODS:OL",
+    "external_term": 105,
+    "relation": "closeMatch",
+    "status": "verified",
+    "notes": "Importazione Step 2b; proposta non approvata | CSV review_status=v2_partial_candidate | URI proposto di nomenclatura precedente: non usarlo senza conferma; verificare alternativa glosis-proc. | Procedura combina Olsen per suoli non acidi e Bray I per suoli acidi: non equivale a Olsen isolato."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 26,
+  "fields": {
+    "taxonomy_value": "P_AVAILABLE_METHODS:MN",
+    "external_term": 121,
+    "relation": "closeMatch",
+    "status": "verified",
+    "notes": "For new Soils4Med data, MN explicitly identifies Mehlich III extraction for available phosphorus. GloSIS Extr_m3 describes the extraction procedure rather than the complete analytical determination. Legacy data are excluded from the ISO 28258 APIs."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 27,
+  "fields": {
+    "taxonomy_value": "USES:A",
+    "external_term": 276,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 28,
+  "fields": {
+    "taxonomy_value": "USES:AA",
+    "external_term": 277,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 29,
+  "fields": {
+    "taxonomy_value": "USES:AA1",
+    "external_term": 278,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 30,
+  "fields": {
+    "taxonomy_value": "USES:AA2",
+    "external_term": 279,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 31,
+  "fields": {
+    "taxonomy_value": "USES:AA3",
+    "external_term": 280,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 32,
+  "fields": {
+    "taxonomy_value": "USES:AA5",
+    "external_term": 282,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 33,
+  "fields": {
+    "taxonomy_value": "USES:AA6",
+    "external_term": 283,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 34,
+  "fields": {
+    "taxonomy_value": "USES:AP",
+    "external_term": 284,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 35,
+  "fields": {
+    "taxonomy_value": "USES:AP1",
+    "external_term": 285,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 36,
+  "fields": {
+    "taxonomy_value": "USES:AP2",
+    "external_term": 286,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 37,
+  "fields": {
+    "taxonomy_value": "USES:AT",
+    "external_term": 287,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 38,
+  "fields": {
+    "taxonomy_value": "USES:AT1",
+    "external_term": 288,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 39,
+  "fields": {
+    "taxonomy_value": "USES:AT2",
+    "external_term": 289,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 40,
+  "fields": {
+    "taxonomy_value": "USES:AT3",
+    "external_term": 290,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 41,
+  "fields": {
+    "taxonomy_value": "USES:AT4",
+    "external_term": 291,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 42,
+  "fields": {
+    "taxonomy_value": "USES:F",
+    "external_term": 292,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 43,
+  "fields": {
+    "taxonomy_value": "USES:FN",
+    "external_term": 293,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 44,
+  "fields": {
+    "taxonomy_value": "USES:FN1",
+    "external_term": 294,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 45,
+  "fields": {
+    "taxonomy_value": "USES:FN2",
+    "external_term": 295,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 46,
+  "fields": {
+    "taxonomy_value": "USES:FP",
+    "external_term": 296,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 47,
+  "fields": {
+    "taxonomy_value": "USES:H",
+    "external_term": 297,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 48,
+  "fields": {
+    "taxonomy_value": "USES:HE",
+    "external_term": 298,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 49,
+  "fields": {
+    "taxonomy_value": "USES:HE1",
+    "external_term": 299,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 50,
+  "fields": {
+    "taxonomy_value": "USES:HE2",
+    "external_term": 300,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 51,
+  "fields": {
+    "taxonomy_value": "USES:HE3",
+    "external_term": 301,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 52,
+  "fields": {
+    "taxonomy_value": "USES:HI",
+    "external_term": 302,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 53,
+  "fields": {
+    "taxonomy_value": "USES:HI1",
+    "external_term": 303,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 54,
+  "fields": {
+    "taxonomy_value": "USES:M",
+    "external_term": 305,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 55,
+  "fields": {
+    "taxonomy_value": "USES:MF",
+    "external_term": 306,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 56,
+  "fields": {
+    "taxonomy_value": "USES:MP",
+    "external_term": 307,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 57,
+  "fields": {
+    "taxonomy_value": "USES:O",
+    "external_term": 308,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 58,
+  "fields": {
+    "taxonomy_value": "USES:P",
+    "external_term": 309,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 59,
+  "fields": {
+    "taxonomy_value": "USES:PD",
+    "external_term": 310,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 60,
+  "fields": {
+    "taxonomy_value": "USES:PN",
+    "external_term": 313,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 61,
+  "fields": {
+    "taxonomy_value": "USES:PN1",
+    "external_term": 314,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 62,
+  "fields": {
+    "taxonomy_value": "USES:PN2",
+    "external_term": 315,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 63,
+  "fields": {
+    "taxonomy_value": "USES:S",
+    "external_term": 317,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 64,
+  "fields": {
+    "taxonomy_value": "USES:SC",
+    "external_term": 318,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 65,
+  "fields": {
+    "taxonomy_value": "USES:SD",
+    "external_term": 319,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 66,
+  "fields": {
+    "taxonomy_value": "USES:SI",
+    "external_term": 320,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 67,
+  "fields": {
+    "taxonomy_value": "USES:SR",
+    "external_term": 321,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 68,
+  "fields": {
+    "taxonomy_value": "USES:ST",
+    "external_term": 322,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 69,
+  "fields": {
+    "taxonomy_value": "USES:SX",
+    "external_term": 323,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 70,
+  "fields": {
+    "taxonomy_value": "USES:U",
+    "external_term": 324,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 71,
+  "fields": {
+    "taxonomy_value": "USES:Y",
+    "external_term": 325,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 72,
+  "fields": {
+    "taxonomy_value": "USES:AA4",
+    "external_term": 281,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 73,
+  "fields": {
+    "taxonomy_value": "USES:HI2",
+    "external_term": 304,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 74,
+  "fields": {
+    "taxonomy_value": "USES:PD1",
+    "external_term": 311,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 75,
+  "fields": {
+    "taxonomy_value": "USES:PD2",
+    "external_term": 312,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.vocabularymapping",
+  "pk": 76,
+  "fields": {
+    "taxonomy_value": "USES:PN3",
+    "external_term": 316,
+    "relation": "exactMatch",
+    "status": "verified",
+    "notes": "FAO land-use classification; GloSIS landUseClass."
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 1,
+  "fields": {
+    "taxonomy_value": "ACTIVE_CACO3_CONTENT_METHODS:DM",
+    "uri": "http://localhost/api/backoffice/procedures/ACTIVE_CACO3_CONTENT_METHODS/DM",
+    "label": "Droineau method",
+    "description": "Droineau method"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 2,
+  "fields": {
+    "taxonomy_value": "BULK_DENSITY_METHODS:CM",
+    "uri": "http://localhost/api/backoffice/procedures/BULK_DENSITY_METHODS/CM",
+    "label": "Core method",
+    "description": "Core method"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 3,
+  "fields": {
+    "taxonomy_value": "BULK_DENSITY_METHODS:EM",
+    "uri": "http://localhost/api/backoffice/procedures/BULK_DENSITY_METHODS/EM",
+    "label": "Excavation method",
+    "description": "Excavation method"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 4,
+  "fields": {
+    "taxonomy_value": "BULK_DENSITY_METHODS:LM",
+    "uri": "http://localhost/api/backoffice/procedures/BULK_DENSITY_METHODS/LM",
+    "label": "Clod method",
+    "description": "Clod method"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 5,
+  "fields": {
+    "taxonomy_value": "CACO3_CONTENT_METHODS:GM",
+    "uri": "http://localhost/api/backoffice/procedures/CACO3_CONTENT_METHODS/GM",
+    "label": "Carbonate equivalent Gravimetric method",
+    "description": "Carbonate equivalent Gravimetric method"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 6,
+  "fields": {
+    "taxonomy_value": "CACO3_CONTENT_METHODS:GV",
+    "uri": "http://localhost/api/backoffice/procedures/CACO3_CONTENT_METHODS/GV",
+    "label": "Calcimeter - Gas volumetric method",
+    "description": "Calcimeter - Gas volumetric method"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 7,
+  "fields": {
+    "taxonomy_value": "CACO3_CONTENT_METHODS:TM",
+    "uri": "http://localhost/api/backoffice/procedures/CACO3_CONTENT_METHODS/TM",
+    "label": "Titration method",
+    "description": "Titration method"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 8,
+  "fields": {
+    "taxonomy_value": "CEC_CA_MG_NA_K_METHODS:AA",
+    "uri": "http://localhost/api/backoffice/procedures/CEC_CA_MG_NA_K_METHODS/AA",
+    "label": "Ammonium Acetate (CH3COONH4)",
+    "description": "Ammonium Acetate (CH3COONH4)"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 9,
+  "fields": {
+    "taxonomy_value": "CEC_CA_MG_NA_K_METHODS:BM",
+    "uri": "http://localhost/api/backoffice/procedures/CEC_CA_MG_NA_K_METHODS/BM",
+    "label": "BaCl2/MgSO4 method",
+    "description": "BaCl2/MgSO4 method"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 10,
+  "fields": {
+    "taxonomy_value": "CEC_CA_MG_NA_K_METHODS:ME",
+    "uri": "http://localhost/api/backoffice/procedures/CEC_CA_MG_NA_K_METHODS/ME",
+    "label": "Mehlich Extraction",
+    "description": "Mehlich Extraction"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 11,
+  "fields": {
+    "taxonomy_value": "EL_CONDUCTIVITY_PH_METHODS:OF",
+    "uri": "http://localhost/api/backoffice/procedures/EL_CONDUCTIVITY_PH_METHODS/OF",
+    "label": "Soil to water 1:5",
+    "description": "Soil to water 1:5"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 12,
+  "fields": {
+    "taxonomy_value": "EL_CONDUCTIVITY_PH_METHODS:OO",
+    "uri": "http://localhost/api/backoffice/procedures/EL_CONDUCTIVITY_PH_METHODS/OO",
+    "label": "Soil to water 1:1",
+    "description": "Soil to water 1:1"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 13,
+  "fields": {
+    "taxonomy_value": "EL_CONDUCTIVITY_PH_METHODS:OP",
+    "uri": "http://localhost/api/backoffice/procedures/EL_CONDUCTIVITY_PH_METHODS/OP",
+    "label": "Soil to water 1:2.5",
+    "description": "Soil to water 1:2.5"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 14,
+  "fields": {
+    "taxonomy_value": "EL_CONDUCTIVITY_PH_METHODS:OT",
+    "uri": "http://localhost/api/backoffice/procedures/EL_CONDUCTIVITY_PH_METHODS/OT",
+    "label": "Soil to water 1:2",
+    "description": "Soil to water 1:2"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 15,
+  "fields": {
+    "taxonomy_value": "EL_CONDUCTIVITY_PH_METHODS:SP",
+    "uri": "http://localhost/api/backoffice/procedures/EL_CONDUCTIVITY_PH_METHODS/SP",
+    "label": "Saturated paste",
+    "description": "Saturated paste"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 16,
+  "fields": {
+    "taxonomy_value": "EXCHANGEABLE_CATIONS_METHODS:AA",
+    "uri": "http://localhost/api/backoffice/procedures/EXCHANGEABLE_CATIONS_METHODS/AA",
+    "label": "Ammonium Acetate (CH3COONH4)",
+    "description": "Ammonium Acetate (CH3COONH4)"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 17,
+  "fields": {
+    "taxonomy_value": "EXCHANGEABLE_CATIONS_METHODS:BM",
+    "uri": "http://localhost/api/backoffice/procedures/EXCHANGEABLE_CATIONS_METHODS/BM",
+    "label": "Extraction with BaCl2",
+    "description": "Extraction with BaCl2"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 18,
+  "fields": {
+    "taxonomy_value": "EXCHANGEABLE_CATIONS_METHODS:ME",
+    "uri": "http://localhost/api/backoffice/procedures/EXCHANGEABLE_CATIONS_METHODS/ME",
+    "label": "Mehlich Extraction",
+    "description": "Mehlich Extraction"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 19,
+  "fields": {
+    "taxonomy_value": "FE_TOT_METHODS:AR",
+    "uri": "http://localhost/api/backoffice/procedures/FE_TOT_METHODS/AR",
+    "label": "Acqua Regia",
+    "description": "Acqua Regia"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 20,
+  "fields": {
+    "taxonomy_value": "FE_TOT_METHODS:FA",
+    "uri": "http://localhost/api/backoffice/procedures/FE_TOT_METHODS/FA",
+    "label": "Fluoridric Acid",
+    "description": "Fluoridric Acid"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 21,
+  "fields": {
+    "taxonomy_value": "FE_TOT_METHODS:XRF",
+    "uri": "http://localhost/api/backoffice/procedures/FE_TOT_METHODS/XRF",
+    "label": "XRF",
+    "description": "XRF"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 22,
+  "fields": {
+    "taxonomy_value": "GYPSUM_CONTENT_METHODS:AT",
+    "uri": "http://localhost/api/backoffice/procedures/GYPSUM_CONTENT_METHODS/AT",
+    "label": "Acetone EDTA titration (George Holmgren)",
+    "description": "Acetone EDTA titration (George Holmgren)"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 23,
+  "fields": {
+    "taxonomy_value": "GYPSUM_CONTENT_METHODS:FA",
+    "uri": "http://localhost/api/backoffice/procedures/GYPSUM_CONTENT_METHODS/FA",
+    "label": "Soluble Calcium FAAS",
+    "description": "Soluble Calcium FAAS"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 24,
+  "fields": {
+    "taxonomy_value": "HYDRAULIC_CONDUCTIVITY_METHODS:IN",
+    "uri": "http://localhost/api/backoffice/procedures/HYDRAULIC_CONDUCTIVITY_METHODS/IN",
+    "label": "Infiltrometer",
+    "description": "Infiltrometer"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 25,
+  "fields": {
+    "taxonomy_value": "MN_ZN_CU_METHODS:DBF",
+    "uri": "http://localhost/api/backoffice/procedures/MN_ZN_CU_METHODS/DBF",
+    "label": "DTPA ammonium bicarbonate FAAS",
+    "description": "DTPA ammonium bicarbonate FAAS"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 26,
+  "fields": {
+    "taxonomy_value": "MN_ZN_CU_METHODS:DBIA",
+    "uri": "http://localhost/api/backoffice/procedures/MN_ZN_CU_METHODS/DBIA",
+    "label": "DTPA ammonium bicarbonate ICP-AES",
+    "description": "DTPA ammonium bicarbonate ICP-AES"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 27,
+  "fields": {
+    "taxonomy_value": "MN_ZN_CU_METHODS:DBIM",
+    "uri": "http://localhost/api/backoffice/procedures/MN_ZN_CU_METHODS/DBIM",
+    "label": "DTPA ammonium bicarbonate ICP-MS",
+    "description": "DTPA ammonium bicarbonate ICP-MS"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 28,
+  "fields": {
+    "taxonomy_value": "MN_ZN_CU_METHODS:DF",
+    "uri": "http://localhost/api/backoffice/procedures/MN_ZN_CU_METHODS/DF",
+    "label": "DTPA FAAS",
+    "description": "DTPA FAAS"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 29,
+  "fields": {
+    "taxonomy_value": "MN_ZN_CU_METHODS:DIA",
+    "uri": "http://localhost/api/backoffice/procedures/MN_ZN_CU_METHODS/DIA",
+    "label": "DTPA ICP-AES",
+    "description": "DTPA ICP-AES"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 30,
+  "fields": {
+    "taxonomy_value": "MN_ZN_CU_METHODS:DIM",
+    "uri": "http://localhost/api/backoffice/procedures/MN_ZN_CU_METHODS/DIM",
+    "label": "DTPA ICP-MS",
+    "description": "DTPA ICP-MS"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 31,
+  "fields": {
+    "taxonomy_value": "MN_ZN_CU_METHODS:EF",
+    "uri": "http://localhost/api/backoffice/procedures/MN_ZN_CU_METHODS/EF",
+    "label": "EDTA FAAS",
+    "description": "EDTA FAAS"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 32,
+  "fields": {
+    "taxonomy_value": "MN_ZN_CU_METHODS:EIA",
+    "uri": "http://localhost/api/backoffice/procedures/MN_ZN_CU_METHODS/EIA",
+    "label": "EDTA ICP-AES",
+    "description": "EDTA ICP-AES"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 33,
+  "fields": {
+    "taxonomy_value": "MN_ZN_CU_METHODS:EIM",
+    "uri": "http://localhost/api/backoffice/procedures/MN_ZN_CU_METHODS/EIM",
+    "label": "EDTA ICP-MS",
+    "description": "EDTA ICP-MS"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 34,
+  "fields": {
+    "taxonomy_value": "MN_ZN_CU_METHODS:NAF",
+    "uri": "http://localhost/api/backoffice/procedures/MN_ZN_CU_METHODS/NAF",
+    "label": "Nitric acid FAAS",
+    "description": "Nitric acid FAAS"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 35,
+  "fields": {
+    "taxonomy_value": "MN_ZN_CU_METHODS:NAIA",
+    "uri": "http://localhost/api/backoffice/procedures/MN_ZN_CU_METHODS/NAIA",
+    "label": "Nitric acid ICP-AES",
+    "description": "Nitric acid ICP-AES"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 36,
+  "fields": {
+    "taxonomy_value": "MN_ZN_CU_METHODS:NAIM",
+    "uri": "http://localhost/api/backoffice/procedures/MN_ZN_CU_METHODS/NAIM",
+    "label": "Nitric acid ICP-MS",
+    "description": "Nitric acid ICP-MS"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 37,
+  "fields": {
+    "taxonomy_value": "NH4_METHODS:K1E",
+    "uri": "http://localhost/api/backoffice/procedures/NH4_METHODS/K1E",
+    "label": "KCl 1M extract",
+    "description": "KCl 1M extract"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 38,
+  "fields": {
+    "taxonomy_value": "NH4_METHODS:K2E",
+    "uri": "http://localhost/api/backoffice/procedures/NH4_METHODS/K2E",
+    "label": "KCl 2M extract",
+    "description": "KCl 2M extract"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 39,
+  "fields": {
+    "taxonomy_value": "NO3_METHODS:K1E",
+    "uri": "http://localhost/api/backoffice/procedures/NO3_METHODS/K1E",
+    "label": "KCl 1M extract",
+    "description": "KCl 1M extract"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 40,
+  "fields": {
+    "taxonomy_value": "NO3_METHODS:K2E",
+    "uri": "http://localhost/api/backoffice/procedures/NO3_METHODS/K2E",
+    "label": "KCl 2M extract",
+    "description": "KCl 2M extract"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 41,
+  "fields": {
+    "taxonomy_value": "NO3_METHODS:WE",
+    "uri": "http://localhost/api/backoffice/procedures/NO3_METHODS/WE",
+    "label": "Water extract",
+    "description": "Water extract"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 42,
+  "fields": {
+    "taxonomy_value": "N_CONTENT_METHODS:CA",
+    "uri": "http://localhost/api/backoffice/procedures/N_CONTENT_METHODS/CA",
+    "label": "Coleman nitrogen analyzer",
+    "description": "Coleman nitrogen analyzer"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 43,
+  "fields": {
+    "taxonomy_value": "N_CONTENT_METHODS:EA",
+    "uri": "http://localhost/api/backoffice/procedures/N_CONTENT_METHODS/EA",
+    "label": "Elemental analyzer",
+    "description": "Elemental analyzer"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 44,
+  "fields": {
+    "taxonomy_value": "N_CONTENT_METHODS:KJ",
+    "uri": "http://localhost/api/backoffice/procedures/N_CONTENT_METHODS/KJ",
+    "label": "Kjeldahl",
+    "description": "Kjeldahl"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 45,
+  "fields": {
+    "taxonomy_value": "N_CONTENT_METHODS:MW",
+    "uri": "http://localhost/api/backoffice/procedures/N_CONTENT_METHODS/MW",
+    "label": "Microwave",
+    "description": "Microwave"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 46,
+  "fields": {
+    "taxonomy_value": "ORGANIC_CARBON_METHODS:EA",
+    "uri": "http://localhost/api/backoffice/procedures/ORGANIC_CARBON_METHODS/EA",
+    "label": "Hydrometer method",
+    "description": "Hydrometer method"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 47,
+  "fields": {
+    "taxonomy_value": "ORGANIC_CARBON_METHODS:SK",
+    "uri": "http://localhost/api/backoffice/procedures/ORGANIC_CARBON_METHODS/SK",
+    "label": "Springer & Klee",
+    "description": "Springer & Klee"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 48,
+  "fields": {
+    "taxonomy_value": "ORGANIC_CARBON_METHODS:WB",
+    "uri": "http://localhost/api/backoffice/procedures/ORGANIC_CARBON_METHODS/WB",
+    "label": "Sieving",
+    "description": "Sieving"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 49,
+  "fields": {
+    "taxonomy_value": "ORGANIC_MATTER_CONTENT_METHODS:MF",
+    "uri": "http://localhost/api/backoffice/procedures/ORGANIC_MATTER_CONTENT_METHODS/MF",
+    "label": "Muffle",
+    "description": "Muffle"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 50,
+  "fields": {
+    "taxonomy_value": "PB_HG_CD_NI_CR_AS_CO_V_METHODS:DBF",
+    "uri": "http://localhost/api/backoffice/procedures/PB_HG_CD_NI_CR_AS_CO_V_METHODS/DBF",
+    "label": "DTPA ammonium bicarbonate FAAS",
+    "description": "DTPA ammonium bicarbonate FAAS"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 51,
+  "fields": {
+    "taxonomy_value": "PB_HG_CD_NI_CR_AS_CO_V_METHODS:DBIA",
+    "uri": "http://localhost/api/backoffice/procedures/PB_HG_CD_NI_CR_AS_CO_V_METHODS/DBIA",
+    "label": "DTPA ammonium bicarbonate ICP-AES",
+    "description": "DTPA ammonium bicarbonate ICP-AES"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 52,
+  "fields": {
+    "taxonomy_value": "PB_HG_CD_NI_CR_AS_CO_V_METHODS:DBIM",
+    "uri": "http://localhost/api/backoffice/procedures/PB_HG_CD_NI_CR_AS_CO_V_METHODS/DBIM",
+    "label": "DTPA ammonium bicarbonate ICP-MS",
+    "description": "DTPA ammonium bicarbonate ICP-MS"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 53,
+  "fields": {
+    "taxonomy_value": "PB_HG_CD_NI_CR_AS_CO_V_METHODS:NAF",
+    "uri": "http://localhost/api/backoffice/procedures/PB_HG_CD_NI_CR_AS_CO_V_METHODS/NAF",
+    "label": "Nitric acid FAAS",
+    "description": "Nitric acid FAAS"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 54,
+  "fields": {
+    "taxonomy_value": "PB_HG_CD_NI_CR_AS_CO_V_METHODS:NAIA",
+    "uri": "http://localhost/api/backoffice/procedures/PB_HG_CD_NI_CR_AS_CO_V_METHODS/NAIA",
+    "label": "Nitric acid ICP-AES",
+    "description": "Nitric acid ICP-AES"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 55,
+  "fields": {
+    "taxonomy_value": "PB_HG_CD_NI_CR_AS_CO_V_METHODS:NAIM",
+    "uri": "http://localhost/api/backoffice/procedures/PB_HG_CD_NI_CR_AS_CO_V_METHODS/NAIM",
+    "label": "Nitric acid ICP-MS",
+    "description": "Nitric acid ICP-MS"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 56,
+  "fields": {
+    "taxonomy_value": "P_AVAILABLE_METHODS:BR",
+    "uri": "http://localhost/api/backoffice/procedures/P_AVAILABLE_METHODS/BR",
+    "label": "Bray",
+    "description": "Bray"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 57,
+  "fields": {
+    "taxonomy_value": "P_AVAILABLE_METHODS:MN",
+    "uri": "http://localhost/api/backoffice/procedures/P_AVAILABLE_METHODS/MN",
+    "label": "Mehlich No.3",
+    "description": "Mehlich No.3"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 58,
+  "fields": {
+    "taxonomy_value": "P_AVAILABLE_METHODS:OL",
+    "uri": "http://localhost/api/backoffice/procedures/P_AVAILABLE_METHODS/OL",
+    "label": "Olsen",
+    "description": "Olsen"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 59,
+  "fields": {
+    "taxonomy_value": "ROC_TOC400_METHODS:LEC",
+    "uri": "http://localhost/api/backoffice/procedures/ROC_TOC400_METHODS/LEC",
+    "label": "LECO RC612 analyser",
+    "description": "LECO RC612 analyser"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 60,
+  "fields": {
+    "taxonomy_value": "SAND_CONTENT_METHODS:BH",
+    "uri": "http://localhost/api/backoffice/procedures/SAND_CONTENT_METHODS/BH",
+    "label": "Hydrometer method",
+    "description": "Hydrometer method"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 61,
+  "fields": {
+    "taxonomy_value": "SAND_CONTENT_METHODS:LD",
+    "uri": "http://localhost/api/backoffice/procedures/SAND_CONTENT_METHODS/LD",
+    "label": "Laser diffraction",
+    "description": "Laser diffraction"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 62,
+  "fields": {
+    "taxonomy_value": "SAND_CONTENT_METHODS:PR",
+    "uri": "http://localhost/api/backoffice/procedures/SAND_CONTENT_METHODS/PR",
+    "label": "Pipette and gravimetric method",
+    "description": "Pipette and gravimetric method"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 63,
+  "fields": {
+    "taxonomy_value": "SAND_CONTENT_METHODS:SV",
+    "uri": "http://localhost/api/backoffice/procedures/SAND_CONTENT_METHODS/SV",
+    "label": "Sieving",
+    "description": "Sieving"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 64,
+  "fields": {
+    "taxonomy_value": "SILT_CLAY_CONTENT_METHODS:BH",
+    "uri": "http://localhost/api/backoffice/procedures/SILT_CLAY_CONTENT_METHODS/BH",
+    "label": "Hydrometer method",
+    "description": "Hydrometer method"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 65,
+  "fields": {
+    "taxonomy_value": "SILT_CLAY_CONTENT_METHODS:LD",
+    "uri": "http://localhost/api/backoffice/procedures/SILT_CLAY_CONTENT_METHODS/LD",
+    "label": "Laser diffraction",
+    "description": "Laser diffraction"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 66,
+  "fields": {
+    "taxonomy_value": "SILT_CLAY_CONTENT_METHODS:PR",
+    "uri": "http://localhost/api/backoffice/procedures/SILT_CLAY_CONTENT_METHODS/PR",
+    "label": "Pipette and gravimetric method",
+    "description": "Pipette and gravimetric method"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 67,
+  "fields": {
+    "taxonomy_value": "SOLUBLE_CATIONS_METHODS:SSE",
+    "uri": "http://localhost/api/backoffice/procedures/SOLUBLE_CATIONS_METHODS/SSE",
+    "label": "Saturated soil extract",
+    "description": "Saturated soil extract"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 68,
+  "fields": {
+    "taxonomy_value": "WILTING_POINT_METHODS:PP",
+    "uri": "http://localhost/api/backoffice/procedures/WILTING_POINT_METHODS/PP",
+    "label": "Pressure Plate Method",
+    "description": "Pressure Plate Method"
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 69,
+  "fields": {
+    "taxonomy_value": null,
+    "uri": "http://localhost/api/backoffice/procedures/steps/extraction/dtpa-ammonium-bicarbonate",
+    "label": "DTPA ammonium bicarbonate extraction",
+    "description": ""
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 70,
+  "fields": {
+    "taxonomy_value": null,
+    "uri": "http://localhost/api/backoffice/procedures/steps/extraction/dtpa",
+    "label": "DTPA extraction",
+    "description": ""
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 71,
+  "fields": {
+    "taxonomy_value": null,
+    "uri": "http://localhost/api/backoffice/procedures/steps/extraction/edta",
+    "label": "EDTA extraction",
+    "description": ""
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 72,
+  "fields": {
+    "taxonomy_value": null,
+    "uri": "http://localhost/api/backoffice/procedures/steps/extraction/hno3",
+    "label": "Nitric acid extraction",
+    "description": ""
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 73,
+  "fields": {
+    "taxonomy_value": null,
+    "uri": "http://localhost/api/backoffice/procedures/steps/determination/faas",
+    "label": "FAAS determination",
+    "description": ""
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 74,
+  "fields": {
+    "taxonomy_value": null,
+    "uri": "http://localhost/api/backoffice/procedures/steps/determination/icp-aes",
+    "label": "ICP-AES determination",
+    "description": ""
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 75,
+  "fields": {
+    "taxonomy_value": null,
+    "uri": "http://localhost/api/backoffice/procedures/steps/determination/icp-ms",
+    "label": "ICP-MS determination",
+    "description": ""
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 76,
+  "fields": {
+    "taxonomy_value": null,
+    "uri": "http://localhost/api/backoffice/procedures/steps/extraction/nh4oac-ph7",
+    "label": "Ammonium acetate extraction at pH 7",
+    "description": ""
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 77,
+  "fields": {
+    "taxonomy_value": null,
+    "uri": "http://localhost/api/backoffice/procedures/steps/extraction/mehlich-iii",
+    "label": "Mehlich III extraction",
+    "description": ""
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 78,
+  "fields": {
+    "taxonomy_value": null,
+    "uri": "http://localhost/api/backoffice/procedures/steps/extraction/bacl2",
+    "label": "Barium chloride extraction/saturation",
+    "description": ""
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 79,
+  "fields": {
+    "taxonomy_value": null,
+    "uri": "http://localhost/api/backoffice/procedures/steps/equilibration/bacl2-equilibration",
+    "label": "Barium chloride equilibration",
+    "description": ""
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 80,
+  "fields": {
+    "taxonomy_value": null,
+    "uri": "http://localhost/api/backoffice/procedures/steps/exchange/mgso4-exchange",
+    "label": "Compulsive exchange with magnesium sulfate",
+    "description": ""
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 81,
+  "fields": {
+    "taxonomy_value": null,
+    "uri": "http://localhost/api/backoffice/procedures/steps/calculation/cec-difference",
+    "label": "CEC determination by difference",
+    "description": ""
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 82,
+  "fields": {
+    "taxonomy_value": null,
+    "uri": "http://localhost/api/backoffice/procedures/steps/extraction/bray",
+    "label": "Bray extraction",
+    "description": "Bray extraction for available phosphorus. Bray variant not specified."
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 83,
+  "fields": {
+    "taxonomy_value": null,
+    "uri": "http://localhost/api/backoffice/procedures/steps/extraction/olsen",
+    "label": "Olsen extraction",
+    "description": "Olsen extraction for available phosphorus."
+  }
+},
+{
+  "model": "backoffice.procedure",
+  "pk": 84,
+  "fields": {
+    "taxonomy_value": null,
+    "uri": "http://localhost/api/backoffice/procedures/MN_ZN_CU_METHODS/AB-DTPA",
+    "label": "Ammonium bicarbonate-DTPA extraction",
+    "description": "Extraction of soil elements using an ammonium bicarbonate solution containing diethylenetriaminepentaacetic acid (DTPA)."
+  }
+},
+{
+  "model": "backoffice.proceduremapping",
+  "pk": 1,
+  "fields": {
+    "taxonomy_value": "MN_ZN_CU_METHODS:DBF",
+    "procedure": 84
+  }
+},
+{
+  "model": "backoffice.proceduremapping",
+  "pk": 2,
+  "fields": {
+    "taxonomy_value": "MN_ZN_CU_METHODS:DBIA",
+    "procedure": 84
+  }
+},
+{
+  "model": "backoffice.proceduremapping",
+  "pk": 3,
+  "fields": {
+    "taxonomy_value": "MN_ZN_CU_METHODS:DBIM",
+    "procedure": 84
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 1,
+  "fields": {
+    "procedure": 25,
+    "step": 69,
+    "position": 1
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 2,
+  "fields": {
+    "procedure": 25,
+    "step": 73,
+    "position": 2
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 3,
+  "fields": {
+    "procedure": 26,
+    "step": 69,
+    "position": 1
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 4,
+  "fields": {
+    "procedure": 26,
+    "step": 74,
+    "position": 2
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 5,
+  "fields": {
+    "procedure": 27,
+    "step": 69,
+    "position": 1
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 6,
+  "fields": {
+    "procedure": 27,
+    "step": 75,
+    "position": 2
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 7,
+  "fields": {
+    "procedure": 28,
+    "step": 70,
+    "position": 1
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 8,
+  "fields": {
+    "procedure": 28,
+    "step": 73,
+    "position": 2
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 9,
+  "fields": {
+    "procedure": 29,
+    "step": 70,
+    "position": 1
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 10,
+  "fields": {
+    "procedure": 29,
+    "step": 74,
+    "position": 2
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 11,
+  "fields": {
+    "procedure": 30,
+    "step": 70,
+    "position": 1
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 12,
+  "fields": {
+    "procedure": 30,
+    "step": 75,
+    "position": 2
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 13,
+  "fields": {
+    "procedure": 31,
+    "step": 71,
+    "position": 1
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 14,
+  "fields": {
+    "procedure": 31,
+    "step": 73,
+    "position": 2
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 15,
+  "fields": {
+    "procedure": 32,
+    "step": 71,
+    "position": 1
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 16,
+  "fields": {
+    "procedure": 32,
+    "step": 74,
+    "position": 2
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 17,
+  "fields": {
+    "procedure": 33,
+    "step": 71,
+    "position": 1
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 18,
+  "fields": {
+    "procedure": 33,
+    "step": 75,
+    "position": 2
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 19,
+  "fields": {
+    "procedure": 34,
+    "step": 72,
+    "position": 1
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 20,
+  "fields": {
+    "procedure": 34,
+    "step": 73,
+    "position": 2
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 21,
+  "fields": {
+    "procedure": 35,
+    "step": 72,
+    "position": 1
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 22,
+  "fields": {
+    "procedure": 35,
+    "step": 74,
+    "position": 2
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 23,
+  "fields": {
+    "procedure": 36,
+    "step": 72,
+    "position": 1
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 24,
+  "fields": {
+    "procedure": 36,
+    "step": 75,
+    "position": 2
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 25,
+  "fields": {
+    "procedure": 50,
+    "step": 69,
+    "position": 1
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 26,
+  "fields": {
+    "procedure": 50,
+    "step": 73,
+    "position": 2
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 27,
+  "fields": {
+    "procedure": 51,
+    "step": 69,
+    "position": 1
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 28,
+  "fields": {
+    "procedure": 51,
+    "step": 74,
+    "position": 2
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 29,
+  "fields": {
+    "procedure": 52,
+    "step": 69,
+    "position": 1
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 30,
+  "fields": {
+    "procedure": 52,
+    "step": 75,
+    "position": 2
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 31,
+  "fields": {
+    "procedure": 53,
+    "step": 72,
+    "position": 1
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 32,
+  "fields": {
+    "procedure": 53,
+    "step": 73,
+    "position": 2
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 33,
+  "fields": {
+    "procedure": 54,
+    "step": 72,
+    "position": 1
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 34,
+  "fields": {
+    "procedure": 54,
+    "step": 74,
+    "position": 2
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 35,
+  "fields": {
+    "procedure": 55,
+    "step": 72,
+    "position": 1
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 36,
+  "fields": {
+    "procedure": 55,
+    "step": 75,
+    "position": 2
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 37,
+  "fields": {
+    "procedure": 8,
+    "step": 76,
+    "position": 1
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 38,
+  "fields": {
+    "procedure": 9,
+    "step": 78,
+    "position": 1
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 39,
+  "fields": {
+    "procedure": 9,
+    "step": 79,
+    "position": 2
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 40,
+  "fields": {
+    "procedure": 9,
+    "step": 80,
+    "position": 3
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 41,
+  "fields": {
+    "procedure": 9,
+    "step": 81,
+    "position": 4
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 42,
+  "fields": {
+    "procedure": 10,
+    "step": 77,
+    "position": 1
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 43,
+  "fields": {
+    "procedure": 16,
+    "step": 76,
+    "position": 1
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 44,
+  "fields": {
+    "procedure": 17,
+    "step": 78,
+    "position": 1
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 45,
+  "fields": {
+    "procedure": 18,
+    "step": 77,
+    "position": 1
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 46,
+  "fields": {
+    "procedure": 56,
+    "step": 82,
+    "position": 1
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 47,
+  "fields": {
+    "procedure": 57,
+    "step": 77,
+    "position": 1
+  }
+},
+{
+  "model": "backoffice.procedurestep",
+  "pk": 48,
+  "fields": {
+    "procedure": 58,
+    "step": 83,
+    "position": 1
+  }
+},
+{
+  "model": "backoffice.property",
+  "pk": 1,
+  "fields": {
+    "uri": "http://localhost/api/backoffice/property/coarseSand-ISO11277/",
+    "code": "coarseSand-ISO11277",
+    "label": "Coarse sand (ISO 11277)",
+    "description": "Content of particles >0.63 mm and <=1.25 mm, expressed as percentage of fine earth.",
+    "glosis_class": "http://w3id.org/glosis/model/codelists/properties/TextSandPropertyCode"
+  }
+},
+{
+  "model": "backoffice.property",
+  "pk": 2,
+  "fields": {
+    "uri": "http://localhost/api/backoffice/property/fineSand-ISO11277/",
+    "code": "fineSand-ISO11277",
+    "label": "Fine sand (ISO 11277)",
+    "description": "Content of particles >0.125 mm and <=0.2 mm, expressed as percentage of fine earth.",
+    "glosis_class": "http://w3id.org/glosis/model/codelists/properties/TextSandPropertyCode"
+  }
+},
+{
+  "model": "backoffice.property",
+  "pk": 3,
+  "fields": {
+    "uri": "http://localhost/api/backoffice/property/textureFieldSubclass/",
+    "code": "textureFieldSubclass",
+    "label": "Texture field subclass",
+    "description": "Subclass of soil texture determined by field assessment, providing a finer distinction of sandy texture classes.",
+    "glosis_class": "http://www.w3.org/ns/sosa/ObservableProperty"
+  }
+}
+]
