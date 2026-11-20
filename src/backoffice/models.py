@@ -142,8 +142,11 @@ class Property(models.Model):
     code = models.CharField(max_length=100, unique=True)
     label = models.TextField()
     description = models.TextField(blank=True)
-    glosis_class = models.URLField(max_length=1000)
-
+    glosis_class = models.URLField(
+        max_length=1000,
+        blank=True,
+        default=''
+    )
     objects = models.Manager().using('backoffice')
 
     class Meta:

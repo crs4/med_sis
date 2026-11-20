@@ -16,6 +16,53 @@ from django.db.models import Exists, OuterRef
 
 from backoffice.models import PointGeneral, VocabularyMapping, TaxonomyValue, PointLayer, LabData, Property, Procedure, ProcedureMapping
 
+class LDTaxonomyValueView(View):
+    """JSON-LD representation of a MED-SIS taxonomy value."""
+
+    http_method_names = ['get', 'head', 'options']
+
+    def get(self, request, taxonomy_id, value):
+
+        taxonomy_value = get_object_or_404(
+            TaxonomyValue.objects.using('backoffice'),
+            pk=f'{taxonomy_id}:{value}',
+        )
+
+        document = {
+            '@context': _ld_context(
+                **{
+                    'skos': 'http://www.w3.org/2004/02/skos/core#',
+                    'xsd': 'http://www.w3.org/2001/XMLSchema#',
+                }
+            ),
+            '@id': (
+                f'medsis:ldtaxonomy-value/'
+                f'{quote(taxonomy_id, safe="")}/'
+                f'{quote(value, safe="")}/'
+            ),
+            '@type': 'skos:Concept',
+            'skos:notation': {
+                '@value': taxonomy_value.value,
+                '@type': 'xsd:string',
+            },
+        }
+
+        if taxonomy_value.descr:
+            document['skos:definition'] = {
+                '@value': taxonomy_value.descr,
+                '@language': 'en',
+            }
+
+        return HttpResponse(
+            json.dumps(
+                document,
+                ensure_ascii=False,
+                indent=2,
+            ),
+            content_type='application/ld+json; charset=utf-8',
+        )
+
+
 GLOSIS_LAND_USE_VOCABULARY = 'glosis-results-landUseClass'
 GLOSIS_LAND_USE_VERSION = '1.9.9'
 
@@ -25,6 +72,13 @@ SAND_PROCEDURES = {
     'PR': 'glosis-proc:pSAProcedure-pipette-unkdisp',
     'SV': 'local',
 }
+
+SILT_PROCEDURES = {
+    code: uri
+    for code, uri in SAND_PROCEDURES.items()
+    if code in ('BH', 'LD', 'PR')
+}
+
 SAND_PROPERTIES = {
     'sand': 'glosis-cl:properties/textSandPropertyCode-Sa_ISO',
     'v-c-sand': 'glosis-cl:properties/textSandPropertyCode-vcSa_ISSS',
@@ -33,6 +87,15 @@ SAND_PROPERTIES = {
     'f-sand': 'fineSand-ISO11277',
     'v-f-sand': 'glosis-cl:properties/textSandPropertyCode-vfSa_ISSS',
 }
+
+SILT_PROPERTIES = {
+    'silt': 'glosis-cl:properties/textSiltPropertyCode-Si_ISO',
+    'c-silt': 'glosis-cl:properties/textSiltPropertyCode-cSi_ISO',
+    'f-silt': 'glosis-cl:properties/textSiltPropertyCode-fSi_ISO',
+}
+
+CLAY_PROCEDURES = SILT_PROCEDURES
+
 MN_ZN_CU_PROCEDURES = {
     'DBF': 'local',
     'DBIA': 'local',
@@ -50,6 +113,7 @@ MN_ZN_CU_PROCEDURES = {
     'NAIA': 'glosis-proc:extractableElementsProcedure-Extr_hno3',
     'NAIM': 'glosis-proc:extractableElementsProcedure-Extr_hno3',
 }
+
 MN_ZN_CU_PROPERTIES = {
     'mn': 'glosis-cl:properties/physioChemicalPropertyCode-Manext',
     'zn': 'glosis-cl:properties/physioChemicalPropertyCode-Zinext',
@@ -871,8 +935,7 @@ class LDHorizonListView(View):
                 indent=2,
             ),
             content_type='application/ld+json; charset=utf-8',
-        )
-    
+        )    
 class LDLayerView(View):
     """Return a GloSIS GL_Layer as JSON-LD."""
 
@@ -1120,6 +1183,26 @@ LAB_OBSERVATIONS = {
             'SP': 'ECe_sat',
         },
     },
+    'hy-cond': {
+        'value_field': 'hy_cond',
+        'method_field': 'met_hy_cond',
+        'method_taxonomy': 'HYDRAULIC_CONDUCTIVITY_METHODS',
+        'observation_class': 'glosis-lh:HydraulicConductivity',
+        'observed_property':
+            'glosis-cl:properties/physioChemicalPropertyCode-Hydcond',
+        'result_class': 'glosis-lh:HydraulicConductivityValue',
+        'result_datatype': 'xsd:float',
+        'unit': 'unit:CentiM-PER-HR',
+        'procedure_prefix': '',
+        'generic_procedure': None,
+        'procedures': {
+            'CP': 'local',
+            'DT': 'local',
+            'HA': 'local',
+            'IN': 'local',
+            'PD': 'local',
+        },
+    },
 }
 
 MN_ZN_CU_FIELDS = {
@@ -1136,6 +1219,18 @@ SAND_FIELDS = {
     'f-sand': 'f_sand',
     'v-f-sand': 'v_f_sand',
 }
+
+SILT_FIELDS = {
+    'silt': 'silt',
+    'c-silt': 'c_silt',
+    'f-silt': 'f_silt',
+}
+
+CLAY_FIELDS = {
+    'clay': 'clay',
+}
+
+
 
 
 for parameter, (value_field, method_field) in MN_ZN_CU_FIELDS.items():
@@ -1168,6 +1263,69 @@ for parameter, value_field in SAND_FIELDS.items():
         'procedure_prefix': '',
     }
 
+for parameter, value_field in SILT_FIELDS.items():
+    LAB_OBSERVATIONS[parameter] = {
+        'value_field': value_field,
+        'method_field': 'met_silt',
+        'method_taxonomy': 'SILT_CLAY_CONTENT_METHODS',
+        'observation_class': 'glosis-lh:SiltFractionTexture',
+        'observed_property': SILT_PROPERTIES[parameter],
+        'result_class': 'glosis-lh:SiltFractionTextureValue',
+        'result_datatype': 'xsd:float',
+        'unit': 'unit:PERCENT',
+        'procedures': SILT_PROCEDURES,
+        'generic_procedure': None,
+        'procedure_prefix': '',
+    }
+
+LAB_OBSERVATIONS['clay'] = {
+    'value_field': 'clay',
+    'method_field': 'met_clay',
+    'method_taxonomy': 'SILT_CLAY_CONTENT_METHODS',
+    'observation_class': 'glosis-lh:ClayFractionTexture',
+    'observed_property': 'glosis-cl:properties/textClayPropertyCode-Cl',
+    'result_class': 'glosis-lh:ClayFractionTextureValue',
+    'result_datatype': 'xsd:float',
+    'unit': 'unit:PERCENT',
+    'procedures': SILT_PROCEDURES,
+    'generic_procedure': None,
+    'procedure_prefix': '',
+}
+
+LAB_OBSERVATIONS['gravel'] = {
+    'value_field': 'gravel',
+    'method_field': None,
+    'method_taxonomy': None,
+    'observation_class': 'sosa:Observation',
+    'observed_property': 'medsis:property/gravelContent/',
+    'result_class': 'qudt:QuantityValue',
+    'result_datatype': 'xsd:float',
+    'unit': 'unit:PERCENT',
+    'procedures': {},
+    'generic_procedure': None,
+    'procedure_prefix': '',
+}
+
+LAB_OBSERVATIONS['bulk-dens'] = {
+    'value_field': 'bulk_dens',
+    'method_field': 'met_bulk_dens',
+    'method_taxonomy': 'BULK_DENSITY_METHODS',
+    'observation_class': 'sosa:Observation',
+    'observed_property': 'bulkDensity',
+    'result_class': 'qudt:QuantityValue',
+    'result_datatype': 'xsd:float',
+    'unit': 'unit:GM-PER-CentiM3',
+    'procedures': {
+        'CM': 'local',
+        'EM': 'local',
+        'LM': 'local',
+    },
+    'generic_procedure': None,
+    'procedure_prefix': '',
+}
+
+
+
 class LDLabObservationView(View):
     """JSON-LD observations for MED-SIS laboratory data."""
 
@@ -1178,27 +1336,36 @@ class LDLabObservationView(View):
             return self.get_texture(request, labdata_id)
         config = LAB_OBSERVATIONS.get(parameter)
         is_sand = parameter in SAND_FIELDS
-        is_local_property = parameter in ('c-sand', 'f-sand')
+        is_local_property = parameter in ('c-sand', 'f-sand', 'gravel', 'bulk-dens',)
 
         if config is None:
             raise Http404('Unsupported laboratory parameter')
 
         method_field = config['method_field']
         value_field = config['value_field']
-
-        lab = get_object_or_404(
-            LabData.objects.using('backoffice')
-            .select_related(method_field)
-            .filter(point__project='SOILS4MED'),
-            pk=labdata_id,
-        )
+        if method_field:
+            lab = get_object_or_404(
+                LabData.objects.using('backoffice')
+                .select_related(method_field)
+                .filter(point__project='SOILS4MED'),
+                pk=labdata_id,
+            )
+        else: 
+            lab = get_object_or_404(
+                    LabData.objects.using('backoffice')
+                    .filter(point__project='SOILS4MED'),
+                    pk=labdata_id,
+                )
 
         value = getattr(lab, value_field)
 
         if value is None:
             raise Http404('Laboratory observation not found')
 
-        method = getattr(lab, method_field)
+        if parameter == 'hy-cond':
+            value = value / 10
+
+        method = getattr(lab, method_field) if method_field else None
 
         method_code = None
 
@@ -1262,10 +1429,10 @@ class LDLabObservationView(View):
             or procedure_name == 'local'
         ):
             observation_class = None
-        
+
         observation_types = ['sosa:Observation']
 
-        if observation_class:
+        if observation_class and observation_class not in observation_types:
             observation_types.append(observation_class)
         
         if is_local_property:
@@ -1371,6 +1538,13 @@ class LDLabObservationView(View):
             'sosa:hasSimpleResult': {
                 '@value': texture.value,
                 '@type': 'xsd:string',
+            },
+            'sosa:hasResult': {
+                '@id': (
+                    'medsis:ldtaxonomy-value/'
+                    'TEXTURE_CLASSES/'
+                    f'{quote(texture.value, safe="")}/'
+                ),
             },
         }
 
@@ -1875,5 +2049,6 @@ class LDProcedureView(View):
             ),
             content_type='application/ld+json; charset=utf-8',
         )
+
 
 

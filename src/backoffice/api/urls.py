@@ -95,5 +95,6 @@ urlpatterns = [
     path('ldhorizons/', ldviews.LDHorizonListView.as_view(), name='ld-horizon-list',),
     path('ldlayers/', ldviews.LDLayerListView.as_view(), name='ld-layer-list',),
     path('ldobservations/', ldviews.LDObservationListView.as_view(), name='ld-observation-list',),
+    path('ldtaxonomy-value/<str:taxonomy_id>/<str:value>/', ldviews.LDTaxonomyValueView.as_view(), name='ldtaxonomy-value',),
     path('', include(router.urls)),
 ]
