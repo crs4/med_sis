@@ -577,15 +577,6 @@ class PhotoSerializer(serializers.ModelSerializer):
         fields = '__all__' 
 
 #########################################
-## LabDataExtraMeasure 
-#########################################
-
-class LabDataExtraMeasureSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = LabDataExtraMeasure 
-        fields = '__all__' 
-
-#########################################
 ## Taxonomies 
 #########################################
 

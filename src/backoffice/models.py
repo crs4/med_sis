@@ -2,6 +2,8 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.db import transaction
+from decimal import Decimal
+from django.db.models import Q
 
 
 def validate_percentage(value):
@@ -1165,29 +1167,6 @@ class BaseDataset(models.Model):
         db_table = 'base_dataset_section'
         db_table_comment = 'Base Dataset of Soil Data'
 
-
-###########################
-# Laboratory Data Extra Measure Data
-###########################
-class LabDataExtraMeasure(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    point = models.ForeignKey(PointGeneral, on_delete=models.CASCADE, related_name='labdataextrameasure_point_set',  blank=True, null=True)
-    measure = models.ForeignKey(TaxonomyValue, on_delete=models.CASCADE, related_name='labdataextrameasure_measure_set' )
-    method = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdataextrameasure_method_set',  blank=True, null=True)
-    unit = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='labdataextrameasure_unit_set',  blank=True, null=True)
-    upper = models.FloatField( validators=[validate_positive],  db_comment='Sampling upper boundary', blank=True, null=True)
-    lower = models.FloatField( validators=[validate_positive],  db_comment='Sampling lower boundary', blank=True, null=True)
-    value = models.FloatField( db_comment='numeric value of measure', blank=True, null=True )
-    
-    objects = models.Manager().using('backoffice')
-   
-    class Meta:
-        managed = True
-        db_table = 'labdata_extra_measure'
-        db_table_comment = 'Laboratory data of extra measures types not present in labadata'
-        unique_together = (('measure', 'point', 'upper', 'lower'),)
-        
-
 ###########################
 # Photos
 ###########################
@@ -1243,3 +1222,285 @@ class HydroPtfElaboration (models.Model):
         managed = True
         db_table = 'hydroptf_elaboration'
         db_table_comment = 'hydroptf elaborations'
+
+###########################
+# ISO 28258 mapping (GLOSIS 2.0)
+###########################
+class ObservationDefinition(models.Model):
+
+    class FeatureType(models.TextChoices):
+        PLOT = 'plot', 'Plot'
+        PROFILE = 'profile', 'Profile'
+        HORIZON = 'horizon', 'Horizon'
+        LAYER = 'layer', 'Layer'
+
+    class SourceType(models.TextChoices):
+        LEGACY = 'legacy', 'Legacy'
+        DYNAMIC = 'dynamic', 'Dynamic'
+
+    class SourceModel(models.TextChoices):
+        POINT_GENERAL = 'point_general', 'PointGeneral'
+        POINT_LAYER = 'point_layer', 'PointLayer'
+        LABDATA = 'labdata', 'LabData'
+
+    class ResultType(models.TextChoices):
+        NUMERIC = 'numeric', 'Numeric'
+        CATEGORICAL = 'categorical', 'Categorical'
+        TEXT = 'text', 'Text'
+        
+    code = models.CharField( max_length=100, primary_key=True,)
+    label = models.TextField()
+    description = models.TextField( blank=True,)
+    feature_type = models.CharField( max_length=20, choices=FeatureType.choices, blank=True,)
+    source_type = models.CharField( max_length=20, choices=SourceType.choices, default=SourceType.DYNAMIC,)
+    source_model = models.CharField( max_length=20, choices=SourceModel.choices,)
+    result_type = models.CharField( max_length=20, choices=ResultType.choices,)
+    observation_class = models.URLField( max_length=500, blank=True,)
+    observed_property = models.CharField(max_length=500)
+    result_class = models.URLField( max_length=500, blank=True, )
+    result_datatype = models.URLField( max_length=500, blank=True,)
+    unit = models.URLField( max_length=500, blank=True,)
+    source_unit = models.URLField( max_length=500, blank=True,)
+    conversion_factor = models.DecimalField( max_digits=24, decimal_places=12, default=Decimal('1'),)
+    method_taxonomy = models.ForeignKey( 'Taxonomy', on_delete=models.PROTECT, null=True, blank=True, related_name='observation_method_definitions',)
+    result_taxonomy = models.ForeignKey( 'Taxonomy', on_delete=models.PROTECT, null=True, blank=True, related_name='observation_result_definitions',)
+    value_field = models.CharField( max_length=100, blank=True,)
+    method_field = models.CharField( max_length=100, blank=True,)
+
+    objects = models.Manager().using('backoffice')
+
+    class Meta:
+        managed = True
+        db_table = 'medsis_observation_definition'
+
+    def clean(self):
+        super().clean()
+
+        errors = {}
+
+        if (
+            self.source_type == self.SourceType.DYNAMIC
+            and not self.feature_type
+        ):
+            errors['feature_type'] = (
+                'Dynamic observations require a feature type.'
+            )
+
+        if self.source_type == self.SourceType.LEGACY:
+            if not self.value_field:
+                errors['value_field'] = (
+                    'A legacy observation requires a value field.'
+                )
+
+        elif self.source_type == self.SourceType.DYNAMIC:
+            if self.value_field or self.method_field:
+                errors['source_type'] = (
+                    'Dynamic observations must not define legacy fields.'
+                )
+
+        if self.result_type != self.ResultType.NUMERIC:
+            if self.unit:
+                errors['unit'] = (
+                    'Unit is only applicable to numeric observations.'
+                )
+
+            if self.source_unit:
+                errors['source_unit'] = (
+                    'Source unit is only applicable to numeric observations.'
+                )
+
+            if self.conversion_factor != Decimal('1'):
+                errors['conversion_factor'] = (
+                    'Conversion factor is only applicable to numeric observations.'
+                )
+
+        if self.result_type != self.ResultType.CATEGORICAL:
+            if self.result_taxonomy_id is not None:
+                errors['result_taxonomy'] = (
+                    'Result taxonomy is only valid for categorical observations.'
+                )
+
+        if errors:
+            raise ValidationError(errors)
+
+    def __str__(self):
+        return f'{self.code} - {self.label}'
+
+class ObservationValue(models.Model):
+
+    definition = models.ForeignKey(
+        ObservationDefinition,
+        on_delete=models.PROTECT,
+        related_name='values',
+    )
+
+    labdata = models.ForeignKey(
+        'LabData',
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+    )
+
+    point = models.ForeignKey(
+        'PointGeneral',
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+    )
+
+    horizon = models.ForeignKey(
+        'PointLayer',
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+    )
+
+    numeric_value = models.DecimalField(
+        max_digits=24,
+        decimal_places=10,
+        null=True,
+        blank=True,
+    )
+
+    text_value = models.TextField(
+        null=True,
+        blank=True,
+    )
+
+    category_value = models.ForeignKey(
+        'TaxonomyValue',
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        related_name='categorical_observations',
+    )
+
+    method = models.ForeignKey(
+        'TaxonomyValue',
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        related_name='observation_methods',
+    )
+
+    class Meta:
+        db_table = 'medsis_observation_value'
+
+        constraints = [
+            models.CheckConstraint(
+                name='observation_one_source',
+                condition=(
+                    (
+                        Q(labdata__isnull=False)
+                        & Q(point__isnull=True)
+                        & Q(horizon__isnull=True)
+                    )
+                    | (
+                        Q(labdata__isnull=True)
+                        & Q(point__isnull=False)
+                        & Q(horizon__isnull=True)
+                    )
+                    | (
+                        Q(labdata__isnull=True)
+                        & Q(point__isnull=True)
+                        & Q(horizon__isnull=False)
+                    )
+                ),
+            ),
+            models.CheckConstraint(
+                name='observation_one_value',
+                condition=(
+                    (
+                        Q(numeric_value__isnull=False)
+                        & Q(text_value__isnull=True)
+                        & Q(category_value__isnull=True)
+                    )
+                    | (
+                        Q(numeric_value__isnull=True)
+                        & Q(text_value__isnull=False)
+                        & Q(category_value__isnull=True)
+                    )
+                    | (
+                        Q(numeric_value__isnull=True)
+                        & Q(text_value__isnull=True)
+                        & Q(category_value__isnull=False)
+                    )
+                ),
+            ),
+        ]
+
+class ObservationProcedureMapping(models.Model):
+
+    class ProcedureSource(models.TextChoices):
+        URI = 'uri', 'Explicit URI'
+        LOCAL = 'local', 'MED-SIS procedure'
+
+    observation = models.ForeignKey(
+        'ObservationDefinition',
+        on_delete=models.CASCADE,
+        related_name='procedure_mappings',
+    )
+
+    method = models.ForeignKey(
+        'TaxonomyValue',
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+    )
+
+    procedure_source = models.CharField(
+        max_length=10,
+        choices=ProcedureSource.choices,
+    )
+
+    procedure_uri = models.CharField(
+        max_length=500,
+        blank=True,
+        default='',
+    )
+
+    class Meta:
+        db_table = 'medsis_observation_procedure_mapping'
+
+        constraints = [
+            models.UniqueConstraint(
+                fields=['observation', 'method'],
+                condition=Q(method__isnull=False),
+                name='unique_observation_method_proc',
+            ),
+            models.UniqueConstraint(
+                fields=['observation'],
+                condition=Q(method__isnull=True),
+                name='unique_observation_default_proc',
+            ),
+            models.CheckConstraint(
+                condition=(
+                    Q(procedure_source='uri', procedure_uri__gt='')
+                    | Q(procedure_source='local', procedure_uri='')
+                ),
+                name='valid_observation_procedure_source',
+            ),
+        ]
+
+    def clean(self):
+        super().clean()
+
+        from django.core.exceptions import ValidationError
+
+        if self.method_id is not None:
+            if self.observation_id:
+                taxonomy_id = self.observation.method_taxonomy_id
+
+                if self.method.taxonomy_id != taxonomy_id:
+                    raise ValidationError({
+                        'method': (
+                            'Method taxonomy does not match '
+                            'the observation definition.'
+                        )
+                    })
+
+    def __str__(self):
+        return (
+            f'{self.observation_id} / '
+            f'{self.method_id or "default"}'
+        )

@@ -155,19 +155,6 @@ class VariogramViewSet(viewsets.ViewSet):
                 {"detail": (f"Errors: Open the log for further details. ")},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR )
 
-class ExtrameasureViewSet(viewsets.ViewSet):
-    """
-    API endpoint to run the updatelayers command on demand.
-    """
-    permission_classes = [permissions.IsAdminUser]  
-
-    """
-    list  request
-    """
-    def list(self, request):
-        measures = LabDataExtraMeasure.objects.distinct('measure')
-        return Response( { "Measures": measures}, status=status.HTTP_200_OK )
-
 class UpdateLayersViewSet(viewsets.ViewSet):
     """
     API endpoint to run the updatelayers command on demand.
@@ -1158,35 +1145,6 @@ class PhotoViewSet(viewsets.ModelViewSet):
         if id is not None:
             queryset = queryset.filter(id=id)
 
-        return queryset
-
-#########################################
-## LabDataExtraMeasure 
-#########################################
-class LabDataExtraMeasureViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows you to view and edit laboratory extra measures data.
-    """
-    queryset = LabDataExtraMeasure.objects.all() 
-    serializer_class = LabDataExtraMeasureSerializer  
-    permission_classes = [permissions.IsAdminUser ]
-
-    def get_queryset(self):
-        """
-        Filtra le X in base ai parametri di query.
-        """
-        queryset = LabDataExtraMeasure.objects.all()
-
-        # Filtro per codice
-        id = self.request.query_params.get('id', None)
-        if id is not None:
-            queryset = queryset.filter(id=id)
-        m = self.request.query_params.get('measure', None)
-        if m is not None:
-            queryset = queryset.filter(measure=m)
-        p = self.request.query_params.get('point', None)
-        if p is not None:
-            queryset = queryset.filter(point=p)
         return queryset
     
 #########################################

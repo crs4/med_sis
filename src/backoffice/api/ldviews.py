@@ -14,7 +14,8 @@ from django.shortcuts import get_object_or_404
 from django.views import View
 from django.db.models import Exists, OuterRef
 
-from backoffice.models import PointGeneral, VocabularyMapping, TaxonomyValue, PointLayer, LabData, Property, Procedure, ProcedureMapping
+from backoffice.models import PointGeneral, VocabularyMapping, TaxonomyValue, PointLayer, LabData, Property, Procedure, ProcedureMapping, ObservationDefinition, ObservationProcedureMapping
+from django.db.models import Q
 
 class LDTaxonomyValueView(View):
     """JSON-LD representation of a MED-SIS taxonomy value."""
@@ -65,60 +66,6 @@ class LDTaxonomyValueView(View):
 
 GLOSIS_LAND_USE_VOCABULARY = 'glosis-results-landUseClass'
 GLOSIS_LAND_USE_VERSION = '1.9.9'
-
-SAND_PROCEDURES = {
-    'BH': 'glosis-proc:pSAProcedure-hydrometer-unkdisp',
-    'LD': 'glosis-proc:pSAProcedure-laser-unkdisp',
-    'PR': 'glosis-proc:pSAProcedure-pipette-unkdisp',
-    'SV': 'local',
-}
-
-SILT_PROCEDURES = {
-    code: uri
-    for code, uri in SAND_PROCEDURES.items()
-    if code in ('BH', 'LD', 'PR')
-}
-
-SAND_PROPERTIES = {
-    'sand': 'glosis-cl:properties/textSandPropertyCode-Sa_ISO',
-    'v-c-sand': 'glosis-cl:properties/textSandPropertyCode-vcSa_ISSS',
-    'c-sand': 'coarseSand-ISO11277',
-    'm-sand': 'glosis-cl:properties/textSandPropertyCode-mSa_ISSS',
-    'f-sand': 'fineSand-ISO11277',
-    'v-f-sand': 'glosis-cl:properties/textSandPropertyCode-vfSa_ISSS',
-}
-
-SILT_PROPERTIES = {
-    'silt': 'glosis-cl:properties/textSiltPropertyCode-Si_ISO',
-    'c-silt': 'glosis-cl:properties/textSiltPropertyCode-cSi_ISO',
-    'f-silt': 'glosis-cl:properties/textSiltPropertyCode-fSi_ISO',
-}
-
-CLAY_PROCEDURES = SILT_PROCEDURES
-
-MN_ZN_CU_PROCEDURES = {
-    'DBF': 'local',
-    'DBIA': 'local',
-    'DBIM': 'local',
-
-    'DF': 'glosis-proc:extractableElementsProcedure-Extr_dtpa',
-    'DIA': 'glosis-proc:extractableElementsProcedure-Extr_dtpa',
-    'DIM': 'glosis-proc:extractableElementsProcedure-Extr_dtpa',
-
-    'EF': 'glosis-proc:extractableElementsProcedure-Extr_edta',
-    'EIA': 'glosis-proc:extractableElementsProcedure-Extr_edta',
-    'EIM': 'glosis-proc:extractableElementsProcedure-Extr_edta',
-
-    'NAF': 'glosis-proc:extractableElementsProcedure-Extr_hno3',
-    'NAIA': 'glosis-proc:extractableElementsProcedure-Extr_hno3',
-    'NAIM': 'glosis-proc:extractableElementsProcedure-Extr_hno3',
-}
-
-MN_ZN_CU_PROPERTIES = {
-    'mn': 'glosis-cl:properties/physioChemicalPropertyCode-Manext',
-    'zn': 'glosis-cl:properties/physioChemicalPropertyCode-Zinext',
-    'cu': 'glosis-cl:properties/physioChemicalPropertyCode-Copext',
-}
 
 def _coordinate_token(value):
     """Truncate (never round) WGS84 decimal degrees to five places."""
@@ -175,7 +122,6 @@ def _lab_feature_of_interest(lab):
     raise Http404(
         'No horizon or layer associated with laboratory data'
     )
-
 class LandUseObservationView(View):
     """GET /api/backoffice/ldobservation/<profile_id>/land-use/"""
 
@@ -278,7 +224,6 @@ class LandUseObservationView(View):
             json.dumps(document, ensure_ascii=False, indent=2),
             content_type='application/ld+json; charset=utf-8',
         )
-
 class LDPlotView(View):
     """Return a GloSIS GL_Plot as JSON-LD."""
 
@@ -392,7 +337,6 @@ class LDPlotView(View):
             ),
             content_type='application/ld+json; charset=utf-8',
         )
-
 class LDPlotListView(View):
     """Return a paginated JSON-LD collection of GloSIS Plots."""
 
@@ -1101,230 +1045,6 @@ class LDLayerListView(View):
             ),
             content_type='application/ld+json; charset=utf-8',
         )
-    
-LAB_OBSERVATIONS = {
-    'ph-h2o': {
-        'value_field': 'ph_h2o',
-        'method_field': 'met_ph_h2o',
-        'observation_class': 'glosis-lh:PH',
-        'observed_property':
-            'glosis-cl:properties/physioChemicalPropertyCode-pH',
-        'procedure_prefix': 'pHProcedure-',
-        'generic_procedure': 'pHH2O',
-        'method_taxonomy': 'EL_CONDUCTIVITY_PH_METHODS',
-        'procedures': {
-            'OF': 'pHH2O_ratio1-5',
-            'OO': 'pHH2O_ratio1-1',
-            'OP': 'pHH2O_ratio1-2.5',
-            'OT': 'pHH2O_ratio1-2',
-            'SP': 'pHH2O_sat',
-        },
-        'result_class': 'glosis-lh:PHValue',
-        'result_datatype': 'xsd:float',
-        'unit': 'unit:PH',
-    },
-    'ph-kcl': {
-        'value_field': 'ph_kcl',
-        'method_field': 'met_ph_kcl',
-        'observation_class': 'glosis-lh:PH',
-        'observed_property':
-            'glosis-cl:properties/physioChemicalPropertyCode-pH',
-        'procedure_prefix': 'pHProcedure-',
-        'generic_procedure': 'pHKCl',
-        'method_taxonomy': 'EL_CONDUCTIVITY_PH_METHODS',
-        'procedures': {
-            'OF': 'pHKCl_ratio1-5',
-            'OO': 'pHKCl_ratio1-1',
-            'OP': 'pHKCl_ratio1-2.5',
-            'OT': 'pHKCl_ratio1-2',
-            'SP': 'pHKCl_sat',
-        },
-        'result_class': 'glosis-lh:PHValue',
-        'result_datatype': 'xsd:float',
-        'unit': 'unit:PH',
-    },
-    'ph-ccl': {
-        'value_field': 'ph_ccl',
-        'method_field': 'met_ph_ccl',
-        'observation_class': 'glosis-lh:PH',
-        'observed_property':
-            'glosis-cl:properties/physioChemicalPropertyCode-pH',
-        'procedure_prefix': 'pHProcedure-',
-        'generic_procedure': 'pHCaCl2',
-        'method_taxonomy': 'EL_CONDUCTIVITY_PH_METHODS',
-        'procedures': {
-            'OF': 'pHCaCl2_ratio1-5',
-            'OO': 'pHCaCl2_ratio1-1',
-            'OP': 'pHCaCl2_ratio1-2.5',
-            'OT': 'pHCaCl2_ratio1-2',
-            'SP': 'pHCaCl2_sat',
-        },
-        'result_class': 'glosis-lh:PHValue',
-        'result_datatype': 'xsd:float',
-        'unit': 'unit:PH',
-    },
-    'el-cond': {
-        'value_field': 'el_cond',
-        'method_field': 'met_el_cond',
-        'observation_class': 'glosis-lh:ElectricalConductivity',
-        'observed_property':
-            'glosis-cl:properties/physioChemicalPropertyCode-Eleccond',
-        'result_class': 'glosis-lh:ElectricalConductivityValue',
-        'result_datatype': 'xsd:float',
-        'unit': 'unit:DeciS-PER-M',
-        'procedure_prefix': 'electricalConductivityProcedure-',
-        'generic_procedure': None,
-        'method_taxonomy': 'EL_CONDUCTIVITY_PH_METHODS',
-        'procedures': {
-            'OO': 'EC_ratio1-1',
-            'OT': 'EC_ratio1-2',
-            'OP': 'EC_ratio1-2.5',
-            'OF': 'EC_ratio1-5',
-            'SP': 'ECe_sat',
-        },
-    },
-    'hy-cond': {
-        'value_field': 'hy_cond',
-        'method_field': 'met_hy_cond',
-        'method_taxonomy': 'HYDRAULIC_CONDUCTIVITY_METHODS',
-        'observation_class': 'glosis-lh:HydraulicConductivity',
-        'observed_property':
-            'glosis-cl:properties/physioChemicalPropertyCode-Hydcond',
-        'result_class': 'glosis-lh:HydraulicConductivityValue',
-        'result_datatype': 'xsd:float',
-        'unit': 'unit:CentiM-PER-HR',
-        'procedure_prefix': '',
-        'generic_procedure': None,
-        'procedures': {
-            'CP': 'local',
-            'DT': 'local',
-            'HA': 'local',
-            'IN': 'local',
-            'PD': 'local',
-        },
-    },
-}
-
-MN_ZN_CU_FIELDS = {
-    'mn': ('mn', 'met_mn'),
-    'zn': ('zn', 'met_zn'),
-    'cu': ('cu', 'met_cu'),
-}
-
-SAND_FIELDS = {
-    'sand': 'sand',
-    'v-c-sand': 'v_c_sand',
-    'c-sand': 'c_sand',
-    'm-sand': 'm_sand',
-    'f-sand': 'f_sand',
-    'v-f-sand': 'v_f_sand',
-}
-
-SILT_FIELDS = {
-    'silt': 'silt',
-    'c-silt': 'c_silt',
-    'f-silt': 'f_silt',
-}
-
-CLAY_FIELDS = {
-    'clay': 'clay',
-}
-
-
-
-
-for parameter, (value_field, method_field) in MN_ZN_CU_FIELDS.items():
-    LAB_OBSERVATIONS[parameter] = {
-        'value_field': value_field,
-        'method_field': method_field,
-        'method_taxonomy': 'MN_ZN_CU_METHODS',
-        'observation_class': None,
-        'observed_property': MN_ZN_CU_PROPERTIES[parameter],
-        'result_class': 'qudt:QuantityValue',
-        'result_datatype': 'xsd:float',
-        'unit': 'unit:MilliGM-PER-KiloGM',
-        'procedures': MN_ZN_CU_PROCEDURES,
-        'generic_procedure': None,
-        'procedure_prefix': '',
-    }
-
-for parameter, value_field in SAND_FIELDS.items():
-    LAB_OBSERVATIONS[parameter] = {
-        'value_field': value_field,
-        'method_field': 'met_sand',
-        'method_taxonomy': 'SAND_CONTENT_METHODS',
-        'observation_class': 'glosis-lh:SandFractionTexture',
-        'observed_property': SAND_PROPERTIES[parameter],
-        'result_class': 'glosis-lh:SandFractionTextureValue',
-        'result_datatype': 'xsd:float',
-        'unit': 'unit:PERCENT',
-        'procedures': SAND_PROCEDURES,
-        'generic_procedure': None,
-        'procedure_prefix': '',
-    }
-
-for parameter, value_field in SILT_FIELDS.items():
-    LAB_OBSERVATIONS[parameter] = {
-        'value_field': value_field,
-        'method_field': 'met_silt',
-        'method_taxonomy': 'SILT_CLAY_CONTENT_METHODS',
-        'observation_class': 'glosis-lh:SiltFractionTexture',
-        'observed_property': SILT_PROPERTIES[parameter],
-        'result_class': 'glosis-lh:SiltFractionTextureValue',
-        'result_datatype': 'xsd:float',
-        'unit': 'unit:PERCENT',
-        'procedures': SILT_PROCEDURES,
-        'generic_procedure': None,
-        'procedure_prefix': '',
-    }
-
-LAB_OBSERVATIONS['clay'] = {
-    'value_field': 'clay',
-    'method_field': 'met_clay',
-    'method_taxonomy': 'SILT_CLAY_CONTENT_METHODS',
-    'observation_class': 'glosis-lh:ClayFractionTexture',
-    'observed_property': 'glosis-cl:properties/textClayPropertyCode-Cl',
-    'result_class': 'glosis-lh:ClayFractionTextureValue',
-    'result_datatype': 'xsd:float',
-    'unit': 'unit:PERCENT',
-    'procedures': SILT_PROCEDURES,
-    'generic_procedure': None,
-    'procedure_prefix': '',
-}
-
-LAB_OBSERVATIONS['gravel'] = {
-    'value_field': 'gravel',
-    'method_field': None,
-    'method_taxonomy': None,
-    'observation_class': 'sosa:Observation',
-    'observed_property': 'medsis:property/gravelContent/',
-    'result_class': 'qudt:QuantityValue',
-    'result_datatype': 'xsd:float',
-    'unit': 'unit:PERCENT',
-    'procedures': {},
-    'generic_procedure': None,
-    'procedure_prefix': '',
-}
-
-LAB_OBSERVATIONS['bulk-dens'] = {
-    'value_field': 'bulk_dens',
-    'method_field': 'met_bulk_dens',
-    'method_taxonomy': 'BULK_DENSITY_METHODS',
-    'observation_class': 'sosa:Observation',
-    'observed_property': 'bulkDensity',
-    'result_class': 'qudt:QuantityValue',
-    'result_datatype': 'xsd:float',
-    'unit': 'unit:GM-PER-CentiM3',
-    'procedures': {
-        'CM': 'local',
-        'EM': 'local',
-        'LM': 'local',
-    },
-    'generic_procedure': None,
-    'procedure_prefix': '',
-}
-
-
 
 class LDLabObservationView(View):
     """JSON-LD observations for MED-SIS laboratory data."""
@@ -1334,15 +1054,20 @@ class LDLabObservationView(View):
     def get(self, request, labdata_id, parameter):
         if parameter == 'texture':
             return self.get_texture(request, labdata_id)
-        config = LAB_OBSERVATIONS.get(parameter)
-        is_sand = parameter in SAND_FIELDS
+        definition = get_object_or_404(
+            ObservationDefinition.objects.using('backoffice')
+            .select_related('method_taxonomy'),
+            pk=parameter,
+            source_type='legacy',
+            source_model='labdata',
+        )
+        
+        is_sand = parameter in ('sand', 'v-c-sand', 'c-sand', 'm-sand', 'f-sand', 'v-f-sand',)
         is_local_property = parameter in ('c-sand', 'f-sand', 'gravel', 'bulk-dens',)
+        
+        method_field = definition.method_field
+        value_field = definition.value_field
 
-        if config is None:
-            raise Http404('Unsupported laboratory parameter')
-
-        method_field = config['method_field']
-        value_field = config['value_field']
         if method_field:
             lab = get_object_or_404(
                 LabData.objects.using('backoffice')
@@ -1362,87 +1087,89 @@ class LDLabObservationView(View):
         if value is None:
             raise Http404('Laboratory observation not found')
 
-        if parameter == 'hy-cond':
-            value = value / 10
+        value = ( Decimal(str(value)) * definition.conversion_factor )
 
         method = getattr(lab, method_field) if method_field else None
 
-        method_code = None
-
+        # Validate the method against the observation taxonomy.
         if method is not None:
             if (
-                method.taxonomy_id == config['method_taxonomy']
-                and method.role == TaxonomyValue.ValueRole.CONCEPT
+                method.taxonomy_id != definition.method_taxonomy_id
+                or method.role != TaxonomyValue.ValueRole.CONCEPT
             ):
-                method_code = method.value
+                method = None
 
-        
-        procedure_name = config['procedures'].get(
-            method_code,
-            config['generic_procedure'],
-        )
+        # Resolve the observation-specific procedure mapping.
+        procedure_mapping = None
+
+        if method is not None:
+            procedure_mapping = (
+                ObservationProcedureMapping.objects.using('backoffice')
+                .filter(
+                    observation=definition,
+                    method=method,
+                )
+                .first()
+            )
+
+        # Fall back to the observation's generic procedure.
+        if procedure_mapping is None:
+            procedure_mapping = (
+                ObservationProcedureMapping.objects.using('backoffice')
+                .filter(
+                    observation=definition,
+                    method__isnull=True,
+                )
+                .first()
+            )
 
         procedure_uri = None
+        procedure_is_local = False
 
-        if procedure_name == 'local':
-            procedure = None
+        if procedure_mapping is not None:
 
-            if method is not None:
-                mapping = (
-                    ProcedureMapping.objects.using('backoffice')
-                    .select_related('procedure')
-                    .filter(taxonomy_value=method)
-                    .first()
-                )
+            if procedure_mapping.procedure_source == 'uri':
+                procedure_uri = procedure_mapping.procedure_uri
 
-                if mapping is not None:
-                    procedure = mapping.procedure
+            elif procedure_mapping.procedure_source == 'local':
+                procedure_is_local = True
+                procedure = None
 
-                if procedure is None:
-                    procedure = (
-                        Procedure.objects.using('backoffice')
+                if method is not None:
+                    mapping = (
+                        ProcedureMapping.objects.using('backoffice')
+                        .select_related('procedure')
                         .filter(taxonomy_value=method)
                         .first()
                     )
 
-            if procedure is not None:
-                procedure_uri = procedure.uri
+                    if mapping is not None:
+                        procedure = mapping.procedure
 
-        elif procedure_name is not None:
-            if procedure_name.startswith('glosis-proc:'):
-                procedure_uri = procedure_name
-            else:
-                procedure_uri = (
-                    'glosis-proc:'
-                    + config['procedure_prefix']
-                    + procedure_name
-                )
+                    if procedure is None:
+                        procedure = (
+                            Procedure.objects.using('backoffice')
+                            .filter(taxonomy_value=method)
+                            .first()
+                        )
 
+                if procedure is not None:
+                    procedure_uri = procedure.uri
+                    
         lab_id = quote(str(lab.pk), safe='@')
-        observed_property = config['observed_property']
-
-        observation_class = config['observation_class']
-
+        
+        observation_class = definition.observation_class
+        observed_property = definition.observed_property
         if is_sand and (
             is_local_property
             or procedure_uri is None
-            or procedure_name == 'local'
+            or procedure_is_local
         ):
             observation_class = None
 
         observation_types = ['sosa:Observation']
-
         if observation_class and observation_class not in observation_types:
             observation_types.append(observation_class)
-        
-        if is_local_property:
-            prop = get_object_or_404(
-                Property.objects.using('backoffice'),
-                code=observed_property,
-            )
-            observed_property = prop.uri
-            
-
         document = {
             '@context': _ld_context(
                 **{
@@ -1467,15 +1194,15 @@ class LDLabObservationView(View):
             },
             'sosa:hasResult': {
                 '@type': list(dict.fromkeys([
-                    config['result_class'],
+                    definition.result_class,
                     'qudt:QuantityValue',
                 ])),
                 'qudt:numericValue': {
-                    '@value': str(value),
-                    '@type': config['result_datatype'],
+                    '@value': format(value.normalize(), 'f'),
+                    '@type': definition.result_datatype,
                 },
                 'qudt:unit': {
-                    '@id': config['unit'],
+                    '@id': definition.unit,
                 },
             },
             
@@ -1494,18 +1221,26 @@ class LDLabObservationView(View):
         )
 
     def get_texture(self, request, labdata_id):
+        definition = get_object_or_404(
+            ObservationDefinition.objects.using('backoffice'),
+            pk='texture',
+            source_type='legacy',
+            source_model='labdata',
+            result_type='categorical',
+        )
+
         lab = get_object_or_404(
             LabData.objects.using('backoffice')
-            .select_related('texture')
+            .select_related(definition.value_field)
             .filter(point__project='SOILS4MED'),
             pk=labdata_id,
         )
-        
-        texture = lab.texture
+
+        texture = getattr(lab, definition.value_field)
 
         if (
             texture is None
-            or texture.taxonomy_id != 'TEXTURE_CLASSES'
+            or texture.taxonomy_id != definition.result_taxonomy_id
             or texture.role != TaxonomyValue.ValueRole.CONCEPT
         ):
             raise Http404('Laboratory texture observation not found')
@@ -1521,28 +1256,25 @@ class LDLabObservationView(View):
                     'xsd': 'http://www.w3.org/2001/XMLSchema#',
                 }
             ),
-            '@id': f'medsis:ldobservation/{lab_id}/texture/',
+            '@id': f'medsis:ldobservation/{lab_id}/{definition.code}/',
             '@type': [
                 'sosa:Observation',
-                'glosis-lh:TextureLabClass',
+                definition.observation_class,
             ],
             'sosa:hasFeatureOfInterest': {
                 '@id': _lab_feature_of_interest(lab),
             },
             'sosa:observedProperty': {
-                '@id': (
-                    'glosis-cl:properties/'
-                    'descriptivePropertyCode-textureLabClassProperty'
-                ),
+                '@id': definition.observed_property,
             },
             'sosa:hasSimpleResult': {
                 '@value': texture.value,
-                '@type': 'xsd:string',
+                '@type': definition.result_datatype,
             },
             'sosa:hasResult': {
                 '@id': (
                     'medsis:ldtaxonomy-value/'
-                    'TEXTURE_CLASSES/'
+                    f'{definition.result_taxonomy_id}/'
                     f'{quote(texture.value, safe="")}/'
                 ),
             },
@@ -1556,7 +1288,7 @@ class LDLabObservationView(View):
             ),
             content_type='application/ld+json; charset=utf-8',
         )
-
+    
 HORIZON_OBSERVATIONS = {
     'texture-class': {
         'field_name': 'tex_cls',
@@ -1578,16 +1310,17 @@ class LDHorizonObservationView(View):
     http_method_names = ['get', 'head', 'options']
 
     def get(self, request, horizon_id, parameter):
-        if parameter not in ('texture-class', 'texture-subclass'):
-            raise Http404('Unsupported horizon parameter')
-
-        is_subclass = parameter == 'texture-subclass'
-
-        field_name = 'tex_subcls' if is_subclass else 'tex_cls'
-        taxonomy_id = (
-            'TEXTURE_SUBCLASSES' if is_subclass
-            else 'TEXTURE_CLASSES'
+        definition = get_object_or_404(
+            ObservationDefinition.objects.using('backoffice')
+            .select_related('result_taxonomy'),
+            pk=parameter,
+            source_type='legacy',
+            source_model='pointlayer',
+            result_type='categorical',
         )
+
+        field_name = definition.value_field
+        taxonomy_id = definition.result_taxonomy_id
 
         horizon = get_object_or_404(
             PointLayer.objects.using('backoffice')
@@ -1602,28 +1335,19 @@ class LDHorizonObservationView(View):
             texture is None
             or texture.taxonomy_id != taxonomy_id
             or texture.role != TaxonomyValue.ValueRole.CONCEPT
-            or (is_subclass and texture.value == 'ND')
+            or (
+                parameter == 'texture-subclass'
+                and texture.value == 'ND'
+            )
         ):
             raise Http404('Horizon observation not found')
 
         horizon_id_encoded = quote(str(horizon.pk), safe='@')
 
-        if is_subclass:
-            prop = get_object_or_404(
-                Property.objects.using('backoffice'),
-                code='textureFieldSubclass',
-            )
-            observed_property = prop.uri
-            observation_types = ['sosa:Observation']
-        else:
-            observed_property = (
-                'glosis-cl:properties/'
-                'descriptivePropertyCode-textureFieldClassProperty'
-            )
-            observation_types = [
-                'sosa:Observation',
-                'glosis-lh:TextureFieldClass',
-            ]
+        observation_types = ['sosa:Observation']
+
+        if definition.observation_class:
+            observation_types.append(definition.observation_class)
 
         document = {
             '@context': _ld_context(
@@ -1636,18 +1360,18 @@ class LDHorizonObservationView(View):
             ),
             '@id': (
                 f'medsis:ldhorizonobservation/'
-                f'{horizon_id_encoded}/{parameter}/'
+                f'{horizon_id_encoded}/{definition.code}/'
             ),
             '@type': observation_types,
             'sosa:hasFeatureOfInterest': {
                 '@id': f'medsis:ldhorizon/{horizon_id_encoded}/',
             },
             'sosa:observedProperty': {
-                '@id': observed_property,
+                '@id': definition.observed_property,
             },
             'sosa:hasSimpleResult': {
                 '@value': texture.value,
-                '@type': 'xsd:string',
+                '@type': definition.result_datatype,
             },
         }
 
@@ -1659,14 +1383,6 @@ class LDHorizonObservationView(View):
             ),
             content_type='application/ld+json; charset=utf-8',
         )
-
-from django.core.paginator import Paginator
-from django.db.models import Q
-from django.http import Http404, HttpResponse
-from django.views import View
-from urllib.parse import quote
-import json
-
 
 class LDObservationListView(View):
     """Paginated Hydra collection of MED-SIS observations."""
@@ -1735,10 +1451,17 @@ class LDObservationListView(View):
         # 2. Laboratory observations
         # --------------------------------------------------
 
-        lab_fields = {
-            config['value_field']
-            for config in LAB_OBSERVATIONS.values()
-        }
+        definitions = list(
+            ObservationDefinition.objects.using('backoffice')
+            .filter(
+                source_type='legacy',
+                source_model='labdata',
+            )
+            .exclude(code='texture')
+            .exclude(value_field='')
+            .only('code', 'value_field', 'observed_property')
+        )
+        lab_fields = {d.value_field for d in definitions}
 
         lab_fields.update({
             'pk',
@@ -1751,9 +1474,9 @@ class LDObservationListView(View):
 
         lab_filter = Q()
 
-        for config in LAB_OBSERVATIONS.values():
+        for field in lab_fields:
             lab_filter |= Q(
-                **{f"{config['value_field']}__isnull": False}
+                **{f"{field}__isnull": False}
             )
 
         lab_filter |= Q(texture__isnull=False)
@@ -1782,9 +1505,9 @@ class LDObservationListView(View):
 
         # Local properties required by some parameters.
         local_property_codes = {
-            LAB_OBSERVATIONS[parameter]['observed_property']
-            for parameter in ('c-sand', 'f-sand')
-            if parameter in LAB_OBSERVATIONS
+            d.observed_property
+            for d in definitions
+            if d.code in ('c-sand', 'f-sand')
         }
 
         existing_properties = set(
@@ -1808,14 +1531,15 @@ class LDObservationListView(View):
 
             lab_id = quote(str(lab.pk), safe='@')
 
-            for parameter, config in LAB_OBSERVATIONS.items():
-                value = getattr(lab, config['value_field'])
+            for definition in definitions:
+                parameter = definition.code
+                value = getattr(lab, definition.value_field)
 
                 if value is None:
                     continue
 
                 if parameter in ('c-sand', 'f-sand'):
-                    if config['observed_property'] not in existing_properties:
+                    if definition.observed_property not in existing_properties:
                         continue
 
                 observations.add(
@@ -1838,9 +1562,26 @@ class LDObservationListView(View):
         # 3. Horizon field observations
         # --------------------------------------------------
 
+        horizon_definitions = list(
+            ObservationDefinition.objects.using('backoffice')
+            .filter(
+                source_type='legacy',
+                source_model='pointlayer',
+                result_type='categorical',
+            )
+            .exclude(value_field='')
+            .exclude(result_taxonomy__isnull=True)
+            .only(
+                'code',
+                'value_field',
+                'result_taxonomy',
+                'observed_property',
+            )
+        )
+
         horizon_fields = {
-            config['field_name']
-            for config in HORIZON_OBSERVATIONS.values()
+            definition.value_field
+            for definition in horizon_definitions
         }
 
         horizons = (
@@ -1850,49 +1591,31 @@ class LDObservationListView(View):
             .order_by('pk')
         )
 
-        required_property_codes = {
-            config['property_code']
-            for config in HORIZON_OBSERVATIONS.values()
-            if config['property_code']
-        }
-
-        horizon_properties = set(
-            Property.objects.using('backoffice')
-            .filter(code__in=required_property_codes)
-            .values_list('code', flat=True)
-        )
-
         for horizon in horizons.iterator():
             horizon_id = quote(str(horizon.pk), safe='@')
 
-            for parameter, config in HORIZON_OBSERVATIONS.items():
-                texture = getattr(horizon, config['field_name'])
+            for definition in horizon_definitions:
+                texture = getattr(horizon, definition.value_field)
 
                 if texture is None:
                     continue
 
                 if (
-                    texture.taxonomy_id != config['taxonomy_id']
+                    texture.taxonomy_id != definition.result_taxonomy_id
                     or texture.role != TaxonomyValue.ValueRole.CONCEPT
                 ):
                     continue
 
-                if config['exclude_nd'] and texture.value == 'ND':
-                    continue
-
-                property_code = config['property_code']
-
                 if (
-                    property_code is not None
-                    and property_code not in horizon_properties
+                    definition.code == 'texture-subclass'
+                    and texture.value == 'ND'
                 ):
                     continue
 
                 observations.add(
                     f'medsis:ldhorizonobservation/'
-                    f'{horizon_id}/{parameter}/'
+                    f'{horizon_id}/{definition.code}/'
                 )
-
         # --------------------------------------------------
         # 4. Pagination
         # --------------------------------------------------

@@ -102,9 +102,6 @@ class LayerStructureAdmin(admin.ModelAdmin):
 @admin.register(Photo)
 class PhotoAdmin(admin.ModelAdmin):
     search_fields = ('id', )
-@admin.register(LabDataExtraMeasure)
-class LabDataExtraMeasureAdmin(admin.ModelAdmin):
-    search_fields = ('id', 'labdata__id'  )
 @admin.register(Taxonomy)
 class TaxonomyAdmin(admin.ModelAdmin):
     search_fields = ('id',  )
