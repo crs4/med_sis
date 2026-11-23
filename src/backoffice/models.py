@@ -919,7 +919,6 @@ class LayerHumanAlterations(models.Model):
         managed = True
         db_table = 'layer_human_alterations'
         
-
 class LayerDegreeDecomposition(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')
     vis_plant = models.FloatField( blank=True, null=True, validators=[validate_percentage])
@@ -936,7 +935,6 @@ class LayerDegreeDecomposition(models.Model):
         db_table = 'layer_degree_decomposition'
         db_table_comment = 'Refer to the transformation of visible plant tissues into visibly homogeneous organic matter.'
         
-
 class LayerNonMatrixPore(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')
     type1 = models.ForeignKey(TaxonomyValue, on_delete=models.SET_NULL, related_name='layernonmatrixpore_type1_set',  blank=True, null=True)
@@ -958,7 +956,6 @@ class LayerNonMatrixPore(models.Model):
         managed = True
         db_table = 'layer_nonmatrix_pore'
         
-
 class PointLayer(models.Model):
     id = models.TextField(primary_key=True, db_comment='identifier')
     point = models.ForeignKey(PointGeneral, on_delete=models.CASCADE, related_name='pointlayer_point_set', db_comment='Foreign Key field: point') 

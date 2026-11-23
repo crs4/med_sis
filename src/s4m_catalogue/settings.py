@@ -49,6 +49,10 @@ if not SITEURL.endswith("/"):
 
 BACKOFFICE_API_BASE_URL = SITEURL + 'api/backoffice/'
 
+DOCUMENT_READ_DOWNLOAD_GROUP = os.getenv(
+    "DOCUMENT_READ_DOWNLOAD_GROUP",
+    "registered-members",
+)
 
 SITENAME = os.getenv("SITENAME", "S4M Catalogue")
 
