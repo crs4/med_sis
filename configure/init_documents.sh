@@ -44,11 +44,11 @@ for entry in "${DOCUMENTS[@]}"; do
   path="${entry%%|*}"
   title="${entry#*|}"
   printf '\n==> Import/permissions: %s\n' "$title"
-  if ! "$PYTHON_BIN" "$MANAGE_PY" import_documents \
+  if ! "$PYTHON_BIN" "$MANAGE_PY" import_manuals \
       --file "$path" \
       --title "$title" \
-      --owner "$DOCUMENT_OWNER" \
-      --group "$DOCUMENT_GROUP" \
+      --owner "admin" \
+      --group "registered_user" \
       --skip-existing; then
     echo "FAILED: $title" >&2
     failures=$((failures + 1))

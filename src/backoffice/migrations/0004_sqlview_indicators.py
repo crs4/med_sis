@@ -3,7 +3,7 @@ from django.db import migrations
 SQL_CREATE = f"""
 -- Soil Indicators:
 -- 
---1) Active carbonate (percentage)
+--1) Active caco3 (percentage)
 CREATE OR REPLACE VIEW active_carbonate AS
   SELECT 
     l.id, l.point_id, l.point_type, l.date, l.upper, l.lower, l.survey_m_id, l.project, l.horizon, 

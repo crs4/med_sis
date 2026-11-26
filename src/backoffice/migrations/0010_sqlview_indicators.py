@@ -4,32 +4,6 @@ SQL_CREATE = f"""
 -- Soil Indicators:
 -- 
 
---2) Available Phosphorus  content (mg/Kg)
-CREATE OR REPLACE VIEW available_phosphorus_content AS
-  SELECT a.id, a.point_id, a.point_type, a.date, a.upper, a.lower, a.survey_m_id, a.horizon, a.project, 
-    a.met_p_cont_id AS method,
-    a.p_cont AS value, 
-    'mg/Kg' as unit, 
-    a.geom  
-  FROM public.labdata_geo a
-  JOIN public.land_use_geo b ON a.point_id = b.id
-  WHERE 
-  ( ( b.corine_id IS NOT NULL AND 
-      ( b.corine_id ILIKE 'CORINE:21%' OR 
-        b.corine_id ILIKE 'CORINE:22%' OR 
-        b.corine_id ILIKE 'CORINE:24%' ) ) OR 
-    ( b.use_id ILIKE 'USE:A%' ) OR 
-    ( b.corine_id IS NOT NULL AND 
-      ( b.corine_id ILIKE 'CORINE:23%' OR 
-        b.corine_id ILIKE 'CORINE:33%' ) ) OR 
-    ( b.use_id ILIKE 'USE:H%') OR 
-    ( b.nc_us_species1 IS NULL AND b.nc_ms_species1 IS NULL AND 
-      ( b.use_id ILIKE 'USE:P%' OR 
-        b.use_id ILIKE 'USE:Y%' OR 
-        b.use_id ILIKE 'USE:U%' ) ) 
-  ) AND a.p_cont IS NOT NULL AND a.met_p_cont_id = 'P_AVAILABLE_METHODS:OL';
-ALTER VIEW IF EXISTS available_phosphorus_content OWNER TO backoffice;
-
 --42) p_p_threshold (unitless)
 CREATE OR REPLACE VIEW p_p_threshold AS
   SELECT a.id, a.point_id, a.point_type, a.date, a.upper, a.lower, a.survey_m_id, a.horizon, a.project, NULL as method,

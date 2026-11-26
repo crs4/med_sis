@@ -87,7 +87,16 @@ docker compose build
 ```bash
 docker compose up -d 
 ```
-### 4. Access the site  
+
+### 4. inside the running django container run configure med-sis data  and manuals script   
+
+```bash
+docker compose exec -it django bash configure/init_med_sis.sh 
+```
+
+### 5. Access the site 
+
+
 
 ## License
 
