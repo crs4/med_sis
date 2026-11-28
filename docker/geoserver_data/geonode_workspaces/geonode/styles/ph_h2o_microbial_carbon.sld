@@ -3,7 +3,7 @@
   <NamedLayer>
     <Name>ph_h2o_microbial_carbon</Name>
     <UserStyle>
-      <Title>pH (H2O) - Microbial carbon use efficiency (unitless)</Title>
+      <Title>pH-H2O - Microbial carbon use efficiency (unitless)</Title>
       <FeatureTypeStyle>
         <Rule>
           <Name>Reduced microbial carbon use efficiency (goes to 0)</Name>
@@ -13,10 +13,10 @@
                 <PropertyName>value</PropertyName>
                 <Literal>0</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>6.2</Literal>
-              </PropertyIsLessThan>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -37,14 +37,13 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
         <Rule>
           <Name>Higher microbial carbon use efficiency</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
- 			<PropertyIsGreaterThanOrEqualTo>
+ 			      <PropertyIsGreaterThan>
                 <PropertyName>value</PropertyName>
                 <Literal>6.2</Literal>
-            </PropertyIsGreaterThanOrEqualTo>
+            </PropertyIsGreaterThan>
           </Filter>
           <PointSymbolizer>
             <Graphic>

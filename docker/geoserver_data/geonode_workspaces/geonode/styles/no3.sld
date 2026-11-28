@@ -3,10 +3,10 @@
   <NamedLayer>
     <Name>no3</Name>
     <UserStyle>
-      <Title>Nitrate ion NO3- (mg/kg)</Title>
+      <Title>Soluble Nitrate - NO3 (mg/kg)</Title>
       <FeatureTypeStyle>
       	<Rule>
-          <Name>Low (for cropland)</Name>
+          <Name>Low</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
@@ -37,19 +37,18 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-        
         <Rule>
-          <Name>Medium (for cropland)</Name>
+          <Name>Medium</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>10</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>20</Literal>
-              </PropertyIsLessThan>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -70,19 +69,18 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-	
         <Rule>
-          <Name>High (for cropland)</Name>
+          <Name>High</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>20</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>30</Literal>
-              </PropertyIsLessThan>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -103,15 +101,13 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-  
         <Rule>
-          <Name>Excessive (leaching risk for cropland)</Name>
+          <Name>Excessive (leaching risk)</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-                <PropertyIsGreaterThanOrEqualTo>
+                <PropertyIsGreaterThan>
                 <PropertyName>value</PropertyName>
                 <Literal>30</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
-              
+              </PropertyIsGreaterThan>
           </Filter>
           <PointSymbolizer>
             <Graphic>
@@ -131,7 +127,7 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-	</FeatureTypeStyle>
+	    </FeatureTypeStyle>
     </UserStyle>
   </NamedLayer>
 </StyledLayerDescriptor>

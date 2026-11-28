@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <NamedLayer>
-    <Name>Exchangeable Calcium - Ca++ (cmol/Kg)</Name>
+    <Name>exchangeable_calcium</Name>
     <UserStyle>
-      <Name>Exchangeable Calcium - Ca++ (cmol/Kg)</Name>
       <Title>Exchangeable Calcium - Ca++ (cmol/Kg)</Title>
       <FeatureTypeStyle>
         <Rule>
@@ -38,7 +37,7 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-		<Rule>
+		    <Rule>
           <Name>Medium</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
@@ -70,7 +69,7 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-		<Rule>
+		    <Rule>
           <Name>High</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
@@ -78,10 +77,10 @@
                 <PropertyName>value</PropertyName>
                 <Literal>5</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>10</Literal>
-              </PropertyIsLessThan>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -102,16 +101,14 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
-      
-         <Rule>
+        <Rule>
           <Name>Very high</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-            <PropertyIsGreaterThanOrEqualTo>
+            <PropertyIsGreaterThan>
                 <PropertyName>value</PropertyName>
                 <Literal>10</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
-            </Filter>
+            </PropertyIsGreaterThan>
+          </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>

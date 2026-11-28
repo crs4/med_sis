@@ -3,13 +3,12 @@
   <NamedLayer>
     <Name>p_p_threshold</Name>
     <UserStyle>
-      <Title>Potential positive productivity response to P input</Title>
-      <FeatureTypeStyle>
-        
-	<Rule>
-          <Name>Potential positive impact on productivity following phosphorus fertilizers </Name>
+      <Title>Potential positive productivity response to P input (P/P_threshold)</Title>
+      <FeatureTypeStyle>    
+	      <Rule>
+          <Name>Potential positive impact on plant biomass productivity following phosphorus fertilizers </Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-	   <And>
+	          <And>
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>0</Literal>
@@ -18,8 +17,8 @@
                 <PropertyName>value</PropertyName>
                 <Literal>1</Literal>
               </PropertyIsLessThan>
-	    </And>
-	   </Filter>
+	          </And>
+	        </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>
@@ -38,11 +37,10 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
         <Rule>
-          <Name>Potential non responsive impact on productivity following phosphorus fertilizers</Name>
+          <Name>Potential non responsive impact on plant biomass productivity following phosphorus fertilizers</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-	   <And>
+	          <And>
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>1</Literal>
@@ -51,8 +49,8 @@
                 <PropertyName>value</PropertyName>
                 <Literal>2</Literal>
               </PropertyIsLessThan>
-	    </And>
-	   </Filter>
+	          </And>
+	        </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>
@@ -74,12 +72,11 @@
         <Rule>
           <Name>Potential leaching risk </Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-	     <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>2</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
-              
-	   </Filter>
+	          <PropertyIsGreaterThan>
+              <PropertyName>value</PropertyName>
+              <Literal>2</Literal>
+            </PropertyIsGreaterThan>
+          </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>

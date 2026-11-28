@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <NamedLayer>
-    <Name>pH (H2O) - Soil salinity and structural deterioration</Name>
+    <Name>pH - H2O - Soil salinity and structural deterioration</Name>
     <UserStyle>
-      <Name>pH (H2O) - Soil salinity and structural deterioration</Name>
-      <Title>pH (H2O) - Soil salinity and structural deterioration</Title>
+      <Title>pH - H2O - Soil salinity and structural deterioration</Title>
       <FeatureTypeStyle>
         <Rule>
           <Name>Low probability of soil sodic and structural deterioration</Name>
@@ -14,10 +13,10 @@
                 <PropertyName>value</PropertyName>
                 <Literal>0</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>9</Literal>
-              </PropertyIsLessThan>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -39,12 +38,12 @@
           </PointSymbolizer>
         </Rule>
         <Rule>
-          <Name>Higher probability of soil sodic and structural deterioration</Name>
+          <Name>Higher probability of soil sodicity and structural deterioration</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
- 			<PropertyIsGreaterThanOrEqualTo>
+ 			      <PropertyIsGreaterThan>
                 <PropertyName>value</PropertyName>
                 <Literal>9</Literal>
-            </PropertyIsGreaterThanOrEqualTo>
+            </PropertyIsGreaterThan>
           </Filter>
           <PointSymbolizer>
             <Graphic>

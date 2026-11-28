@@ -3,12 +3,12 @@
   <NamedLayer>
     <Name>soil_erodibility_by_water</Name>
     <UserStyle>
-      <Title>Soil erodibility by water (Mg.h.MJ^(-1).mm^(-1))</Title>
+      <Title>Soil Erodibility by Water (K)</Title>
       <FeatureTypeStyle>
         <Rule>
           <Name>Slight soil erodibility potential by water</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-	   		<And>
+	   		    <And>
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>0</Literal>
@@ -17,8 +17,8 @@
                 <PropertyName>value</PropertyName>
                 <Literal>0.35</Literal>
               </PropertyIsLessThan>
-	    	</And>
-	   	  </Filter>
+	    	    </And>
+	   	    </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>
@@ -40,10 +40,10 @@
         <Rule>
           <Name>High soil erodibility potential by water</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-              <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>0.35</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
+            <PropertyIsGreaterThan>
+              <PropertyName>value</PropertyName>
+              <Literal>0.35</Literal>
+            </PropertyIsGreaterThan>
           </Filter>
           <PointSymbolizer>
             <Graphic>

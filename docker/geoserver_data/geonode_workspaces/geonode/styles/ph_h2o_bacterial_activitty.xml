@@ -1,6 +1,6 @@
 <style>
   <id>StyleInfoImpl-49cd48e1:19d850dfa6e:-7fcd</id>
-  <name>ph_h2o_bacterial_diversity</name>
+  <name>ph_h2o_bacterial_activity</name>
   <workspace>
     <id>WorkspaceInfoImpl-78ff667e:12476299803:-7ffd</id>
   </workspace>
@@ -8,7 +8,7 @@
   <languageVersion>
     <version>1.0.0</version>
   </languageVersion>
-  <filename>ph_h2o_bacterial_diversity.sld</filename>
+  <filename>ph_h2o_bacterial_activity.sld</filename>
   <dateCreated>2026-04-13 05:04:26.898 UTC</dateCreated>
   <dateModified>2026-06-29 15:49:05.798 UTC</dateModified>
 </style>

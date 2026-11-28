@@ -3,7 +3,7 @@
   <NamedLayer>
     <Name>slake_test</Name>
     <UserStyle>
-      <Title>Slake test, Aggregate stability index after 10 minutes immersed in water (STAB10)</Title>
+      <Title>Slake test (STAB10)</Title>
       <FeatureTypeStyle>
         <Rule>
           <Name>Unstable</Name>
@@ -37,7 +37,7 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-	<Rule>
+	      <Rule>
           <Name>Moderately stable</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
@@ -69,7 +69,7 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-	<Rule>
+	      <Rule>
           <Name>Stable</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>

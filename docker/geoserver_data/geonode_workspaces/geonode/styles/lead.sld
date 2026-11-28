@@ -37,14 +37,14 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-	<Rule>
-          <Name>Potential enrichment (Verify with EFPb)</Name>
+	      <Rule>
+          <Name>Potential enrichment (Verify Enrichment Factor for  Pb)</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-            <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>60</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
-            </Filter>
+            <PropertyIsGreaterThan>
+              <PropertyName>value</PropertyName>
+              <Literal>60</Literal>
+            </PropertyIsGreaterThan>
+          </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>

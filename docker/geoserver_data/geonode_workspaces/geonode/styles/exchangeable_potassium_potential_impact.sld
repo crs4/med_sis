@@ -3,18 +3,18 @@
   <NamedLayer>
     <Name>exchangeable_potassium_potential_impact</Name>
     <UserStyle>
-      <Title>Exchangeable Potassium - K+ (cmol/Kg)</Title>
+      <Title>Exchangeable potassium (Exch. K+) nutrient equilibrium impacting plant biomass production (cmol/Kg)</Title>
       <FeatureTypeStyle> 
-       <Rule>
+        <Rule>
           <Name>Potential positive impact on productivity following potassium fertilizers in sandy soils</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
                <Or>
-				 <ogc:PropertyIsEqualTo>
-                	  <ogc:PropertyName>texture</ogc:PropertyName>
-                	  <Literal>TEXTURE_CLASSES:S</Literal>
-              	 </ogc:PropertyIsEqualTo>
-		         <ogc:PropertyIsEqualTo>
+				        <ogc:PropertyIsEqualTo>
+              	  <ogc:PropertyName>texture</ogc:PropertyName>
+              	  <Literal>TEXTURE_CLASSES:S</Literal>
+              	</ogc:PropertyIsEqualTo>
+		            <ogc:PropertyIsEqualTo>
                 	  <ogc:PropertyName>texture</ogc:PropertyName>
                 	  <Literal>TEXTURE_CLASSES:LS</Literal>
               	 </ogc:PropertyIsEqualTo>
@@ -23,13 +23,13 @@
                 	  <Literal>TEXTURE_CLASSES:SL</Literal>
               	 </ogc:PropertyIsEqualTo>
                </Or>
-			   <PropertyIsGreaterThanOrEqualTo>
-			   		<PropertyName>value</PropertyName>
-                	<Literal>0</Literal>
-              	</PropertyIsGreaterThanOrEqualTo>
+			        <PropertyIsGreaterThanOrEqualTo>
+			   		    <PropertyName>value</PropertyName>
+                <Literal>0</Literal>
+              </PropertyIsGreaterThanOrEqualTo>
              	<PropertyIsLessThan>
-                	<PropertyName>value</PropertyName>
-                	<Literal>0.3</Literal>
+                <PropertyName>value</PropertyName>
+              	<Literal>0.3</Literal>
              	</PropertyIsLessThan>
             </And>
           </Filter>
@@ -54,28 +54,27 @@
         <Rule>
           <Name>Potential non positive impact on productivity following potassium fertilizers in sandy soils</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-          <And>
-               <Or>
-			<ogc:PropertyIsEqualTo>
-                	<ogc:PropertyName>texture</ogc:PropertyName>
-                	<Literal>TEXTURE_CLASSES:S</Literal>
-              		</ogc:PropertyIsEqualTo>
-		         <ogc:PropertyIsEqualTo>
-                	  <ogc:PropertyName>texture</ogc:PropertyName>
-                	  <Literal>TEXTURE_CLASSES:LS</Literal>
-              		  </ogc:PropertyIsEqualTo>
-                          <ogc:PropertyIsEqualTo>
-                	  <ogc:PropertyName>texture</ogc:PropertyName>
-                	  <Literal>TEXTURE_CLASSES:SL</Literal>
-              		  </ogc:PropertyIsEqualTo>
-                  </Or>
-            <PropertyIsGreaterThanOrEqualTo>
+            <And>
+              <Or>
+                <ogc:PropertyIsEqualTo>
+                  <ogc:PropertyName>texture</ogc:PropertyName>
+                  <Literal>TEXTURE_CLASSES:S</Literal>
+                </ogc:PropertyIsEqualTo>
+                <ogc:PropertyIsEqualTo>
+                  <ogc:PropertyName>texture</ogc:PropertyName>
+                  <Literal>TEXTURE_CLASSES:LS</Literal>
+                </ogc:PropertyIsEqualTo>
+                <ogc:PropertyIsEqualTo>
+                  <ogc:PropertyName>texture</ogc:PropertyName>
+                  <Literal>TEXTURE_CLASSES:SL</Literal>
+                </ogc:PropertyIsEqualTo>
+              </Or>
+              <PropertyIsGreaterThan>
                 <PropertyName>value</PropertyName>
                 <Literal>0.3</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
+              </PropertyIsGreaterThan>
             </And>
-
-            </Filter>
+          </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>
@@ -98,30 +97,28 @@
           <Name>Potential positive impact on productivity following potassium fertilizers in clayey soils</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
-               <Or>
-			<ogc:PropertyIsEqualTo>
+              <Or>
+			          <ogc:PropertyIsEqualTo>
                 	<ogc:PropertyName>texture</ogc:PropertyName>
                 	<Literal>TEXTURE_CLASSES:C</Literal>
-              		</ogc:PropertyIsEqualTo>
-		         <ogc:PropertyIsEqualTo>
-                	  <ogc:PropertyName>texture</ogc:PropertyName>
-                	  <Literal>TEXTURE_CLASSES:SiC</Literal>
-              		  </ogc:PropertyIsEqualTo>
-                          <ogc:PropertyIsEqualTo>
-                	  <ogc:PropertyName>texture</ogc:PropertyName>
-                	  <Literal>TEXTURE_CLASSES:SC</Literal>
-              		  </ogc:PropertyIsEqualTo>
-                  </Or>
-
-			  <PropertyIsGreaterThanOrEqualTo>
-			  <PropertyName>value</PropertyName>
-                	  <Literal>0</Literal>
-              		  </PropertyIsGreaterThanOrEqualTo>
-             		  <PropertyIsLessThan>
-                	  <PropertyName>value</PropertyName>
-                	  <Literal>0.75</Literal>
-             		  </PropertyIsLessThan>
-
+              	</ogc:PropertyIsEqualTo>
+		            <ogc:PropertyIsEqualTo>
+                	<ogc:PropertyName>texture</ogc:PropertyName>
+                	<Literal>TEXTURE_CLASSES:SiC</Literal>
+                </ogc:PropertyIsEqualTo>
+                <ogc:PropertyIsEqualTo>
+                	<ogc:PropertyName>texture</ogc:PropertyName>
+                  <Literal>TEXTURE_CLASSES:SC</Literal>
+            	  </ogc:PropertyIsEqualTo>
+              </Or>
+  	  		    <PropertyIsGreaterThanOrEqualTo>
+			          <PropertyName>value</PropertyName>
+              	<Literal>0</Literal>
+            	</PropertyIsGreaterThanOrEqualTo>
+           		<PropertyIsLessThanOrEqualTo>
+              	<PropertyName>value</PropertyName>
+                <Literal>0.75</Literal>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -142,34 +139,30 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
-
-
-
         <Rule>
           <Name>Potential non positive impact on productivity following potassium fertilizers in clayey soils</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-          <And>
-               <Or>
-				<ogc:PropertyIsEqualTo>
-                	<ogc:PropertyName>texture</ogc:PropertyName>
-                	<Literal>TEXTURE_CLASSES:C</Literal>
-              	</ogc:PropertyIsEqualTo>
-		        <ogc:PropertyIsEqualTo>
-                	<ogc:PropertyName>texture</ogc:PropertyName>
-                		<Literal>TEXTURE_CLASSES:SiC</Literal>
-              		</ogc:PropertyIsEqualTo>
-                    <ogc:PropertyIsEqualTo>
-                	  <ogc:PropertyName>texture</ogc:PropertyName>
-                	  <Literal>TEXTURE_CLASSES:SC</Literal>
-              		</ogc:PropertyIsEqualTo>
-                  </Or>
-            	  <PropertyIsGreaterThanOrEqualTo>
-                	<PropertyName>value</PropertyName>
-                	<Literal>0.75</Literal>
-              	  </PropertyIsGreaterThanOrEqualTo>
-            	</And>
-            </Filter>
+            <And>
+              <Or>
+                <ogc:PropertyIsEqualTo>
+                  <ogc:PropertyName>texture</ogc:PropertyName>
+                  <Literal>TEXTURE_CLASSES:C</Literal>
+                </ogc:PropertyIsEqualTo>
+                <ogc:PropertyIsEqualTo>
+                  <ogc:PropertyName>texture</ogc:PropertyName>
+                  <Literal>TEXTURE_CLASSES:SiC</Literal>
+                </ogc:PropertyIsEqualTo>
+                <ogc:PropertyIsEqualTo>
+                  <ogc:PropertyName>texture</ogc:PropertyName>
+                  <Literal>TEXTURE_CLASSES:SC</Literal>
+                </ogc:PropertyIsEqualTo>
+              </Or>
+              <PropertyIsGreaterThan>
+                <PropertyName>value</PropertyName>
+                <Literal>0.75</Literal>
+              </PropertyIsGreaterThan>
+            </And>
+          </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>

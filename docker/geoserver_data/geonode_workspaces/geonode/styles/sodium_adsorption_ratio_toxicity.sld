@@ -3,7 +3,7 @@
   <NamedLayer>
     <Name>sodium_adsorption_ratio_toxicity</Name>
     <UserStyle>
-      <Title>Sodium adsorption ratio SAR - toxicity (cmol(c)^(1/2).L^(-1/2))</Title>
+      <Title>Sodium Adsorption Ratio (SAR) toxicity</Title>
       <FeatureTypeStyle>
         <Rule>
           <Name>No toxicity for sensitive culture</Name>
@@ -15,7 +15,7 @@
               </PropertyIsGreaterThanOrEqualTo>
               <PropertyIsLessThan>
                 <PropertyName>value</PropertyName>
-                <Literal>3</Literal>
+                <Literal>2</Literal>
               </PropertyIsLessThan>
             </And>
           </Filter>
@@ -37,20 +37,18 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
-
-	<Rule>
+	      <Rule>
           <Name>Restriction toxicity for sensitive culture</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
-                <Literal>3</Literal>
+                <Literal>2</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
-                <Literal>9</Literal>
-              </PropertyIsLessThan>
+                <Literal>10</Literal>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -71,17 +69,14 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
-
-
         <Rule>
           <Name>Serious restriction toxicity for sensitive culture</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-             <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>9</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
-             </Filter>
+            <PropertyIsGreaterThan>
+              <PropertyName>value</PropertyName>
+              <Literal>10</Literal>
+            </PropertyIsGreaterThan>
+          </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>
@@ -100,7 +95,6 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-       
       </FeatureTypeStyle>
     </UserStyle>
   </NamedLayer>

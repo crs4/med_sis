@@ -84,23 +84,14 @@
 									</PropertyIsLessThan>
 							</And>
 							<!-- Quarto blocco AND -->
-    						<And>  
-								<ogc:PropertyIsEqualTo>
-									<ogc:PropertyName>texture</ogc:PropertyName>
-									<Literal>TEXTURE_CLASSES:SI</Literal>
-								</ogc:PropertyIsEqualTo>
-								<PropertyIsGreaterThanOrEqualTo>
-									<PropertyName>value</PropertyName>
-									<Literal>0</Literal>
-								</PropertyIsGreaterThanOrEqualTo>
-								<PropertyIsLessThan>
-									<PropertyName>value</PropertyName>
-									<Literal>1.4</Literal>
-								</PropertyIsLessThan>
-							</And>
+    						
 							<!-- Quinto blocco AND -->
     						<And>  
 								<Or>
+									<ogc:PropertyIsEqualTo>
+										<ogc:PropertyName>texture</ogc:PropertyName>
+										<Literal>TEXTURE_CLASSES:SI</Literal>
+									</ogc:PropertyIsEqualTo>
 									<ogc:PropertyIsEqualTo>
 										<ogc:PropertyName>texture</ogc:PropertyName>
 										<Literal>TEXTURE_CLASSES:SIL</Literal>
@@ -157,7 +148,7 @@
               					</PropertyIsGreaterThanOrEqualTo>
              		      		<PropertyIsLessThan>
                 		        	<PropertyName>value</PropertyName>
-                					<Literal>1.1</Literal>
+                					<Literal>1.3</Literal>
              		      		</PropertyIsLessThan>
 							</And>
 						</Or>
@@ -184,7 +175,7 @@
 					<Name>Medium</Name>
 					<Filter xmlns="http://www.opengis.net/ogc">
           				<Or>
-    					<!-- Primo blocco AND_2 -->
+    						<!-- Primo blocco AND_2 -->
     						<And>  
 		     					<Or>
 									<ogc:PropertyIsEqualTo>
@@ -292,6 +283,66 @@
 									<PropertyName>value</PropertyName>
 									<Literal>1.55</Literal>
 								</PropertyIsLessThan>
+							</And>
+							<!-- Sesto blocco AND_2 -->
+							<And>  
+								<Or>
+									<ogc:PropertyIsEqualTo>
+										<ogc:PropertyName>texture</ogc:PropertyName>
+										<Literal>TEXTURE_CLASSES:SC</Literal>
+									</ogc:PropertyIsEqualTo>
+									<ogc:PropertyIsEqualTo>
+										<ogc:PropertyName>texture</ogc:PropertyName>
+										<Literal>TEXTURE_CLASSES:SIC</Literal>
+									</ogc:PropertyIsEqualTo>
+									<And>
+										<ogc:PropertyIsEqualTo>
+											<ogc:PropertyName>texture</ogc:PropertyName>
+											<Literal>TEXTURE_CLASSES:CL</Literal>
+										</ogc:PropertyIsEqualTo>
+										<PropertyIsGreaterThanOrEqualTo>
+											<PropertyName>clay</PropertyName>
+                	  						<Literal>35</Literal>
+              		  					</PropertyIsGreaterThanOrEqualTo>
+									</And>
+									<And>
+										<ogc:PropertyIsEqualTo>
+											<ogc:PropertyName>texture</ogc:PropertyName>
+											<Literal>TEXTURE_CLASSES:C</Literal>
+										</ogc:PropertyIsEqualTo>
+										<PropertyIsGreaterThanOrEqualTo>
+											<PropertyName>clay</PropertyName>
+                	  						<Literal>45</Literal>
+              		  					</PropertyIsGreaterThanOrEqualTo>
+									</And>
+								</Or>
+								<PropertyIsGreaterThanOrEqualTo>
+									<PropertyName>value</PropertyName>
+									<Literal>1.1</Literal>
+								</PropertyIsGreaterThanOrEqualTo>
+								<PropertyIsLessThan>
+									<PropertyName>value</PropertyName>
+									<Literal>1.49</Literal>
+								</PropertyIsLessThan>
+							</And>
+							<!-- Settimo blocco AND_2 -->
+							<And>
+								<ogc:PropertyIsEqualTo>
+									<ogc:PropertyName>texture</ogc:PropertyName>
+									<Literal>TEXTURE_CLASSES:C</Literal>
+								</ogc:PropertyIsEqualTo>
+								<PropertyIsGreaterThan>
+									<PropertyName>clay</PropertyName>
+                					<Literal>45</Literal>
+        	  					</PropertyIsGreaterThan>
+								<PropertyIsGreaterThanOrEqualTo>
+									<PropertyName>value</PropertyName>
+									<Literal>1.1</Literal>
+								</PropertyIsGreaterThanOrEqualTo>
+								<PropertyIsLessThan>
+									<PropertyName>value</PropertyName>
+									<Literal>1.39</Literal>
+								</PropertyIsLessThan>	
 							</And>
         				</Or>
         			</Filter>
@@ -426,6 +477,66 @@
 									<Literal>1.65</Literal>
 								</PropertyIsLessThan>
 							</And>
+							<!-- Sesto blocco AND_2 -->
+							<And>  
+								<Or>
+									<ogc:PropertyIsEqualTo>
+										<ogc:PropertyName>texture</ogc:PropertyName>
+										<Literal>TEXTURE_CLASSES:SC</Literal>
+									</ogc:PropertyIsEqualTo>
+									<ogc:PropertyIsEqualTo>
+										<ogc:PropertyName>texture</ogc:PropertyName>
+										<Literal>TEXTURE_CLASSES:SIC</Literal>
+									</ogc:PropertyIsEqualTo>
+									<And>
+										<ogc:PropertyIsEqualTo>
+											<ogc:PropertyName>texture</ogc:PropertyName>
+											<Literal>TEXTURE_CLASSES:CL</Literal>
+										</ogc:PropertyIsEqualTo>
+										<PropertyIsGreaterThanOrEqualTo>
+											<PropertyName>clay</PropertyName>
+                	  						<Literal>35</Literal>
+              		  					</PropertyIsGreaterThanOrEqualTo>
+									</And>
+									<And>
+										<ogc:PropertyIsEqualTo>
+											<ogc:PropertyName>texture</ogc:PropertyName>
+											<Literal>TEXTURE_CLASSES:C</Literal>
+										</ogc:PropertyIsEqualTo>
+										<PropertyIsGreaterThanOrEqualTo>
+											<PropertyName>clay</PropertyName>
+                	  						<Literal>45</Literal>
+              		  					</PropertyIsGreaterThanOrEqualTo>
+									</And>
+								</Or>
+								<PropertyIsGreaterThanOrEqualTo>
+									<PropertyName>value</PropertyName>
+									<Literal>1.49</Literal>
+								</PropertyIsGreaterThanOrEqualTo>
+								<PropertyIsLessThan>
+									<PropertyName>value</PropertyName>
+									<Literal>1.58</Literal>
+								</PropertyIsLessThan>
+							</And>
+							<!-- Settimo blocco AND_2 -->
+							<And>
+								<ogc:PropertyIsEqualTo>
+									<ogc:PropertyName>texture</ogc:PropertyName>
+									<Literal>TEXTURE_CLASSES:C</Literal>
+								</ogc:PropertyIsEqualTo>
+								<PropertyIsGreaterThan>
+									<PropertyName>clay</PropertyName>
+                					<Literal>45</Literal>
+        	  					</PropertyIsGreaterThan>
+								<PropertyIsGreaterThanOrEqualTo>
+									<PropertyName>value</PropertyName>
+									<Literal>1.39</Literal>
+								</PropertyIsGreaterThanOrEqualTo>
+								<PropertyIsLessThan>
+									<PropertyName>value</PropertyName>
+									<Literal>1.47</Literal>
+								</PropertyIsLessThan>	
+							</And>
 						</Or>
 					</Filter>
 					<PointSymbolizer>
@@ -462,10 +573,10 @@
 										<Literal>TEXTURE_CLASSES:LS</Literal>
 									</ogc:PropertyIsEqualTo>
 								</Or>
-								<PropertyIsGreaterThanOrEqualTo>
+								<PropertyIsGreaterThan>
 									<PropertyName>value</PropertyName>
 									<Literal>1.8</Literal>
-								</PropertyIsGreaterThanOrEqualTo>
+								</PropertyIsGreaterThan>
 							</And>
 							<!-- Secondo blocco AND_4 -->
 							<And>  
@@ -479,10 +590,10 @@
 										<Literal>TEXTURE_CLASSES:L</Literal>
 									</ogc:PropertyIsEqualTo>
 								</Or>
-								<PropertyIsGreaterThanOrEqualTo>
+								<PropertyIsGreaterThan>
 									<PropertyName>value</PropertyName>
 									<Literal>1.8</Literal>
-								</PropertyIsGreaterThanOrEqualTo>
+								</PropertyIsGreaterThan>
 							</And>
 							<!-- Terzo blocco AND_4 -->
 							<And>  
@@ -491,11 +602,11 @@
 										<ogc:PropertyName>texture</ogc:PropertyName>
 										<Literal>TEXTURE_CLASSES:SCL</Literal>
 									</ogc:PropertyIsEqualTo>
+									<ogc:PropertyIsEqualTo>
+										<ogc:PropertyName>texture</ogc:PropertyName>
+										<Literal>TEXTURE_CLASSES:CL</Literal>
+									</ogc:PropertyIsEqualTo>
 									<And>
-										<ogc:PropertyIsEqualTo>
-											<ogc:PropertyName>texture</ogc:PropertyName>
-											<Literal>TEXTURE_CLASSES:CL</Literal>
-										</ogc:PropertyIsEqualTo>
 										<PropertyIsGreaterThanOrEqualTo>
 											<PropertyName>clay</PropertyName>
 											<Literal>27</Literal>
@@ -506,10 +617,10 @@
 										</PropertyIsLessThan>
 									</And>
 								</Or>
-								<PropertyIsGreaterThanOrEqualTo>
+								<PropertyIsGreaterThan>
 									<PropertyName>value</PropertyName>
 									<Literal>1.75</Literal>
-								</PropertyIsGreaterThanOrEqualTo>
+								</PropertyIsGreaterThan>
 							</And>
 							<!-- Quarto blocco AND_4 -->
 							<And>  
@@ -534,10 +645,10 @@
 										<Literal>TEXTURE_CLASSES:SICL</Literal>
 									</ogc:PropertyIsEqualTo>
 								</Or>
-								<PropertyIsGreaterThanOrEqualTo>
+								<PropertyIsGreaterThan>
 									<PropertyName>value</PropertyName>
 									<Literal>1.65</Literal>
-								</PropertyIsGreaterThanOrEqualTo>
+								</PropertyIsGreaterThan>
 							</And>
 							<!-- Sesto blocco AND_4 -->
 							<And>  
@@ -571,10 +682,10 @@
 										</PropertyIsGreaterThanOrEqualTo>
 									</And>
 								</Or>
-								<PropertyIsGreaterThanOrEqualTo>
+								<PropertyIsGreaterThan>
 									<PropertyName>value</PropertyName>
 									<Literal>1.3</Literal>
-								</PropertyIsGreaterThanOrEqualTo>
+								</PropertyIsGreaterThan>
 							</And>
 						</Or>
 					</Filter>

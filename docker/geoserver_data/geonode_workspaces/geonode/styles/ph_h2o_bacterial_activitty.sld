@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <NamedLayer>
-    <Name>ph_h2o_bacterial_diversity</Name>
+    <Name>ph_h2o_bacterial_activity</Name>
     <UserStyle>
-      <Title>pH (H2O) - Bacterial diversity (unitless)</Title>
+      <Title>pH (H2O) - Bacterial activity (unitless)</Title>
       <FeatureTypeStyle>
         <Rule>
           <Name>Reduced bacterial activity</Name>

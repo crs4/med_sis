@@ -3,13 +3,13 @@
   <NamedLayer>
     <Name>sodium_exchangeable_percentage_waterlogging</Name>
     <UserStyle>
-      <Title>Sodium Exchangeable Percentage ESP - Waterlogging (percentage)</Title>
+      <Title>Sodium Exchangeable Percentage (ESP) waterlogging (percentage)</Title>
       <FeatureTypeStyle>
         <Rule>
-          <Name>Lower waterlogging potential risk due to soil sodicity (If CEC/Clay ≥ 0.24 for irrigated cropland)</Name>
+          <Name>Lower waterlogging potential risk due to soil sodicity (CEC/Clay ≥ 0.24)</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
-	      <ogc:PropertyIsGreaterThanOrEqualTo>
+	            <ogc:PropertyIsGreaterThanOrEqualTo>
                 <ogc:PropertyName>cec_clay_ratio</ogc:PropertyName>
                 <Literal>0.24</Literal>
               </ogc:PropertyIsGreaterThanOrEqualTo>
@@ -41,12 +41,11 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
-	<Rule>
-          <Name>Higher waterlogging potential for soil with high charge density clay (If CEC/Clay ≥ 0.24 for irrigated cropland)</Name>
+        <Rule>
+          <Name>Higher waterlogging potential for soil with high charge density clay (CEC/Clay ≥ 0.24)</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
-	      <ogc:PropertyIsGreaterThanOrEqualTo>
+	            <ogc:PropertyIsGreaterThanOrEqualTo>
                 <ogc:PropertyName>cec_clay_ratio</ogc:PropertyName>
                 <Literal>0.24</Literal>
               </ogc:PropertyIsGreaterThanOrEqualTo>
@@ -78,13 +77,11 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
-
-	<Rule>
-          <Name>Higher waterlogging  potential risk due to soil sodicity (If CEC/Clay ≥ 0.24 for irrigated cropland)</Name>
+	      <Rule>
+          <Name>Higher waterlogging  potential risk due to soil sodicity (CEC/Clay ≥ 0.24)</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
-	      <ogc:PropertyIsGreaterThanOrEqualTo>
+	            <ogc:PropertyIsGreaterThanOrEqualTo>
                 <ogc:PropertyName>cec_clay_ratio</ogc:PropertyName>
                 <Literal>0.24</Literal>
               </ogc:PropertyIsGreaterThanOrEqualTo>
@@ -116,11 +113,11 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>   
-		<Rule>
-          <Name>Lower waterlogging potential risk due to soil sodicity (If CEC/Clay is less than 0.24 for irrigated cropland)</Name>
+		    <Rule>
+          <Name>Lower waterlogging potential risk due to soil sodicity (CEC/Clay ≥ 0.24)</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
-	      	   <ogc:PropertyIsLessThan>
+              <ogc:PropertyIsLessThan>
                 <ogc:PropertyName>cec_clay_ratio</ogc:PropertyName>
                 <Literal>0.24</Literal>
               </ogc:PropertyIsLessThan>
@@ -152,24 +149,22 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
-
-	<Rule>
-          <Name>Higher waterlogging  potential risk due to soil sodicity (If CEC/Clay is less than 0.24 for irrigated cropland)</Name>
+	      <Rule>
+          <Name>Higher waterlogging  potential risk due to soil sodicity (CEC/Clay ≥ 0.24)</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
-	      		<ogc:PropertyIsLessThan>
-                	<ogc:PropertyName>cec_clay_ratio</ogc:PropertyName>
-                	<Literal>0.24</Literal>
-              	</ogc:PropertyIsLessThan>
-              	<PropertyIsGreaterThanOrEqualTo>
-                	<PropertyName>value</PropertyName>
-                	<Literal>15</Literal>
-              	</PropertyIsGreaterThanOrEqualTo>
-              	<PropertyIsLessThanOrEqualTo>
-                	<PropertyName>value</PropertyName>
-                	<Literal>100</Literal>
-              	</PropertyIsLessThanOrEqualTo>
+	      		  <ogc:PropertyIsLessThan>
+                <ogc:PropertyName>cec_clay_ratio</ogc:PropertyName>
+                <Literal>0.24</Literal>
+              </ogc:PropertyIsLessThan>
+              <PropertyIsGreaterThanOrEqualTo>
+                <PropertyName>value</PropertyName>
+                <Literal>15</Literal>
+              </PropertyIsGreaterThanOrEqualTo>
+              <PropertyIsLessThanOrEqualTo>
+                <PropertyName>value</PropertyName>
+                <Literal>100</Literal>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>

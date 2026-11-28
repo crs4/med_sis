@@ -3,10 +3,10 @@
   <NamedLayer>
     <Name>cation_exchange_capacity</Name>
     <UserStyle>
-      <Title>Cation Exchange Capacity - CEC (cmol/Kg)</Title>
+      <Title>Cation Exchange Capacity at buffered pH - CEC (cmol/Kg)</Title>
       <FeatureTypeStyle>
         <Rule>
-          <Name>Moderate chemical fertility (for cropland)</Name>
+          <Name>Moderate chemical fertility</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
@@ -38,17 +38,17 @@
           </PointSymbolizer>
         </Rule>
 	<Rule>
-          <Name>Partially good chemical fertility (for cropland)</Name>
+          <Name>Partially good chemical fertility</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>5</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>10</Literal>
-              </PropertyIsLessThan>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -69,8 +69,8 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-	<Rule>
-          <Name>Good chemical fertility (for cropland)</Name>
+	      <Rule>
+          <Name>Good chemical fertility</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <PropertyIsGreaterThanOrEqualTo>
                <PropertyName>value</PropertyName>

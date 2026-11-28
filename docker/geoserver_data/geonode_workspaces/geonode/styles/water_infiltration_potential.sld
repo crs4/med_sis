@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <NamedLayer>
-    <Name>Depth of water infiltration potential in one hour at wilting point</Name>
+    <Name>water_infiltration_potential</Name>
     <UserStyle>
-      <Name>Depth of water infiltration potential in one hour at wilting point</Name>
-      <Title>Depth of water infiltration potential in one hour at wilting point</Title>
+      <Title>Water Infiltration Potential</Title>
       <FeatureTypeStyle>
-        
-	<Rule>
+        <Rule>
           <Name>Low layer infiltration potential</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-	   <And>
+	          <And>
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>0</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>1</Literal>
-              </PropertyIsLessThan>
-	    </And>
-	   </Filter>
+              </PropertyIsLessThanOrEqualTo>
+	          </And>
+	        </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>
@@ -38,19 +36,15 @@
               <Size>14</Size>
             </Graphic>
           </PointSymbolizer>
-        </Rule>
-
-       
-	<Rule>
+        </Rule>       
+	      <Rule>
           <Name>Good layer infiltration potential (No threshold for over infiltration risk)</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-	     <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>1</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
-              
-	   </Filter>
-
+	          <PropertyIsGreaterThan>
+              <PropertyName>value</PropertyName>
+              <Literal>1</Literal>
+            </PropertyIsGreaterThan>      
+	        </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>
@@ -68,8 +62,7 @@
               <Size>14</Size>
             </Graphic>
           </PointSymbolizer>
-        </Rule>
-       
+        </Rule>   
       </FeatureTypeStyle>
     </UserStyle>
   </NamedLayer>

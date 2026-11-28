@@ -3,10 +3,10 @@
   <NamedLayer>
     <Name>plant_available_water_capacity</Name>
     <UserStyle>
-      <Title>Plant available water capacity (percentage)</Title>
+      <Title>Plant available water capacity (AWC) (percentage)</Title>
       <FeatureTypeStyle>
         <Rule>
-          <Name>Poor water storage capacity (for rainfed cropland and grassland)</Name>
+          <Name>Poor water storage capacity</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
@@ -37,20 +37,18 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
-
-<Rule>
-          <Name>Limited water storage capacity (for rainfed cropland and grassland)</Name>
+        <Rule>
+          <Name>Limited water storage capacity</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>10</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>15</Literal>
-              </PropertyIsLessThan>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -71,21 +69,18 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
-
-
         <Rule>
-          <Name>Good water storage capacity (for rainfed cropland and grassland)</Name>
+          <Name>Good water storage capacity</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>15</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>20</Literal>
-              </PropertyIsLessThan>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -106,16 +101,14 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
-
         <Rule>
-          <Name>Ideal water storage capacity (for rainfed cropland and grassland)</Name>
+          <Name>Ideal water storage capacity</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-             <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>20</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
-             </Filter>
+            <PropertyIsGreaterThan>
+              <PropertyName>value</PropertyName>
+              <Literal>20</Literal>
+            </PropertyIsGreaterThan>
+          </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>
@@ -133,8 +126,7 @@
               <Size>14</Size>
             </Graphic>
           </PointSymbolizer>
-        </Rule>
-       
+        </Rule>    
       </FeatureTypeStyle>
     </UserStyle>
   </NamedLayer>

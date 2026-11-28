@@ -3,7 +3,7 @@
   <NamedLayer>
     <Name>litter_layer_cover</Name>
     <UserStyle>
-      <Title>Litter layer cover (%)</Title>
+      <Title>Litter layer cover - LLC(%)</Title>
       <FeatureTypeStyle>
         <Rule>
           <Name>Slight cover</Name>

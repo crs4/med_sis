@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <NamedLayer>
-    <Name>N tot content (g/Kg)</Name>
+    <Name>Total nitrogen (TN) (g/Kg)</Name>
     <UserStyle>
-      <Name>N tot content (g/Kg)</Name>
-      <Title>N tot content (g/Kg)</Title>
+      <Title>Total nitrogen (TN) (g/Kg)</Title>
       <FeatureTypeStyle>
       	<Rule>
-          <Name>Poor (for cropland and grassland)</Name>
+          <Name>Poor</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>0</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>1</Literal>
-              </PropertyIsLessThan>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -39,13 +38,13 @@
           </PointSymbolizer>
         </Rule>
         <Rule>
-          <Name>Moderate (for cropland and grassland)</Name>
+          <Name>Moderate</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
-              <PropertyIsGreaterThanOrEqualTo>
+              <PropertyIsGreaterThan>
                 <PropertyName>value</PropertyName>
                 <Literal>1</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
+              </PropertyIsGreaterThan>
               <PropertyIsLessThan>
                 <PropertyName>value</PropertyName>
                 <Literal>1.5</Literal>
@@ -71,7 +70,7 @@
           </PointSymbolizer>
         </Rule>
         <Rule>
-          <Name>Good (for cropland and grassland)</Name>
+          <Name>Good</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
@@ -103,17 +102,17 @@
           </PointSymbolizer>
         </Rule>
         <Rule>
-          <Name>Rich (for cropland and grassland)</Name>
+          <Name>Rich</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>2</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>5</Literal>
-              </PropertyIsLessThan>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -135,12 +134,12 @@
           </PointSymbolizer>
         </Rule>
         <Rule>
-          <Name>Excessive (for cropland and grassland)</Name>
+          <Name>Excessive</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-             <PropertyIsGreaterThanOrEqualTo>
+             <PropertyIsGreaterThan>
                 <PropertyName>value</PropertyName>
                 <Literal>5</Literal>
-             </PropertyIsGreaterThanOrEqualTo> 
+             </PropertyIsGreaterThan> 
           </Filter>
           <PointSymbolizer>
             <Graphic>

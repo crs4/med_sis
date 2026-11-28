@@ -3,7 +3,7 @@
   <NamedLayer>
     <Name>ph_h2o_phosphorus</Name>
     <UserStyle>
-      <Title>pH (H2O) - Phosphorus availability with acid phosphorus enzyme activity (unitless)</Title>
+      <Title>pH-H2O Phosphorus availability with acid phosphorus enzyme activity (unitless)</Title>
       <FeatureTypeStyle>
         <Rule>
           <Name>Limited P cycling through acid phosphatase activity</Name>
@@ -37,7 +37,6 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
         <Rule>
           <Name>Optimal phosphorus availability with acid phosphorus enzyme activity depending on available phosphorus soil stock</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
@@ -46,10 +45,10 @@
                 <PropertyName>value</PropertyName>
                 <Literal>4</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>5</Literal>
-              </PropertyIsLessThan>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -70,16 +69,14 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
-
         <Rule>
           <Name>Limited phosphorus availability with acid phosphorus enzyme activity</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-             <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>5</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
-             </Filter>
+            <PropertyIsGreaterThan>
+              <PropertyName>value</PropertyName>
+              <Literal>5</Literal>
+            </PropertyIsGreaterThan>
+          </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>

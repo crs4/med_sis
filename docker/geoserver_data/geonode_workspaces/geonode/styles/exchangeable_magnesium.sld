@@ -3,7 +3,7 @@
   <NamedLayer>
     <Name>exchangeable_magnesium</Name>
     <UserStyle>
-      <Title>Exchangeable Magnesium - Mg++ (cmol/Kg)</Title>
+      <Title>Exchangeable Magnesium - Exch Mg++ (cmol/Kg)</Title>
       <FeatureTypeStyle>
         <Rule>
           <Name>Low</Name>
@@ -37,7 +37,7 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-	<Rule>
+	      <Rule>
           <Name>Medium</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
@@ -69,7 +69,7 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-	<Rule>
+	      <Rule>
           <Name>High</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
@@ -101,14 +101,14 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
- 	<Rule>
+ 	      <Rule>
           <Name>Very high</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-            <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>1.6</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
-            </Filter>
+            <PropertyIsGreaterThan>
+              <PropertyName>value</PropertyName>
+              <Literal>1.6</Literal>
+            </PropertyIsGreaterThan>
+          </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>

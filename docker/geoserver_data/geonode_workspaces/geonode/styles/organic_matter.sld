@@ -3,7 +3,7 @@
   <NamedLayer>
     <Name>organic_matter</Name>
     <UserStyle>
-      <Title>Organic matter content (%)</Title>
+      <Title>Organic matter (OM) (%)</Title>
       <FeatureTypeStyle>
         <Rule>
           <Name>Too low</Name>
@@ -36,8 +36,7 @@
               <Size>14</Size>
             </Graphic>
           </PointSymbolizer>
-        </Rule>
-         
+        </Rule>   
         <Rule>
           <Name>Low</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
@@ -70,7 +69,6 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-	
         <Rule>
           <Name>Medium</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
@@ -103,7 +101,6 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-	
         <Rule>
           <Name>Good</Name>
           <Filter xmlns="http://www.opengis.net/ogc">

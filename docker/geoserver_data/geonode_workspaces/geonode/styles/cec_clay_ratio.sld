@@ -45,10 +45,10 @@
                 <PropertyName>value</PropertyName>
                 <Literal>0.24</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>1</Literal>
-              </PropertyIsLessThan>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -73,10 +73,10 @@
         <Rule>
           <Name>Potential presence of lignite, high charge density smectite or vermiculite</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-             <PropertyIsGreaterThanOrEqualTo>
+             <PropertyIsGreaterThan>
                 <PropertyName>value</PropertyName>
                 <Literal>1</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
+              </PropertyIsGreaterThan>
              </Filter>
           <PointSymbolizer>
             <Graphic>

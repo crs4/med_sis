@@ -37,8 +37,7 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-        
-	<Rule>
+        <Rule>
           <Name>Medium compaction</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
@@ -46,10 +45,10 @@
                 <PropertyName>value</PropertyName>
                 <Literal>1.4</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>1.75</Literal>
-              </PropertyIsLessThan>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -70,15 +69,13 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-        
-	<Rule>
+        <Rule>
           <Name>High compaction</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-           <PropertyIsGreaterThanOrEqualTo>
+            <PropertyIsGreaterThan>
               <PropertyName>value</PropertyName>
-                <Literal>1.75</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
-              
+              <Literal>1.75</Literal>
+            </PropertyIsGreaterThan>    
           </Filter>
           <PointSymbolizer>
             <Graphic>
@@ -97,8 +94,7 @@
               <Size>14</Size>
             </Graphic>
           </PointSymbolizer>
-        </Rule>
-       
+        </Rule>      
       </FeatureTypeStyle>
     </UserStyle>
   </NamedLayer>

@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <NamedLayer>
-    <Name>Effective cation Exchange capacity</Name>
+    <Name>effective_cation_exchange_capacity</Name>
     <UserStyle>
-      <Name>Effective cation Exchange capacity</Name>
-      <Title>Effective cation Exchange capacity</Title>
+      <Title>Effective cation Exchange capacity (ECEC) </Title>
       <FeatureTypeStyle>
-        
-	  <Rule>
-          <Name>Moderate chemical fertility (for cropland)</Name>
+        <Rule>
+          <Name>Moderate chemical fertility<Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-	   		<And>
+	   		    <And>
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>0</Literal>
@@ -19,8 +17,8 @@
                 <PropertyName>value</PropertyName>
                 <Literal>5</Literal>
               </PropertyIsLessThan>
-	    	</And>
-	   	  </Filter>
+	    	    </And>
+	   	    </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>
@@ -39,22 +37,20 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
         <Rule>
-          <Name>Partially good chemical fertility (for cropland)</Name>
+          <Name>Partially good chemical fertility</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-	   		<And>
+	   		    <And>
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>5</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>10</Literal>
-              </PropertyIsLessThan>
-	    	</And>
-	   	  </Filter>
-
+              </PropertyIsLessThanOrEqualTo>
+	    	    </And>
+	   	    </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>
@@ -73,14 +69,14 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-		<Rule>
-          <Name>Good chemical fertility (for cropland)</Name>
+		    <Rule>
+          <Name>Good chemical fertility</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-	         <PropertyIsGreaterThanOrEqualTo>
+	          <PropertyIsGreaterThan>
                 <PropertyName>value</PropertyName>
                 <Literal>10</Literal>
-             </PropertyIsGreaterThanOrEqualTo> 
-	      </Filter>
+             </PropertyIsGreaterThan> 
+	        </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>

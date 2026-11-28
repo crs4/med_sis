@@ -3,10 +3,10 @@
   <NamedLayer>
     <Name>nh4</Name>
     <UserStyle>
-      <Title>Ammonium  NH4+ (mg/kg)</Title>
+      <Title>Exchangeable Ammonium - NH4 (mg/kg)</Title>
       <FeatureTypeStyle>
       	<Rule>
-          <Name>Low range (for cropland)</Name>
+          <Name>Low range</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
@@ -38,17 +38,17 @@
           </PointSymbolizer>
         </Rule>
         <Rule>
-          <Name>Normal range (for cropland)</Name>
+          <Name>Normal range</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>2</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>10</Literal>
-              </PropertyIsLessThan>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -69,14 +69,13 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-	<Rule>
-          <Name>Wet soil (anaerobic) or residual fertilizer (for cropland)</Name>
+	      <Rule>
+          <Name>Wet soil (anaerobic) or residual fertilizer</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-                <PropertyIsGreaterThanOrEqualTo>
+                <PropertyIsGreaterThan>
                 <PropertyName>value</PropertyName>
                 <Literal>10</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
-              
+              </PropertyIsGreaterThan>   
           </Filter>
           <PointSymbolizer>
             <Graphic>

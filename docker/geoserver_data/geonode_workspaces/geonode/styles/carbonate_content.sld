@@ -3,9 +3,9 @@
   <NamedLayer>
     <Name>carbonate_content</Name>
     <UserStyle>
-      <Title>Calcium Carbonate - CaCo3 content (%)</Title>
+      <Title>Carbonate CaCo3 (%)</Title>
       <FeatureTypeStyle> 
-	<Rule>
+	      <Rule>
           <Name>Good chemical fertility</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
@@ -37,7 +37,6 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
         <Rule>
           <Name>Moderate chemical fertility</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
@@ -46,10 +45,10 @@
                 <PropertyName>value</PropertyName>
                 <Literal>25</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>40</Literal>
-              </PropertyIsLessThan>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -70,16 +69,13 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
-
-	
         <Rule>
           <Name>Altered chemical fertility</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-            <PropertyIsGreaterThanOrEqualTo>
+            <PropertyIsGreaterThan>
                 <PropertyName>value</PropertyName>
                 <Literal>40</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
+              </PropertyIsGreaterThan>
           </Filter>
           <PointSymbolizer>
             <Graphic>

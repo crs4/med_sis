@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <NamedLayer>
-    <Name>Crust cover (%)</Name>
+    <Name>crust_cover</Name>
     <UserStyle>
-      <Name>Crust cover (%)</Name>
-      <Title>Crust cover (%)</Title>
+      <Title>Surface crust cover (%)</Title>
       <FeatureTypeStyle>
-        
-	<Rule>
-          <Name>Potentially more sensitive to wind erosion (for arid and desert environment)</Name>
+	      <Rule>
+          <Name>Potentially more sensitive to wind erosion</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
@@ -41,7 +39,7 @@
         </Rule>
 
        <Rule>
-          <Name>Potentially less sensitive to wind erosion (for arid and desert environment)</Name>
+          <Name>Potentially less sensitive to wind erosion </Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>

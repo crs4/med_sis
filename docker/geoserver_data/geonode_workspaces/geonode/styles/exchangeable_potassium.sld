@@ -3,9 +3,9 @@
   <NamedLayer>
     <Name>exchangeable_potassium</Name>
     <UserStyle>
-      <Title>Exchangeable Potassium - K+ (cmol/Kg)</Title>
+      <Title>Exchangeable Potassium - Exch. K+ (cmol/Kg)</Title>
       <FeatureTypeStyle> 
-		<Rule>
+		    <Rule>
           <Name>Low</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
@@ -37,7 +37,7 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-		<Rule>
+		    <Rule>
           <Name>Medium</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
@@ -69,7 +69,7 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-		<Rule>
+		    <Rule>
           <Name>High</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
@@ -77,10 +77,10 @@
                 <PropertyName>value</PropertyName>
                 <Literal>0.39</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>0.52</Literal>
-              </PropertyIsLessThan>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -101,14 +101,14 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>      
-         <Rule>
+        <Rule>
           <Name>Very high</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-            <PropertyIsGreaterThanOrEqualTo>
+            <PropertyIsGreaterThan>
                 <PropertyName>value</PropertyName>
                 <Literal>0.52</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
-            </Filter>
+              </PropertyIsGreaterThan>
+          </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>

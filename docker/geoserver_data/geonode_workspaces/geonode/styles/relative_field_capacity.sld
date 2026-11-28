@@ -3,10 +3,10 @@
   <NamedLayer>
     <Name>relative_field_capacity</Name>
     <UserStyle>
-      <Title>Relative Field Capacity (unitless)</Title>
+      <Title>Relative Field Capacity (RFC) (unitless)</Title>
       <FeatureTypeStyle>
         <Rule>
-          <Name>Water limited soil (for rainfed cropland and grassland)</Name>
+          <Name>Water limited soil</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
@@ -37,19 +37,18 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
         <Rule>
-          <Name>Optimal (for rainfed cropland and grassland)</Name>
+          <Name>Optimal</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>0.6</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>0.7</Literal>
-              </PropertyIsLessThan>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -70,16 +69,14 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
-
         <Rule>
-          <Name>Air limited soil (for rainfed cropland and grassland)</Name>
+          <Name>Air limited soil</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-             <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>0.7</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
-             </Filter>
+            <PropertyIsGreaterThan>
+              <PropertyName>value</PropertyName>
+              <Literal>0.7</Literal>
+            </PropertyIsGreaterThan>
+          </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>

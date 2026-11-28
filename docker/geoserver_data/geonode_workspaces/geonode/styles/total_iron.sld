@@ -3,7 +3,7 @@
   <NamedLayer>
     <Name>total_iron</Name>
     <UserStyle>
-      <Title>Total iron (g/kg)</Title>
+      <Title>Total Iron  (g/kg)</Title>
       <FeatureTypeStyle>
         <Rule>
           <Name>Low total Fe</Name>
@@ -37,7 +37,7 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-	<Rule>
+	      <Rule>
           <Name>Normal range</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
@@ -45,10 +45,10 @@
                 <PropertyName>value</PropertyName>
                 <Literal>5</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>50</Literal>
-              </PropertyIsLessThan>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -69,13 +69,13 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-	<Rule>
+	      <Rule>
           <Name>High total Fe</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-            <PropertyIsGreaterThanOrEqualTo>
+            <PropertyIsGreaterThan>
                 <PropertyName>value</PropertyName>
                 <Literal>50</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
+              </PropertyIsGreaterThan>
             </Filter>
           <PointSymbolizer>
             <Graphic>

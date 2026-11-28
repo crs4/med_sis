@@ -3,7 +3,7 @@
   <NamedLayer>
     <Name>sodium_adsorption_ratio_sodicity</Name>
     <UserStyle>
-      <Title>Sodium adsorption ratio SAR - sodicity (cmol(c)^(1/2).L^(-1/2))</Title>
+      <Title>Sodium Adsorption Ratio (SAR) sodicity </Title>
       <FeatureTypeStyle>
         <Rule>
           <Name>Non sodium impacted soil</Name>
@@ -13,10 +13,10 @@
                 <PropertyName>value</PropertyName>
                 <Literal>0</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>13</Literal>
-              </PropertyIsLessThan>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -38,12 +38,12 @@
           </PointSymbolizer>
         </Rule>
         <Rule>
-          <Name>Sodium impacted soil</Name>
+          <Name>Sodium impacted soil layer (salin soil) </Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-             <PropertyIsGreaterThanOrEqualTo>
+             <PropertyIsGreaterThan>
                 <PropertyName>value</PropertyName>
                 <Literal>13</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
+              </PropertyIsGreaterThan>
              </Filter>
           <PointSymbolizer>
             <Graphic>

@@ -6,153 +6,149 @@
       <Title>Texture (unitless)</Title>
       <FeatureTypeStyle>
    		<Rule>
-          <Name>Clay and Silty clay - Very slow infiltration rate</Name>
-          <Filter xmlns="http://www.opengis.net/ogc">
-            <Or>
-              <PropertyIsEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>TEXTURE_CLASSES:C</Literal>
-              </PropertyIsEqualTo>
-	      	  <PropertyIsEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>TEXTURE_CLASSES:SiC</Literal>
-              </PropertyIsEqualTo>              
-            </Or>
-          </Filter>
-          <PointSymbolizer>
-            <Graphic>
-              <Mark>
-                <WellKnownName>circle</WellKnownName>
-                <Fill>
-                  <CssParameter name="fill">#F72626</CssParameter>
-                  <CssParameter name="fill-opacity">1</CssParameter>
-                </Fill>
-                <Stroke>
-                  <CssParameter name="stroke">#777777</CssParameter>
-                  <CssParameter name="stroke-width">2</CssParameter>
-                  <CssParameter name="stroke-opacity">1</CssParameter>
-                </Stroke>
-              </Mark>
-              <Size>14</Size>
-            </Graphic>
-          </PointSymbolizer>
-        </Rule>
+        <Name>Clay and Silty clay - Very slow infiltration rate (C)</Name>
+        <Filter xmlns="http://www.opengis.net/ogc">
+          <Or>
+            <PropertyIsEqualTo>
+              <PropertyName>value</PropertyName>
+              <Literal>TEXTURE_CLASSES:C</Literal>
+            </PropertyIsEqualTo>
+            <PropertyIsEqualTo>
+              <PropertyName>value</PropertyName>
+              <Literal>TEXTURE_CLASSES:SiC</Literal>
+            </PropertyIsEqualTo>              
+          </Or>
+        </Filter>
+        <PointSymbolizer>
+          <Graphic>
+            <Mark>
+              <WellKnownName>circle</WellKnownName>
+              <Fill>
+                <CssParameter name="fill">#F72626</CssParameter>
+                <CssParameter name="fill-opacity">1</CssParameter>
+              </Fill>
+              <Stroke>
+                <CssParameter name="stroke">#777777</CssParameter>
+                <CssParameter name="stroke-width">2</CssParameter>
+                <CssParameter name="stroke-opacity">1</CssParameter>
+              </Stroke>
+            </Mark>
+            <Size>14</Size>
+          </Graphic>
+        </PointSymbolizer>
+      </Rule>
 	    <Rule>
-        <Name>Sandy clay loam and sandy clay - Slow infiltration rate</Name>
-          <Filter xmlns="http://www.opengis.net/ogc">
-            <Or>
-              <PropertyIsEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>TEXTURE_CLASSES:SCL</Literal>
-              </PropertyIsEqualTo>
-	      <PropertyIsEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>TEXTURE_CLASSES:SC</Literal>
-              </PropertyIsEqualTo>
-              
-            </Or>
-          </Filter>
-          <PointSymbolizer>
-            <Graphic>
-              <Mark>
-                <WellKnownName>circle</WellKnownName>
-                <Fill>
-                  <CssParameter name="fill">#F37844</CssParameter>
-                  <CssParameter name="fill-opacity">1</CssParameter>
-                </Fill>
-                <Stroke>
-                  <CssParameter name="stroke">#777777</CssParameter>
-                  <CssParameter name="stroke-width">2</CssParameter>
-                  <CssParameter name="stroke-opacity">1</CssParameter>
-                </Stroke>
-              </Mark>
-              <Size>14</Size>
-            </Graphic>
-          </PointSymbolizer>
-        </Rule>
-
-        <Rule>
-        <Name>Sandy loam, loam, silt loam, clay loam, silty clay loam, silt - Moderate infiltration rate</Name>
-          <Filter xmlns="http://www.opengis.net/ogc">
-            <Or>
-              <PropertyIsEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>TEXTURE_CLASSES:SL</Literal>
-              </PropertyIsEqualTo>
-	      <PropertyIsEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>TEXTURE_CLASSES:L</Literal>
-              </PropertyIsEqualTo>
-	      <PropertyIsEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>TEXTURE_CLASSES:SiL</Literal>
-              </PropertyIsEqualTo>
-	      <PropertyIsEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>TEXTURE_CLASSES:CL</Literal>
-              </PropertyIsEqualTo>
-              <PropertyIsEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>TEXTURE_CLASSES:SiCL</Literal>
-              </PropertyIsEqualTo>
-	      <PropertyIsEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>TEXTURE_CLASSES:Si</Literal>
-              </PropertyIsEqualTo>              
-            </Or>
-          </Filter>
-          <PointSymbolizer>
-            <Graphic>
-              <Mark>
-                <WellKnownName>circle</WellKnownName>
-                <Fill>
-                  <CssParameter name="fill">#41ED31</CssParameter>
-                  <CssParameter name="fill-opacity">1</CssParameter>
-                </Fill>
-                <Stroke>
-                  <CssParameter name="stroke">#777777</CssParameter>
-                  <CssParameter name="stroke-width">2</CssParameter>
-                  <CssParameter name="stroke-opacity">1</CssParameter>
-                </Stroke>
-              </Mark>
-              <Size>14</Size>
-            </Graphic>
-          </PointSymbolizer>
-        </Rule>
-
-        <Rule>
-        <Name>Sand and loamy sand - High infiltration rate</Name>
-          <Filter xmlns="http://www.opengis.net/ogc">
-            <Or>
-              <PropertyIsEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>TEXTURE_CLASSES:S</Literal>
-              </PropertyIsEqualTo>
-	      <PropertyIsEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>TEXTURE_CLASSES:LS</Literal>
-              </PropertyIsEqualTo>
-	         
-            </Or>
-          </Filter>
-          <PointSymbolizer>
-            <Graphic>
-              <Mark>
-                <WellKnownName>circle</WellKnownName>
-                <Fill>
-                  <CssParameter name="fill">#919399</CssParameter>
-                  <CssParameter name="fill-opacity">1</CssParameter>
-                </Fill>
-                <Stroke>
-                  <CssParameter name="stroke">#777777</CssParameter>
-                  <CssParameter name="stroke-width">2</CssParameter>
-                  <CssParameter name="stroke-opacity">1</CssParameter>
-                </Stroke>
-              </Mark>
-              <Size>14</Size>
-            </Graphic>
-          </PointSymbolizer>
-        </Rule>
+        <Name>Sandy clay loam and sandy clay - Slow infiltration rate (SCL, SC)</Name>
+        <Filter xmlns="http://www.opengis.net/ogc">
+          <Or>
+            <PropertyIsEqualTo>
+              <PropertyName>value</PropertyName>
+              <Literal>TEXTURE_CLASSES:SCL</Literal>
+            </PropertyIsEqualTo>
+	          <PropertyIsEqualTo>
+              <PropertyName>value</PropertyName>
+              <Literal>TEXTURE_CLASSES:SC</Literal>
+            </PropertyIsEqualTo>    
+          </Or>
+        </Filter>
+        <PointSymbolizer>
+          <Graphic>
+            <Mark>
+              <WellKnownName>circle</WellKnownName>
+              <Fill>
+                <CssParameter name="fill">#F37844</CssParameter>
+                <CssParameter name="fill-opacity">1</CssParameter>
+              </Fill>
+              <Stroke>
+                <CssParameter name="stroke">#777777</CssParameter>
+                <CssParameter name="stroke-width">2</CssParameter>
+                <CssParameter name="stroke-opacity">1</CssParameter>
+              </Stroke>
+            </Mark>
+            <Size>14</Size>
+          </Graphic>
+        </PointSymbolizer>
+      </Rule>
+      <Rule>
+        <Name>Sandy loam, loam, silt loam, clay loam, silty clay loam, silt - Moderate infiltration rate (SL, L, SiL, CL, SiCL, Si)</Name>
+        <Filter xmlns="http://www.opengis.net/ogc">
+          <Or>
+            <PropertyIsEqualTo>
+              <PropertyName>value</PropertyName>
+              <Literal>TEXTURE_CLASSES:SL</Literal>
+            </PropertyIsEqualTo>
+	          <PropertyIsEqualTo>
+              <PropertyName>value</PropertyName>
+              <Literal>TEXTURE_CLASSES:L</Literal>
+            </PropertyIsEqualTo>
+	          <PropertyIsEqualTo>
+              <PropertyName>value</PropertyName>
+              <Literal>TEXTURE_CLASSES:SiL</Literal>
+            </PropertyIsEqualTo>
+	          <PropertyIsEqualTo>
+              <PropertyName>value</PropertyName>
+              <Literal>TEXTURE_CLASSES:CL</Literal>
+            </PropertyIsEqualTo>
+            <PropertyIsEqualTo>
+              <PropertyName>value</PropertyName>
+              <Literal>TEXTURE_CLASSES:SiCL</Literal>
+            </PropertyIsEqualTo>
+	          <PropertyIsEqualTo>
+              <PropertyName>value</PropertyName>
+              <Literal>TEXTURE_CLASSES:Si</Literal>
+            </PropertyIsEqualTo>              
+          </Or>
+        </Filter>
+        <PointSymbolizer>
+          <Graphic>
+            <Mark>
+              <WellKnownName>circle</WellKnownName>
+              <Fill>
+                <CssParameter name="fill">#41ED31</CssParameter>
+                <CssParameter name="fill-opacity">1</CssParameter>
+              </Fill>
+              <Stroke>
+                <CssParameter name="stroke">#777777</CssParameter>
+                <CssParameter name="stroke-width">2</CssParameter>
+                <CssParameter name="stroke-opacity">1</CssParameter>
+              </Stroke>
+            </Mark>
+            <Size>14</Size>
+          </Graphic>
+        </PointSymbolizer>
+      </Rule>
+      <Rule>
+        <Name>Sand and loamy sand - High infiltration rate (S, LS)</Name>
+        <Filter xmlns="http://www.opengis.net/ogc">
+          <Or>
+            <PropertyIsEqualTo>
+              <PropertyName>value</PropertyName>
+              <Literal>TEXTURE_CLASSES:S</Literal>
+            </PropertyIsEqualTo>
+	          <PropertyIsEqualTo>
+              <PropertyName>value</PropertyName>
+              <Literal>TEXTURE_CLASSES:LS</Literal>
+            </PropertyIsEqualTo>     
+          </Or>
+        </Filter>
+        <PointSymbolizer>
+          <Graphic>
+            <Mark>
+              <WellKnownName>circle</WellKnownName>
+              <Fill>
+                <CssParameter name="fill">#919399</CssParameter>
+                <CssParameter name="fill-opacity">1</CssParameter>
+              </Fill>
+              <Stroke>
+                <CssParameter name="stroke">#777777</CssParameter>
+                <CssParameter name="stroke-width">2</CssParameter>
+                <CssParameter name="stroke-opacity">1</CssParameter>
+              </Stroke>
+            </Mark>
+            <Size>14</Size>
+          </Graphic>
+        </PointSymbolizer>
+      </Rule>
  		</FeatureTypeStyle>
     </UserStyle>
   </NamedLayer>

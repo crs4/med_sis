@@ -1,15 +1,15 @@
 <featureType>
   <id>FeatureTypeInfoImpl--bb68920:19f114781fa:-7ee3</id>
-  <name>ph_h2o_bacterial_diversity</name>
-  <nativeName>ph_h2o_bacterial_diversity</nativeName>
+  <name>ph_h2o_bacterial_activity</name>
+  <nativeName>ph_h2o_bacterial_activity</nativeName>
   <namespace>
     <id>NamespaceInfoImpl-78ff667e:12476299803:-7ffe</id>
   </namespace>
-  <title>ph_h2o_bacterial_diversity</title>
+  <title>ph_h2o_bacterial_activity</title>
   <abstract>No abstract provided</abstract>
   <keywords>
     <string>features</string>
-    <string>ph_h2o_bacterial_diversity</string>
+    <string>ph_h2o_bacterial_activity</string>
   </keywords>
   <srs>EPSG:4326</srs>
   <nativeBoundingBox>

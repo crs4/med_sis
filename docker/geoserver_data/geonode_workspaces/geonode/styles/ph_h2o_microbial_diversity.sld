@@ -3,7 +3,7 @@
   <NamedLayer>
     <Name>ph_h2o_microbial_diversity</Name>
     <UserStyle>
-      <Title>pH (H2O) - Microbial diversity (unitless)</Title>
+      <Title>pH - H2O - Microbial diversity (unitless)</Title>
       <FeatureTypeStyle>
         <Rule>
           <Name>Reduced microbial diversity</Name>
@@ -13,10 +13,10 @@
                 <PropertyName>value</PropertyName>
                 <Literal>0</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>6.28</Literal>
-              </PropertyIsLessThan>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -40,10 +40,10 @@
         <Rule>
           <Name>Higher and more stable microbial diversity</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
- 			<PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>6.28</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
+ 			      <PropertyIsGreaterThan>
+              <PropertyName>value</PropertyName>
+              <Literal>6.28</Literal>
+            </PropertyIsGreaterThan>
           </Filter>
           <PointSymbolizer>
             <Graphic>

@@ -3,7 +3,7 @@
   <NamedLayer>
     <Name>wilting_point</Name>
     <UserStyle>
-      <Title>Volumetric water content at wilting point (%)</Title>
+      <Title>Volumetric water content at wilting point (WC_WP) (percentage)</Title>
       <FeatureTypeStyle>
         <Rule>
           <Name>Difficult conditions for plants in very dry condition</Name>
@@ -37,15 +37,20 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-	
         <Rule>
           <Name>Less difficult conditions for plants in very dry conditions</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-             <PropertyIsGreaterThanOrEqualTo>
+            <And>
+              <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>19</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-             </Filter>
+              <PropertyIsLessThanOrEqualTo>
+                <PropertyName>value</PropertyName>
+                <Literal>100</Literal>
+              </PropertyIsLessThanOrEqualTo>
+            </And>
+          </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>

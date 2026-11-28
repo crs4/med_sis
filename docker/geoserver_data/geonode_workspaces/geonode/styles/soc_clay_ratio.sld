@@ -3,7 +3,7 @@
   <NamedLayer>
     <Name>soc_clay_ratio</Name>
     <UserStyle>
-      <Title>Soil structure vulnerability - SOC/Clay</Title>
+      <Title>SOC/clay</Title>
       <FeatureTypeStyle>
         <Rule>
           <Name>Poor</Name>
@@ -37,8 +37,7 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
-	<Rule>
+	      <Rule>
           <Name>Potential improvement</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
@@ -69,11 +68,8 @@
               <Size>14</Size>
             </Graphic>
           </PointSymbolizer>
-        </Rule>
-
-
-        
-	<Rule>
+        </Rule>        
+	      <Rule>
           <Name>Good</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
@@ -81,10 +77,10 @@
                 <PropertyName>value</PropertyName>
                 <Literal>0.1</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>0.125</Literal>
-              </PropertyIsLessThan>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -105,15 +101,13 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-        
-	<Rule>
+        <Rule>
           <Name>Very good</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-           <PropertyIsGreaterThanOrEqualTo>
+           <PropertyIsGreaterThan>
               <PropertyName>value</PropertyName>
                 <Literal>0.125</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
-              
+              </PropertyIsGreaterThan>
           </Filter>
           <PointSymbolizer>
             <Graphic>
@@ -133,7 +127,6 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-       
       </FeatureTypeStyle>
     </UserStyle>
   </NamedLayer>

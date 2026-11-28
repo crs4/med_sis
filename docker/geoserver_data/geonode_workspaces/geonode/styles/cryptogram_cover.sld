@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <NamedLayer>
-    <Name>Cryptogram cover</Name>
+    <Name>cryptogram_cover</Name>
     <UserStyle>
-      <Name>Cryptogram cover</Name>
-      <Title>Cryptogram cover</Title>
+      <Title>Cryptogram cover (CC)</Title>
       <FeatureTypeStyle>
         <Rule>
-          <Name>No contribution to soil surface erosion protection</Name>
+          <Name>No contribution of cryptogams to soil surface erosion protection</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
@@ -38,10 +37,8 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
-
-<Rule>
-          <Name>Slight contribution to soil surface erosion protection</Name>
+        <Rule>
+          <Name>Slight contribution of cryptogams to soil surface erosion protection</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
@@ -72,11 +69,8 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
-
-
         <Rule>
-          <Name>Moderate contribution to soil surface erosion protection</Name>
+          <Name>Moderate contribution of cryptogams to soil surface erosion protection</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
@@ -107,16 +101,19 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
-
         <Rule>
-          <Name>Extensive contribution to soil surface erosion protection</Name>
+          <Name>Extensive contribution of cryptogams to soil surface erosion protection</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-             <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>50</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
-             </Filter>
+            <PropertyIsGreaterThanOrEqualTo>
+              <PropertyName>value</PropertyName>
+              <Literal>50</Literal>
+            </PropertyIsGreaterThanOrEqualTo>
+            </Filter>
+            <PropertyIsLessThanOrEqualTo>
+              <PropertyName>value</PropertyName>
+              <Literal>100</Literal>
+            </PropertyIsLessThanOrEqualTo>
+          </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>
@@ -134,8 +131,7 @@
               <Size>14</Size>
             </Graphic>
           </PointSymbolizer>
-        </Rule>
-       
+        </Rule>    
       </FeatureTypeStyle>
     </UserStyle>
   </NamedLayer>

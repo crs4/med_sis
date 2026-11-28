@@ -5,11 +5,10 @@
     <UserStyle>
       <Title>Soil erodibility by wind - WEF (percentage)</Title>
       <FeatureTypeStyle>
-        
-	<Rule>
-          <Name>Sligthly erodible (for cropland and topsoil only) </Name>
+        <Rule>
+          <Name>Sligthly erodible </Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-	   <And>
+	          <And>
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>0</Literal>
@@ -18,8 +17,8 @@
                 <PropertyName>value</PropertyName>
                 <Literal>40</Literal>
               </PropertyIsLessThan>
-	    </And>
-	   </Filter>
+	          </And>
+	        </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>
@@ -38,11 +37,10 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
         <Rule>
-          <Name>Moderatly erodible (for cropland and topsoil only) </Name>
+          <Name>Moderatly erodible</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-	   <And>
+	          <And>
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>40</Literal>
@@ -51,9 +49,8 @@
                 <PropertyName>value</PropertyName>
                 <Literal>50</Literal>
               </PropertyIsLessThan>
-	    </And>
-	   </Filter>
-
+	          </And>
+	        </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>
@@ -73,9 +70,9 @@
           </PointSymbolizer>
         </Rule>
         <Rule>
-          <Name>Highly erodible (for cropland and topsoil only) </Name>
+          <Name>Highly erodible</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-	   		<And>
+	   		    <And>
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>50</Literal>
@@ -84,9 +81,8 @@
                 <PropertyName>value</PropertyName>
                 <Literal>70</Literal>
               </PropertyIsLessThan>
-	    </And>
-	   </Filter>
-
+	          </And>
+	        </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>
@@ -106,19 +102,19 @@
           </PointSymbolizer>
         </Rule>
         <Rule>
-          <Name>Extremely erodible (for cropland and topsoil only)</Name>
+          <Name>Extremely erodible</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-	   		<And>
-              <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>70</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThanOrEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>100</Literal>
-              </PropertyIsLessThanOrEqualTo>
-	    	</And>
-	   	  </Filter>
+            <And>
+                <PropertyIsGreaterThanOrEqualTo>
+                  <PropertyName>value</PropertyName>
+                  <Literal>70</Literal>
+                </PropertyIsGreaterThanOrEqualTo>
+                <PropertyIsLessThanOrEqualTo>
+                  <PropertyName>value</PropertyName>
+                  <Literal>100</Literal>
+                </PropertyIsLessThanOrEqualTo>
+            </And>
+	   	    </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>

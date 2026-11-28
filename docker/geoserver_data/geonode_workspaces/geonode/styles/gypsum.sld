@@ -3,10 +3,10 @@
   <NamedLayer>
     <Name>gypsum</Name>
     <UserStyle>
-      <Title>Gypsum content (%)</Title>
+      <Title>Gypsum (%)</Title>
       <FeatureTypeStyle>
       	<Rule>
-          <Name>Beneficial for plant growth (for cropland)</Name>
+          <Name>Beneficial for plant growth</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
@@ -38,7 +38,7 @@
           </PointSymbolizer>
         </Rule>
         <Rule>
-          <Name>Neutral for plan growth (for cropland)</Name>
+          <Name>Neutral for plan growth</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
@@ -69,8 +69,8 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-	<Rule>
-          <Name>Negative impact for plant growth (for cropland)</Name>
+	      <Rule>
+          <Name>Negative impact for plant growth</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
@@ -101,7 +101,7 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-	</FeatureTypeStyle>
+	    </FeatureTypeStyle>
     </UserStyle>
   </NamedLayer>
 </StyledLayerDescriptor>

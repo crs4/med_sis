@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <NamedLayer> 
-    <Name>Base Saturation BS (%) - exchangeable acidity</Name>
+    <Name>base_saturation_exchangeable_acidity</Name>
     <UserStyle>
-      <Name>Base Saturation BS (%) - exchangeable acidity</Name>
       <Title>Base Saturation BS (%) - exchangeable acidity</Title>
       <FeatureTypeStyle>
         <Rule>
@@ -14,10 +13,10 @@
                 <PropertyName>value</PropertyName>
                 <Literal>0</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
-                <Literal>80</Literal>
-              </PropertyIsLessThan>
+                <Literal>60</Literal>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -44,7 +43,7 @@
             <And>
 	            <PropertyIsGreaterThen>
                 <PropertyName>value</PropertyName>
-                <Literal>80</Literal>
+                <Literal>60</Literal>
               </PropertyIsGreaterThan>
 	            <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>

@@ -3,7 +3,7 @@
   <NamedLayer>
     <Name>base_saturation_soil_structure</Name>
     <UserStyle>
-      <Title>Base saturation BS – soil structure (%)</Title>
+      <Title>Base Saturation BS - soil structure (%)</Title>
       <FeatureTypeStyle>
       <Rule>
           <Name>Potential soil structure degradation risk</Name>
@@ -41,10 +41,10 @@
           <Name>Lower potential soil structure degradation risk</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
-	      	  <PropertyIsGreaterThan>
+	      	  <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>60</Literal>
-              </PropertyIsGreaterThan>
+              </PropertyIsGreaterThanOrEqualTo>
 	      	  <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>100</Literal>

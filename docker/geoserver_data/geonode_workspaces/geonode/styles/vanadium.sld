@@ -3,7 +3,7 @@
   <NamedLayer>
     <Name>vanadium</Name>
     <UserStyle>
-      <Title>Vanadium V (mg/kg)</Title>
+      <Title>Vanadium (V) (mg/kg)</Title>
       <FeatureTypeStyle>
        	<Rule>
           <Name>Normal</Name>
@@ -38,12 +38,12 @@
           </PointSymbolizer>
         </Rule>      
         <Rule>
-          <Name>Potential enrichment (Verify with EFV)</Name>
+          <Name>Potential enrichment (Verify Enrichment Factor for V)</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-            <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>100</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
+            <PropertyIsGreaterThan>
+              <PropertyName>value</PropertyName>
+              <Literal>100</Literal>
+            </PropertyIsGreaterThan>
             </Filter>
           <PointSymbolizer>
             <Graphic>

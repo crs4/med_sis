@@ -3,7 +3,7 @@
   <NamedLayer>
     <Name>ph_h2o_metal_toxicity</Name>
     <UserStyle>
-      <Title>pH (H2O) - Toxicity due to heavy metals dissolution (unitless)</Title>
+      <Title>pH-H2O metal toxicity (unitless)</Title>
       <FeatureTypeStyle>
         <Rule>
           <Name>More toxicity due to heavy metals dissolution</Name>
@@ -37,7 +37,6 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
         <Rule>
           <Name>Lower toxicity due to heavy metals dissolution</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
@@ -46,10 +45,10 @@
                 <PropertyName>value</PropertyName>
                 <Literal>6</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>7</Literal>
-              </PropertyIsLessThan>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -70,15 +69,13 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
-
         <Rule>
           <Name>More toxicity due to heavy metals dissolution</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-             <PropertyIsGreaterThanOrEqualTo>
+             <PropertyIsGreaterThan>
                 <PropertyName>value</PropertyName>
                 <Literal>7</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
+              </PropertyIsGreaterThan>
              </Filter>
           <PointSymbolizer>
             <Graphic>
@@ -97,8 +94,7 @@
               <Size>14</Size>
             </Graphic>
           </PointSymbolizer>
-        </Rule>
-       
+        </Rule>      
       </FeatureTypeStyle>
     </UserStyle>
   </NamedLayer>

@@ -3,10 +3,10 @@
   <NamedLayer>
     <Name>ph_h2o_plant_growth</Name>
     <UserStyle>
-      <Title>pH (H2O) - Optimal plant growth for cropland (unitless)</Title>
+      <Title>pH - H2O - Optimal plant growth (unitless)</Title>
       <FeatureTypeStyle>   
 	    <Rule>
-          <Name>Fe and Al3+ dissolution affecting relative yields (for cropland)</Name>
+          <Name>Fe and Al3+ dissolution affecting relative yields</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
@@ -37,20 +37,18 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
-	
         <Rule>
-          <Name>Optimal plant growth least limiting range (for cropland)</Name>
+          <Name>Optimal plant growth least limiting range</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>6</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>8.5</Literal>
-              </PropertyIsLessThan>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -71,15 +69,13 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
-
         <Rule>
-          <Name>Plant growth limiting range (species specific) with increasing constraints regarding excess of HC03-, or deficiency potential in Fe, P and Zn or imbalance for and in between K, Mg and/or Ca (for cropland)</Name>
+          <Name>Plant growth limiting range (species specific) with increasing constraints regarding excess of HC03-, or deficiency potential in Fe, P and Zn or imbalance for and in between K, Mg and/or Ca</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-             <PropertyIsGreaterThanOrEqualTo>
+             <PropertyIsGreaterThan>
                 <PropertyName>value</PropertyName>
                 <Literal>8.5</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
+              </PropertyIsGreaterThan>
              </Filter>
           <PointSymbolizer>
             <Graphic>
@@ -98,8 +94,7 @@
               <Size>14</Size>
             </Graphic>
           </PointSymbolizer>
-        </Rule>
-       
+        </Rule>       
       </FeatureTypeStyle>
     </UserStyle>
   </NamedLayer>

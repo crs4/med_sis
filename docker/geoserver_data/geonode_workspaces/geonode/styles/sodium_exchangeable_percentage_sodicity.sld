@@ -3,7 +3,7 @@
   <NamedLayer>
     <Name>sodium_exchangeable_percentage_sodicity</Name>
     <UserStyle>
-      <Title>Sodium Exchangeable Percentage ESP - Sodicity (percentage)</Title>
+      <Title>Sodium Exchangeable Percentage (ESP) sodicity (percentage)</Title>
       <FeatureTypeStyle>
         <Rule>
           <Name>Soil non sodic</Name>
@@ -40,7 +40,7 @@
         <Rule>
           <Name>Soil sodic</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-             <And>
+            <And>
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>15</Literal>
@@ -50,8 +50,7 @@
                 <Literal>100</Literal>
               </PropertyIsLessThanOrEqualTo>
             </And>
-
-             </Filter>
+          </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>
@@ -69,8 +68,7 @@
               <Size>14</Size>
             </Graphic>
           </PointSymbolizer>
-        </Rule>
-       
+        </Rule>   
       </FeatureTypeStyle>
     </UserStyle>
   </NamedLayer>

@@ -5,7 +5,7 @@
     <UserStyle>
       <Title>Cobalt - Co (mg/kg)</Title>
       <FeatureTypeStyle>
-	<Rule>
+	      <Rule>
           <Name>Normal</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
@@ -13,10 +13,10 @@
                 <PropertyName>value</PropertyName>
                 <Literal>0</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>20</Literal>
-              </PropertyIsLessThan>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -38,13 +38,13 @@
           </PointSymbolizer>
         </Rule>
         <Rule>
-          <Name>Potential enrichment (Verify with EFCo)</Name>
+          <Name>Potential enrichment (Verify Enrichment Factor for Co)</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-            <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>20</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
-            </Filter>
+            <PropertyIsGreaterThan>
+              <PropertyName>value</PropertyName>
+              <Literal>20</Literal>
+            </PropertyIsGreaterThan>
+          </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>

@@ -13,10 +13,10 @@
                 <PropertyName>value</PropertyName>
                 <Literal>0</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>5</Literal>
-              </PropertyIsLessThan>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -37,14 +37,14 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-	<Rule>
+	      <Rule>
           <Name>Potential enrichment (Verify with EFAs)</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-            <PropertyIsGreaterThanOrEqualTo>
+              <PropertyIsGreaterThan>
                 <PropertyName>value</PropertyName>
                 <Literal>5</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
-            </Filter>
+              </PropertyIsGreaterThan>
+          </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>

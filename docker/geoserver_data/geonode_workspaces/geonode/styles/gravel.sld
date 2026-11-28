@@ -3,10 +3,9 @@
   <NamedLayer>
     <Name>gravel</Name>
     <UserStyle>
-      <Title>Gravel content (%)</Title>
-      <FeatureTypeStyle>
-        
-	<Rule>
+      <Title>Gravel (%)</Title>
+      <FeatureTypeStyle>  
+	      <Rule>
           <Name>Absent or low</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
@@ -38,7 +37,6 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
         <Rule>
           <Name>Normal</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
@@ -71,9 +69,7 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
-
- <Rule>
+        <Rule>
           <Name>Frequent</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
@@ -81,10 +77,10 @@
                 <PropertyName>value</PropertyName>
                 <Literal>15</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>35</Literal>
-              </PropertyIsLessThan>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -105,21 +101,13 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
-
-         <Rule>
+        <Rule>
           <Name>Abundant</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-            <And>
-              <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>35</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThanOrEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>70</Literal>
-              </PropertyIsLessThanOrEqualTo>
-            </And>
+            <PropertyIsGreaterThan>
+              <PropertyName>value</PropertyName>
+              <Literal>35</Literal>
+            </PropertyIsGreaterThan>  
           </Filter>
           <PointSymbolizer>
             <Graphic>

@@ -3,7 +3,7 @@
   <NamedLayer>
     <Name>lead_relative_content</Name>
     <UserStyle>
-      <Title>Lead Relative Content (%)</Title>
+      <Title>Lead Relative Content - RC_Pb (%)</Title>
       <FeatureTypeStyle>
         <Rule>
           <Name>Lead below natural geochemical relative range</Name>
@@ -73,15 +73,15 @@
           <Name>Lead above natural geochemical relative range</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
-	      		<PropertyIsGreaterThan>
-                	<PropertyName>value</PropertyName>
-                	<Literal>39.5</Literal>
-              	</PropertyIsGreaterThan>
-	      		<PropertyIsLessThanOrEqualTo>
-                	<PropertyName>value</PropertyName>
-                	<Literal>100</Literal>
-              	</PropertyIsLessThanOrEqualTo>
-	    	</And>
+	      		  <PropertyIsGreaterThan>
+                <PropertyName>value</PropertyName>
+              	<Literal>39.5</Literal>
+              </PropertyIsGreaterThan>
+	      		  <PropertyIsLessThanOrEqualTo>
+                <PropertyName>value</PropertyName>
+                <Literal>100</Literal>
+              </PropertyIsLessThanOrEqualTo>
+	    	    </And>
           </Filter>
           <PointSymbolizer>
             <Graphic>

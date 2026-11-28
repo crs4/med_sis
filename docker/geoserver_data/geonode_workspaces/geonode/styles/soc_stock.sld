@@ -3,23 +3,22 @@
   <NamedLayer>
     <Name>soc_stock</Name>
     <UserStyle>
-      <Title>SOC stock ('mg.ha^-1')</Title>
+      <Title>Soil Organic Carbon (SOC_stock) ('mg.ha^-1')</Title>
       <FeatureTypeStyle>    
-		<Rule>
-          <Name>Degraded equivalence (for grassland and cropland)</Name>
+		    <Rule>
+          <Name>Degraded equivalence</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
-	      <Or>
-	        <ogc:PropertyIsEqualTo>
+              <Or>
+                <ogc:PropertyIsEqualTo>
                   <ogc:PropertyName>lu_type</ogc:PropertyName>
                   <Literal>C</Literal>
                 </ogc:PropertyIsEqualTo>
-	        <ogc:PropertyIsEqualTo>
-                  <ogc:PropertyName>lu_type</ogc:PropertyName>
-                  <Literal>G</Literal>
+                <ogc:PropertyIsEqualTo>
+                    <ogc:PropertyName>lu_type</ogc:PropertyName>
+                    <Literal>G</Literal>
                 </ogc:PropertyIsEqualTo>
               </Or>
-
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>0</Literal>
@@ -48,21 +47,20 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-		<Rule>
-          <Name>Strong pressure equivalence (for grassland and cropland)</Name>
+		    <Rule>
+          <Name>Strong pressure equivalence</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
-	      <Or>
-	        <ogc:PropertyIsEqualTo>
+              <Or>
+                <ogc:PropertyIsEqualTo>
                   <ogc:PropertyName>lu_type</ogc:PropertyName>
                   <Literal>C</Literal>
                 </ogc:PropertyIsEqualTo>
-	        <ogc:PropertyIsEqualTo>
+                <ogc:PropertyIsEqualTo>
                   <ogc:PropertyName>lu_type</ogc:PropertyName>
                   <Literal>G</Literal>
                 </ogc:PropertyIsEqualTo>
               </Or>
-
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>15</Literal>
@@ -91,29 +89,28 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-		<Rule>
-          <Name>Weak to moderate pressure equivalence (for grassland and cropland)</Name>
+		    <Rule>
+          <Name>Weak to moderate pressure equivalence</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
-	      <Or>
-	        <ogc:PropertyIsEqualTo>
+	            <Or>
+                <ogc:PropertyIsEqualTo>
                   <ogc:PropertyName>lu_type</ogc:PropertyName>
                   <Literal>C</Literal>
                 </ogc:PropertyIsEqualTo>
-	        <ogc:PropertyIsEqualTo>
+                <ogc:PropertyIsEqualTo>
                   <ogc:PropertyName>lu_type</ogc:PropertyName>
                   <Literal>G</Literal>
                 </ogc:PropertyIsEqualTo>
               </Or>
-
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>35</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>75</Literal>
-              </PropertyIsLessThan>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -134,26 +131,24 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-		<Rule>
-          <Name>Very weak to no pressure equivalence (for grassland and cropland)</Name>
+		    <Rule>
+          <Name>Very weak to no pressure equivalence</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
-	      <Or>
-	        <ogc:PropertyIsEqualTo>
-                  <ogc:PropertyName>lu_type</ogc:PropertyName>
-                  <Literal>C</Literal>
+	            <Or>
+                <ogc:PropertyIsEqualTo>
+                    <ogc:PropertyName>lu_type</ogc:PropertyName>
+                    <Literal>C</Literal>
                 </ogc:PropertyIsEqualTo>
-	        <ogc:PropertyIsEqualTo>
+                <ogc:PropertyIsEqualTo>
                   <ogc:PropertyName>lu_type</ogc:PropertyName>
                   <Literal>G</Literal>
                 </ogc:PropertyIsEqualTo>
               </Or>
-
-              <PropertyIsGreaterThanOrEqualTo>
+              <PropertyIsGreaterThan>
                 <PropertyName>value</PropertyName>
                 <Literal>75</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
-              
+              </PropertyIsGreaterThan>     
             </And>
           </Filter>
           <PointSymbolizer>
@@ -174,25 +169,22 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-		<Rule>
-          <Name>Low dense forests stands (only for forest)</Name>
+		    <Rule>
+          <Name>Low dense forests stands</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
-	      
-	        <ogc:PropertyIsEqualTo>
-                  <ogc:PropertyName>lu_type</ogc:PropertyName>
-                  <Literal>F</Literal>
-                </ogc:PropertyIsEqualTo>
-	       
-
+	            <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>lu_type</ogc:PropertyName>
+                <Literal>F</Literal>
+              </ogc:PropertyIsEqualTo>
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>0</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>45</Literal>
-              </PropertyIsLessThan>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -213,18 +205,18 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-		<Rule>
-          <Name>Moderately dense to dense forests stands equivalent (Only for forest)</Name>
+		    <Rule>
+          <Name>Moderate to high density to dense forests stands equivalent </Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>	      
-	        	<ogc:PropertyIsEqualTo>
-                  <ogc:PropertyName>lu_type</ogc:PropertyName>
-                  <Literal>F</Literal>
-                </ogc:PropertyIsEqualTo>
-                <PropertyIsGreaterThanOrEqualTo>
-                	<PropertyName>value</PropertyName>
-                	<Literal>45</Literal>
-              	</PropertyIsGreaterThanOrEqualTo>              
+	        	  <ogc:PropertyIsEqualTo>
+                <ogc:PropertyName>lu_type</ogc:PropertyName>
+                <Literal>F</Literal>
+              </ogc:PropertyIsEqualTo>
+              <PropertyIsGreaterThan>
+              	<PropertyName>value</PropertyName>
+              	<Literal>45</Literal>
+            	</PropertyIsGreaterThan>              
             </And>
           </Filter>
           <PointSymbolizer>

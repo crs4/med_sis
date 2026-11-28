@@ -3,10 +3,10 @@
   <NamedLayer>
     <Name>surface_compaction_risk</Name>
     <UserStyle>
-      <Title>Surface Compaction Risk (Kg.m^-2)</Title>
+      <Title>Surface Compaction Risk (CR) (Kg.m^-2)</Title>
       <FeatureTypeStyle>        
-		<Rule>
-          <Name>Very low to low (for topsoil only on soil with less than 13% sand)</Name>
+		    <Rule>
+          <Name>Very low to low</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
@@ -38,7 +38,7 @@
           </PointSymbolizer>
         </Rule>
         <Rule>
-          <Name>Medium (for topsoil only on soil with less than 13% sand)</Name>
+          <Name>Medium</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
@@ -69,8 +69,8 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>        
-		<Rule>
-          <Name>High (for topsoil only on soil with less than 13% sand)</Name>
+		    <Rule>
+          <Name>High </Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
@@ -101,14 +101,13 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>    
-		<Rule>
-          <Name>Very high (for topsoil only on soil with less than 13% sand)</Name>
+		    <Rule>
+          <Name>Very high</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
            <PropertyIsGreaterThanOrEqualTo>
               <PropertyName>value</PropertyName>
                 <Literal>1.8</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
-              
+              </PropertyIsGreaterThanOrEqualTo>  
           </Filter>
           <PointSymbolizer>
             <Graphic>

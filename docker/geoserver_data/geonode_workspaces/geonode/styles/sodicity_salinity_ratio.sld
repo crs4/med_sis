@@ -3,20 +3,20 @@
   <NamedLayer>
     <Name>sodicity_salinity_ratio</Name>
     <UserStyle>
-      <Title>Sodicity/salinity ratio - SAR/EC (unitless)</Title>
+      <Title>Sodicity Salinity Ratio - SAR/EC (unitless)</Title>
       <FeatureTypeStyle>
         <Rule>
-          <Name>Unbeneficial impact of gypsum input for salinity remediation (only for saturated paste extract)</Name>
+          <Name>Unbeneficial impact of gypsum input for salinity remediation</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>0</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>5</Literal>
-              </PropertyIsLessThan>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -36,17 +36,15 @@
               <Size>14</Size>
             </Graphic>
           </PointSymbolizer>
-        </Rule>
-
-       
+        </Rule>       
         <Rule>
-          <Name>Beneficial impact of gypsum input for salinity remediation (only for saturated paste extract)</Name>
+          <Name>Beneficial impact of gypsum input for salinity remediation</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-             <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>5</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
-             </Filter>
+            <PropertyIsGreaterThan>
+              <PropertyName>value</PropertyName>
+              <Literal>5</Literal>
+            </PropertyIsGreaterThan>
+          </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>
@@ -64,8 +62,7 @@
               <Size>14</Size>
             </Graphic>
           </PointSymbolizer>
-        </Rule>
-       
+        </Rule>      
       </FeatureTypeStyle>
     </UserStyle>
   </NamedLayer>

@@ -3,10 +3,10 @@
   <NamedLayer>
     <Name>ph_h2o_som_for_grassland</Name>
     <UserStyle>
-      <Title>pH (H2O) - Redistribution of SOM for bioturbation by earthworm activity in grassland (unitless)</Title>
+      <Title>pH-H2O Redistribution of SOM for bioturbation by earthworm activity in grassland only (unitless)</Title>
       <FeatureTypeStyle>
         <Rule>
-          <Name>Less redistribution of SOM for bioturbation by earthworm activity (specifically for grassland)</Name>
+          <Name>Low redistribution of SOM for bioturbation by earthworm activity</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
@@ -38,17 +38,17 @@
           </PointSymbolizer>
         </Rule>
         <Rule>
-          <Name>Optimal redistribution of SOM for bioturbation by earthworm activity (specifically for grassland)</Name>
+          <Name>Optimal redistribution of SOM for bioturbation by earthworm activity </Name>
           <Filter xmlns="http://www.opengis.net/ogc">
             <And>
               <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>5</Literal>
               </PropertyIsGreaterThanOrEqualTo>
-              <PropertyIsLessThan>
+              <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>7</Literal>
-              </PropertyIsLessThan>
+              </PropertyIsLessThanOrEqualTo>
             </And>
           </Filter>
           <PointSymbolizer>
@@ -70,13 +70,13 @@
           </PointSymbolizer>
         </Rule>
         <Rule>
-          <Name>Less redistribution of SOM for bioturbation by earthworm activity (specifically for grassland)</Name>
+          <Name>Low redistribution of SOM for bioturbation by earthworm activity </Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-             <PropertyIsGreaterThanOrEqualTo>
-                <PropertyName>value</PropertyName>
-                <Literal>7</Literal>
-              </PropertyIsGreaterThanOrEqualTo>
-             </Filter>
+            <PropertyIsGreaterThan>
+              <PropertyName>value</PropertyName>
+              <Literal>7</Literal>
+            </PropertyIsGreaterThan>
+          </Filter>
           <PointSymbolizer>
             <Graphic>
               <Mark>

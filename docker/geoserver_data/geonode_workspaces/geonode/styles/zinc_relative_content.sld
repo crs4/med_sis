@@ -3,7 +3,7 @@
   <NamedLayer>
     <Name>zinc_relative_content</Name>
     <UserStyle>
-      <Title>Zinc relative content (%)</Title>
+      <Title>Zinc Relative Content RC_Zn (%)</Title>
       <FeatureTypeStyle>
         <Rule>
           <Name>Zinc below natural geochemical relative range</Name>
@@ -37,7 +37,6 @@
             </Graphic>
           </PointSymbolizer>
         </Rule>
-
         <Rule>
           <Name>Zinc natural geochemical relative range</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
@@ -73,16 +72,16 @@
         <Rule>
           <Name>Zinc above natural geochemical relative range</Name>
           <Filter xmlns="http://www.opengis.net/ogc">
-	 		<And>             
-	   		  <PropertyIsGreaterThan>
+	 		      <And>             
+	   		      <PropertyIsGreaterThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>75.15</Literal>
-              </PropertyIsGreaterThan>
-	       	  <PropertyIsLessThanOrEqualTo>
+              </PropertyIsGreaterThanOrEqualTo>
+	       	    <PropertyIsLessThanOrEqualTo>
                 <PropertyName>value</PropertyName>
                 <Literal>100</Literal>
               </PropertyIsLessThanOrEqualTo>
-	  		</And>
+	  		    </And>
           </Filter>
           <PointSymbolizer>
             <Graphic>
